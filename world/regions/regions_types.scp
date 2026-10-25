@@ -9,13 +9,11 @@ VERSION=TX
 // is a small chance of a rare diamond.  Shadow ore is cannot be mined.
 RESOURCES=50.0 mr_iron    // This large number makes this very common.
 RESOURCES=10.0 mr_nothing
-RESOURCES=8.0 mr_rusty
 RESOURCES=6.0 mr_old_copper
 RESOURCES=6.0 mr_dull_copper
 RESOURCES=5.0 mr_bronze
 RESOURCES=5.0 mr_copper
 RESOURCES=2.0 mr_gold
-RESOURCES=2.0 mr_rose
 RESOURCES=2.0 mr_agapite
 RESOURCES=1.0 mr_bloodrock
 RESOURCES=1.0 mr_silver
@@ -23,7 +21,6 @@ RESOURCES=0.5 mr_verite
 RESOURCES=0.2 mr_valorite
 RESOURCES=0.1 mr_mytheril
 RESOURCES=0.1 mr_blackrock
-RESOURCES=0.1 mr_diamond    // The small number means this is very rare.
 
 [REGIONTYPE r_dungeon t_rock]
 // Usually Iron, but sometimes Shadow ore can be mined in dungeons.

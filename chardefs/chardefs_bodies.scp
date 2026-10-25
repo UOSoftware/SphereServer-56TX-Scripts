@@ -1,0 +1,106 @@
+
+[CHARDEF 0190]
+DEFNAME=c_man
+NAME=Man
+SOUND=snd_special_human
+ICON=i_pet_man
+CAN=mt_equip|mt_walk|mt_run|mt_usehands
+DAM=1,4
+HEIGHT=16
+RESOURCES=i_flesh_head, i_flesh_torso, i_flesh_right_arm, i_flesh_left_arm, i_flesh_left_leg, i_flesh_right_leg, i_blood_2
+FOODTYPE=15 t_food, t_fruit
+CATEGORY=Humanoids
+SUBSECTION=Human
+DESCRIPTION=Human, Male
+
+ON=@Create
+NPC=brain_human
+
+COLOR=colors_skin
+
+FENCING={15.0 38.0}
+PARRYING={15.0 38.0}
+SWORDSMANSHIP={15.0 38.0}
+WRESTLING={15.0 38.0}
+MACEFIGHTING={15.0 38.0}
+MAGICRESISTANCE={15.0 38.0}
+TACTICS={15.0 38.0}
+
+
+[CHARDEF 0191]
+DEFNAME=c_woman
+NAME=Woman
+CAN=mt_equip|mt_walk|mt_run|mt_female|mt_usehands
+SOUND=snd_special_human
+ICON=i_pet_woman
+DAM=1,2
+HEIGHT=16
+RESOURCES=i_flesh_head_2, i_flesh_torso, i_flesh_right_arm, i_flesh_left_arm, i_flesh_left_leg, i_flesh_right_leg, i_blood_2
+FOODTYPE=15 t_food,t_fruit
+CATEGORY=Humanoids
+SUBSECTION=Human
+DESCRIPTION=Human, Female
+
+ON=@Create
+NPC=brain_human
+COLOR=colors_skin
+FENCING={15.0 38.0}
+PARRYING={15.0 38.0}
+SWORDSMANSHIP={15.0 38.0}
+WRESTLING={15.0 38.0}
+MACEFIGHTING={15.0 38.0}
+MAGICRESISTANCE={15.0 38.0}
+TACTICS={15.0 38.0}
+
+[CHARDEF 0192]
+//Ghost robe is not automatic !
+//DEFNAME2=GHOSTMAN
+DEFNAME=c_ghost_man
+NAME=Ghost
+ICON=i_pet_man
+CAN=mt_equip|mt_walk|mt_run|mt_ghost
+HEIGHT=16
+CATEGORY=Humanoids
+SUBSECTION=Human
+DESCRIPTION=Human Ghost, Male
+
+ON=@Create
+NPC=brain_human
+
+FENCING={15.0 38.0}
+PARRYING={15.0 38.0}
+SWORDSMANSHIP={15.0 38.0}
+WRESTLING={15.0 38.0}
+MACEFIGHTING={15.0 38.0}
+MAGICRESISTANCE={15.0 38.0}
+TACTICS={15.0 38.0}
+
+
+[CHARDEF 0193]
+//Ghost robe is not automatic !
+//DEFNAME2=GHOSTWOMAN
+DEFNAME=c_ghost_female
+NAME=Ghost
+ICON=i_pet_woman
+CAN=mt_equip|mt_walk|mt_run|mt_ghost|mt_female
+HEIGHT=16
+RESOURCES=8 i_ribs_raw
+AVERSIONS=t_TRAP
+
+CATEGORY=Humanoids
+SUBSECTION=Human
+DESCRIPTION=Human Ghost, Female
+
+ON=@Create
+NPC=brain_human
+
+FENCING={15.0 38.0}
+PARRYING={15.0 38.0}
+SWORDSMANSHIP={15.0 38.0}
+WRESTLING={15.0 38.0}
+MACEFIGHTING={15.0 38.0}
+MAGICRESISTANCE={15.0 38.0}
+TACTICS={15.0 38.0}
+
+
+[eof]

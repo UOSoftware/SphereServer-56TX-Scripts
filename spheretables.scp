@@ -20,18 +20,9 @@ As a general rule:
 
 [RESOURCES]
 // sphere.ini and spheretable.scp are automatic.
-
-////////////////////////
-// Core folder
-////////////////////////
-
-
-
 ////////////////////////
 // Defnames folder
 ////////////////////////
-
-
 defnames/defs.scp
 defnames/defs_backwards.scp
 defnames/defs_buffs_debuffs.scp
@@ -49,6 +40,117 @@ defnames/defs_templates.scp
 defnames/defs_terrain_types.scp
 defnames/defs_types_hardcoded.scp
 defnames/defs_types_name.scp
+
+
+////////////////////////
+// Core folder
+////////////////////////
+core/names.scp
+core/skills.scp // once skills yukle
+core/newbies.scp // sonra newbies yukle.
+core/serv_triggers.scp
+
+
+////////////////////////
+// Dialogs folder
+////////////////////////
+dialogs/
+
+////////////////////////
+// Events folder
+////////////////////////
+// events/chars/npcs/
+// events/chars/players/
+// events/chars/bonuses/
+// events/chars/classes/
+events/items/
+events/regions/
+
+////////////////////////
+// Functions folder
+////////////////////////
+
+////////////////////////
+// Itemdefs folder
+////////////////////////
+itemdefs/artifacts/
+itemdefs/buildings/
+itemdefs/customs/
+itemdefs/decos/
+itemdefs/holidays/
+itemdefs/miscs/
+
+// itemdefs/multis/
+itemdefs/multis/houses/
+// itemdefs/multis/houses/parts/
+
+itemdefs/multis/ships/
+itemdefs/multis/ships/parts/
+
+itemdefs/profs/
+
+itemdefs/provs/
+itemdefs/provs/armors/
+itemdefs/provs/clothes/
+itemdefs/provs/weapons/defaults/
+itemdefs/provs/weapons/customs/
+
+itemdefs/themes/
+itemdefs/magics/
+itemdefs/treasures/
+// itemdefs/typedefs/
+
+////////////////////////
+// Speechs folder
+////////////////////////
+speechs/chars/
+speechs/chars/npcs/
+// speechs/multis/
+
+////////////////////////
+// Spells folder
+////////////////////////
+spells/
+
+////////////////////////
+// Sql folder
+////////////////////////
+// sql/
+
+////////////////////////
+// Chardefs folder
+////////////////////////
+chardefs/
+// chardefs/npcs/
+// chardefs/npcs/monsters/
+// chardefs/npcs/mounts/
+// chardefs/npcs/vendors/
+
+////////////////////////
+// Systems folder
+////////////////////////
+// systems/
+
+////////////////////////
+// Templates folder
+////////////////////////
+
+templates/
+templates/loots/
+templates/magic/
+templates/vend/
+
+////////////////////////
+// Tests lder
+////////////////////////
+
+tests/
+
+////////////////////////
+// Spawns folder
+////////////////////////
+// spawns/
+// spawns/monsters/
 
 
 ////////////////////////

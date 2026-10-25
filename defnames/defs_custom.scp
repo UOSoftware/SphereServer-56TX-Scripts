@@ -37,44 +37,18 @@ MAP_4_NAME Tokuno Islands
 MAP_5_NAME Ter Mur
 
 
-[DEFNAME brains]
-brain_none = 0 
-brain_animal = 1 
-brain_human = 2 
-brain_healer = 3
-brain_guard = 4
-brain_banker = 5 
-brain_vendor = 6 
-brain_beggar = 7 
-brain_stable = 8
-brain_thief = 9
-brain_monster = 10
-brain_berserk = 11
-brain_undead = 12
-brain_dragon = 13
-brain_vendor_offduty = 14 
-brain_teacher = 15
-brain_beserk = brain_berserk
-
-
 [DEFNAME NPCBrainNames]
-npcbrain.0	brain_none
-npcbrain.1	brain_animal
-npcbrain.2	brain_human
-npcbrain.3	brain_healer
-npcbrain.4	brain_guard
-npcbrain.5	brain_banker
-npcbrain.6	brain_vendor
-npcbrain.7	brain_beggar
-npcbrain.8	brain_stable
-npcbrain.9	brain_thief
-npcbrain.10	brain_monster
-npcbrain.11	brain_berserk
-npcbrain.12	brain_undead
-npcbrain.13	brain_dragon
-npcbrain.14	brain_vendor_offduty
-npcbrain.15	brain_teacher
-
+NPCBrain.0	brain_none
+NPCBrain.1	brain_animal
+NPCBrain.2	brain_human
+NPCBrain.3	brain_healer
+NPCBrain.4	brain_guard
+NPCBrain.5	brain_banker
+NPCBrain.6	brain_vendor
+NPCBrain.7	brain_animal_trainer
+NPCBrain.8	brain_monster
+NPCBrain.9	brain_berserk
+NPCBrain.10	brain_dragon
 
 [DEFNAME CharFlagNames]
 CharFlag.1	"Invul"

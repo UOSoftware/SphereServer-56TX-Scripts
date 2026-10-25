@@ -96,97 +96,6 @@ SERV.LOGGER Exceed Network Quota : Char:<SRC.NAME>[<SRC>] Account:<local.account
 // LOCAL.ACCOUNT=<ARGS>
 // SERV.LOG f_onaccount_login: <LOCAL.ACCOUNT> (<ARGN1>)
 
-// Hesaptaki karakterlerin paperdoll bilgilerini cliente gonderir. (Deneysel)
-IF (<dARGN1> == 3)
-	FOR c 0 <eval <serv.account.<args>.chars>-1>
-		ref99=<serv.account.<args>.char.<dlocal.c>>
-		IF (<ref99>)
-			LOCAL.ITEMDATA =
-			LOCAL.LAYERS = 0
-			FOR l 0 24
-				REF1=<ref99.FINDLAYER.<DLOCAL.l>>
-				IF (<REF1.ISVALID>)
-					LOCAL.ITEMDATA .= " W<REF1.ID>"
-					LOCAL.ITEMDATA .= " W<REF1.COLOR>"
-					LOCAL.ITEMDATA .= " B<DLOCAL.l>"
-					LOCAL.LAYERS += 1
-				ENDIF
-			ENDFOR
-			// chra bilgilerini hazırla
-			LOCAL.BODYHUE = <REF99.COLOR>
-			LOCAL.ISFEMALE = <QVAL (<REF99.ID> == C_MAN)?0:1>
-			LOCAL.BODYGRAPHIC = <REF99.BODY>
-			LOCAL.NAMECOLOR = 044
-			// Paket uzunluğu:
-			// 1 (layers) + 2 (body graphic) + 2 (body hue) + 1 (isfemale) + 30 (name) + (5 * N items)
-			LOCAL.LEN = 13 + 30 + (<dLOCAL.LAYERS> * 5)
-			LOCAL.PACKET = 0BF
-			LOCAL.PACKET .= " W<dLOCAL.LEN>"
-			LOCAL.PACKET .= " W02725"
-			// Header BODYPACKET
-			LOCAL.PACKET .= " B<dLOCAL.LAYERS>"           // byte: kaç item
-			LOCAL.PACKET .= " W<dLOCAL.BODYGRAPHIC>"      // ushort: body graphic (0x0190 = male)
-			LOCAL.PACKET .= " W<dLOCAL.BODYHUE>"          // ushort: hue
-			LOCAL.PACKET .= " B<dLOCAL.ISFEMALE>"         // byte: 0 = male, 1 = female
-			LOCAL.PACKET .= " W<dLOCAL.NAMECOLOR>"          // ushort: NAMECOLOR
-			LOCAL.PACKET .= " <ASCPAD 30,<REF99.NAME>>"   // 30 byte: name padded
-			LOCAL.PACKET .= <LOCAL.ITEMDATA>
-			ARGO.SENDPACKET <LOCAL.PACKET>
-		ENDIF
-	ENDFOR
-ENDIF
-
-
-IF (<dARGN1> == 4)
-    LOCAL.TIME = <SERV.TIME>
-    LOCAL.HASH = "<VAR0.uosoft_client.security_verifykey1_onaccount_login_prefix><STRTOUPPER <MD5HASH <DLOCAL.TIME>>>"
-    LOCAL.HASH = Z<STRTOUPPER <MD5HASH <LOCAL.HASH>>>
-    SERV.ACCOUNT.<ARGS>.TAG0.UOSOFT_CLIENT_VERIFY_0x12.Hash <LOCAL.HASH>
-    SERV.ACCOUNT.<ARGS>.TAG0.UOSOFT_CLIENT_VERIFY_0x12.Time <LOCAL.TIME>
-    ARGO.SENDPACKET 012 000 00D 0FF 000 000 000 007 D<LOCAL.TIME> 000
-ENDIF
-
-
-
-// 1. Dogrulama
-// 0xA4 paketinden gelen dogrulama
-IF (<SERV.ACCOUNT.<args>>)
-	LOCAL.MsgDetail (0xA4) [Account=<ARGS>]
-	
-	IF !(<SERV.ACCOUNT.<ARGS>.dTAG0.UOSOFT_CLIENT_VERIFY_MUAF>)
-	
-		IF (<ARGN1> == 3)
-			SERV.ACCOUNT <ARGS> TAG0.UOSOFT_CLIENT_VERIFY_0xA4.Hash=
-		ENDIF
-		
-		IF (<ARGN1> == 4)
-			LOCAL.Plain = MD5_<STRTOUPPER <ARGS>>_<STRTOUPPER <SERV.NAME>>
-			Local.GirisKodu = <STRTOUPPER <SERV.ACCOUNT.<ARGS>.TAG0.UOSOFT_CLIENT_VERIFY_0xA4.Hash>>
-			IF (<ISBLANK <LOCAL.GirisKodu>>)
-				LOCAL.MsgContent (Client Onay) Tanimsiz istemci ile giris denemesi. Kod yok.
-				FUNC_UOSOFT_LOGGER <LOCAL.MsgContent> <LOCAL.MsgDetail>
-				FUNC_UOSOFT_STAFF_CHAT <LOCAL.MsgContent> <LOCAL.MsgDetail>
-				//RETURN 1 // Girise izin verme
-				RETURN 0 // Girise izin ver
-			ELSEIF !(STRMATCH('HASH_<STRTOUPPER <MD5HASH <Local.Plain>>>','<Local.GirisKodu>'))
-				LOCAL.MsgContent (Client Onay) Tanimsiz istemci ile giris denemesi. Kod uyusmuyor.
-				FUNC_UOSOFT_LOGGER <LOCAL.MsgContent> <LOCAL.MsgDetail>
-				FUNC_UOSOFT_STAFF_CHAT <LOCAL.MsgContent> <LOCAL.MsgDetail>
-				//RETURN 1 // Girise izin verme
-				RETURN 0 // Girise izin ver
-			ENDIF
-			//LOCAL.MsgContent (Client Onay) Giris onaylandi. (Giris Kodu=<Local.GirisKodu>)
-			//FUNC_UOSOFT_LOGGER <LOCAL.MsgContent> <LOCAL.MsgDetail>
-		ENDIF
-	ELSE
-		LOCAL.MsgContent (Client Onay) Giris onaylandi. (Muaf)
-		FUNC_UOSOFT_LOGGER <LOCAL.MsgContent> <LOCAL.MsgDetail>
-    ENDIF
-	
-ENDIF
-
-
-
 
 
 [FUNCTION f_onaccount_create]
@@ -207,31 +116,16 @@ ENDIF
 // RETURN
 //	0 --> Allow account deletion (default action)
 //	1 --> Deny account deletion
-IF ((<SERV.MYSQL>) && (<DB.CONNECTED>))
-	LOCAL.SQLTIMEFORMAT = <SERV.RTIME.FORMAT %Y-%m-%d> <SERV.RTIME.FORMAT %H:%M:%S>
-	 DB.EXECUTE UPDATE sphere_accounts SET deleted_at='<LOCAL.SQLTIMEFORMAT>' WHERE username='<ARGS>'
-ENDIF
-
 
 
 [FUNCTION f_onaccount_block]
 // Variables:
 // ARGS = Account name.
-// Spheredeki bloklanan hesabi siteden de blokla
-IF ((<SERV.MYSQL>) && (<DB.CONNECTED>))
-  LOCAL.SQLTIMEFORMAT = <SERV.RTIME.FORMAT %Y-%m-%d> <SERV.RTIME.FORMAT %H:%M:%S>
-	 DB.EXECUTE UPDATE sphere_accounts SET blocked_at='<LOCAL.SQLTIMEFORMAT>' WHERE username='<ARGS>'
-ENDIF
 
 
 [FUNCTION f_onaccount_unblock]
 // Variables:
 // ARGS = Account name.
-
-IF ((<SERV.MYSQL>) && (<DB.CONNECTED>))
-	 DB.EXECUTE UPDATE sphere_accounts SET blocked_at=NULL WHERE username='<ARGS>'
-ENDIF
-
 
 
 [FUNCTION f_onaccount_pwchange]
@@ -310,17 +204,14 @@ ENDIF
 
 
 
-[FUNCTION Func_Char_Start_Player]
-Func_Char_Default_Set
+// [FUNCTION Func_Char_Start_Player]
+// Func_Char_Default_Set
 
 // bunu yapma herkes istedigi gibi isim koysun.
 // NAME <STRARG <STRTOUPPER(<STRSUB 0 1 <NAME>>)><STRTOLOWER(<STRSUB 1 16 <NAME>>)>>
 // ONAME = <NAME>
 
-FUNC_ISIM_KONTROL <NAME>
-
-
-
+// FUNC_ISIM_KONTROL <NAME>
 
 
 [FUNCTION f_onchar_delete]
@@ -333,25 +224,12 @@ FUNC_ISIM_KONTROL <NAME>
 //	1 --> Deny character deletion
 
 
-
-
 [FUNCTION f_onserver_start]
 // This function is called on server startup.
 //SERV.ServIP=xxx.xxx.xxx.xxx	//Add your public IP here (not domain) if you are behind a router
 
-// SQLITE BAGLI DEGILSE BAGLA VE BAGLANTIYI HEP ACIK TUT, HIC BIR YERDE LDB.CLOSE YAPMA
-// IF !(<LDB.CONNECTED>)
-	LDB.CONNECT "db/master.db"
-// ENDIF
-// Ilk acilista MySQL Bagla, bir daha db.connect veya db.close yapma, Sphere surekli bagli kalsin.
-IF !(<DB.CONNECTED>)
-    DB.CONNECT
-ENDIF
-
-
 [FUNCTION f_onserver_exit]
 // This function is called on server shutdown.
-
 
 
 [FUNCTION f_onserver_save]
@@ -362,52 +240,13 @@ ENDIF
 // Return:
 //	0 --> Allow save (default action)
 //	1 --> Deny save
-
-// Savede SQLite Bagla, bir daha ldb.connect veya ldb.close yapma, Sphere surekli bagli kalsin.
-// IF !(<LDB.CONNECTED>)
-	LDB.CONNECT "db/master.db"
-// ENDIF
-
-// Savede MySQL Bagla, bir daha db.connect veya db.close yapma, Sphere surekli bagli kalsin.
-IF !(<DB.CONNECTED>)
-    DB.CONNECT
-ENDIF
-
-
-IF (RAND(5) == 1)
-	Serv.ForceGarbageCollect=1
-ELSE
-	Serv.ForceGarbageCollect=0
-ENDIF
-SERV.LOG GC = <serv.ForceGarbageCollect>
-
-
 SERV.SaveStatics // Uncomment this line if you are building your server, so static items are saved also with normal saves, or comment it again in live servers to speed up the save proccess (if commented, you MUST type manually .serv.savestatics to save static items)
-
-
-// Linksiz anahtarları sil, savede badlink uyarısı veriyor, vermesin.
-FORINSTANCES I_KEY_COPPER
-REF1=<LINK>
-	IF !(<REF1.ISVALID>)
-		REMOVE
-	ENDIF
-ENDFOR
-
-// Alan kontrolcu adamlarini sil
-FORINSTANCES c_man_invisible
-	REMOVE
-ENDFOR
-
 
 
 
 [FUNCTION f_onserver_save_ok]
 // This function is called after server has saved correctly (once per stage with background save).
-
-// UOSoft Mysql Islemleri
-Func_UOSoft_Mysql_Process
-
-serv.allclients F_STAFFPANEL_REFRESH
+// serv.allclients F_STAFFPANEL_REFRESH
 
 
 
@@ -428,11 +267,6 @@ VAR0.SAVE_LAST_TIME <SERV.RTIME.FORMAT %H:%S>
 VAR0.SAVE_TIME_TOOK <STRSUB 0 3 <ARGS>>
 // SERV.B @0,3 Kayit islemi <STRSUB 0 3 <args>> saniyede tamamlandi.
 
-// SQLITE BAGLI DEGILSE BAGLA VE BAGLANTIYI HEP ACIK TUT, HIC BIR YERDE LDB.CLOSE YAPMA
-// IF !(<LDB.CONNECTED>)
-	LDB.CONNECT "db/master.db"
-// ENDIF
-
 
 
 [FUNCTION f_onserver_blockip]
@@ -441,45 +275,9 @@ VAR0.SAVE_TIME_TOOK <STRSUB 0 3 <ARGS>>
 //	ARGS  --> IP being blocked
 //	ARGN1 --> Time to block the IP, in tenths of second (writable)
 
-IF ((<SERV.MYSQL>) && (<DB.CONNECTED>))
-    DB.QUERY "SELECT id FROM blacklists WHERE ip='<ARGS>'"
-    IF !(<dDB.ROW.NUMROWS>)
-        DB.EXECUTE "INSERT INTO blacklists (`ip`,`reason`) VALUES ('<ARGS>','Sphereden IP Bloke.')"
-    ENDIF
-ENDIF
-
-
 
 [FUNCTION f_onserver_timer]
 // This function is called periodically at every X minutes (value is defined on TimerCall setting of sphere.ini).
-// SERV.LOG <serv.rtime>
-local.rtime = <serv.rtime.format %H%M>
-//serv.b <local.rtime>
-
-// Ph time on
-IF (<local.rtime> == 2000)
-    PowerHourTime 1,22:00
-ENDIF
-// Ph time off
-IF (<local.rtime> == 2200)
-    PowerHourTime 0,23:00
-ENDIF
-
-// Ph time on
-IF (<local.rtime> == 2300)
-    PowerHourTime 1,01:00
-ENDIF
-// Ph time off
-IF (<local.rtime> == 0100)
-    PowerHourTime 0, 20:00
-ENDIF
-
-// General Server Timeload 00:00
-IF (<local.rtime> == 0000)
-	SERV.LOG Server time loaded
-	TestEntityRemove
-ENDIF
-
 
 
 [FUNCTION f_onserver_connectreq_ex]

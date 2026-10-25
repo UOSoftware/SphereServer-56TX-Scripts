@@ -2,12 +2,12 @@ VERSION=0.56T
 
 
 [FUNCTION f_onclient_helppage]
-LOCAL.RESULT <SetProcessDelay HelpPage,50>
-IF !(<LOCAL.RESULT>)
+// LOCAL.RESULT <SetProcessDelay HelpPage,50>
+// IF !(<LOCAL.RESULT>)
     //SDIALOG d_helppage
     DIALOGCLOSE d_helppage
     SDIALOG d_helppage,<args>
-ENDIF
+// ENDIF
 
 
 [DIALOG d_helppage]
