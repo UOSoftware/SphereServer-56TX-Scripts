@@ -1,0 +1,89 @@
+
+
+[events e_generic_npc_mounts]
+
+ON=@REGENSTAT
+REF1=<OWNER>
+IF (<ISONLINE>)
+	// Binek ekran disinsaysa hp barini kapat.
+	IF (<REF1.ISVALID>) && (<REF1.ISONLINE>)
+		IF (<REF1.DISTANCE <UID>> >= <DSERV.MapViewSize>)
+			REF1.FUNC_HEALTHBAR_CLOSE_PACKET <UID>
+		ENDIF
+	ENDIF
+ENDIF
+// food
+IF (<DLOCAL.StatID> == 3)
+	// REF1.SYSMESSAGE <NAME> food level: <FOOD>/<MAXFOOD> ( Regeneration time: <REGENFOOD> [<REGENFOODD>] )
+	// SERV.B <NAME> food level: <FOOD>/<MAXFOOD> ( Regeneration time: <REGENFOOD> [<REGENFOODD>] )
+	
+	IF !(<ISONLINE>)
+		LOGGER Offline mount does not get hungry. (<name>, <uid>)
+		FOOD=<QVAL (<MAXFOOD>)?<MAXFOOD>:64>
+		RETURN 1
+	ENDIF
+	IF (<SPAWNITEM>)
+		LOGGER Binek spawni varken acikmaz. (<name>, <uid>)
+		FOOD=<QVAL (<MAXFOOD>)?<MAXFOOD>:64>
+		RETURN 1
+	ENDIF
+	IF (<REF1.ISVALID>) && (<REF1.ISONLINE>)
+		REF1.SYSMESSAGELOC <def.tcolor_grey>,<def.empty_cliloc2>, <NAME> food level: <FOOD>/<MAXFOOD> ( Regeneration time: <REGENFOOD> [<REGENFOODD>] )
+	ENDIF
+ENDIF
+
+
+
+ON=@RECEIVEITEM
+// argo = item / food
+IF (<ARGO.IsFood>)
+	REF1=<OWNER>
+	IF (<REF1.ISVALID>)
+		REF1.SYSMESSAGE <NAME> Food Level: <FOOD>/<MAXFOOD>
+	ENDIF
+ENDIF
+
+
+
+// SRC / I = mount
+// owner = OWNER
+// argo = item / food
+ON=@EAT
+REF1=<OWNER>
+IF (<REF1.ISVALID>)
+	REF1.SYSMESSAGE <NAME> Food Level: <FOOD>/<MAXFOOD>
+ENDIF
+LOCAL.Hits=0
+LOCAL.Mana=0
+LOCAL.Stam=0
+
+
+
+
+
+
+// Uid = Npc
+// Src, Act = Saldırılan
+
+ON=@NPCACTFIGHT
+REF1=<OWNER> // sahibi
+IF (<REF1.ISVALIDE>)
+	REF2=<TAG0.TAMER>
+	IF (<REF2.ISVALIDE>) && (<SRC.ISPLAYER>)
+		IF (<SRC.NOTOGETFLAG <UID>> == 2)
+				SAYU dostlara saldıramam 
+				IF (<REF1>)
+					REF1.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu varlık dostunuza saldıramaz. (Dost : <SRC.NAME>)
+				ENDIF
+			RETURN 1
+		ENDIF
+	ENDIF
+ENDIF
+
+
+
+
+
+
+
+[eof]

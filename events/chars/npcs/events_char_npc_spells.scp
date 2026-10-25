@@ -1,0 +1,23 @@
+////////////
+// Summon Creature
+////////////
+
+// Tüm summon npclere bu eventi veriyor, guardlar dahil değil. Ona göre dikkat edelim.
+[events e_generic_npc_summons]
+
+ON=@SPELLEFFECT
+IF (<NPC> == BRAIN_ANIMAL)
+	// fire fieldden etkilenmesin.
+	IF (<argn> == 28)
+		SAYU * etkilenmez *
+		RETURN 1
+	ENDIF
+	// poison fieldden etkilenmesin.
+	IF (<argn> == 39)
+		SAYU * etkilenmez *
+		RETURN 1
+	ENDIF
+ENDIF
+
+
+[eof]

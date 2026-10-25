@@ -1,0 +1,152 @@
+
+[events e_generic_npcs]
+// Argo = Corpsr
+ON=@CREATE
+TAG0.UUID <BCRYPTHASH 2, 4, <SERV.TIMEHIRES>_<SERV.TIME>_<SERV.RTICKS>_<SERV.BUILD>_<SERV.SAVECOUNT>_<UID>>
+TAG0.CREATED_TICK = <SERV.RTICKS>
+TAG0.CREATED_AT = <SERV.RTIMESQL>
+// TAG0.CREATED_RTIME = <SERV.RTIME>
+EVENTS +e_generic_actdiff
+
+
+
+
+
+ON=@DEATHCORPSE
+ARGO.TAG0.DEATHCORPSE.BASEID=<SRC.BASEID>
+ARGO.TAG0.DEATHCORPSE.TIME <SERV.RTIME>
+IF (<OWNER>)
+	ARGO.TAG0.DEATHCORPSE.OWNER <OWNER>
+ENDIF
+
+
+
+ON=@CLICK
+IF (<SRC.ISGM>) && (<NPC> == brain_animal)
+	REF1=<OWNER>
+	IF (<REF1.ISVALID>)
+		MESSAGE @1,1 (<REF1.NAME>)
+	ENDIF
+ENDIF
+
+
+
+
+// Uid = Saldiran
+// Src = Hasar Alan
+ON=@GETHIT
+fMakeBloodEffect <ARGN1>,<ARGN2>
+
+
+
+// Npclerin sahiplerine sürekli crim görünmesi fixi
+ON=@NOTOSEND
+IF (<OWNER.ISVALIDE>) && (<OWNER>==<SRC>)
+	REF1 = <UID>
+	LOCAL.NOTO = <NOTOGETFLAG <REF1>>
+	ARGN1=<DLOCAL.NOTO>
+ENDIF
+
+
+
+
+// Yaratığın Str/hits yükseldikçe Poisondan aldığı hasr da aynı oranda yükseliyordu. 
+// Bunun fixi yapılmaya çalışıldı ama daha da optimize edilebilir.
+// Default Object: The object that is going to be affected.
+	// Src: The object that is going to be affected.
+	// ARGN1: Spell Id
+	// ARGN2: Spell Level
+	// ARGO: The spell memory.(Argo.link holds the caster UID)
+	// local.charges (R/W) = How many charges are left on the spell memory, this will be automatically decreased by 1 at the end of the method execution. Default value is 1.
+	// local.delay (R/W) = How many seconds until the next spell effect tick. Default value is 5 seconds.
+	// local.effect (R/W) = The effect value of the spell, harmful or beneficial (if SPELLFLAG_HEAL is enabled).
+	// local.damagetype (R/W) = The damage type of the spell, if you are making a custom spell you must set a value otherwise the spell will not cause damage.
+	// return 1: Destroy the spell memory and block the spell execution.
+	// return 0: If the spell has the flag SPELLFLAG_SCRIPTED blocks the spell execution
+
+ON=@SPELLEFFECTTICK
+IF (<ARGN1> == 20)
+	IF (<ARGO.BASEID> == I_RUNE_POISON)
+		LOCAL.EFFECT <PoisonLevelToDamage <ARGO.MOREY>>
+	ENDIF
+ENDIF
+
+
+
+
+[FUNCTION PoisonLevelToDamage]
+IF (<args>)
+
+	IF (<args> < 50)
+		LOCAL.Level -1 // NONE
+		LOCAL.Effect=0
+		
+	ELSEIF (<args> < 200)
+		LOCAL.Level 0 // Lesser
+		LOCAL.Effect=2
+		
+	ELSEIF (<args> < 400)
+		LOCAL.Level 1 // Normal
+		LOCAL.Effect=4
+		
+	ELSEIF (<args> < 800)
+		LOCAL.Level 2 	// Greater
+		LOCAL.Effect=6
+		
+	ELSEIF (<args> < 1000)
+		LOCAL.Level 3 // Deadly.
+		LOCAL.Effect=8
+	ELSE
+		LOCAL.Level 4 // Lethal
+		LOCAL.Effect=10
+	ENDIF
+	// serv.b <dlocal.level>
+RETURN <dLOCAL.Effect>
+ENDIF	
+
+
+
+
+
+
+////////////
+// Events //
+////////////
+
+[EVENTS e_generic_npc_monster_spiders]
+// ON=@NPCACTION
+// serv.b NPCACTION
+
+// ON=@NPCACTWANDER
+// serv.b NPCACTWANDER
+
+ON=@NPCSPECIALACTION
+// serv.b NPCSPECIALACTION
+TAG0.OVERRIDE.SPIDERWEB=0
+
+// SPİDERWEB MANUEL YAPILDI, SPHERE ÇOK FAZLA ÇIKARTIYOR.
+IF (<DTAG0.OVERRIDE.SPIDERWEB> <= 0)
+	IF (RAND(400) == 1) 
+		SERV.NEWITEM {0ee3 1 0ee4 1 0ee5 1 0ee6 1}
+		NEW.TYPE = T_WEB
+		NEW.TIMER {40 60}
+		NEW.ATTR=ATTR_MOVE_NEVER|ATTR_DECAY
+		NEW.P <P>
+		// NEW.CANMASK |= CAN_O_NOSLEEP
+		// serv.b spiderweb
+	ENDIF
+ENDIF
+
+
+[EVENTS e_Terathan]
+
+[EVENTS e_Ophidian]
+
+[EVENTS e_Horses]
+
+[EVENTS e_Ostards]
+
+[EVENTS e_Minotaurs]
+
+
+[eof]

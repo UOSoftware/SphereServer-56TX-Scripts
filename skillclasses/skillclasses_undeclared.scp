@@ -1,0 +1,41 @@
+//****************************************************************************
+// SphereServer by: SphereServer development team and Menasoft.
+// www.sphereserver.net
+//****************************************************************************
+VERSION=X1
+
+[SKILLCLASS 0]
+// Undeclared class.
+DEFNAME=Class_Undeclared
+NAME=Undeclared
+
+ON=@LOGOUT
+IF !(<SRC.ISEVENT.e_generic_chars>)
+	SRC.EVENTS +e_generic_chars
+ENDIF
+IF !(<SRC.ISEVENT.e_uosoft_client_v3>)
+	SRC.EVENTS +e_uosoft_client_v3
+ENDIF
+IF (<SRC.ACCOUNT.PLEVEL> == 1)
+	SRC.SKILLCLASS Class_Player
+ELSE
+	SRC.SKILLCLASS Class_Staff
+ENDIF
+
+ON=@LOGIN
+IF !(<SRC.ISEVENT.e_generic_chars>)
+	SRC.EVENTS +e_generic_chars
+ENDIF
+
+IF !(<SRC.ISEVENT.e_uosoft_client_v3>)
+	SRC.EVENTS +e_uosoft_client_v3
+ENDIF
+
+IF (<SRC.ACCOUNT.PLEVEL> == 1)
+	SRC.SKILLCLASS Class_Player
+ELSE
+	SRC.SKILLCLASS Class_Staff
+ENDIF
+
+
+[EOF]

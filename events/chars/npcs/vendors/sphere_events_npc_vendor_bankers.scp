@@ -1,0 +1,20 @@
+
+
+[events e_generic_npc_vendor_bankers]
+// ON=@CLICK
+// MESSAGE @035 [<JOB>]
+// MESSAGE @058 <NAME>
+// RETURN 1
+
+
+
+// ASGARDDA BANKERE CIFT TIKLAYARAK CHECK YAZMA MENUSU ACILIYORMUS 
+// AYNI ZAMANDA BANKERIN YANINDA check yazinca da bu menu aciliyor.
+
+ON=@DCLICK
+DIALOGCLOSE D_BANKER_CHECK
+DIALOG D_BANKER_CHECK
+// RETURN 1
+
+
+[eof]

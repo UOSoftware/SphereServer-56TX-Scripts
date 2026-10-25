@@ -1,0 +1,24 @@
+
+[events e_generic_npc_vendor_healers]
+// ON=@CLICK
+// MESSAGE @044 [<JOB>]
+// MESSAGE @058 <NAME>
+// RETURN 1
+
+ON=@DCLICK
+// sorgular buy speechin altinda mi olmali? buraya ekstra sorguya gerek var mi
+IF !(<SRC.ISGM>)
+	IF (<SRC.FLAGS>&STATF_DEAD) 
+		SRC.SYSMESSAGELOC <def.tcolor_red>,600027 // Ölü durumdayken bu islemi yapamazsiniz.
+		RETURN 1
+	ELSEIF (<SRC.ISDIFF 2,<UID>>)
+		SRC.SYSMESSAGELOC <def.tcolor_red>,600018,<JOB> <NAME>
+		RETURN 1
+	ENDIF
+ENDIF
+FACE <SRC>
+BUY
+RETURN 1
+
+
+[eof]

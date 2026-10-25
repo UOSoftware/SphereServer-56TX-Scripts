@@ -1,0 +1,255 @@
+
+
+[events e_generic_npc_monsters]
+// Bu bir kişiye attacklı halde peşliyorken
+//  attacklı olduğu için ekranında değil ama attacklı ve dolaştığında tetikleniyor
+
+ON=@NPCACTFOLLOW
+IF (<R10>)
+// serv.b NPCACTFOLLOW
+	UzaktakiHedefEndCombatForNPC
+ENDIF
+
+
+ON=@NPCACTWANDER
+IF (<R1>)
+// serv.b NPCACTWANDER
+	UzaktakiHedefEndCombatForNPC
+ENDIF
+
+ON=@REGIONENTER
+IF !(<NPC> == brain_guard)
+	IF (<ARGO.FLAGS>&REGION_FLAG_SHIP|REGION_FLAG_SAFE|REGION_FLAG_GUARDED)
+		SERV.log Monsterlar gemi, safe ve gz alanlara giremez. (<name>, <uid>)
+		LEAVE <R3,5>
+		REF1=<SPAWNITEM>
+		IF (<REF1.ISVALIDE>)
+			GOUID <REF1> // VARSA  SPAWNA GÖNDER.
+		ENDIF
+		RETURN 1
+	ENDIF
+ENDIF
+
+
+
+[FUNCTION UzaktakiHedefEndCombatForNPC]
+IF (<ATTACKER>)
+	FOR 0 <EVAL <ATTACKER>-1>
+		REF1=<ATTACKER.<DLOCAL._FOR>>
+		IF (<REF1.ISVALIDE>) && (<REF1.ISPLAYER>) && (<DISTANCE <REF1>> >= <serv.DistanceYell>)
+			REF1.SYSMESSAGELOC <def.tcolor_grey>,<def.empty_cliloc2>, <NAME> savastan cekildi.
+			// SERV.B <NAME>, <REF1.NAME> ile savasindan ayrildi. (Dist: <REF1.DISTANCE <UID>>)
+			// ATTACKER.DELETE <REF1>
+			
+			ATTACKER.<DLOCAL._FOR>.DELETE 
+			// RETURN 1
+		ENDIF
+	ENDFOR
+ENDIF
+
+
+
+[EVENTS e_monster_resist_field]
+
+ON=@SPELLEFFECT
+IF (<ARGN> == 28) || (<ARGN> == 39) || (<ARGN> == 47)
+	FUNC_EMOTE_HELPFUL büyüden etkilenmez
+	RETURN 1
+ENDIF
+
+
+
+
+[EVENTS e_monster_resist_poison_reflect]
+
+ON=@SPELLEFFECT
+IF (<ARGN> == 20)
+	IF (RAND(5) == 1)
+		FACE <SRC>
+		ANIM 17
+		FUNC_EMOTE_DEFAULT büyüyü geri çevirir
+		IF (<FINDID.I_RUNE_POISON>)
+			FINDID.I_RUNE_POISON.REMOVE
+		ENDIF
+		IF (<FINDID.I_RUNE_POISON_FIELD>)
+			FINDID.I_RUNE_POISON_FIELD.REMOVE
+		ENDIF
+		EFFECT 3,0376A,1,30,1
+		SOUND SND_SPELL_CURE
+		SRC.POISON <FVAL <ARGN2>>
+	ENDIF
+RETURN 1
+ENDIF
+
+
+
+
+
+[EVENTS e_monster_resist_poison_hit]
+
+ON=@GETHIT 
+IF (<ARGN2>&dam_poison) && (<MANA> > 10)
+	LOCAL.DAM = <ARGN1>
+	FACE <SRC>
+	ANIM 17
+	FUNC_EMOTE_HELPFUL zehiri iyileştirir
+	SOUND SND_SPELL_CURE
+	MANA -=10
+	ARGN1 = <EVAL <DLOCAL.DAM>/2>	
+	EFFECT 3,0376A,1,30,1
+	IF (<FINDID.I_RUNE_POISON>)
+		FINDID.I_RUNE_POISON.REMOVE
+	ENDIF
+	IF (<FINDID.I_RUNE_POISON_FIELD>)
+		FINDID.I_RUNE_POISON_FIELD.REMOVE
+	ENDIF
+ENDIF
+
+
+
+
+
+[EVENTS e_monster_resist_spelleffect]
+
+ON=@SPELLEFFECT
+IF (<SERV.SPELL.<ARGN>.LAYER>&layer_spell_stats) || (<ARGN> == 5)
+	FACE <SRC>
+	ANIM 17
+	FUNC_EMOTE_HELPFUL büyüden etkilenmez
+	RETURN 1
+ENDIF
+
+
+
+
+
+[EVENTS e_monster_resist_poison_spelleffect]
+
+ON=@SPELLEFFECT
+IF (<ARGN> == 20) || (<ARGN> == 39)
+	FACE <SRC>
+	ANIM 17
+	FUNC_EMOTE_HELPFUL büyüden etkilenmez
+	IF (<FINDID.I_RUNE_POISON>)
+		FINDID.I_RUNE_POISON.REMOVE
+	ENDIF
+	IF (<FINDID.I_RUNE_POISON_FIELD>)
+		FINDID.I_RUNE_POISON_FIELD.REMOVE
+	ENDIF
+	EFFECT 3,0376A,1,30,1
+	SOUND SND_SPELL_CURE 
+	RETURN 1
+ENDIF
+
+
+
+
+
+
+[EVENTS e_monster_heal]
+
+ON=@GETHIT
+IF (<HITS> < <EVAL <STR>/3>)
+	IF (RAND(15) == 1)
+		LOCAL.DAM = <ARGN1>
+		ANIM 17
+		FUNC_EMOTE_HELPFUL kendini iyileştirir
+		EFFECT=3,I_FX_HEAL_EFFECT,6,35,1 
+		SOUND SND_SPELL_GREATER_HEAL 
+		HITS +=<EVAL (<DLOCAL.DAM>/2)>
+	ENDIF
+ENDIF
+
+
+
+
+
+[EVENTS e_monster_resist_summons]
+
+ON=@GETHIT
+// <SRC>	// TARGET
+// <UID>	// CHAR
+IF (<SRC.FINDID.I_RUNE_SUMMON_CREATURE>)
+	FUNC_EMOTE_HELPFUL büyü etkisini kaldırır 
+	EFFECT=3,i_fx_heal_effect,6,35,1 
+	SOUND=SND_SPELL_GREATER_HEAL
+	SRC.FINDID.I_RUNE_SUMMON_CREATURE.TIMER=
+ENDIF
+
+
+ON=@ATTACK
+// <SRC>	// TARGET
+// <UID>	// CHAR
+IF (<SRC.FINDID.I_RUNE_SUMMON_CREATURE>)
+	FUNC_EMOTE_HELPFUL büyü etkisini kaldırır 
+	EFFECT=3,I_FX_HEAL_EFFECT,6,35,1 
+	SOUND=SND_SPELL_GREATER_HEAL
+	SRC.FINDID.I_RUNE_SUMMON_CREATURE.TIMER=
+ENDIF
+
+
+
+
+[EVENTS e_monster_intelligent]
+ON=@Spelleffect
+// poison resist
+IF (<ARGN> == 20)
+	SAYU * <NAME> resists poison *
+	FINDID.i_rune_poison.REMOVE
+	RETURN 1
+ENDIF
+
+IF (<ARGN> == 38)
+	SAYU * <NAME> resists paralyze *
+	FINDID.i_rune_paralyze.REMOVE
+	RETURN 1
+ENDIF
+
+
+
+ON=@GetHit
+// poison resist
+IF (<FINDID.i_rune_poison>)
+	SAYU * <NAME> resists poison *
+	FINDID.i_rune_poison.REMOVE
+ENDIF
+
+// conjured flagi varsa dispel cak
+IF (<SRC.FINDID.I_RUNE_SUMMON_CREATURE>) 
+	IF (<MANA> > 21)
+		SOUND=snd_SPELL_DISPEL
+		FACE
+		SRC.SPELLEFFECT 41 1000 // dispel
+		// src.remove // daemonlar yok olmuyo?
+		MANA -=20
+		SAYU * <NAME> casts dispel *
+	ENDIF 
+ENDIF 
+
+// hit point str/5 e dusmusse heal cek kendine
+IF (<HITS> < (<STR>/5)) 
+	IF (<MANA> > 101)
+		SOUND=snd_SPELL_GREATER_HEAL 
+		SPELLEFFECT 29 4000 // greater heal
+		MANA -=100
+		SAYU * <NAME> casts heal *
+	ENDIF 
+ENDIF 
+
+// karsidaki polymorph olmussa dispel cak
+IF (<SRC.FINDID.I_RUNE_POLYMORPH>)
+	IF (<MANA> > 21) 
+		SOUND=snd_SPELL_DISPEL
+		FACE
+		SRC.SPELLEFFECT 41 1000 // dispel
+		MANA -=20
+		SAYU * <NAME> casts dispel *
+		RETURN 1
+	ENDIF 
+ENDIF 
+
+
+
+
+
+[eof]

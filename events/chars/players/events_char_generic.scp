@@ -1,0 +1,950 @@
+VERSION=0.56T
+
+[events e_generic_chars]
+ON=@LOGIN
+ARGN1=1 // Girişteki sphereden gelen default mesajları yazmaz. 
+IF (<EVAL <SERV.CLIENTS>> > <DVAR.MAXPLAYERS>)
+	VAR0.MAXPLAYERS <EVAL <SERV.CLIENTS>>
+ENDIF
+SRC.ACCOUNT.RESDISP=<SERV.AutoResDisp>
+IF (<SRC.ACCOUNT.PLEVEL> == 1)
+	SRC.SKILLCLASS Class_Player
+ELSE
+	SRC.SKILLCLASS Class_Staff
+ENDIF
+
+IF !(<SRC.ISPINLOGIN>)
+	SRC.EVENTS +E_PIN
+	SRC.SYSMESSAGELOC <def.tcolor_yellow>,<def.empty_cliloc2>, Pin girişi yapmayı unutmayınız.
+ELSE
+	SRC.EVENTS -E_PIN
+ENDIF
+
+SRC.ACCOUNT.MAXHOUSES=<SERV.MaxHousesAccount>
+SRC.MAXHOUSES=<SERV.MaxHousesPlayer>
+
+SRC.ACCOUNT.MAXSHIPS=<SERV.MaxShipsAccount>
+SRC.MAXSHIPS=<SERV.MaxShipsPlayer>
+
+SRC.MODMAXWEIGHT 35 // 55R DE maks ağırlik kapasitesi 390 deil 425 olduğu için ekliyoruz.
+// SRC.DETAIL=1
+SRC.SCROLL scroll_motd
+SRC.ACCOUNT.CHATNAME=<SRC.NAME>
+SRC.ACCOUNT.RESDISP=<SERV.AutoResDisp>
+SERV.ALLCLIENTS F_STAFFPANEL_REFRESH
+
+
+
+ON=@LOGOUT
+SRC.TAG0.PINGIRDI=0
+SRC.ACCOUNT.CHATNAME=<SRC.NAME>
+SRC.ACCOUNT.RESDISP=<SERV.AutoResDisp>
+SERV.ALLCLIENTS F_STAFFPANEL_REFRESH
+IF (<SRC.ACCOUNT.PLEVEL> == 1)
+	SRC.SKILLCLASS Class_Player
+ELSE
+	SRC.SKILLCLASS Class_Staff
+ENDIF
+IF (<FINDID.I_RUNE_INCOGNITO>)
+	FINDID.I_RUNE_INCOGNITO.REMOVE
+ENDIF
+IF (<SRC.ACTION> == SKILL_MAGERY)
+	SRC.SKILL FAIL
+ENDIF
+IF !(<SRC.ISPINLOGIN>)
+	SRC.EVENTS +E_PIN
+ELSE
+	SRC.EVENTS -E_PIN
+ENDIF
+
+// specific logout time 
+IF (<REGION>)
+	IF (<REGION.FLAGS>&region_flag_house)
+		ARGN1=0
+		ARGN1=<SERV.CLIENTLINGER>
+	ELSEIF (<ISDEATH>)
+		ARGN1=1
+		ARGN2=1
+	ELSEIF (<REGION.FLAGS>&region_flag_safe)
+		ARGN1=0
+		ARGN1=5
+	ELSEIF (<REGION.FLAGS>&region_flag_ship)
+		ARGN1=0
+		ARGN1=<EVAL <SERV.CLIENTLINGER>*2>
+	ELSE
+		ARGN1=0
+		ARGN1=<SERV.CLIENTLINGER>
+	ENDIF
+ENDIF
+
+ON=@PERSONALSPACE
+IF (<ISPLAYER>)
+	ARGN1=11
+	IF (<FLAGS>&statf_invisible)
+		ARGN1=0
+	ELSEIF (<FLAGS>&STATF_DEAD)
+		ARGN1=0
+	ELSEIF (<FLAGS>&statf_hidden)
+		ARGN1=0
+		REVEAL
+	ELSE
+		LOCAL._STAM = <MULDIV 90,<SRC.DEX>,100>
+		IF (<SRC.STAM> < <LOCAL._STAM>)
+			RETURN 1
+		ENDIF
+	ENDIF
+ENDIF
+
+
+On=@Profile
+IF !(<SRC.ISPINLOGIN>)
+	SRC.PINIM
+	RETURN 1
+ENDIF
+IF (<SRC.UID> == <UID>)
+	SRC.SYSMESSAGELOC <def.tcolor_grey>,<def.empty_cliloc2>,Hesap Adı: <account>
+	SRC.SYSMESSAGELOC <def.tcolor_grey>,<def.empty_cliloc2>,Seri NO: <DUID> (<UID>)
+	SRC.SYSMESSAGELOC <def.tcolor_grey>,<def.empty_cliloc2>,İlk Girişi: <ACCOUNT.FIRSTCONNECTDATE>
+	// SRC.SYSMESSAGELOC <def.tcolor_grey>,<def.empty_cliloc2>,Karakter Yaşı: <eval (<age>)> gün once doğmuş.
+	SRC.SYSMESSAGELOC <def.tcolor_grey>,<def.empty_cliloc2>,Karakter Yaşı: <eval (<age> / 86400)> gün once doğmuş.
+ENDIF
+
+
+ON=@ENVIRONCHANGE
+IF (<ISONLINE>)
+	// IF (<R2>)
+		IF (<FOOD> < <MAXFOOD>)
+			IF (<CTAG0.EnvironChange.Food> < <SERV.TIME>)
+				IF (<FOOD> == 2)
+					SAYU * açlıktan başı döner *
+					SYSMESSAGE @36 Food Level: <food>/<maxfood>
+					HUNGRY
+					CTAG0.EnvironChange.Food <EVAL <SERV.TIME> + 600>
+				ELSEIF (<FOOD> == 1)
+					SAYU * açlıktan ölmek üzeredir * 
+					SYSMESSAGE @37 Food Level: <food>/<maxfood>
+					HUNGRY
+					CTAG0.EnvironChange.Food <EVAL <SERV.TIME> + 600>
+				ELSEIF (<FOOD> == 0)
+					SUICIDE
+					SAYU * açlıktan ölür *
+					SYSMESSAGELOC <def.tcolor_red,<def.empty_cliloc2>, Food Level: <food>/<maxfood>
+					HUNGRY
+					CTAG0.EnvironChange.Food <EVAL <SERV.TIME> + 600>
+					FOOD 2
+				ENDIF
+			ENDIF
+		ENDIF
+	// ENDIF
+ENDIF
+
+	
+ON=@GETHIT
+fMakeBloodEffect <ARGN1>,<ARGN2>
+
+// IF (<argn2>&00004) // Magic Resistance
+	// SKILLGAIN 26
+// ENDIF
+
+IF (<FINDTYPE.T_EQ_TRADE_WINDOW>)
+	FINDTYPE.T_EQ_TRADE_WINDOW.REMOVE
+ENDIF
+IF (<ARGN2>&<DEF.dam_physical>|<DEF.dam_pierce>|<DEF.dam_slash>)
+	IF  (<SRC.WEAPON>)
+		REF1=<SRC.WEAPON>
+		TAG0.DEATHFORM=<REF1.NAME> ile
+	ELSE
+		IF (<SRC.ACTION>==SKILL_WRESTLING)
+			TAG0.DEATHFORM=yumruk ile
+		ENDIF
+	ENDIF
+ELSEIF (<ARGN2>&<DEF.dam_poison>)
+	TAG0.DEATHFORM=zehir etkisi ile
+	
+// ELSEIF (<ARGN2>&<DEF.dam_magic>)
+	// TAG0.DEATHFORM=büyü etkisi ile	
+	
+ELSEIF (<ARGN2>&<DEF.dam_reactive>)
+	TAG0.DEATHFORM=reactive etkisi ile	
+	
+ELSEIF (<ARGN2>&<DEF.dam_general>)
+	TAG0.DEATHFORM=genel hasar ile
+ELSE
+	TAG0.DEATHFORM=
+ENDIF
+
+// SRC = VURAN KARAKTER
+// UID = FLAMI OLAN KARAKTER
+ON=@HitReactive
+// Varsayılan ses ve efekti kapatıyoruz
+LOCAL.Sound = 0
+LOCAL.EffectID = 0
+// Vuran kişiye (SRC) özel efekt
+SRC.EFFECT 3,0374A,9,6,0,0,0
+
+// 1. Savunan karakterden (flamı olan) düşülecek hasarı ayrı belirliyoruz (Örn: 1 ile 3 arası)
+LOCAL.DusurulecekHasar = <R3,5>
+
+// 2. Vuran karaktere yansıtılacak hasarı tamamen ayrı belirliyoruz
+// (Bunu dengene göre değiştirebilirsin, örneğin 2 ile 5 arası yaptım)
+LOCAL.YansiyacakHasar = <R2,4>
+
+// Gelen hasar, düşmek istediğimiz hasardan büyük veya eşitse normal şekilde düşür
+IF (<DLOCAL.Damage> >= <DLOCAL.DusurulecekHasar>)
+    LOCAL.ReduceDamage = <DLOCAL.DusurulecekHasar>
+ELSE
+    // Gelen hasar çok düşükse (örn: 1 vurulmuş ama zar 3 gelmişse) sadece gelen hasar kadar düşür
+    LOCAL.ReduceDamage = <DLOCAL.Damage>
+ENDIF
+
+// Yansıyacak hasarı direkt olarak ikinci belirlediğimiz bağımsız zardan çekiyoruz
+LOCAL.ReflectDamage = <DLOCAL.YansiyacakHasar>
+
+
+
+ON=@HitCheck
+// sarjliyken altinda simge gosterme zimbirtisi
+LOCAL.DIST=<SRC.DISTANCE <UID>>
+
+IF (<WEAPON>)
+	LOCAL.MINDIST=<QVAL <WEAPON.RANGEL> ? <WEAPON.RANGEL> : 0 >
+	LOCAL.MAXDIST=<QVAL <WEAPON.RANGEH> ? <WEAPON.RANGEH> : 0 >
+	LOCAL.SkillId=<SERV.SKILL.<WEAPON.SKILL>.NAME>
+ELSE
+	LOCAL.MINDIST=<RANGEL>
+	LOCAL.MAXDIST=<RANGEH>
+ENDIF
+
+// Sarjlanma simgesi
+IF (<WEAPON>)
+	REF1=<WEAPON>
+	IF (<dLOCAL.DIST> > <dLOCAL.MAXDIST> && <Swing> == <ddef.war_swing_swinging> && <ISPLAYER> && <ISONLINE>)
+		SENDPACKET 0C0 03 D<SRC> D<UID> W048E4 W<SRC.P.X> W<SRC.P.Y> B<SRC.P.Z> W<P.X> W<P.Y> B<P.Z> B07 B06 W00 B00 B00 D0 D00
+	ENDIF
+ENDIF
+
+// Yuzunu donme olaylari
+// Su an sadece yakin dovus icin
+IF ( (<ISONLINE>) && (<dLOCAL.DIST> <= <dLOCAL.MAXDIST>) && (<SWING> >= <ddef.war_swing_ready>) )
+	local.timeDiff <EVAL (<SERV.TIMEHIRES> - <LASTEVENTWALK>)/100>
+	IF (<Dlocal.timeDiff> > <QVAL (<FINDLAYER.25>)?2:1>)
+		FACE <SRC>
+	ENDIF
+ENDIF
+
+
+// LOCAL.TIME = <GETWEAPONSWINGTIMER>
+//// Silah havada ne kadar sallansın?
+// local.AnimDelay = <LOCAL.TIME>
+//// Animasyon bitince hemen hasar ver (recoil=0)
+//// VEYA animasyonun sonuna denk gelecek şekilde ayarla
+// ARGN1 = <LOCAL.TIME>
+
+
+
+// src / I = MYSELF
+// act = target
+On=@CharDClick
+// bir varlığa çift tıkladğnda yürüyorken dönmesin ama yerindeyken dönsün.
+local.timeDiff <EVAL (<SERV.TIMEHIRES> - <SRC.LASTEVENTWALK>)/100>
+IF (<Dlocal.timeDiff> > <QVAL (<SRC.FINDLAYER.25>)?2:1>)
+	SRC.FACE <ACT>
+ENDIF
+
+
+
+ON=@StepStealth
+IF !(<SRC.HouseDesign>)
+	IF (<SRC.ISONLINE>)
+		local.timeDiff <EVAL (<SERV.TIMEHIRES> - <SRC.LASTEVENTWALK>)/100>
+		IF (<Dlocal.timeDiff> < <QVAL (<SRC.FINDLAYER.25>)?1:3>)
+			ARGN1=0
+			SRC.REVEAL
+		ENDIF
+	ENDIF
+ENDIF
+
+ON=@Reveal
+SRC.SPEEDSET=0
+
+
+ON=@Resurrect
+IF (<ISONLINE>)
+	//TIMERFMS 1,PaperdollReOpen // BUNA GEREK YOK ESKI USUL PAPERDOLL KAPATIP ACSIN
+	//TIMERFMS 1,PACK
+ENDIF
+TIMERFMS 1,PACKLOAD 0
+
+ON=@DEATH
+PACKSAVE 0
+// TIMERFMS 1,PaperdollReOpen  // BUNA GEREK YOK ESKI USUL PAPERDOLL KAPATIP ACSIN
+
+
+ON=@USERBUGREPORT
+// serv.b Lang= <local.lang>
+// serv.b argn1= <argn1> // type
+// serv.b args= <args> // text
+SRC.SendGMPage [Bug Report] Type=<def.BUGREPORT_TYPE.<dargn1>>, Lang=<local.lang>, Message=<args>
+
+
+
+ON=@UserExWalklimit
+IF (<SRC.ACCOUNT.PLEVEL> == 1) && !((<SRC.ISINSHIP>) || (<SRC.ISINDUNGEON>))
+	SRC.CTAG0.UserExWalklimit.Count ++
+
+	SRC.SYSMESSAGELOC <def.tcolor_yellow>,<def.empty_cliloc2>, [<SRC.dCTAG0.UserExWalklimit.Count>. Uyarı]: Hızınızda bir anormallik saptandı ve bu anormallik kayıt altına alındı.
+
+	IF (<SRC.dCTAG0.UserExWalklimit.Count> >= 4)
+		SERV.ALLCLIENTS Func_Player_To_Staff_Chat [Walklimit] [<SRC.dCTAG0.UserExWalklimit.Count>] <SRC.NAME>[<SRC.UID>] - <SRC.REGION.NAME>[<SRC.P>] : HIZINDA anormallik saptandi. Kontrol ediniz.
+			SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, [<SRC.dCTAG0.UserExWalklimit.Count>. Uyarı]: Hızınızda bir anormallik saptandı ve bu anormallik kayıt altına alındı.
+
+		SRC.CTAG0.UserExWalklimit.Count=0
+		// SRC.fNomovetill 30
+	ENDIF
+	
+	RETURN 1
+ENDIF
+
+
+ON=@UserGuildButton
+f_guildsys_event_speech_fix
+IF (<DDEF.GUILDCONFIG_USEGUILDBUTTON> == 2)
+	IF !(<GUILD>)
+		f_guildsys_create
+	ELSE
+		//f_guildsys_main
+
+		FUNC_GUILD_ONLINE
+		//REF1=<GUILD>
+		//DIALOGCLOSE D_GUILD_CHARLIST
+		//REF1.DIALOG D_GUILD_CHARLIST,0,<DEF0.GUILDDLG_LISTTYPE_ROSTER>
+	ENDIF
+ENDIF
+RETURN 1
+
+
+
+ON=@UserChatButton
+SRC.ACCOUNT.CHATNAME=<SRC.NAME> 
+
+ON=@Userextcmd
+// ARGV0 = ON/OFF
+// ARGV1= SERIAL
+// IF (<ARGN> == 209)
+	// IF (<ARGV> == 0)
+		// REF1=<ARGV1>
+		// REF1.UPDATEX
+	// SRC.CTAG0.BankGumpStatus=<argv0>
+	// ENDIF
+// ENDIF
+// SERV.B <ARGS> <ARGN>
+
+
+IF (<ARGN1> == 199) // 0xc8
+	IF (STRMATCH("salute","<ARGS>"))
+		IF (<SRC.CTAG0.MacroBow.DELAY> > <SERV.TIME>)
+			SRC.SYSMESSAGELOC <def.tcolor_grey>,<def.empty_cliloc2>, [Salute] <DEFMSG.skillwait_3>
+			RETURN 1
+		ELSEIF (<SRC.CTAG0.MacroSalute.DELAY> > <SERV.TIME>)
+			SRC.SYSMESSAGELOC <def.tcolor_grey>,<def.empty_cliloc2>, [Salute] <DEFMSG.skillwait_3>
+			RETURN 1
+		ENDIF
+		SRC.CTAG0.MacroSalute.DELAY <EVAL <SERV.TIME>+35>
+		// SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu makro (Salute) kaldırılmıştır.
+		// RETURN 1
+	ENDIF
+	IF (STRMATCH("bow","<ARGS>"))
+		IF (<SRC.CTAG0.MacroBow.DELAY> > <SERV.TIME>)
+			SRC.SYSMESSAGELOC <def.tcolor_grey>,<def.empty_cliloc2>, [Bow] <DEFMSG.skillwait_3>
+			RETURN 1
+		ELSEIF (<SRC.CTAG0.MacroSalute.DELAY> > <SERV.TIME>)
+			SRC.SYSMESSAGELOC <def.tcolor_grey>,<def.empty_cliloc2>, [Bow] <DEFMSG.skillwait_3>
+			RETURN 1
+		ENDIF
+		SRC.CTAG0.MacroBow.DELAY <EVAL <SERV.TIME>+35>
+		// SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu makro (Bow) kaldırılmıştır.
+		// RETURN 1
+	ENDIF
+ENDIF
+
+IF (<ARGN1> == 67)
+	IF !(<ISEMPTY <ARGS>>) && ((<ARGS> == 2) || (<ARGS> == 3) || (<ARGS> == 4) || (<ARGS> == 5))
+		Serv.log <ARGN1> / <ARGS> : Bu makro kaldırılmıştır. (<src.name>)
+		RETURN 1
+	ENDIF
+ENDIF
+
+// OpenDoor Macro
+IF (<ARGN1> == 88)
+	LOCAL.DoorAutoDist=2
+ENDIF
+
+
+
+// ARGO = inilen binek
+// SRC = inen kişi
+ON=@Dismount
+
+
+
+// ARGO = BINEK
+// SRC/UID = PLAYER
+// ARGN1 MEMORY?
+ON=@Mount
+// binege binince hpbarini UIden kapat.
+SRC.FUNC_HEALTHBAR_CLOSE_PACKET <ARGO.UID>
+
+// bineğin attacklarini temizle
+ARGO.CustomMemDel_Force memory_iaggressor
+ARGO.CustomMemDel_Force memory_harmedby
+ARGO.CustomMemDel_Force memory_irritatedby
+ARGO.CustomMemDel_Force memory_aggreived
+ARGO.CustomMemDel_Force memory_fight
+ARGO.FUNC_WARMODE 0
+ARGO.ATTACKER.CLEAR
+
+
+
+//*****************************************
+// Items Triggers
+//*****************************************
+ON=@ITEMTARGON_ITEM
+IF (<ACT.ISWEAPON>)
+	IF (<ARGO.TYPE>==T_POTION)
+		SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu eşyayı şekilde kullanamazsınız.
+		RETURN 1
+	ENDIF
+ENDIF
+
+
+On=@ItemDClick
+IF (<ACT.DISPID> == I_DEED)
+	SRC.SOUND=89
+ENDIF
+
+IF (<ACT.dTAG0.CarveCorpseItems>) && !(<ACT.CONT>)
+	IF (<SRC.CTAG0.CorpseDumpItem.Delay> > <SERV.TIME>)
+		SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Cesetten kopan eşyaları bu kadar hızlı kullanamazsınız.
+		RETURN 1
+	ENDIF
+	SRC.CTAG0.CorpseDumpItem.Delay <EVAL <SERV.TIME>+25>
+	ACT.TAG0.CarveCorpseItems=
+ENDIF
+
+ON=@ItemEquip
+ACT.TAG0.CarveCorpseItems=
+
+ON=@ItemPickup_Ground
+IF (<ACT.dTAG0.CarveCorpseItems>)
+	ACT.TAG0.CarveCorpseItems=
+ENDIF
+
+
+
+
+
+
+//*****************************************
+// Skill Triggers
+//*****************************************
+
+// ON=@SKILLPRESTART
+
+ON=@SkillStart
+// gather skillerinde dönme ve anim olayları
+IF (<SERV.SKILL.<ARGN1>.FLAGS>&skf_gather)	
+	LOCAL.GatherStrokeCnt=2
+	IF (<ISONLINE>)
+		local.timeDiff <EVAL (<SERV.TIMEHIRES> - <LASTEVENTWALK>)/100>
+		IF (<Dlocal.timeDiff> > <QVAL (<SRC.FINDLAYER.25>)?2:1>)
+			SRC.ANIM 12
+			SRC.FACE <SRC.ACTP>
+		ENDIF
+	ENDIF
+ENDIF
+
+
+// ACT	The item that was crafted.
+// ARGO	The item that the item was crafted from.
+// I	The character who crafted the item.
+// SRC	The character who crafted the item.
+// Argn1= quality
+// Quality	Kalite Seviyesi
+// 1 – 25	Shoddy
+// 26 – 50	Poor
+// 51 – 75	Below Average
+// 76 – 125	Average
+// 126 – 150	Above Average
+// 151 – 175	Excellent
+// 176 – 200	Superior
+ON=@SKILLMAKEITEM
+SRC.TAG0.CRAFT_LASTMAKE <STRTOUPPER <ACT.BASEID>>
+SRC.TAG0.CRAFT_LASTMAKE.<SRC.ACTION> <STRTOUPPER <ACT.BASEID>>
+
+SRC.TAG0.CRAFT_MAKECOUNT ++ // TOPLAM KAC ESYA URETTI
+SRC.TAG0.CRAFT_MAKECOUNT.<STRTOUPPER <ACT.BASEID>> ++ // HANGI ESYADAN NE KADAR URETTI
+
+// IF (<ARGN1> <= 25)
+	// SYSMESSAGE @,,1,1 Üretilen ürün kalitesi: Çok Kötü
+// ELSEIF (<ARGN1> <= 50)
+	// SYSMESSAGE @,,1,1 Üretilen ürün kalitesi: Kötü
+// ELSEIF (<ARGN1> <= 75)
+	// SYSMESSAGE @,,1,1 Üretilen ürün kalitesi: Düşük
+// ELSEIF (<ARGN1> <= 125)
+	// SYSMESSAGE @,,1,1 Üretilen ürün kalitesi: Orta
+// ELSEIF (<ARGN1> <= 150)
+	// SYSMESSAGE @,,1,1 Üretilen ürün kalitesi: İyi
+// ELSEIF (<ARGN1> <= 175)
+	// SYSMESSAGE @,,1,1 Üretilen ürün kalitesi: Çok İyi
+// ELSE
+	// SYSMESSAGE @,,1,1 Üretilen ürün kalitesi: Mükemmel
+// ENDIF
+
+IF (<ACT.TYPE> == T_SCROLL)
+	ACT.MOREY=50
+ENDIF
+
+IF (<ARGN2> >= 175) // kusursuz item
+	IF (<SRC.TAG0.CRAFT_MARK>)
+		IF !(<ACT.CAN>&can_i_pile)
+			ACT.MAKERSNAME <SRC.NAME>
+			ACT.CRAFTEDBY <SRC>
+		ENDIF
+	ENDIF
+ENDIF
+
+SRC.SYSMESSAGE Bu uretim sonucu sizden eksilen malzemeler;
+LOCAL.RESOURCES <SERV.ITEMDEF.<act.baseid>.RESOURCES.0.KEY>
+IF (<ARRAYCOUNT <LOCAL.RESOURCES>>)
+	FOR r 1 <ARRAYCOUNT <LOCAL.RESOURCES>>
+		LOCAL.RESITEM <SERV.ITEMDEF.<act.baseid>.RESOURCES.<DLOCAL.r>.KEY>
+		LOCAL.RESAMOUNT <SERV.ITEMDEF.<act.baseid>.RESOURCES.<DLOCAL.r>.VAL>
+		SRC.SYSMESSAGE <DLOCAL.RESAMOUNT> <SERV.ITEMDEF.<LOCAL.RESITEM>.NAME>
+	ENDFOR
+ENDIF
+
+// IF (<SRC.ISDIALOGOPEN D_CRAFTMENU> && <SRC.Dctag0.Dialog.Craftmenu.Skillid>)
+	// SRC.F_CRAFTMENU <Src.Dctag0.Dialog.Craftmenu.Skillid> , <Src.Dctag0.Dialog.Craftmenu.Lastpage>
+// ENDIF
+
+
+
+
+//*****************************************
+// Spell Triggers
+//*****************************************
+
+On=@SpellCast
+IF !(<SRC.ISGM>)
+
+	IF !((<ARGN> == 32) || (<ARGN> == 52))  // recall veya gate değilse
+		REF1=<SRC.FINDLAYER.LAYER_HAND1>
+		REF2=<SRC.FINDLAYER.LAYER_HAND2>
+		IF (<REF1.ISVALID>) && (<REF1.TYPE> != T_SPELLBOOK) 
+			REF1.fUnequip
+		ENDIF
+		IF (<REF2.ISVALID>) && (<REF2.TYPE> != T_WEAPON_MACE_STAFF) 
+			REF2.fUnequip
+		ENDIF
+	ENDIF
+
+	IF ((<FLAGS>&STATF_FREEZE) || (<FLAGS>&STATF_STONE))
+		SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu durumda büyü kullanamazsınız.
+		RETURN 1
+	ENDIF
+
+	IF !((<ARGN1> == 32) || (<ARGN1> == 52))
+		IF  (<SRC.IsEquipTypeArmors>)
+			SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Üzerinizde ağır zırh varken büyü yapamazsınız.
+			SRC.SKILL FAIL
+			SRC.ACTION -1
+			RETURN 1
+		ENDIF
+	ENDIF
+
+	IF (<KILLS> < <eval <SERV.MURDERMINCOUNT>>) && (<SRC.REGION.DEFNAME> == a_townDelucia)
+		SRC.SYSMESSAGE Calimport'un guclu buyu duvarlari sebebiyle buyunuz engellendi.
+		SRC.GO 5249,3918,28,0
+		RETURN 1
+	ENDIF
+
+	IF (<ACT>) // eger nesneye hedef aliyorsa,
+		local.timeDiff <EVAL (<SERV.TIMEHIRES> - <SRC.LASTEVENTWALK>)/100>
+		IF (<Dlocal.timeDiff> > <QVAL (<FINDLAYER.25>)?2:1>)
+			SRC.FACE <ACT>
+		ENDIF
+	ELSE // eger yuzeye hedef aliyorsa
+		IF (<TARGP>)
+			local.timeDiff <EVAL (<SERV.TIMEHIRES> - <SRC.LASTEVENTWALK>)/100>
+			IF (<Dlocal.timeDiff> > <QVAL (<FINDLAYER.25>)?2:1>)
+				SRC.FACE <TARGP>
+			ENDIF
+		ENDIF
+	ENDIF
+
+	// SPELL FREEZE TIME
+	IF (<ARGN> == 1)	// CLUMSY
+		MG1
+		
+	ELSEIF (<ARGN> == 2)	// CREATE FOOD
+		MG1
+		
+	ELSEIF (<ARGN> == 3)	// FEEBLEMIND
+		MG1
+		
+	ELSEIF (<ARGN> == 4)	// HEAL
+		SD 1
+		MG1
+		
+	ELSEIF (<ARGN> == 5)	// MAGIC ARROW
+		MG1
+		
+	ELSEIF (<ARGN> == 6)	// NIGHT SIGHT
+		MG1
+		
+	ELSEIF (<ARGN> == 7)	// REACTIVE ARMOR
+		SD 1
+		MG1
+		
+	ELSEIF (<ARGN> == 8)	// WEAKEN
+		MG1
+		
+	ELSEIF (<ARGN> == 9)	// AGILITY
+		MG2
+		
+	ELSEIF (<ARGN> == 10)	// CUNNING
+		MG2
+		
+	ELSEIF (<ARGN> == 11)	// CURE
+		SD 1	
+		MG2
+		
+	ELSEIF (<ARGN> == 12)	// HARM
+		SD 1
+		MG2
+		
+	ELSEIF (<ARGN> == 13)	// TRAP
+		// kapali
+		
+	ELSEIF (<ARGN> == 14)	// UNTRAP
+		// kapali
+		
+	ELSEIF (<ARGN> == 15)	// PROTECTION
+		SD 1
+		MG2
+		
+	ELSEIF (<ARGN> == 16)	// STRENGTH
+		SD 1
+		MG2
+		
+	ELSEIF (<ARGN> == 17)	// BLESS
+		SD 1
+		MG3
+		
+	ELSEIF (<ARGN> == 18)	// FIREBALL
+		SD 1
+		MG3
+		
+	ELSEIF (<ARGN> == 19)	// LOCK
+		// kapali
+		
+	ELSEIF (<ARGN> == 20)	// POISON
+		PSG
+		SD 1
+		
+	ELSEIF (<ARGN> == 21)	// TELEKINESIS
+		SD 1
+		MG3
+		
+	ELSEIF (<ARGN> == 22)	// TELEPORT
+		MG3
+		
+	ELSEIF (<ARGN> == 23)	// UNLOCK
+		// kapali
+		
+	ELSEIF (<ARGN> == 24)	// WALL
+		SD 1
+		MG3
+		
+	ELSEIF (<ARGN> == 25)	// ARCH CURE
+		SD 2
+		MG4
+		
+	ELSEIF (<ARGN> == 26)	// ARCH PROTECTION
+		SD 2
+		MG4
+		
+	ELSEIF (<ARGN> == 27)	// CURSE
+		SD 2
+		MG4
+		
+	ELSEIF (<ARGN> == 28)	// FIRE FIELD
+		SD 2
+		MG4
+		
+	ELSEIF (<ARGN> == 29)	// GREATER HEAL
+		SD 2
+		MG4
+		
+	ELSEIF (<ARGN> == 30)	// LIGHTNING
+		SD 2
+		MG4
+		
+	ELSEIF (<ARGN> == 31)	// MANA DRAIN
+		// kapali
+		
+	ELSEIF (<ARGN> == 32)	// RECALL
+		SD 2
+		MG4
+		
+	ELSEIF (<ARGN> == 33)	// BLADE SPIRITS
+		SD 2
+		MG5
+		
+	ELSEIF (<ARGN> == 34)	// DISPEL FIELD
+		SD 2
+		MG5
+		
+	ELSEIF (<ARGN> == 35)	// INCOGNITO
+		SD 2
+		MG5
+		
+	ELSEIF (<ARGN> == 36)	// MAGIC REFLECT
+		SD 2
+		MG5
+		
+	ELSEIF (<ARGN> == 37)	// MIND BLAST
+		SD 2
+		MG5
+		
+	ELSEIF (<ARGN> == 38)	// PARALYZE
+		SD 2
+		MG5
+		
+	ELSEIF (<ARGN> == 39)	// POISON FIELD		
+		SD 2
+		MG5
+		
+	ELSEIF (<ARGN> == 40)	// SUMMON CREATURE
+		SD 2
+		MG5
+		
+	ELSEIF (<ARGN> == 41)	// DISPEL
+		SD 2
+		MG6
+		
+	ELSEIF (<ARGN> == 42)	// ENERGY BOLT
+		SD 2
+		MG6
+		
+	ELSEIF (<ARGN> == 43)	// EXPLOSION
+		SD 2
+		MG6
+		
+	ELSEIF (<ARGN> == 44)	// INVISIBILITY
+		SD 2
+		MG6
+		
+	ELSEIF (<ARGN> == 45)	// MARK
+		SD 2
+		MG6
+		
+	ELSEIF (<ARGN> == 46)	// MASS CURSE
+		SD 2
+		MG6
+		
+	ELSEIF (<ARGN> == 47)	// PARALYZE FIELD
+		SD 3
+		MG6
+		
+	ELSEIF (<ARGN> == 48)	// REVEAL
+		SD 2
+		MG6
+		
+	ELSEIF (<ARGN> == 49)	// CHAIN LIGHTNING
+		SD 3
+		MG7
+		
+	ELSEIF (<ARGN> == 50)	// ENERGY FIELD
+		SD 3
+		MG7
+		
+	ELSEIF (<ARGN> == 51)	// FLAME STRIKE
+		SD 3
+		MG7
+		
+	ELSEIF (<ARGN> == 52)	// GATE TRAVEL
+		SD 3
+		MG7
+		
+	ELSEIF (<ARGN> == 53)	// MANA VAMPIRE
+		// kapali
+		
+	ELSEIF (<ARGN> == 54)	// MASS DISPEL
+		SD 3	
+		MG7
+		
+	ELSEIF (<ARGN> == 55)	// METEOR SWARM
+		SD 3
+		MG7
+		
+	ELSEIF (<ARGN> == 56)	// POLYMORPH
+		SD 3
+		MG3
+		
+	ELSEIF (<ARGN> == 57)	// EARTHQUAKE
+		SD 3
+		MG8
+		
+	ELSEIF (<ARGN> == 58)	// ENERGY VORTEX
+		IF (<REGION.GUARDED>)
+			CRIMINAL 1
+		ENDIF
+		SD 3
+		MG8
+		
+	ELSEIF (<ARGN> == 59)	// RESURRECT
+		SD 3
+		MG8
+		
+	ELSEIF (<ARGN> == 60)	// AIR ELEMENTAL
+		IF (<REGION.GUARDED>)
+			CRIMINAL 1
+		ENDIF
+		SD 3
+		MG8
+		
+	ELSEIF (<ARGN> == 61)	// SUMMON DEAMON
+		IF (<REGION.GUARDED>)
+			CRIMINAL 1
+		ENDIF
+		SD 3
+		MG8
+		
+	ELSEIF (<ARGN> == 62)	// EARTH ELEMENTAL
+		IF (<REGION.GUARDED>)
+			CRIMINAL 1
+		ENDIF
+		SD 3
+		MG8
+		
+	ELSEIF (<ARGN> == 63)	// FIRE ELEMENTAL
+		IF (<REGION.GUARDED>)
+			CRIMINAL 1
+		ENDIF
+		SD 3
+		MG8
+		
+	ELSEIF (<ARGN> == 64)	// WATER ELEMENTAL
+		IF (<REGION.GUARDED>)
+			CRIMINAL 1
+		ENDIF
+		SD 3
+		MG8
+		
+	ENDIF
+	
+ENDIF
+
+
+// ClasscUO clientte büyü atarken attığı yöne dönmesi durumunda bazen atlama yapıyor,
+// Büyü attığındaki dönüşleri buradan manuel yaptık ve hareket halindeyken dönmemesini sağladık.
+// Sadece yerinde duruyorken döner.
+// bazi buglar var o yuzden kontrol edilmeli.
+// oldugun yerde donerek buyu atinca kare atliyor.
+ON=@SpellEffect
+IF ((<ARGN> == 49) || (<ARGN> == 55)) // Eve Disardan Chain Atsalar Bile Icerdeki Yemez
+	IF !(<SRC.REGION.UID> == <REGION.UID>)
+		RETURN 1
+	ENDIF
+ENDIF
+
+IF (<FLAGS>&STATF_DEAD) // Oluye Dokunulmaz, Ayiptir
+	IF !(<ARGN> == 59)
+		RETURN 1
+	ENDIF
+ENDIF
+
+IF ((<ARGN> == 9) || (<ARGN> == 10) || (<ARGN> == 16) || (<ARGN> == 17))
+	IF (<FINDLAYER(layer_spell_stats)>)
+		FINDLAYER(layer_spell_stats).REMOVE // SPELL
+	ENDIF
+	IF (<FINDLAYER(layer_flag_potion)>)
+		FINDLAYER(layer_flag_potion).REMOVE // POTION
+	ENDIF
+ENDIF
+IF (<SERV.SPELL.<DARGN>.FLAGS>&SPELLFLAG_HARM)
+	TAG0.DEATHFORM=<SERV.SPELL.<DARGN>.NAME> buyusu ile
+ENDIF
+
+
+
+
+
+// I = Karakterin hapse gönderilmesi veya hapishaneden serbest bırakılması .
+// SRC = Hapis cezasından veya serbest bırakılmadan sorumlu karakter .
+// ARGN1 = Karakterin hapse gönderilip gönderilmediğini gösterir (1 = hapse gönderildi, 0 = hapisten serbest bırakıldı)
+// ARGN2 = 	Karakterin gönderileceği hücre numarası.
+// Jail 0 (min) = belirsiz 
+// Jail 10 (max) = 10. hücre
+ON=@Jailed
+IF (<ISPLAYER>)
+	DIALOGCLOSEALL	
+	IF (<ARGN1> >= 1)
+		IF (<ACCOUNT.PRIV>&PRIV_JAILED)
+		// IF (<ACCOUNT.TAG0.JailCell>)
+			SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, <NAME> zaten hapis cezasi almis. Cezayi degistirmek icin önce forgive edip tekrar hapise gonderin
+			RETURN 1
+		ENDIF
+		CONSUME 9999 i_memory_helppage_stuck
+		ACCOUNT.TAG0.JailCount<dARGN2> +=1
+		AccountAllCharsEventToggle e_jailed
+		ARGS = <def.JAILCELL_<DARGN2>>
+		IF (<ACCOUNT.dTAG0.JailCount<dARGN2>> > 1)
+			LOCAL.TIME <EVAL <ARGV1> * <ACCOUNT.dTAG0.JailCount<dARGN2>>>
+			SYSMESSAGELOC <def.tcolor_red>,<DEF.empty_cliloc2>, Cezanız <ACCOUNT.dTAG0.JailCount<dARGN2>> katına çıktı!
+		ELSE
+			LOCAL.TIME = <ARGV1>
+		ENDIF
+		SYSMESSAGELOC <def.tcolor_red>,<DEF.empty_cliloc2>, <ARGV0> sucundan jail cezasi aldiniz.
+		ACCOUNT.TAG0.JailTime = <EVAL <SERV.TIME> + <DLOCAL.TIME>>
+		
+	ELSE
+		IF !(<ACCOUNT.PRIV>&PRIV_JAILED)
+			SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, <NAME> zaten hapis cezasi almamis.
+			RETURN 1
+		ENDIF
+		ACCOUNT.TAG0.JailTime =
+		AccountAllCharsGo Britain Moongate
+		AccountAllCharsEventToggle e_jailed
+	ENDIF
+ENDIF
+
+
+// I: Partiye katılan oyuncu.
+// SRC: Davet eden oyuncu.
+// Return 1: Eylemi iptal eder.
+ON=@PartyAdd
+SRC.EVENTS +e_party
+EVENTS +e_party
+
+// SRC: Partiyi dağıtan karakter
+// I: Partiyi dağıtan karakter
+ON=@PARTYDISBAND
+
+
+// SRC: Partiden ayrılan karakter.
+// I: Partiden ayrılan karakter.
+ON=@PARTYLEAVE
+SRC.EVENTS -e_party
+
+// I: Partiden çıkarılan karakter.
+// SRC: Partiden başka bir karakteri çıkaran karakter (master).
+ON=@PARTYREMOVE
+EVENTS -e_party
+
+
+
+
+
+[eof]

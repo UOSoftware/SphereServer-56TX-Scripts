@@ -1,0 +1,36 @@
+
+[events e_generic_npc_vendor_guards]
+ON=@CLICK
+// MESSAGE @0,3 [Guards Agency]
+Message [Guards Agency]
+
+ON=@NPCRefuseItem
+SAY I cannot be bribed. be gone.
+return 1
+
+// guardin hp gitmesin.
+// ON=@GetHit
+// RETURN 1
+
+
+// guarda büyü islemesin
+// ON=@SPELLEFFECT
+// RETURN 1
+
+ON=@ATTACK
+GO <SRC.P>
+// SRC.KILL
+
+ON=@DEATH
+REF1=<QVAL (<SRC.ATTACKER.LAST>)?<SRC.ATTACKER.LAST>:<SRC.ATTACKER.MAX>> // ÖLDÜREN
+IF (<REF1.ISVALID> && <REF1.ISPLAYER>)
+    REF1.KILLS=<eval <serv.MurderMinCount>>
+    REF1.SYSMESSAGE @38,,1,1 Guard öldürdüğünüz için cezalandırıldınız.
+ENDIF
+
+
+ON=@CRIMINAL
+RETURN 1
+
+
+[eof]

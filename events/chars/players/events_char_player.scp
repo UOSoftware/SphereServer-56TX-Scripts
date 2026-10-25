@@ -1,0 +1,7 @@
+VERSION=0.56T
+
+[events e_generic_char_players]
+
+
+
+[eof]

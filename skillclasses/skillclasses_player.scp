@@ -1,0 +1,166 @@
+
+[SKILLCLASS 1]
+// player class.
+// max skills for players of this skill class.
+DEFNAME=Class_Player
+NAME=Player
+// EVENTS=e_ClassUndeclared
+STATSUM=225
+SKILLSUM=700.0
+STR=100
+INT=100
+DEX=100
+Alchemy=100.0
+Anatomy=100.0
+AnimalLore=100.0
+ItemId=100.0
+ArmsLore=100.0
+Parrying=100.0
+Begging=100.0
+Blacksmithing=100.0
+Bowcraft=100.0
+Peacemaking=100.0
+Camping=100.0
+Carpentry=100.0
+Cartography=100.0
+Cooking=100.0
+DetectingHidden=100.0
+Enticement=100.0
+EvaluatingIntel=100.0
+Healing=100.0
+Fishing=100.0
+Forensics=100.0
+Herding=100.0
+Hiding=100.0
+Provocation=100.0
+Inscription=100.0
+LockPicking=100.0
+Magery=100.0
+MagicResistance=100.0
+Tactics=100.0
+Snooping=100.0
+Musicianship=100.0
+Poisoning=100.0
+Archery=100.0
+SpiritSpeak=100.0
+Stealing=100.0
+Tailoring=100.0
+Taming=100.0
+TasteId=100.0
+Tinkering=100.0
+Tracking=100.0
+Veterinary=100.0
+Swordsmanship=100.0
+Macefighting=100.0
+Fencing=100.0
+Wrestling=100.0
+Lumberjacking=100.0
+Mining=100.0
+Meditation=100.0
+Stealth=100.0
+RemoveTrap=100.0
+Necromancy=100.0
+Focus=100.0
+Chivalry=100.0
+Bushido=100.0
+Ninjitsu=100.0
+Spellweaving=100.0
+Mysticism=100.0
+Imbuing=100.0
+Throwing=100.0
+
+ON=@LOGIN
+IF (<SRC.ISGM>)
+	SRC.GM=0
+ENDIF
+IF (<SRC.DEBUG>)
+	SRC.DEBUG=0
+ENDIF
+IF (<SRC.HEARALL>)
+	SRC.HEARALL=0
+ENDIF
+SRC.Func_Char_Default_Set
+
+
+IF !(<SRC.FINDLAYER(32)> || <SRC.FINDLAYER(44)> || <SRC.FINDLAYER(47)>)
+	IF (<SRC.STATTOTAL> > <SRC.SKILLCLASS.STATSUM>)
+		SRC.STR 75
+		SRC.HITS <SRC.STR>
+		SRC.DEX 75
+		SRC.STAM <SRC.DEX>
+		SRC.INT 75
+		SRC.MANA <SRC.INT>
+		SRC.NOTICE <DEF.BFONT_NOTICE_DRED>Statlarınız <SRC.SKILLCLASS.STATSUM> aşmış. Statlarınız varsayılan haline alınmıştır. Tekrar ayarlayınız.
+	ENDIF
+ENDIF
+
+ON=@LOGOUT
+SRC.Func_Char_Default_Set
+
+
+
+
+ON=@USERWARMODE
+// ARGN1	I	If 0, the player is entering peace mode. If 1, the player is entering war mode.
+// ARGN2	I	If 1 will trigger skill fail for the current skill.
+// ARGN3	I	Setting it to 1 will force a attacker's cleanup.
+// ARGN3=1
+IF (<FLAGS>&STATF_STONE)
+	RETURN 1
+ENDIF
+
+
+
+// args = charname
+// argo = npc
+// src/i = player
+ON=@RENAME
+IF (<ARGO.NPC>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Varlıkların isimlerini değiştirmezsiniz.
+	RETURN 1
+ENDIF
+
+
+//*****************************************
+// Spell Triggers
+//*****************************************
+
+
+ON=@DEATH
+REF1=<QVAL (<SRC.ATTACKER.LAST>)?<SRC.ATTACKER.LAST>:<SRC.ATTACKER.MAX>> // ÖLDÜREN
+SRC.SPEEDSET=0
+SRC.TARGETCLOSE
+IF (<SRC.FINDID.I_RUNE_INCOGNITO>)	
+	SRC.FINDID.I_RUNE_INCOGNITO.REMOVE	
+ENDIF
+IF (<SRC.FINDID.I_RUNE_POLYMORPH>)
+	SRC.FINDID.I_RUNE_POLYMORPH.REMOVE
+ENDIF
+IF (<REF1.ISVALID>) // öldüren varsa
+	IF (<REF1.ISPLAYER>)
+		LOCAL.DEATHBY <REF1.NAME>
+		
+	ELSEIF (<REF1.NPC>) && !(<REF1.OWNER>)
+		LOCAL.DEATHBY <REF1.NAME> [Sahipsiz]
+		
+	ELSEIF (<REF1.NPC>) && (<REF1.OWNER>)
+		LOCAL.DEATHBY <REF1.NAME> [Sahibi: <UID.<REF1.OWNER>.NAME>]
+		
+	ELSE
+		LOCAL.DEATHBY <REF1.NAME>
+	ENDIF
+
+	IF !(STRMATCH('0','<TAG0.DEATHFORM>'))
+		SERV.B @83,,1,1 <NAME>, <LOCAL.DEATHBY> tarafından <REF1.IsRegionNameDetail> bölgesinde <TAG0.DEATHFORM> öldürüldü.
+	ELSE
+		SERV.B @83,,1,1 <NAME>, <LOCAL.DEATHBY> tarafından <REF1.IsRegionNameDetail> bölgesinde öldürüldü.
+	ENDIF
+ENDIF
+
+ON=@ITEMDCLICK
+IF (<ACT.TOPOBJ.BASEID> == C_H_VENDOR) && (<ACT.TYPE>==T_CONTAINER)
+	ACT.OPEN
+	RETURN 1
+ENDIF
+
+[EOF]

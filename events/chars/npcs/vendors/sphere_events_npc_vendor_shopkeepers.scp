@@ -1,0 +1,60 @@
+
+[events e_generic_npc_vendor_shopkeepers]
+// ON=@CLICK
+// MESSAGE @058 <NAME> the <job>
+// RETURN 1
+
+ON=@DCLICK
+// sorgular buy speechin altinda mi olmali? buraya ekstra sorguya gerek var mi
+IF !(<SRC.ISGM>)
+	IF (<SRC.FLAGS>&STATF_DEAD) 
+		SRC.SYSMESSAGELOC <def.tcolor_red>,600027 // Olu durumdayken bu islemi yapamazsiniz.
+		RETURN 1
+	ELSEIF (<SRC.ISDIFF 4,<UID>>)
+		SRC.SYSMESSAGELOC <def.tcolor_red>,600018,<JOB> <NAME>
+		RETURN 1
+	ENDIF
+ENDIF
+REGION.TAG0.RESTOCKVENDORS 9000
+FACE <SRC>
+BUY
+RETURN 1
+
+
+
+// ON=@NPCACTWANDER
+// SERV.B NPCACTWANDER <baseid>
+// Func_NpcRestock
+
+
+
+
+[FUNCTION Func_NpcRestock]
+REF1=<FINDLAYER.LAYER_VENDOR_BUYS>
+// layer_vendor_stock   26 // Saticinin yeniden stoklayip oyunculara satacagi seyler
+// layer_vendor_extra   27 // Saticinin oyunculara yeniden satacagi ancak stoklari yenilenmeyen seyler. (Oyunculardan satin alinan)
+// layer_vendor_buys    28 // Saticinin oyunculardan satin alabilecegi ancak stokta bulundurmadigi seyler.
+// serv.b 1 <baseid>= <ref1.rescount> / <dTAG0.BuyList.Count>
+
+IF (<REF1.ISVALIDE> && <REF1.RESCOUNT>)
+	CLEARTAGS BuyList
+	
+	FOR 0 <EVAL <REF1.RESCOUNT>-1>
+		REF2=<REF1.FINDCONT.<DLOCAL._FOR>>
+		IF (<REF2.ISVALIDE>)
+			TAG0.BuyList.Count ++
+			TAG0.BuyList.<dTAG0.BuyList.Count> <REF2.BASEID>
+		ENDIF
+	ENDFOR
+	
+	REF1.EMPTY
+	
+
+ENDIF
+
+// serv.b 2 <baseid>= <ref1.rescount> / <dTAG0.BuyList.Count>
+
+
+
+
+[EOF]

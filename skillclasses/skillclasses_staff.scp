@@ -1,0 +1,155 @@
+//****************************************************************************
+// SphereServer by: SphereServer development team and Menasoft.
+// www.sphereserver.net
+//****************************************************************************
+VERSION=X1
+
+[SKILLCLASS 2]
+// player class.
+// max skills for players of this skill class.
+DEFNAME=Class_Staff
+NAME=Staff
+// EVENTS=e_ClassUndeclared
+STATSUM=225
+SKILLSUM=10000.0
+STR=100
+INT=100
+DEX=100
+Alchemy=100.0
+Anatomy=100.0
+AnimalLore=100.0
+ItemId=100.0
+ArmsLore=100.0
+Parrying=100.0
+Begging=100.0
+Blacksmithing=100.0
+Bowcraft=100.0
+Peacemaking=100.0
+Camping=100.0
+Carpentry=100.0
+Cartography=100.0
+Cooking=100.0
+DetectingHidden=100.0
+Enticement=100.0
+EvaluatingIntel=100.0
+Healing=100.0
+Fishing=100.0
+Forensics=100.0
+Herding=100.0
+Hiding=100.0
+Provocation=100.0
+Inscription=100.0
+LockPicking=100.0
+Magery=100.0
+MagicResistance=100.0
+Tactics=100.0
+Snooping=100.0
+Musicianship=100.0
+Poisoning=100.0
+Archery=100.0
+SpiritSpeak=100.0
+Stealing=100.0
+Tailoring=100.0
+Taming=100.0
+TasteId=100.0
+Tinkering=100.0
+Tracking=100.0
+Veterinary=100.0
+Swordsmanship=100.0
+Macefighting=100.0
+Fencing=100.0
+Wrestling=100.0
+Lumberjacking=100.0
+Mining=100.0
+Meditation=100.0
+Stealth=100.0
+RemoveTrap=100.0
+Necromancy=100.0
+Focus=100.0
+Chivalry=100.0
+Bushido=100.0
+Ninjitsu=100.0
+Spellweaving=100.0
+Mysticism=100.0
+Imbuing=100.0
+Throwing=100.0
+
+ON=@LOGOUT
+SRC.Func_Char_Default_Set
+// SRC.TITLE <SERV.NAME> Staff
+
+
+ON=@LOGIN
+SRC.Func_Char_Default_Set
+
+
+ON=@ItemClick
+IF (<ACT.ATTR>&ATTR_STATIC)
+	ACT.MESSAGE @0,3 (static)
+ENDIF
+
+// ON=@click
+
+
+ON=@DEATH
+IF (<ISGM>)
+	HITS=<STR>
+	RESURRECT 1
+	RETURN 1
+ENDIF
+
+ON=@ITEMCREATE
+REF1=<ACT>
+IF (<SRC.ACCOUNT.PLEVEL> > 2)
+	IF (<REF1.ISVALID>) && !((<REF1.CAN>&can_i_pile) || (<REF1.TYPE> == T_NORMAL) || (<REF1.ISEVENT.T_ROBE_GM>) || (<REF1.TYPE> == T_WALL) || (<REF1.TYPE> == T_SCRIPT) || (STRMATCH(*T_EQ*,'<REF1.TYPE>')) || (STRMATCH(*Missing*,'<REF1.NAME>')))
+		REF1.TAG0.CREAT <SRC>
+		SRC.LOGGER Esya olusturdu : <REF1.NAME> (<REF1>)
+	ENDIF
+ENDIF
+
+ON=@USEREXTCMD
+IF (<DARGN1> == 207)
+	IF (<ARGV0> == 1)
+		SRC.PG
+	ELSEIF (<ARGV0> == 2)
+		SRC.HAZIRLA
+	ENDIF
+ENDIF
+// Gm Char Worldmap üzerinde ALT + mouse click yaparsa tıkladığı yere gider.
+
+IF (<DARGN1> == 211)
+	IF (<ACCOUNT.PLEVEL> > 1)
+		// SERV.B <argv0>,<argv1>,<argv2>,<argv3>
+		SERV.NEWNPC C_MAN_INVISIBLE
+		NEW.FLAGS |= STATF_INVISIBLE
+		REF1=<NEW>
+		NEW.P <argv0>,<argv1>,<argv2>,<argv3>
+
+		NEW.FIX
+		
+		SRC.GO <REF1.P.X>,<REF1.P.Y>,<REF1.P.Z>,<REF1.P.M>
+		SRC.MOVENEAR <REF1> 1
+		SRC.SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc>, <ref1.p.x>-<ref1.p.y>-<ref1.p.z>-<ref1.p.m>
+		SRC.FIX
+		
+		NEW.REMOVE
+	ENDIF
+ENDIF
+
+ON=@SPELLEFFECT
+IF (<ARGN> == 20)
+	SAYU * büyüyü geri çevirir *
+	IF (<FINDID.I_RUNE_POISON>)
+		FINDID.I_RUNE_POISON.REMOVE
+	ENDIF
+	IF (<FINDID.I_RUNE_POISON_FIELD>)
+		FINDID.I_RUNE_POISON_FIELD.REMOVE
+	ENDIF
+	EFFECT 3,0376A,1,30,1
+	SOUND SND_SPELL_CURE
+	SRC.POISON <FVAL <ARGN2>>
+RETURN 1
+ENDIF
+
+
+[EOF]
