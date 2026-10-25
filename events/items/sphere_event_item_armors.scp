@@ -1,0 +1,22 @@
+VERSION=0.56T
+
+[COMMENT]
+Bu event t_armor, t_armor_leather ve t_shield türündeki eşyalara verilir.
+t_jewelry ve t_clothing harictir.
+
+
+[TYPEDEF ei_generic_item_armors]
+ON=@EQUIPTEST
+IF (<SRC.FINDID.I_RUNE_PROTECTION>)
+	SRC.SYSMESSAGELOC <def.tcolor_grey>,<def.empty_cliloc2>, Protection etkisi silindi.
+	SRC.FINDID.I_RUNE_PROTECTION.REMOVE
+ENDIF
+IF (<SRC.FINDID.I_RUNE_REACTIVE_ARMOR>)
+	SRC.SYSMESSAGELOC <def.tcolor_grey>,<def.empty_cliloc2>, Reactive Armor etkisi silindi.
+	SRC.FINDID.I_RUNE_REACTIVE_ARMOR.REMOVE
+ENDIF
+
+
+
+
+[eof]

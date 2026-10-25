@@ -1,0 +1,594 @@
+
+
+[COMMENT]
+
+
+
+[DEFNAME AdminPanelOptions]
+Admin.ShowInvisHigherPlevel	0	// Viewer should be able to see higher plevels that are invisible (0:disabled / 1:enabled)
+Admin.MaxAccountNotes		40	// Max number of notes that can be write for each account
+Admin.ReqPlevelSearch		6	// Plevel required to use search button
+Admin.PageLength 15
+
+
+[DEFNAME AdminSearchType]
+Admin.SearchType.1	ACCOUNT
+Admin.SearchType.2	NAME
+Admin.SearchType.3	ACCOUNT.LASTIP
+Admin.SearchType.4	REGION.NAME
+Admin.SearchType.5	ACCOUNT.TAG0.CLIENT_MACID
+Admin.SearchType.6	ACCOUNT.PLEVEL
+
+
+
+[DEFNAME PlevelNames]
+PlevelName.0	"Guest"
+PlevelName.1	"Player"
+PlevelName.2	"Counselor"
+PlevelName.3	"Seer"
+PlevelName.4	"Game Master"
+PlevelName.5	"Developer"
+PlevelName.6	"Admin"
+PlevelName.7	"Owner"
+
+[DEFNAME ResdispNames]
+ResdispName.0	"None"
+ResdispName.1	"The 2nd Age"
+ResdispName.2	"Lord Blackthorn's Revenge"
+ResdispName.3	"Age of Shadows"
+ResdispName.4	"Samurai Empire"
+ResdispName.5	"Mondain's Legacy"
+ResdispName.6	"Kingdom Reborn"
+ResdispName.7	"Stygian Abyss"
+ResdispName.8	"High Seas"
+ResdispName.9	"Time of Legends"
+
+
+[FUNCTION admin]
+IF (<ACCOUNT.PLEVEL> > 2)
+	DIALOGCLOSE d_admin
+	
+	IF (<GETREFTYPE> == <DEF.tref_serv>)
+		return
+		// ELIF (<ISDIALOGOPEN.d_admin>) || (<ISDIALOGOPEN.d_admin_search>) || (<ISDIALOGOPEN.d_admin_player_tweak>) || (<ISDIALOGOPEN.d_admin_player_notes>) || (<ISDIALOGOPEN.d_charprop1>)
+	// ELIF (<ISDIALOGOPEN.d_admin_search>) || (<ISDIALOGOPEN.d_admin_player_tweak>) || (<ISDIALOGOPEN.d_admin_player_notes>) || (<ISDIALOGOPEN.d_charprop1>)
+		// return
+	ENDIF
+	
+	SERV.ALLCLIENTS admin_getplayer
+	CTAG.Dialog.Admin.Page=1
+	CTAG.Dialog.Admin.MaxPage=<eval (((<CTAG0.Dialog.Admin.Clients>-1)/<ddef.Admin.PageLength>)+1)>
+	DIALOG d_admin
+ENDIF
+
+[FUNCTION admin_getplayer]
+// Server client list changes frequently, so to avoid the dialog get out of sync, store an static client list using CTAGs
+IF ((<SRC.ACCOUNT.PLEVEL> < <ACCOUNT.PLEVEL>) && (<FLAGS> & statf_insubstantial) && !(<DEF0.Admin.ShowInvisHigherPlevel>))
+ return
+ENDIF
+SRC.CTAG0.Dialog.Admin.Clients ++
+SRC.CTAG0.Dialog.Admin.C<dSRC.CTAG0.Dialog.Admin.Clients>=<UID>
+
+
+
+
+[DIALOG d_admin]
+<def.dsp>
+
+IF (<ACCOUNT.PLEVEL> > 2)
+
+	PAGE 0
+
+	RESIZE 0,0,960,400,Admin Panel <QVAL (<CTAG0.Dialog.Admin.Search>)? Arama sonucu <dCTAG0.Dialog.Admin.Clients> kayit : <serv.clients> Clients>
+
+	IF (<ACCOUNT.PLEVEL> >= <DEF0.Admin.ReqPlevelSearch>)
+		IF (<CTAG0.Dialog.Admin.Search>)
+			DTEXT 50 360 1000 Temizle
+			BUTTON 20 360 4017 4019 1 0 4
+		ELSE
+			DTEXT 50 360 1000 Ara
+			BUTTON 20 360 4027 4026 1 0 3
+		ENDIF
+	ENDIF
+
+	DORIGIN 20 45
+	DHTMLGUMP +0 +0 170 25 1 0 <DEF.CENTER>HESAP
+	DHTMLGUMP +170 +0 120 25 1 0 <DEF.CENTER>KARAKTER
+	DHTMLGUMP +290 +0 130 25 1 0 <DEF.CENTER>IP
+	DHTMLGUMP +420 +0 150 25 1 0 <DEF.CENTER>LOKASYON
+	DHTMLGUMP +570 +0 150 25 1 0 <DEF.CENTER>SKILL TOTAL
+	DHTMLGUMP +720 +0 100 25 1 0 <DEF.CENTER>STAT TOTAL
+	DHTMLGUMP +820 +0 100 25 1 0 <DEF.CENTER>AR/MODAR
+	
+	DORIGIN 760 360
+	DHTMLGUMP +25 +0 125 25 1 0 <DEF.CENTER>Sayfa: <dCTAG0.Dialog.Admin.Page> / <dCTAG0.Dialog.Admin.MaxPage><DEF.CENTERE><DEF.BFONTE> 
+	IF (<CTAG0.Dialog.Admin.Page> > 1)
+		BUTTON +0 +0 015a1 015a3 1 0 1
+	ENDIF
+	IF (<CTAG0.Dialog.Admin.Page> < <CTAG0.Dialog.Admin.MaxPage>)
+		BUTTON +155 +0 015a4 015a6 1 0 2
+	ENDIF
+	
+	DORIGIN 20 45
+	PAGE 1
+	
+	LOCAL.Page=1
+	LOCAL.Y=75
+	FOR <eval ((<CTAG0.Dialog.Admin.Page> - 1) * <ddef.Admin.PageLength>) + 1> <eval (<CTAG0.Dialog.Admin.Page> * <ddef.Admin.PageLength>)>
+		REF1=<CTAG0.Dialog.Admin.C<dLOCAL._FOR>>
+		IF (<REF1>) && (<REF1.ISPLAYER>)	
+			LOCAL.HUE_ACCOUNT=<QVAL (<REF1.ACCOUNT.PLEVEL> == 1)? 1000 : 044>	
+			LOCAL.HUE_CHAR=<QVAL (<REF1.FLAGS> & STATF_INSUBSTANTIAL)? 997 : <DEF.NOTO.<REF1.NOTOGETFLAG>> >
+			
+			IF (<REF1.ISONLINE>)
+				IF (<REF1.REGION.FLAGS>&REGION_FLAG_SAFE)
+					LOCAL.HUE_REGION=044
+				ELSEIF (<REF1.REGION.FLAGS>&REGION_FLAG_UNDERGROUND)
+					LOCAL.HUE_REGION=947
+				ELSE
+					LOCAL.HUE_REGION=38
+				ENDIF
+			ELSE
+				LOCAL.HUE_REGION=38
+			ENDIF
+			
+			LOCAL.LENGTH_CHAR=<EVAL STRLEN(<REF1.NAME>)> 
+			BUTTON +0 <LOCAL.Y> 4006 4007 1 0 <eval 10+<LOCAL._FOR>>
+			DCROPPEDTEXT +30 <LOCAL.Y> 120 20 <LOCAL.HUE_ACCOUNT> <DLOCAL._FOR>.
+			
+			DTEXTENTRYLIMITED +60 <LOCAL.Y> 120 20 <LOCAL.HUE_ACCOUNT> 0 <EVAL <LOCAL.LENGTH_CHAR>+10> <QVAL (<REF1.ACCOUNT.PLEVEL> == 1) ? : (+ [<REF1.ACCOUNT.PLEVEL>])> <REF1.ACCOUNT>
+			GUMPPIC +155 <EVAL <LOCAL.Y> + 3> <QVAL (<REF1.ISONLINE>)?118:117>
+			DTEXTENTRYLIMITED +170 <LOCAL.Y> 300 20 <LOCAL.HUE_CHAR> 0 <LOCAL.LENGTH_CHAR> <REF1.NAME>
+			
+			IF (<REF1> != <SRC>) // KENDİ İP ADRESİNİ GÖSTERME
+				DTEXTENTRYLIMITED +290 <LOCAL.Y> 120 20 0 0 100 <REF1.ACCOUNT.LASTIP>
+			ENDIF
+			
+			IF (<REF1.REGION>)
+				DCROPPEDTEXT +420 <LOCAL.Y> 140 20 <LOCAL.HUE_REGION> <REF1.REGION.NAME>
+			ELSE
+				IF !(<REF1.ISONLINE>)
+					DCROPPEDTEXT +420 <LOCAL.Y> 140 20 38 Offline
+				ENDIF
+			ENDIF
+			DTEXTENTRYLIMITED +570 <LOCAL.Y> 135 20 <qval (<REF1.SKILLCLASS.SKILLSUM> <= <REF1.SKILLTOTAL>)?38:0> 0 80 <FVAL <REF1.SKILLTOTAL>> / <FVAL <REF1.SKILLCLASS.SKILLSUM>>
+			LOCAL.MODSTATTOTAL = <EVAL <REF1.MODSTR>+<REF1.MODDEX>>	
+			DCROPPEDTEXT +720 <LOCAL.Y> 150 20 <QVAL (<REF1.STATTOTAL> <= <REF1.SKILLCLASS.STATSUM>)?0:38> <REF1.StatTotal> <QVAL (<dLOCAL.MODSTATTOTAL>)?[+<DLOCAL.MODSTATTOTAL>]:> / <REF1.SKILLCLASS.STATSUM>
+			DCROPPEDTEXT +820 <LOCAL.Y> 150 20 0 <REF1.AR> <QVAL (<REF1.MODAR>)?[+<REF1.MODAR>]:>
+			LOCAL.Y += 20	
+		ENDIF
+	ENDFOR
+ENDIF
+
+
+[DIALOG d_admin BUTTON]
+ON=0
+CLEARCTAGS Dialog.Admin
+
+ON=1
+IF (<CTAG0.Dialog.Admin.Page> > 1)
+ CTAG0.Dialog.Admin.Page --
+ENDIF
+DIALOG d_admin
+
+ON=2
+IF (<CTAG0.Dialog.Admin.Page> < <CTAG0.Dialog.Admin.MaxPage>)
+ CTAG0.Dialog.Admin.Page ++
+ENDIF
+DIALOG d_admin
+
+ON=3
+IF (<ACCOUNT.PLEVEL> >= <DEF0.Admin.ReqPlevelSearch>)
+ DIALOG d_admin_search
+ENDIF
+
+ON=4
+CLEARCTAGS Dialog.Admin
+admin
+
+ON=10 65535
+UID.<CTAG.Dialog.Admin.C<eval <ARGN>-10>>.DIALOG d_admin_player_tweak
+
+
+
+
+[DIALOG d_admin_search]
+<DEF.DSP>
+
+RESIZE 0,0,420,245,Admin Search
+DORIGIN 20 50
+
+BUTTON +0 +0 4006 4007 1 0 1
+DTEXT +30 +0 1000 Hesap
+RESIZEPIC +110 +0 3000 150 25
+DTEXTENTRYLIMITED +115 +5 100 25 0 1 20 -
+
+BUTTON +0 +30 4006 4007 1 0 2
+DTEXT +30 +30 1000 Karakter
+RESIZEPIC +110 +30 3000 150 25
+DTEXTENTRYLIMITED +115 +35 100 25 0 2 20 -
+
+BUTTON +0 +60 4006 4007 1 0 3
+DTEXT +30 +60 1000 IP
+RESIZEPIC +110 +60 3000 150 25
+DTEXTENTRYLIMITED +115 +65 100 25 0 3 20 -
+
+BUTTON +0 +90 4006 4007 1 0 4
+DTEXT +30 +90 1000 Lokasyon
+RESIZEPIC +110 +90 3000 150 25
+DTEXTENTRYLIMITED +115 +95 100 25 0 4 20 -
+
+// BUTTON +0 +120 4006 4007 1 0 5
+// DTEXT +30 +120 1000 PC
+// RESIZEPIC +110 +120 3000 150 25
+// DTEXTENTRYLIMITED +115 +125 100 25 0 5 20 -
+
+BUTTON +0 +150 4006 4007 1 0 6
+DTEXT +30 +150 1000 Plevel
+RESIZEPIC +110 +150 3000 150 25
+DTEXTENTRYLIMITED +115 +155 100 25 0 6 20 -
+
+DORIGIN 300 50
+
+DTEXT +0 +0 193 Filtere
+RADIO +0 +20 210 211 0 1
+DTEXT +25 +20 38 Çevrimiçi
+
+RADIO +0 +40 210 211 0 2
+DTEXT +25 +40 044 Çevrimdışı
+
+RADIO +0 +60 210 211 1 3
+DTEXT +25 +60 1000 Her ikisi
+
+
+[DIALOG d_admin_search BUTTON]
+ON=0
+DIALOG d_admin
+
+ON=1 6
+IF (<ACCOUNT.PLEVEL> >= <DEF0.Admin.ReqPlevelSearch>)
+	CLEARCTAGS Dialog.Admin
+	IF (<ARGCHK[1]>)
+		FOR 0 <eval <SERV.CLIENTS>-1>
+		REF1=<SERV.CLIENT.<LOCAL._FOR>>
+			IF (<REF1>)
+				IF (<ARGN> != 6)
+					IF STRMATCH(*<ARGTXT[<ARGN>]>*,'<REF1.<DEF0.Admin.SearchType.<ARGN>>>')
+						REF1.admin_getplayer
+					ENDIF
+				ELSE
+					IF (<REF1.<DEF0.Admin.SearchType.<ARGN>>> >= <ARGTXT[<ARGN>]>)
+						REF1.admin_getplayer
+					ENDIF
+				ENDIF
+			ENDIF
+		ENDFOR
+  
+	ELSE
+		FOR 0 <eval <SERV.ACCOUNTS>-1>
+			FOR n 0 <eval <SERV.ACCOUNT.<LOCAL._FOR>.CHARS>-1>
+			REF2=<SERV.ACCOUNT.<LOCAL._FOR>.CHAR.<LOCAL.N>>
+				IF (<REF2>)
+					IF (((<ARGCHK[2]>) && !(<REF2.ISONLINE>)) || (<ARGCHK[3]>))
+						IF (<ARGN> != 6)
+							IF STRMATCH(*<ARGTXT[<ARGN>]>*,'<REF2.<DEF0.Admin.SearchType.<ARGN>>>')
+								REF2.admin_getplayer
+							ENDIF
+						ELSE
+							IF (<REF2.<DEF0.Admin.SearchType.<ARGN>>> >= <ARGTXT[<ARGN>]>)
+								REF2.admin_getplayer
+							ENDIF
+						ENDIF
+					ENDIF
+				ENDIF
+			ENDFOR
+		ENDFOR
+	ENDIF
+	CTAG.Dialog.Admin.Page=1
+	CTAG.Dialog.Admin.MaxPage=<eval (((<CTAG0.Dialog.Admin.Clients>-1)/15)+1)>
+	CTAG.Dialog.Admin.Search=1
+ENDIF
+
+DIALOG d_admin
+
+
+
+[FUNCTION SA]
+IF !(<ISCHAR>)
+RETURN 1
+ENDIF
+CLEARCTAGS Dialog.Admin
+VAR0.ONLINESTAFFS=0
+FOR 0 <eval <SERV.ACCOUNTS>-1>
+	FOR n 0 <eval <SERV.ACCOUNT.<LOCAL._FOR>.CHARS>-1>
+	REF1=<SERV.ACCOUNT.<LOCAL._FOR>.CHAR.<LOCAL.N>>
+		IF (<REF1.ISVALIDE>) && (<REF1.ACCOUNT.PLEVEL> > 1)
+			REF1.admin_getplayer
+			IF (<REF1.ISONLINE>)
+				VAR0.ONLINESTAFFS ++
+			ENDIF
+		ENDIF
+	ENDFOR
+ENDFOR
+CTAG.Dialog.Admin.Page=1
+CTAG.Dialog.Admin.MaxPage=<eval (((<CTAG0.Dialog.Admin.Clients>-1)/15)+1)>
+CTAG.Dialog.Admin.Search=1
+DIALOG d_admin
+
+[DIALOG d_admin_player_tweak]
+<DEF.DSP>
+
+RESIZE 0,0,470,425,Admin Info
+
+PAGE 0
+DORIGIN 20 50
+
+BUTTON +0 +0 4006 4007 0 0 1
+DTEXT +30 +0 0 Anasayfa
+
+BUTTON +0 *20 4006 4007 1 0 1
+DTEXT +30 *0 0 Notlar
+
+BUTTON +0 *20 4006 4007 1 0 2
+DTEXT +30 *0 0 Karakter
+
+BUTTON +0 *20 4006 4007 1 0 3
+DTEXT +30 *0 0 Takip
+
+BUTTON +0 *20 4006 4007 1 0 4
+DTEXT +30 *0 0 Git
+
+BUTTON +0 *20 4006 4007 1 0 5
+DTEXT +30 *0 0 Git (Invis)
+
+BUTTON +0 *20 4006 4007 1 0 6
+DTEXT +30 *0 0 Getir
+
+BUTTON +0 *20 4006 4007 1 0 7
+DTEXT +30 *0 0 Getir (Kafesle)
+
+IF (<SRC.ACCOUNT.PLEVEL> >= 7)
+	BUTTON +0 *20 4005 4006 1 0 8
+	DTEXT +30 *0 <QVAL (<ACCOUNT.BLOCK>)? 1000 Unban : 137 Ban> Account
+	
+	BUTTON +0 *20 4003 4004 1 0 9
+	DTEXT +30 *0 137 Disconnect
+	
+	BUTTON +0 *20 4005 4006 1 0 10
+	DTEXT +30 *0 <QVAL (<ACCOUNT.JAIL>)? 1000 Affet : 137 Jail>
+	
+	BUTTON +0 *20 4005 4006 1 0 11
+	DTEXT +30 *0 <QVAL (<FLAGS> & statf_dead)? 1000 Resurrect : 137 Kill>
+ENDIF
+
+DORIGIN 20 350
+IF (<SRC.ACCOUNT.PLEVEL> < 7)
+	IF (<ACCOUNT.PLEVEL> < 7)
+		DHTMLGUMP +0 +0 200 25 1 0 Hesap: <ACCOUNT>
+	ELSE
+		DHTMLGUMP +0 +0 200 25 1 0 Hesap: Gizli
+	ENDIF
+ELSE
+	DHTMLGUMP +0 +0 200 25 1 0 Hesap: Gizli
+ENDIF
+
+DHTMLGUMP +0 +30 200 25 1 0 Durum: <QVAL (<ISONLINE>)? <DEF.BFONT_GREEN> Çevrimiçi : <DEF.BFONT_RED> Çevrimdışı>
+
+
+PAGE 1
+DORIGIN 230 50
+IF (<UID> != <SRC>)
+	IF (<ACCOUNT.PLEVEL> < 7)
+		DHTMLGUMP +0 +0 220 25 1 0 İlk IP: <ACCOUNT.FIRSTIP>
+	ELSE
+		DHTMLGUMP +0 +0 220 25 1 0 İlk IP: Gizli
+	ENDIF
+ELSE
+	DHTMLGUMP +0 +0 220 25 1 0 İlk IP: Gizli
+ENDIF
+
+IF (<UID> != <SRC>)
+	IF (<ACCOUNT.PLEVEL> < 7)
+		DHTMLGUMP +0 +30 220 25 1 0 Son IP: <ACCOUNT.LASTIP>
+	ELSE
+		DHTMLGUMP +0 +30 220 25 1 0 Son IP: Gizli
+	ENDIF
+ELSE
+	DHTMLGUMP +0 +30 220 25 1 0 Son IP: Gizli
+ENDIF
+
+DHTMLGUMP +0 +60 220 25 1 0 Hesap Seviyesi: <ACCOUNT.PLEVEL> (<DEF0.PlevelName.<dACCOUNT.PLEVEL>>)
+DHTMLGUMP +0 +90 220 25 1 0 İlk giriş: <ACCOUNT.FIRSTCONNECTDATE>
+DHTMLGUMP +0 +120 220 25 1 0 Son giriş: <ACCOUNT.LASTCONNECTDATE>
+DHTMLGUMP +0 +150 220 25 1 0 Connected time: <FormatMinutes <ACCOUNT.TOTALCONNECTTIME>>
+DHTMLGUMP +0 +180 220 25 1 0 Client Version: <QVAL (<ISONLINE>)?<CLIVER> <REPORTEDCLIVER> : Offline> 
+DHTMLGUMP +0 +210 220 25 1 0 UO Version: <ACCOUNT.RESDISP> (<DEF0.ResdispName.<dACCOUNT.RESDISP>>)
+DHTMLGUMP +0 +240 220 25 1 0 Dil: <ACCOUNT.LANG>
+DHTMLGUMP +0 +270 220 25 1 0 Sohbet Adı: <ACCOUNT.CHATNAME>
+
+DHTMLGUMP +0 +300 220 25 1 0 Karakter sayısı: <ACCOUNT.CHARS>
+BUTTON +190 +300 4005 4007 0 2 2
+
+
+PAGE 2
+DORIGIN 230 50
+IF (<ACCOUNT.CHARS> > 0)
+	FOR c 0 <ACCOUNT.CHARS>
+		REF99=<ACCOUNT.CHAR.<DLOCAL.c>.UID>
+		DTEXT +30 <EVAL (<DLOCAL._FOR>*20)+60> <DEF.NOTO.<REF99.NOTOGETFLAG>> <REF99.NAME>
+		BUTTON +0 <EVAL (<DLOCAL._FOR>*20)+60> 4005 4007 1 0 <EVAL <DLOCAL._FOR>+100>
+	ENDFOR
+ELSE
+	DTEXT +0 +0 38 Bu hesapta karakter yok.
+ENDIF
+
+
+[DIALOG D_ADMIN_PLAYER_TWEAK BUTTON]
+ON=0
+SRC.DIALOG d_admin
+
+ON=1
+DIALOG d_admin_player_notes <eval 1+((<ACCOUNT.TAG0.NumNotes>-1)/4)>
+
+ON=2
+DIALOG d_charprop1
+
+ON=3
+IF (<SRC> != <UID>)
+	SRC.FOLLOW <UID>
+ENDIF
+DIALOG d_admin_player_tweak
+
+ON=4
+SRC.GO <P>
+DIALOG d_admin_player_tweak
+
+ON=5
+IF !(<FLAGS> & statf_insubstantial)
+	SRC.INVIS 1
+ENDIF
+SRC.GO <P>
+DIALOG d_admin_player_tweak
+
+ON=6
+GO <SRC.P>
+DIALOG d_admin_player_tweak
+
+ON=7
+SUMMONCAGE
+DIALOG d_admin_player_tweak
+
+// Block
+ON=8
+IF (<SRC.ACCOUNT.PLEVEL> <= <ACCOUNT.PLEVEL>)
+	SRC.SYSMESSAGELOC <def.tcolor_grey>,<def.empty_cliloc2>, <DEFMSG.msg_acc_priv>
+ELSE
+	ACCOUNT.BLOCK <QVAL (<ACCOUNT.BLOCK>)? 0:1>
+	ARGS="A'<ACCOUNT>' was <QVAL (<ACCOUNT.BLOCK>)? banned:unbanned> by '<SRC.NAME>'"
+	SRC.SYSMESSAGELOC <def.tcolor_grey>,<def.empty_cliloc2>, <ARGS>
+	SRC.Logger <ARGS>
+ENDIF
+DIALOG d_admin_player_tweak
+
+// Disconnect
+ON=9
+LOGOUT
+TIMERF 1,TRYSRC <SRC> DIALOG d_admin_player_tweak
+
+// Jail
+ON=10
+//IF (<ACCOUNT.JAIL>)
+ //FORGIVE
+//ELSE
+ //JAIL
+//ENDIF
+//ARGS="P'<NAME>' was <QVAL (<ACCOUNT.JAIL>)? jailed:forgiven> by '<SRC.NAME>'"
+//SRC.SYSMESSAGELOC <def.tcolor_grey>,<def.empty_cliloc2>, <ARGS>
+//SRC.LOGGER <ARGS>
+DIALOG d_admin_player_tweak
+
+// Kill
+ON=11
+IF (<FLAGS> & statf_dead)
+	RESURRECT 1
+ELSE
+	KILL
+ENDIF
+TIMERF 1,TRYSRC <SRC> DIALOG d_admin_player_tweak
+
+
+// Karakterler
+ON=100 107
+DIALOG d_admin_player_tweak , 2
+
+
+REF1=<ACCOUNT.CHAR.<EVAL <DARGN>-100>.UID>
+IF (<REF1.ISVALIDE>)
+	REF1.DIALOG d_charprop1
+ELSE
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Oyuncu bulunamadı!
+ENDIF
+
+
+
+
+[DIALOG d_admin_player_notes]
+<DEF.DSP>
+
+page 0
+RESIZE 0,0,460,440,Admin Panel: Account '<ACCOUNT>' Notlar
+
+DORIGIN 20 330
+IF (<ACCOUNT.TAG0.NumNotes> >= <DEF0.Admin.MaxAccountNotes>)
+	DHTMLGUMP +0 +0 420 90 1 0 <def.br><DEF.CENTER>En fazla <dDEF0.Admin.MaxAccountNotes> not ekleyebilirsiniz.<DEF.CENTERE>
+ELSE
+	BUTTON +0 +70 4030 4031 1 0 1
+	DTEXT +30 +70 044 Not ekle
+	
+	RESIZEPIC +0 +0 3000 420 65
+	DTEXTENTRY +5 +5 405 55 0 0
+ENDIF
+
+PAGE 1
+LOCAL.PAGE=1
+DHTMLGUMP 50 300 350 25 1 0 <DEF.CENTER>Sayfa <dLOCAL.Page> / <eval 1+((<ACCOUNT.TAG0.NumNotes>-1)/4)><DEF.CENTERE><DEF.BFONTE>
+
+IF (<ACCOUNT.TAG0.NumNotes>)
+	FOR 0 <eval <ACCOUNT.TAG0.NumNotes>-1>
+		IF (<LOCAL._FOR> > 0) && !(<EVAL <LOCAL._FOR>%4>)
+			LOCAL.PAGE ++
+			BUTTON 400 300 4005 4006 0 <LOCAL.Page> 0
+			PAGE <LOCAL.Page>
+			BUTTON 20 300 4014 4015 0 <eval <LOCAL.Page>-1> 0
+			DHTMLGUMP 50 300 350 25 1 0 <DEF.BFONT_WHITE><DEF.CENTER>Sayfa <dLOCAL.Page> / <eval 1+((<ACCOUNT.TAG0.NumNotes>-1)/4)><DEF.CENTERE><DEF.BFONTE>
+		ENDIF
+	DHTMLGUMP 20 <eval 50+((<LOCAL._FOR>%4)*60)> 415 60 1 1 -    [<ACCOUNT.TAG.Note_<eval <LOCAL._FOR>+1>_Time>] <DEF.U><ACCOUNT.TAG.Note_<eval <LOCAL._FOR>+1>_By><DEF.UE>: <ACCOUNT.TAG.Note_<eval <LOCAL._FOR>+1>>
+	BUTTON 25 <eval 55+((<LOCAL._FOR>%4)*60)> 4017 4019 1 0 <eval <LOCAL._FOR>+10>
+	ENDFOR
+ENDIF
+
+[DIALOG d_admin_player_notes BUTTON]
+ON=0
+DIALOG d_admin_player_tweak
+
+ON=1
+IF (<ACCOUNT.TAG0.NumNotes> < <DEF0.Admin.MaxAccountNotes>)
+	IF (<SRC.ACCOUNT.PLEVEL> < <ACCOUNT.PLEVEL>)
+		SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, <DEFMSG.msg_acc_priv>
+	ELIF !(<isempty <ARGTXT[0]>>)
+		ACCOUNT.TAG0.NumNotes ++
+		ACCOUNT.TAG.Note_<dACCOUNT.TAG0.NumNotes>="<ARGTXT[0]>"
+		ACCOUNT.TAG.Note_<dACCOUNT.TAG0.NumNotes>_By=<SRC.NAME>
+		ACCOUNT.TAG.Note_<dACCOUNT.TAG0.NumNotes>_Time=<SERV.RTIME>
+		SRC.SYSMESSAGELOC <def.tcolor_green>,<def.empty_cliloc2>, Not başarıyla eklendi.
+	ENDIF
+ENDIF
+DIALOGCLOSE d_admin_player_notes 
+DIALOG d_admin_player_notes <eval 1+((<ACCOUNT.TAG0.NumNotes>-1)/4)>
+
+
+ON=10 65535
+IF (<SRC.ACCOUNT.PLEVEL> < <ACCOUNT.PLEVEL>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, <DEFMSG.msg_acc_priv>
+ELSE
+	LOCAL.Note=<eval <ARGN>-9>
+	ACCOUNT.TAG.Note_<dLOCAL.Note>=
+	ACCOUNT.TAG.Note_<dLOCAL.Note>_By=
+	ACCOUNT.TAG.Note_<dLOCAL.Note>_Time=
+		FOR <LOCAL.Note> <ACCOUNT.TAG0.NumNotes>
+			ACCOUNT.TAG.Note_<dLOCAL._FOR>="<ACCOUNT.TAG.Note_<eval <LOCAL._FOR>+1>>"
+			ACCOUNT.TAG.Note_<dLOCAL._FOR>_By=<ACCOUNT.TAG.Note_<eval <LOCAL._FOR>+1>_By>
+			ACCOUNT.TAG.Note_<dLOCAL._FOR>_Time=<ACCOUNT.TAG.Note_<eval <LOCAL._FOR>+1>_Time>
+		ENDFOR
+	ACCOUNT.TAG0.NumNotes --
+	SYSMESSAGELOC <def.tcolor_green>,<def.empty_cliloc2>, Note removed
+ENDIF
+
+LOCAL.Page=<eval 1+((<LOCAL.Note>-1)/4)>
+
+IF (<isempty <ACCOUNT.TAG.Note_<eval (<LOCAL.Page>*4)-3>>>)
+	LOCAL.Page --
+ENDIF
+DIALOG d_admin_player_notes <LOCAL.Page>
+
+[eof]

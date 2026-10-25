@@ -1,0 +1,11 @@
+VERSION=0.56T
+
+[TYPEDEF ei_generic_item_weapons]
+On=@Click
+IF (<ATTR>&ATTR_IDENTIFIED)
+	COLOR=<SERV.ITEMDEF.<BASEID>.RESDISPDNHUE>
+ENDIF
+
+
+
+[eof]

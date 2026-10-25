@@ -1,0 +1,148 @@
+VERSION=0.56T
+
+
+[COMMENT]
+FLAGS
+noclose                             // Dialog can't be closed with right click
+nodispose                           // Dialog can't be closed with closegump macro
+nomove                              // Dialog can't be moved
+
+GENERAL
+page id                             // Set dialog page id to switch between pages
+dorigin x,y                         // Set X,Y origin point to be able to use relative X,Y values on dialog objects (eg: +10 -5 will turn into originX+10, originY-5)
+tooltip clilocid                    // Add mouse-over tooltip on dialog object (required client >= 4.0.0)
+
+BACKGROUNDS
+resizepic x,y,gump,width,height     // Add resized background gump
+checkertrans x,y,width,height       // Add transparency layer (required client >= 4.0.0)
+
+PICTURES
+gumppic x,y,gump,hue                            // Add gump picture (required client >= 3.0.0 to use 'hue' value)
+gumppictiled x,y,width,height,gump              // Add repeated gump pictures to fill the given area
+picinpic x,y,gump,spritex,spritey,width,height  // Add sprite picture (required client >= 7.0.80.0)
+tilepic x,y,itemid                              // Add item picture from tiledata.mul
+tilepichue x,y,itemid,hue                       // Add hued item picture from tiledata.mul
+
+TEXTS
+text x,y,color,index (OBSOLETE)                                               // Add text (index-based)
+dtext x,y,color,text                                                          // Add text
+croppedtext x,y,width,height,color,index (OBSOLETE)                           // Add text which will be cropped if it exceed given area (index-based)
+dcroppedtext x,y,width,height,color,text                                      // Add text which will be cropped if it exceed given area
+textentry x,y,width,height,color,id,index (OBSOLETE)                          // Add text entry area (index-based)
+dtextentry x,y,width,height,color,id,text                                     // Add text entry area
+textentrylimited x,y,width,height,color,id,limit,index (OBSOLETE)             // Add text entry area limited to N chars (required client >= 5.0.0)(index-based)
+dtextentrylimited x,y,width,height,color,id,limit,text                        // Add text entry area limited to N chars (required client >= 5.0.0)
+htmlgump x,y,width,height,hasbackground,hasscrollbar,index (OBSOLETE)         // Add text using HTML format (index-based)
+dhtmlgump x,y,width,height,hasbackground,hasscrollbar,text                    // Add text using HTML format
+xmfhtmlgump x,y,width,height,clilocid,hasbackground,hasscrollbar              // Add cliloc text
+xmfhtmlgumpcolor x,y,width,height,clilocid,hasbackground,hasscrollbar,color   // Add hued cliloc text (color should be RGB decimal value)
+xmfhtmltok x,y,width,height,hasbackground,hasscrollbar,color,clilocid,@args@  // Add hued cliloc text with arguments (args seperator should be '@', eg: @arg1@arg2@)
+
+BUTTONS
+button x,y,unpressed_gump,pressed_gump,ispressable,destpage,id                                    // Add button
+buttontileart x,y,unpressed_gump,pressed_gump,ispressable,destpage,id,tileid,tilehue,tilex,tiley  // Add button with tilepic on top
+radio x,y,unchecked_gump,checked_gump,ispressed,id                                                // Add radio button
+checkbox x,y,unchecked_gump,checked_gump,ispressed,checkid                                        // Add checkbox button
+group id                                                                                          // Group a bunch of radios/checkboxes
+
+// Dünya Haritası (7168 x 4096 piksel - map0)
+// ┌─────────────────────────────────┐
+// │                                 │
+// │      areaX,areaY                │
+// │         ┌──────────┐            │
+// │         │ gösterilen│           │
+// │         │  bölge   │           │
+// │         └──────────┘            │
+// │              areaEndX,areaEndY  │
+// └─────────────────────────────────┘
+// Yani:
+// areaX, areaY → gösterilecek bölgenin sol-üst köşesi (tile koordinatı)
+// areaEndX, areaEndY → sağ-alt köşesi
+// Oyuncuyu ortaya almak için:
+// 400x300 boyutlu bir pencerede oyuncuyu ortaya almak:
+// maparea 0 0 400 300 <src.p.m> <eval <src.p.x>-200> <eval <src.p.y>-150> <eval <src.p.x>+200> <eval <src.p.y>+150>
+// Parametre	Değer	Açıklama
+// <src.p.x>-200	örn. 1300	400 genişliğin yarısı sola
+// <src.p.y>-150	örn. 1550	300 yüksekliğin yarısı yukarı
+// <src.p.x>+200	örn. 1700	sağa
+// <src.p.y>+150	örn. 1850	aşağıya
+// Örnek — oyuncu 1500,1700 koordinatındaysa:
+// maparea 0 0 400 300 0 1300 1550 1700 1850
+// 400x300 piksellik pencere, haritanın 1300-1700 X / 1550-1850 Y aralığını gösterir ve oyuncu tam ortada olur.
+maparea x y w h mapIndex haritaX haritaY haritaBitiX haritaBitiY // sadece uosoft son surum clientlerde gecerli.
+
+
+
+[FUNCTION RESIZE]
+RESIZEPIC <EVAL <argv[0]>> <EVAL <argv[1]>> 9200 <argv[2]> <argv[3]>
+RESIZEPIC <EVAL <argv[0]>+10> <EVAL <argv[1]>+10> 3000 <EVAL <argv[2]>-20> <EVAL <argv[3]>-20>
+IF !(<ISEMPTY <ARGV[4]>>)
+	DHTMLGUMP <eval <argv[0]>+20> <EVAL <argv[1]>+20> <EVAL <argv[2]>-40> 25 1 0 <DEF.CENTER><ARGV[4]>
+ENDIF
+
+
+
+
+[FUNCTION BUTTONS]
+DIALOGCLOSE D_BUTTONS
+DIALOG D_BUTTONS
+
+
+[DIALOG D_BUTTONS]
+0,0
+RESIZEPIC 0 0 3000 1150 720
+
+LOCAL.X=5
+LOCAL.Y=5
+ARGS=3,4,5600,5604,5603,5607,5601,5605,5602,5606,250,251,252,253,2510,2511,2450,2451,2452,2453,2454,2455,2435,2436,2437,2438,2311,2312,2313,2322,2323,2324,2223,2224,2111,2112,2113,2114,2115,2116,2119,2120,2121,2122,2123,2124,2125,2126,2127,2128,2129,2130,2141,2142,2143,2094,2095,2103,2104,2071,2072,2073,2074,2075,2076,05622,05623,05624,029f4,029f5,029f6,01519,0151a,047f,0480,0481,0482,0483,07539,055F3,055F4,025F8,025F9,025FA,025FB,025FC,025FD,025FE,025FF,02600,02601,02602,02603,09A8,09A9,09AA,0A50,0A51,0A54,0A55,026AF,026B0,026B1,026B5,026B6,026B7,015A1,015A2,015A3,015A4,015A5,015A6,0867,0868,0869,0938,0939,093A,0845,0846,04B9,04BA,0D2,0D3,0D4,037,038,0FA3,0FA4,0FA5,0FA6,0FA7,0FA8,0FA9,0FAA,0FAB,0FAC,0FAD,0FAE,0FAF,0FB0,0FB1,0FB2,0FB3,0FB4,0FB5,0FB6,0FB7,0FB8,0FB9,0FBA,0FBB,0FBC,0FBD,0FBE,0FBF,01194,01195,01196,01197,01198,01199,0119a,0119b,0119c,0119d,0119e
+
+FOR 0 <EVAL <ARGV>-1>
+	LOCAL.BUTTON=<ARGV[<DLOCAL._FOR>]>
+	BUTTON <DLOCAL.X> <DLOCAL.Y> <LOCAL.BUTTON> <LOCAL.BUTTON> 1 0 <dlocal._for> 
+	DTEXT <EVAL <DLOCAL.X>+20> <EVAL <DLOCAL.Y>> 0 <LOCAL.BUTTON> (<dLOCAL.BUTTON>)
+	LOCAL.Y +=35
+	IF (<LOCAL.Y> > 680)
+		LOCAL.X +=135
+		LOCAL.Y=5
+	ENDIF
+ENDFOR
+
+[DIALOG D_BUTTONS BUTTON]
+ON=1 999
+ARGS=3,4,2510,2511,2450,2451,2452,2453,2454,2455,2435,2436,2437,2438,2311,2312,2313,2322,2323,2324,2223,2224,2111,2112,2113,2114,2115,2116,2119,2120,2121,2122,2123,2124,2125,2126,2127,2128,2129,2130,2141,2142,2143,2094,2095,2103,2104,2071,2072,2073,2074,2075,2076,05622,05623,05624,029f4,029f5,029f6,01519,0151a,047f,0480,0481,0482,0483,07539,055F3,055F4,025F8,025F9,025FA,025FB,025FC,025FD,025FE,025FF,02600,02601,02602,02603,09A8,09A9,09AA,0A50,0A51,0A54,0A55,026AF,026B0,026B1,026B5,026B6,026B7,015A1,015A2,015A3,015A4,015A5,015A6,0867,0868,0869,0938,0939,093A,0845,0846,04B9,04BA,0D2,0D3,0D4,037,038,0FA3,0FA4,0FA5,0FA6,0FA7,0FA8,0FA9,0FAA,0FAB,0FAC,0FAD,0FAE,0FAF,0FB0,0FB1,0FB2,0FB3,0FB4,0FB5,0FB6,0FB7,0FB8,0FB9,0FBA,0FBB,0FBC,0FBD,0FBE,0FBF,01194,01195,01196,01197,01198,01199,0119a,0119b,0119c,0119d,0119e
+SRC.SYSMESSAGELOC <def.tcolor_grey>,<def.empty_cliloc2>, ButtonID: <ARGV[<DARGN>]>
+SRC.BUTTONS
+
+
+
+
+
+
+[FUNCTION RESIZES]
+CTAG0.RESIZES 9390,9380,9250,5170,9500,9400,9350,9300,9270,9200,5120,5100,3500,3000,2620,2600,83,1579,1755,12024,39925,40000,40288
+DIALOGCLOSE D_RESIZEPICS
+DIALOG D_RESIZEPICS
+
+[DIALOG D_RESIZEPICS]
+<DEF.dlgstartpos>
+RESIZEPIC 0 0 <QVAL (<CTAG0.TEST_RESIZE>)?<CTAG0.TEST_RESIZE>:3000> 450 300
+
+FOR 1 <ARRAYCOUNT <CTAG0.RESIZES>>
+LOCAL.RESIZE=<ARRAY <CTAG0.RESIZES>,<DLOCAL._FOR>>
+
+	BUTTON <EVAL ((<DLOCAL._FOR>*80)-((<DLOCAL._FOR>/5)*400))+20> <EVAL ((<DLOCAL._FOR>/5)*30)+30> 0845 0846 1 0 <DLOCAL._FOR>
+	DTEXT <EVAL ((<DLOCAL._FOR>*80)-((<DLOCAL._FOR>/5)*400))+40> <EVAL ((<DLOCAL._FOR>/5)*30)+30> 55 <dLOCAL.RESIZE>
+ENDFOR
+
+[DIALOG D_RESIZEPICS BUTTON]
+ON=1 150
+LOCAL.RESIZE=<ARRAY <CTAG0.RESIZES>,<DARGN>>
+CTAG0.TEST_RESIZE=<local.resize>
+SRC.SYSMESSAGELOC <def.tcolor_grey>,<def.empty_cliloc2>, ResizeID: <Dlocal.resize>
+RESIZES
+
+
+
+
+
+[EOF]

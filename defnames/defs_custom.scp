@@ -1,0 +1,140 @@
+//****************************************************************************
+// SphereServer by: SphereServer development team and Menasoft.
+// www.sphereserver.net
+//****************************************************************************
+VERSION=TX
+
+[DEFNAME custom]
+dlgstartpos 30,30
+all_magery_reagents 	I_REAG_NIGHTSHADE,I_REAG_GINSENG,I_REAG_MANDRAKE_ROOT,I_REAG_SULFUR_ASH,I_REAG_GARLIC,I_REAG_BLACK_PEARL,I_REAG_BLOOD_MOSS,I_REAG_SPIDER_SILK
+firststartmoney_gold	10000
+startmoney_gold			1000
+char_near_max 5
+
+[DEFNAME noto_type_hues]
+NOTO.1			063
+NOTO.2			044
+NOTO.3			946
+NOTO.4			946
+NOTO.5			02B
+NOTO.6 			026
+NOTO.7			035
+
+[defname map_names]
+MAP_0_NAME Felucca
+MAP_1_NAME Trammel
+MAP_2_NAME Ilshenar
+MAP_3_NAME Malas
+MAP_4_NAME Tokuno Islands
+MAP_5_NAME Ter Mur
+
+
+[DEFNAME brains]
+brain_none = 0 
+brain_animal = 1 
+brain_human = 2 
+brain_healer = 3
+brain_guard = 4
+brain_banker = 5 
+brain_vendor = 6 
+brain_beggar = 7 
+brain_stable = 8
+brain_thief = 9
+brain_monster = 10
+brain_berserk = 11
+brain_undead = 12
+brain_dragon = 13
+brain_vendor_offduty = 14 
+brain_teacher = 15
+brain_beserk = brain_berserk
+
+
+[DEFNAME NPCBrainNames]
+npcbrain.0	brain_none
+npcbrain.1	brain_animal
+npcbrain.2	brain_human
+npcbrain.3	brain_healer
+npcbrain.4	brain_guard
+npcbrain.5	brain_banker
+npcbrain.6	brain_vendor
+npcbrain.7	brain_beggar
+npcbrain.8	brain_stable
+npcbrain.9	brain_thief
+npcbrain.10	brain_monster
+npcbrain.11	brain_berserk
+npcbrain.12	brain_undead
+npcbrain.13	brain_dragon
+npcbrain.14	brain_vendor_offduty
+npcbrain.15	brain_teacher
+
+
+[DEFNAME CharFlagNames]
+CharFlag.1	"Invul"
+CharFlag.2	"Dead"
+CharFlag.3	"Freeze"
+CharFlag.4	"Invisible"
+CharFlag.5	"Sleeping"
+CharFlag.6	"War"
+CharFlag.7	"Reactive"
+CharFlag.8	"Poisoned"
+CharFlag.9	"Nightsight"
+CharFlag.10	"Reflection"
+CharFlag.11	"Polymorph"
+CharFlag.12	"Incognito"
+CharFlag.13	"SpiritSpeak"
+CharFlag.14	"Insubstantial"
+CharFlag.15	"EmoteAction"
+CharFlag.16	"CommCrystal"
+CharFlag.17	"HasShield"
+CharFlag.18	"ArcherCanMove"
+CharFlag.19	"Stone"
+CharFlag.20	"Hovering"
+CharFlag.21	"Fly"
+CharFlag.22	"Hallucinating"
+CharFlag.23	"Hidden"
+CharFlag.24	"Indoors"
+CharFlag.25	"Criminal"
+CharFlag.26	"Conjured"
+CharFlag.27	"Pet"
+CharFlag.28	"Spawned"
+CharFlag.29	"SaveParity"
+CharFlag.30	"Ridden"
+CharFlag.31	"OnHorse"
+
+
+[DEFNAME ActionNames]
+skillact_breathing			"Breathing"
+skillact_fleeing				"Fleeing"
+skillact_following			"Following"
+skillact_goinghome			"Going Home"
+skillact_goingto				"Going To"
+skillact_guarding				"Guarding"
+skillact_idling				"Idling"
+skillact_looking				"Looking"
+skillact_napping				"Napping"
+skillact_ridden				"Ridden"
+skillact_runningto			"Running To"
+skillact_searchingfood   		"Searching for Food"
+skillact_staying				"Staying"
+skillact_talkfollow			"TalkFollow"
+skillact_talking				"Talking"
+skillact_throwing				"Throwing"
+skillact_training				"Training"
+skillact_using				"Using"
+skillact_wandering			"Wandering"
+
+
+
+[DEFNAME ConnectTypeNames]
+CONNECTYPE.0	None
+CONNECTYPE.1	Unknown
+CONNECTYPE.2	Crypt
+CONNECTYPE.3	Login
+CONNECTYPE.4	Game
+CONNECTYPE.5	Http
+CONNECTYPE.6	Telnet
+CONNECTYPE.7	UOG
+CONNECTYPE.8	Axis
+// CONNECT.9	Qty
+
+[EOF]

@@ -1,0 +1,233 @@
+VERSION=0.56T
+
+
+[DIALOG D_PARTY]
+<DEF.DlgStartPos>
+
+DORIGIN 20 40
+
+IF !(<SRC.ISINPARTY>)
+    RESIZEPIC 0 0 9200 290 120
+    RESIZEPIC 10 10 3000 270 100
+	DHTMLGUMP 10 10 270 25 1 0 <DEF.CENTER><serv.name> Party System<DEF.CENTERE>
+    
+	DTEXT +0 +0 38 Önce bir party kurmalısınız.
+	
+	BUTTON +0 +30 4006 4007 1 0 999
+	DTEXT +30 +33 044 Party oluştur	
+		
+ELSE
+
+    RESIZEPIC 0 0 9200 490 <EVAL (<PARTY.MEMBERS>*30)+130>
+    RESIZEPIC 10 10 3000 470 <EVAL (<PARTY.MEMBERS>*30)+110>
+	DHTMLGUMP 10 10 470 25 1 0 <DEF.CENTER><serv.name> Party System (<PARTY.MEMBERS>/7 kişi)<DEF.CENTERE>
+
+	REF99=<PARTY.MEMBER.0.UID> // MASTER
+	
+	IF (<REF99> == <UID>)
+		BUTTON +300 +0 0FB5 0FB6 1 0 998 
+		DTEXT +330 +0 38 Partyi boz
+
+		BUTTON +0 +0 0Fa9 0Faa 1 0 997
+		DTEXT +30 +0 044 Üye al
+		
+	ELSE
+		BUTTON +300 +0 0FB5 0FB6 1 0 996
+		DTEXT +330 +0 38 Partyden ayrıl
+	ENDIF
+	
+	DHTMLGUMP +0 +30 200 25 1 0 <DEF.CENTER>İSİM
+	DHTMLGUMP +200 +30 100 25 1 0 <DEF.CENTER>YETKİ
+	DHTMLGUMP +300 +30 150 25 1 0 <DEF.CENTER>BULUNDUĞU YER
+
+		FOR 0 <EVAL <PARTY.MEMBERS> -1>
+			REF1=<PARTY.MEMBER.<DLOCAL._FOR>.UID>
+			IF (<DLOCAL._FOR> == 0)
+				LOCAL.PRIVNAME=Kurucu
+			ELSE
+				LOCAL.PRIVNAME=Üye
+			ENDIF
+			IF (<REF99> == <UID>)
+				BUTTON +0 <EVAL (<DLOCAL._FOR>*25)+110> 0fa3 0fa4 1 0 <eval <dlocal._for>+100>
+			ENDIF
+			DTEXT +60 <EVAL (<DLOCAL._FOR>*25)+110> 044 #<EVAL <DLOCAL._FOR>+1>. <REF1.NAME>
+			DTEXT +200 <EVAL (<DLOCAL._FOR>*25)+110> 1153 <LOCAL.PRIVNAME>
+			DTEXT +300 <EVAL (<DLOCAL._FOR>*25)+110> 1153 <REF1.REGION.NAME>
+		ENDFOR
+	
+ENDIF
+
+[DIALOG D_PARTY BUTTON]
+// PARTY KUR
+ON=999
+TARGETF PARTY_CREATE_TARGET
+SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, Party kurmak istediğiniz oyuncuyu seçiniz.
+
+
+// PARTY BOZ
+ON=998
+PARTY.DISBAND
+
+
+// ÜYE AL
+ON=997
+TARGETF PARTY_CREATE_TARGET
+SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, Partye almak istediğiniz oyuncuyu seçiniz.
+
+
+// AYRIL
+ON=996
+PARTY.REMOVEMEMBER <UID>
+
+// ÜYE AT
+ON=100 199
+REF1=<PARTY.MEMBER.<EVAL <DARGN>-100>>
+IF (<REF1>)
+	PARTY.REMOVEMEMBER <REF1>
+ENDIF
+
+
+
+
+[FUNCTION PARTY_CREATE_TARGET]
+IF !(<ARGO>)
+	SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, <def.msg_invalid_target_tr>
+	RETURN 1
+ELSEIF !(<ARGO.ISPLAYER>)
+	SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bir oyuncu seçmelisiniz.
+	RETURN 1
+ELSEIF !(<ARGO.ISONLINE>)
+	SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, <ARGO.NAME> çevrimiçi değil.
+	RETURN 1
+ELSEIF (<UID> == <ARGO>)
+	SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Kendinizi partye alamazsınız.
+	RETURN 1
+ELSEIF (<argo.ISINPARTY>)
+	SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, <ARGO.NAME> zaten bir partye dahil.
+	RETURN 1
+ENDIF
+	SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, <ARGO.NAME> isimli oyuncuya party daveti gönderildi.
+	TRYSRC <ARGO> DIALOGCLOSE D_PARTY_INVITE
+	TRYSRC <ARGO> DIALOG D_PARTY_INVITE
+RETURN 1
+
+
+
+
+
+
+[DIALOG D_PARTY_INVITE]
+<DEF.DlgStartPos>
+NOMOVE
+
+IF (<ISINPARTY>)
+    RESIZEPIC 0 0 9200 290 <EVAL (<PARTY.MEMBERS>*20)+200>
+    RESIZEPIC 10 10 3000 270 <EVAL (<PARTY.MEMBERS>*20)+180>
+ELSE
+    RESIZEPIC 0 0 9200 290 120
+    RESIZEPIC 10 10 3000 270 100
+ENDIF
+DHTMLGUMP 10 10 270 25 1 0 <DEF.CENTER><serv.name> Party System<DEF.CENTERE>
+DORIGIN 20 50
+
+DTEXT +0 +0 0 Party davetini gönderen: <NAME>
+BUTTON +0 +30 0Fa9 0Faa 1 0 1
+DTEXT +30 +30 044 Kabul et
+
+BUTTON +180 +30 0FB5 0FB6 1 0 0 
+DTEXT +210 +30 38 Reddet
+
+IF (<ISINPARTY>)
+	DORIGIN 20 110
+	DTEXT +0 +0 0 Party üye listesi;
+	DHTMLGUMP +0 +30 150 25 1 0 <DEF.CENTER>İSİM
+	DHTMLGUMP +155 +30 100 25 1 0 <DEF.CENTER>YETKİ
+	FOR 0 <EVAL <PARTY.MEMBERS> -1>
+		REF1=<PARTY.MEMBER.<DLOCAL._FOR>.UID>
+		IF (<DLOCAL._FOR> == 0)
+			LOCAL.PRIVNAME=Kurucu
+		ELSE
+			LOCAL.PRIVNAME=Üye
+		ENDIF
+		DTEXT +0 <EVAL (<DLOCAL._FOR>*25)+170> 0 #<EVAL <DLOCAL._FOR>+1>. <REF2.NAME>
+		DTEXT +155 <EVAL (<DLOCAL._FOR>*25)+170> 0 <LOCAL.PRIVNAME>
+	ENDFOR
+ENDIF
+		
+
+[DIALOG D_PARTY_INVITE BUTTON]
+ON=0
+SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, <REF1.NAME> isimli oyuncunun party davetini reddettin.
+SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, <SRC.NAME> isimli oyuncu party davetinizi reddetti.
+
+
+ON=1
+IF !(<ISINPARTY>)
+	PARTY.CREATE 1,<SRC>
+ELSE
+	PARTY.ADDMEMBER <SRC>
+ENDIF
+
+
+
+
+[events e_party_outside]
+ON=@PARTYJOIN
+// src = davet gonderen
+// uid = partye giren
+
+SRC.EVENTS +e_party_inside
+SYSMESSAGELOC <def.tcolor_green>,<def.empty_cliloc2>, Party kurucusu: <SRC.NAME>
+
+EVENTS +e_party_inside
+UPDATE
+UPDATEX
+IF (<ISONLINE>)
+RESEND
+ENDIF
+
+
+
+ON=@PARTYDISBAND
+SRC.EVENTS -e_party_inside
+SRC.UPDATE
+SRC.UPDATEX
+IF (<SRC.ISONLINE>)
+SRC.RESEND
+ENDIF
+
+
+ON=@PARTYLEAVE
+SRC.EVENTS -e_party_inside
+
+
+ON=@PARTYREMOVE
+SRC.EVENTS -e_party_inside
+SRC.UPDATE
+SRC.UPDATEX
+IF (<SRC.ISONLINE>)
+    SRC.RESEND
+ENDIF
+
+
+
+
+
+[events e_party_inside]
+ON=@CLICK
+IF (<ISINPARTY>)
+	REF1=<PARTY.MASTER.UID>
+	IF (<SRC.ISINPARTY>)
+		IF (<PARTY.ISSAMEPARTYOF <SRC>>)	
+			MESSAGE @044,,1,1 [Party <QVAL (<REF1> == <UID>)?Master:Member, <REF1.NAME>>]
+		ELSE
+			MESSAGE @,,1,1 [Party <QVAL (<REF1> == <UID>)?Master:Member, <REF1.NAME>>]
+		ENDIF
+	ELSE
+		MESSAGE @,,1,1 [Party <QVAL (<REF1> == <UID>)?Master:Member, <REF1.NAME>>]
+	ENDIF
+ELSE
+	EVENTS -e_party_inside
+ENDIF
+
+[eof]

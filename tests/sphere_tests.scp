@@ -1,0 +1,275 @@
+
+
+// [function dialogdene]
+// dialog dialogdene
+// if (<isdialogopen dialogdene>
+
+
+// Default = Player to Update
+// Arguments:
+// Show Buff:  ID,ClilocName,ClilocDesc,ClilocArgs1(XX),ClilocArgs2(X),Duration
+// Remove Buff: ID
+// Example :
+// SRC.f_buffupdate 03F4,1200000,1200001,0,0,<TIMER>
+
+
+// ============================================================
+// fBuffIconRebuild
+// Kullanım : SRC.fBuffIconRebuild <Name>,<IsBuff>
+// argv0    : Icon/Cliloc suffix adı (DEF ile eşleşmeli)
+//            Örn: Agility, Clumsy, Poison, MagicReflection
+// argv1    : 1 = buff göster, 0 = debuff göster
+//            (opsiyonel: verilmezse buff varsayılır)
+// Nasıl çalışır:
+//   - İlgili i_rune_<lowercase> öğesini karakterde arar
+//   - Timer > 0 ise ikonu gösterir, değilse kaldırır
+// ============================================================
+
+[FUNCTION fBuffIconRebuild]
+LOCAL.name    = <ARGV[0]>
+LOCAL.isbuff  = <ARGV[1]>
+
+IF (<LOCAL.isbuff>)
+    LOCAL.iconkey = bufficon_<LOCAL.name>
+ELSE
+    LOCAL.iconkey = debufficon_<LOCAL.name>
+ENDIF
+
+LOCAL.clilockey1 = buffcliloc_<LOCAL.name>_1
+LOCAL.clilockey2 = buffcliloc_<LOCAL.name>_2
+
+LOCAL.icon     = <DEF.<LOCAL.iconkey>>
+LOCAL.cliloc1  = <DEF.<LOCAL.clilockey1>>
+LOCAL.cliloc2  = <DEF.<LOCAL.clilockey2>>
+
+// Cliloc tanımsızsa fallback: Empty
+IF (<isblank <LOCAL.cliloc1>>)
+    LOCAL.cliloc1 = <DEF.buffcliloc_Empty>
+ENDIF
+IF (<isblank <LOCAL.cliloc2>>)
+    LOCAL.cliloc2 = <DEF.buffcliloc_Empty>
+ENDIF
+
+// --- Rune timer'ını oku ---
+LOCAL.duration = 0
+LOCAL.runekey  = i_rune_<strtolower <LOCAL.name>>
+LOCAL.rune     = <findid.<LOCAL.runekey>>
+
+IF (<findid.<LOCAL.rune>>)
+    LOCAL.duration = <findid.<LOCAL.rune>.TIMER>
+ENDIF
+
+// Güncelle 
+IF (<LOCAL.duration> > 0)
+    SRC.f_buffupdate <LOCAL.icon>,<LOCAL.cliloc1>,<LOCAL.cliloc2>,0,0,<LOCAL.duration>
+ELSE
+    // Icon kaldır
+    SRC.f_buffupdate <LOCAL.icon>
+ENDIF
+
+
+[FUNCTION bufficonrest]
+f_buffupdate <def.debufficon_Clumsy>,<def.buffcliloc_Empty>,<def.buffcliloc_Empty>,0,0,10
+
+
+[FUNCTION f_buffupdate]
+IF (<ISPLAYER>)&&(<ISONLINE>)
+    IF (<ARGV> > 5)
+        //packet,len,uid,Icon,Flags,D00,Icon,Flags,D00,duration,w0,0,cliloc1,cliloc2,D0,W1​,numlen,num1,num2,4 bytes
+        SENDPACKET 0DF W03c D<UID> W<ARGV[0]> W01 D00 W<ARGV[0]> W01 D00 W<ARGV[5]> W00 00 D<ARGV[1]> D<ARGV[2]> D00 W01 D06 B<EVAL 48+(<ARGV[3]>/10)> 0 B<EVAL 48+(<ARGV[3]>%10)> 0 09 00 B(48+<ARGV[4]>) 00 00 00 00 00 00 00
+    ELSE
+        SENDPACKET 0DF W00b D<UID> W<ARGN1> W00
+    endif
+endif
+RETURN 0
+
+
+
+
+[function ftest]
+FORTYPES t_door 999
+  SERV.LOG <UID> <name>
+ENDFOR
+
+// FORALLTYPES t_door
+  // SERV.LOG <UID> <name>
+// ENDFOR
+
+
+
+FORALLITEMS
+  IF (<TYPE> == t_door)
+    // SERV.LOG <UID>
+  ENDIF
+ENDFOR
+
+
+[dialog d_mapareatest]
+
+0,0
+
+resizepic 0 0 3000 500 500
+
+maparea 20 20 400 300 <src.p.m> <eval <src.p.x>-200> <eval <src.p.y>-150> <eval <src.p.x>+200> <eval <src.p.y>+150>
+// resizepic 0 0 3000 100 100
+
+
+[ITEMDEF iTimerTest]
+DEFNAME=iTimerTest
+ID=i_deed
+TYPE=t_deed
+VALUE=0
+WEIGHT=0
+LAYER=30
+NAME=Char Reveal Timer
+
+ON=@CREATE
+ATTR=attr_decay
+TIMER=300 // 18:17:00 de eklendi. 18:22:00 de silinmesi lazım
+
+ON=@TIMER
+serv.b timer expired
+REMOVE
+RETURN 1
+
+
+
+// Cliente bazi bilgileri gonderir.
+// Kullanım: .UOSoft_SendInfo
+// Tum sunucu. serv.allclients UOSoft_SendInfo
+[FUNCTION UOSoft_Client_SendInfo_All]
+// UOSoft_Client_SendInfo Maxfood
+// UOSoft_Client_SendInfo Food
+// UOSoft_Client_SendInfo Age
+// UOSoft_Client_SendInfo Account.Plevel
+// UOSoft_Client_SendInfo ISGM
+UOSoft_Client_SendInfo Region.Name
+UOSoft_Client_SendInfo Region.Flags
+
+[FUNCTION UOSoft_Client_SendInfo]
+LOCAL.KEY <args>
+//SERV.LOG <NAME>= <LOCAL.KEY> : <I.<LOCAL.KEY>>
+SENDPACKET 0BF W65 W02719 <ASCPAD 30, <LOCAL.KEY>> <ASCPAD 30, <I.<LOCAL.KEY>>>
+
+
+
+
+[FUNCTION SPELLBOOK]
+DIALOGCLOSE D_SPELLBOOK
+DIALOG D_SPELLBOOK
+MANA = <INT>
+
+[DIALOG D_SPELLBOOK]
+<DEF.DSP>
+
+RESIZEPIC 0 0 3000 700 730
+LOCAL.X=5
+LOCAL.Y=5
+
+FOR 2240 2303
+	local.spell <eval (<dlocal._for>-2240)+1>
+	
+	BUTTON <DLOCAL.X> <DLOCAL.Y> <dlocal._for> <dlocal._for> 1 0 <dlocal.spell>
+	
+	LOCAL.HUETEXT=0
+	
+	DTEXT <EVAL <DLOCAL.X>+50> <DLOCAL.Y> <LOCAL.HUETEXT> <dlocal.spell>. <SERV.SPELL.<DLOCAL.spell>.NAME> 
+	DTEXT <EVAL <DLOCAL.X>+50> <eval <DLOCAL.Y>+20> 0 <SERV.SPELL.<DLOCAL.spell>.RUNES> 
+	LOCAL.Y +=45
+	IF (<LOCAL.Y> > 720)
+		LOCAL.X +=160
+		LOCAL.Y=5
+	ENDIF
+ENDFOR
+
+[DIALOG D_SPELLBOOK BUTTON]
+on=1 64
+IF !(<RESTEST 1 I_FULL_SPELLBOOK>)
+	SERV.NEWITEM I_FULL_SPELLBOOK
+	NEW.BOUNCE
+ENDIF
+//src.mana = <src.int>
+CAST <DARGN>
+SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, ID=<ARGN>, NAME=<SERV.SPELL.<DARGN>.NAME>, WORD=<SERV.SPELL.<DARGN>.RUNES>
+DIALOGCLOSE D_SPELLBOOK
+DIALOG D_SPELLBOOK
+
+
+
+
+[FUNCTION dialoglarilistelex]
+IF (<ISONLINE>)
+	IF (<DIALOGLIST.COUNT>)
+	src.sysmessage dialoglist count: <DIALOGLIST.COUNT>
+		FOR 0 <EVAL <DIALOGLIST.COUNT>-1>
+			src.sysmessage dialog id: <DIALOGLIST.<dLOCAL._FOR>.ID>
+		ENDFOR
+	ENDIF
+ENDIF
+
+
+[itemdef i_book_farming]
+id 0fbd
+value 44000
+type t_script
+name Farmer's HandBook
+
+on=@create
+attr=attr_newbie
+
+on=@dclick
+
+	// ref1 <src.findid.i_memory>
+	// if <ref1.tagcount> == 0
+		// src.sysmessage @39,,1,1 Aktif olarak büyüyen tohumunuz bulunmamakta
+		// return 1
+	// else
+		trysrc <src> dialogclose d_farm_book
+		src.dialog d_farm_book
+	// endif
+
+return 1
+
+[DIALOG d_farm_book]
+0,0
+
+page 0
+resizepic 137 138 3000 430 430
+
+// ref1 <src.findid.i_memory>
+// if <ref1.tagcount> == 0
+	// src.sys_red Aktif olarak büyüyen tohumunuz bulunmamakta
+	// return 1
+// endif
+
+dhtmlgump 137 150 430 20 0 0 <def.center><def.Bfont_HARD>Farmer's HandBook
+gumppic 200 170 353	
+gumppic 480 125 339				//Yaprak	 
+//dtext 510 155 0481 Tohum sayınız : <ref1.tagcount>
+
+[DIALOG d_farm_book Button]
+ON=0
+src.ctag0.farm_page 
+src.ctag0.farm_pager
+dialogclose d_farm_book
+
+ON=8
+src.ctag0.farm_pager += 5
+src.ctag0.farm_page ++
+src.dialog d_farm_book
+
+ON=9
+src.ctag0.farm_pager -= 5
+src.ctag0.page --
+if <src.dctag0.farm_pager> < 0
+	src.ctag0.farm_pager 0
+	src.ctag0.farm_page 0
+endif
+src.dialog d_farm_book
+
+
+
+
+
+
+[eof]

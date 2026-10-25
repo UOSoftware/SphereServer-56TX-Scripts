@@ -1,0 +1,34 @@
+VERSION=0.56T
+
+[TYPEDEF ei_generic_item_wearables]
+ON=@CLICK
+LOCAL.DURABILITY = <EVAL 100 - <EVAL <HITPOINTS>*100>/<MAXHITS>>
+IF (<DLOCAL.DURABILITY>)
+	MESSAGE @0,3 [%<DLOCAL.Durability> hasarli]
+ENDIF
+IF ((<ATTR>&ATTR_MAGIC) && (<MOREY> > 0)
+	IF (<ATTR>&ATTR_IDENTIFIED)
+		MESSAGE [<ColoredItemTitle>]
+	ENDIF
+	MESSAGE a magical <SERV.ITEMDEF.<ID>.NAME>
+	RETURN 1
+ENDIF
+
+// ON=@EQUIP
+// IF (<SRC.STR> < <REQSTR>)
+	// SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bunu giyebilecek güçte değilsiniz. (Gerekli Str: <REQSTR>, Str:<SRC.STR>)
+	// UNEQUIP
+	// RETURN 1
+// ENDIF
+
+ON=@DCLICK
+IF (<REQSTR>) && (<SRC.STR> < <REQSTR>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, <defmsg.equip_not_strong_enough> <name> (Gerekli Str: <REQSTR>, Str: <SRC.STR>)
+	UNEQUIP
+	RETURN 1
+ENDIF
+
+
+
+
+[eof]

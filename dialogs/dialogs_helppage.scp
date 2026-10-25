@@ -1,0 +1,178 @@
+VERSION=0.56T
+
+
+[FUNCTION f_onclient_helppage]
+LOCAL.RESULT <SetProcessDelay HelpPage,50>
+IF !(<LOCAL.RESULT>)
+    //SDIALOG d_helppage
+    DIALOGCLOSE d_helppage
+    SDIALOG d_helppage,<args>
+ENDIF
+
+
+[DIALOG d_helppage]
+<DEF.DlgStartPos>
+
+PAGE 0
+RESIZEPIC 0 0 9200 420 240
+RESIZEPIC 10 10 3000 400 220
+
+DHTMLGUMP 10 10 400 25 1 0 <DEF.CENTER><serv.name> Help Menu<DEF.CENTERE>
+
+DORIGIN 20 40
+
+BUTTON +0 +0 4006 4007 0 2 2 
+DHTMLGUMP +30 +0 100 25 1 0 GMPage
+
+BUTTON +0 +30 4006 4007 0 3 3
+DHTMLGUMP +30 +30 100 25 1 0 Stuck
+
+BUTTON +0 +60 4006 4007 0 4 4
+DHTMLGUMP +30 +60 100 25 1 0 Durum
+
+BUTTON +0 +90 4006 4007 1 0 1
+DHTMLGUMP +30 +90 100 25 1 0 Web
+
+
+// MAIN
+PAGE 1
+DORIGIN 160 40
+DHTMLGUMP +0 +0 240 115 1 1 <DEF.CENTER><SERV.NAME> sunucusuna hoşgeldin <SRC.NAME>!<DEF.CENTERE><DEF.BR>Skillcap: <FVAL <SRC.SKILLCLASS.SKILLSUM>>, Statcap: <SRC.SKILLCLASS.STATSUM> olarak ayarlanmıştır.
+
+
+// GMPAGE
+PAGE 2
+DORIGIN 160 40
+
+IF !(<FINDID.I_GMPAGE>)
+    DHTMLGUMP +0 +0 230 40 0 0 <DEF.CENTER>Lütfen sorununuzun kısa bir açıklamasını (en fazla 240 karakter) girin:<DEF.CENTERE>
+    RESIZEPIC +0 +50 2620 230 100
+
+    DTEXTENTRYLIMITED +10 +60 230 100 1153 0 240
+
+    BUTTON +0 +160 2076 2075 1 0 20
+    BUTTON +170 +160 2073 2072 1 0 21
+ELSE
+    DHTMLGUMP +0 +0 230 40 0 0 <DEF.CENTER>Zaten bir GMPage göndermişsiniz. Lütfen yanıtlanamsını bekleyin veya GMPagenizi silin.<DEF.CENTERE>
+    RESIZEPIC +0 +50 2620 230 100
+	DHTMLGUMP +10 +60 230 100 0 0 <DEF.BFONT_WHITE><FINDID.I_GMPAGE.TAG0.CONTENT>
+
+    BUTTON +170 +160 2073 2072 1 0 22
+ENDIF
+
+
+
+// STUCK
+PAGE 3
+DORIGIN 160 40
+FOR 1 6
+    ARGS=<DEF.HelpPage.Teleport.<dLOCAL._FOR>>
+    IF !(<SRC.FINDID.i_memory_helppage_stuck>)
+        BUTTON +0 <eval 20+(<LOCAL._FOR>*28)> 208 209 1 0 <EVAL <LOCAL._FOR>+30>
+    ENDIF
+    DHTMLGUMP +25 <eval 20+(<LOCAL._FOR>*28)> 145 20 0 0 <SERV.MAP(<dARGV[0]>,<dARGV[1]>,<dARGV[3]>).REGION.NAME>
+ENDFOR
+
+// Durum
+PAGE 4
+
+DORIGIN 160 40
+DHTMLGUMP +0 +0 120 25 1 0 Clients: <SERV.CLIENTS>
+DHTMLGUMP +0 +30 120 25 1 0 Accounts: <NumberFormat <SERV.ACCOUNTS>>
+DHTMLGUMP +0 +60 120 25 1 0 Items: <NumberFormat <SERV.ITEMS>>
+DHTMLGUMP +0 +90 120 25 1 0 Chars: <NumberFormat <SERV.CHARS>>
+DHTMLGUMP +0 +120 120 25 1 0 Page: <GMPAGESEQ>
+DHTMLGUMP +0 +150 120 25 1 0 Guild: <SERV.GUILDS>
+
+DORIGIN 283 40
+DHTMLGUMP +0 +0 120 57 1 0 <StrLimit 37 <SERV.VERSION>>
+DHTMLGUMP +0 +60 120 25 1 0 Derleme: <SERV.BUILD>
+DHTMLGUMP +0 +90 120 25 1 0 Türü: 
+DHTMLGUMP +0 +120 120 25 1 0 Memory: <EVAL <SERV.MEM>/1024> MB
+
+
+[DIALOG d_helppage BUTTON]
+//  Web
+ON=1
+Weblink <SERV.URL>
+
+// GMPage: Send
+ON=20
+GMPAGEADD <ARGTXT[0]>
+
+// GMPage: Cancel
+ON=21
+SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, GMPage'den vazgecildi.
+
+// GMPage: Delete
+ON=22
+IF (<FINDID.I_GMPAGE>)
+    FINDID.I_GMPAGE.REMOVE
+    SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Gönderdiginiz GMPageyi sildiniz.
+ELSE
+    SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Göndermis oldugunuz GMPage bulunmuyor.
+ENDIF
+
+
+// Stuck
+ON=30 39
+IF (<HOUSEDESIGN>) || (<STONE>) || (<ACCOUNT.JAIL>)
+    CAN &= ~mt_nonmover
+    RETURN 1
+ENDIF
+
+IF !(<FINDID.I_MEMORY_HELPPAGE_STUCK>)
+    SERV.NEWITEM I_MEMORY_HELPPAGE_STUCK
+    NEW.MOREP=<DEF.HelpPage.Teleport.<EVAL <ARGN>-30>>
+    ARGS=<NEW.MOREP>
+    NEW.TIMER=1
+    NEW.MORE1=<eval 10+<R45>>
+    NEW.EQUIP
+    SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, <NEW.MORE1> saniye icinde <SERV.MAP(<dARGV[0]>,<dARGV[1]>,<dARGV[3]>).REGION.NAME> bolgesine ulasmis olacaksiniz.
+ENDIF
+
+
+
+[DEFNAME HelpPageTeleports]
+HelpPage.Teleport.1	1519,1619,10	//Britain
+HelpPage.Teleport.2	1993,2827	//Trinsic
+HelpPage.Teleport.3	2910,727	//Vesper
+HelpPage.Teleport.4	2433,541	//Minoc
+HelpPage.Teleport.5	536,979		//Yew
+HelpPage.Teleport.6	2247,1194	//Cove
+
+[ITEMDEF I_MEMORY_HELPPAGE_STUCK]
+ID=I_MEMORY
+NAME=HelpPage stuck teleport
+TYPE=T_EQ_SCRIPT
+
+ON=@EQUIP
+SRC.CAN |= MT_NONMOVER
+SRC.EVENTS +e_helppage_stuck_player
+SRC.FLAGS |= STATF_FREEZE
+
+ON=@UNEQUIP
+SRC.CAN &= ~MT_NONMOVER
+SRC.EVENTS -e_helppage_stuck_player
+SRC.FLAGS &~ STATF_FREEZE
+
+ON=@Timer
+IF (<MORE1>)
+    TIMER 1
+    MORE1 --
+    TOPOBJ.SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, <DMORE1>
+    TOPOBJ.FLAGS |= STATF_FREEZE
+ELSE
+    CONT.GO <MOREP>
+    REMOVE
+ENDIF
+return 1
+
+[EVENTS e_helppage_stuck_player]
+ON=@SPELLSTART
+RETURN 1
+
+ON=@SKILLSTART
+RETURN 1
+
+[eof]

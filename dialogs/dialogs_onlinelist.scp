@@ -1,0 +1,102 @@
+VERSION=0.56T
+
+[COMMENT]
+
+
+
+[PLEVEL 1]
+ONLINELIST
+
+[FUNCTION ONLINELIST]
+IF (<SERV.CLIENTS>)
+	CLEARCTAGS Dialog.Onlinelist
+	
+	SERV.ALLCLIENTS onlinelist_getplayer
+	
+	CTAG.Dialog.Onlinelist.Page=1
+	CTAG.Dialog.Onlinelist.MaxPage=<eval (((<CTAG0.Dialog.Onlinelist.Clients>-1)/13)+1)>
+	
+	DIALOGCLOSE D_ONLINELIST
+	DIALOG D_ONLINELIST
+	SRC.SYSMESSAGE @53,,1 Şuan sunucuda <SRC.dCTAG0.Dialog.Onlinelist.Clients> aktif oyuncu bulunmaktadır.
+ELSE
+	SYSMESSAGE @38,,1,1 Çevrimiçi oyuncu bulunmuyor.
+ENDIF
+
+
+[FUNCTION onlinelist_getplayer]
+IF (<ACCOUNT.PLEVEL> == 1)
+	SRC.CTAG0.Dialog.Onlinelist.Clients ++
+	SRC.CTAG0.Dialog.Onlinelist.C<dSRC.CTAG0.Dialog.Onlinelist.Clients>=<UID>
+ENDIF
+
+[DIALOG D_ONLINELIST]
+<DEF.DlgStartPos>
+RESIZE 0,0,445,420,Çevrimiçi Oyuncular [<SRC.DCTAG0.Dialog.Onlinelist.Clients>]
+
+
+DORIGIN 20 50
+
+IF !(<TAG0.Setting.Onlinelist.RegionShow>)
+	BUTTON +0 +0 0D2 0D3 1 0 999
+	DTEXT +20 +0 044 Yerimi göster
+ELSE
+	BUTTON +0 +0 0D3 0D2 1 0 999
+	DTEXT +20 +0 38 Yerimi gizle
+ENDIF
+
+DORIGIN 20 70
+
+DHTMLGUMP +0 +3 200 25 1 0 <DEF.CENTER>OYUNCU
+DHTMLGUMP +205 +3 200 25 1 0 <DEF.CENTER><DEF.BFONT_WHITE>BULUNDUĞU YER
+DHTMLGUMP +40 +303 320 25 1 0 <DEF.CENTER>Sayfa <dCTAG0.Dialog.Onlinelist.Page> / <dCTAG0.Dialog.Onlinelist.MaxPage><DEF.CENTERE><DEF.BFONTE>
+	
+// PAGE --
+IF (<CTAG0.DIALOG.Onlinelist.Page> > 1)
+	BUTTON +0 +303 4014 4015 1 0 1
+ENDIF
+// PAGE ++
+IF (<CTAG0.DIALOG.Onlinelist.Page> < <CTAG0.DIALOG.Onlinelist.Maxpage>)
+	BUTTON +370 +303 4005 4006 1 0 2
+ENDIF
+
+LOCAL.Y=100
+FOR <eval ((<CTAG0.Dialog.Onlinelist.Page> - 1) * 13) + 1> <eval (<CTAG0.Dialog.Onlinelist.Page> * 13)>
+	REF1=<CTAG0.Dialog.Onlinelist.C<dLOCAL._FOR>>
+	IF (<REF1>)
+		DCROPPEDTEXT +0 <EVAL (<LOCAL.Y>)> 100 25 <DEF.NOTO.<REF1.NOTOGETFLAG>> <DLOCAL._FOR>. <REF1.NAME>
+		DCROPPEDTEXT +205 <EVAL (<LOCAL.Y>)> 150 25 <QVAL (<REF1.dTAG0.Setting.Onlinelist.RegionShow>)? 1000 <REF1.REGION.NAME>: 38 Gizli>
+		LOCAL.Y +=20
+	ENDIF
+ENDFOR
+
+
+
+[DIALOG D_ONLINELIST BUTTON]
+ON=1
+IF (<CTAG0.Dialog.Onlinelist.Page> > 1)
+	CTAG0.Dialog.Onlinelist.Page --
+ENDIF
+SDIALOG D_ONLINELIST
+
+
+ON=2
+IF (<CTAG0.Dialog.Onlinelist.Page> < <CTAG0.Dialog.Onlinelist.MaxPage>)
+	CTAG0.Dialog.Onlinelist.Page ++
+ENDIF
+SDIALOG D_ONLINELIST
+
+ON=999
+IF !(<TAG0.Setting.Onlinelist.RegionShow>)
+	TAG0.Setting.Onlinelist.RegionShow=1
+	SYSMESSAGE @38,,1,1 Bulunduğunuz bölge listede görünecektir.
+ELSE
+	TAG0.Setting.Onlinelist.RegionShow=
+	SYSMESSAGE @,,1,1 Bulunduğunuz bölge listede görünmeyecektir.
+ENDIF
+DIALOGCLOSE D_ONLINELIST
+DIALOG D_ONLINELIST
+
+
+
+[eof]
