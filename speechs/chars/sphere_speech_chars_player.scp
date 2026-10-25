@@ -1,0 +1,13 @@
+
+
+[SPEECH spk_generic_chars_player]
+ON=*
+IF (<SRC.IsUseSkill Magery>)
+	IF !(<SRC.ACTARG1> == 32) // Recall degilse
+		//SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Buyu atarken konusamazsiniz.
+		RETURN 1
+	ENDIF
+ENDIF
+
+
+[EOF]

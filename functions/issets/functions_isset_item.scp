@@ -1,0 +1,575 @@
+//*****************************************
+// Items
+//*****************************************
+
+[FUNCTION fRealAr]
+// Kullanim: item context'inde cagir (e.g. <CALL fRealAr> on item)
+// Veya: SRC.FINDLAYER(6).fRealAr
+LOCAL.AR=<AR>
+LOCAL.Layer=<LAYER>
+LOCAL.Coverage=0
+
+IF (<LOCAL.Layer> == LAYER_HELM)
+    LOCAL.Coverage=15
+
+ELSEIF (<LOCAL.Layer> == LAYER_COLLAR)
+    LOCAL.Coverage=7
+
+ELSEIF (<LOCAL.Layer> == LAYER_SHIRT) || (<LOCAL.Layer> == LAYER_CHEST) || (<LOCAL.Layer> == LAYER_TUNIC)
+    LOCAL.Coverage=35
+
+ELSEIF (<LOCAL.Layer> == LAYER_ROBE)
+    // !! UYARI: Bu yaklasik deger.
+    // Gercekte CHEST(35), ARMS(14), LEGS(22) zone'larinda
+    // diger itemlarla MAX karsilastirilir.
+    // Sadece bu zone'larda baska item YOKSA tam dogru deger verir.
+    LOCAL.Coverage=71
+																				 
+ELSEIF (<LOCAL.Layer> == LAYER_ARMS) || (<LOCAL.Layer> == LAYER_CAPE)
+    // CAPE de sadece ARMS zone'una giriyor (BACK=0% oldugu icin fark etmez)
+    LOCAL.Coverage=14
+
+ELSEIF (<LOCAL.Layer> == LAYER_GLOVES)
+    LOCAL.Coverage=7
+
+ELSEIF (<LOCAL.Layer> == LAYER_PANTS) || (<LOCAL.Layer> == LAYER_SKIRT) || (<LOCAL.Layer> == LAYER_HALF_APRON) || (<LOCAL.Layer> == LAYER_LEGS)
+    LOCAL.Coverage=22
+
+ELSEIF (<LOCAL.Layer> == LAYER_HAND2)
+    LOCAL.Coverage=7
+    // LOCAL.Coverage=100
+    // PARRYERA_ARSCALING aciksa shield 100% olur
+    // ama bunu script'ten kontrol edemeyiz kolayca, 7% birakildi
+
+// LAYER_SHOES ve LAYER_BACK = 0% coverage, zaten 0 donuyor
+ENDIF
+
+RETURN <EVAL (<LOCAL.AR> * <LOCAL.Coverage>) / 100>
+
+
+[FUNCTION Func_Magical_Weapons_Value_ID]
+if strmatch(*ruin*,<baseid>)
+return 1
+elif strmatch(*might*,<baseid>)
+return 2
+elif strmatch(*force*,<baseid>)
+return 3
+elif strmatch(*power*,<baseid>)
+return 4
+elif strmatch(*vanq*,<baseid>)
+return 5
+endif
+
+[FUNCTION Func_Magical_Weapons_Value_String]
+if strmatch(*ruin*,<baseid>)
+return ruin
+elif strmatch(*might*,<baseid>)
+return might
+elif strmatch(*force*,<baseid>)
+return force
+elif strmatch(*power*,<baseid>)
+return power
+elif strmatch(*vanq*,<baseid>)
+return vanquishing
+endif
+
+[FUNCTION Func_Magical_Weapons_Value_Num]
+if strmatch(*ruin*,<baseid>)
+return 3
+elif strmatch(*might*,<baseid>)
+return 6
+elif strmatch(*force*,<baseid>)
+return 9
+elif strmatch(*power*,<baseid>)
+return 12
+elif strmatch(*vanq*,<baseid>)
+return 15
+endif
+
+
+
+
+
+[FUNCTION ColoredItemTitle]
+// magic weapons
+IF STRMATCH(*ruin*,<BASEID>)
+	RETURN ruin
+	
+ELIF STRMATCH(*might*,<BASEID>)
+	RETURN might
+	
+ELIF STRMATCH(*force*,<BASEID>)
+	RETURN force
+	
+ELIF STRMATCH(*power*,<baseid>)
+	RETURN power
+	
+ELIF STRMATCH(*vanq*,<baseid>)
+	RETURN vanquishing
+
+// magic armors
+ELIF STRMATCH(*defense*,<baseid>)
+	RETURN defense
+
+ELIF STRMATCH(*guarding*,<baseid>)
+	RETURN guarding
+
+ELIF STRMATCH(*hardening*,<baseid>)
+	RETURN hardening
+
+ELIF STRMATCH(*fortification*,<baseid>)
+	RETURN fortification
+
+ELIF STRMATCH(*invulnerability*,<BASEID>)
+	RETURN invulnerability
+
+// colored armors
+ELIF STRMATCH(*verite*,<BASEID>)
+	RETURN verite
+
+ELIF STRMATCH(*agapite*,<BASEID>)
+	RETURN agapite
+
+ELIF STRMATCH(*blackrock*,<BASEID>)
+	RETURN blackrock
+
+ELIF STRMATCH(*bloodrock*,<BASEID>)
+	RETURN bloodrock
+
+ENDIF
+RETURN
+
+
+
+
+[FUNCTION ISRUNEBOOK]
+IF (<BASEID> == I_RUNEBOOK)
+	RETURN 1
+ENDIF
+RETURN 0
+
+
+
+[FUNCTION IsTeleportItem]
+//IF (<BASEID> == I_RUNEBOOK_GATE || <TYPE> == T_MOONGATE || <TYPE> == T_MOONGATE_CUSTOM || <BASEID> == I_MOONGATE_BLACK || <BASEID> == I_MOONGATE_BLUE || <BASEID> == I_MOONGATE_RED || <TYPE> == T_TELEPAD || <TYPE> == T_MOONGATE_IMMORTAL || <ISEVENT.ei_kiirin_gate>)
+
+IF (<BASEID> == I_RUNEBOOK_GATE || <TYPE> == T_MOONGATE || <TYPE> == T_MOONGATE_CUSTOM || <BASEID> == I_MOONGATE_BLACK || <BASEID> == I_MOONGATE_BLUE || <BASEID> == I_MOONGATE_RED || <TYPE> == T_TELEPAD || <TYPE> == T_MOONGATE_IMMORTAL)
+	RETURN 1
+ENDIF
+RETURN 0
+
+
+
+
+[FUNCTION ShowDurability]
+IF (<ARGV0>)
+	RETURN %<eval 100 - <eval <hits>*100>/<maxhits>> eski
+ELSE
+	RETURN %<eval <eval <hits>*100>/<maxhits>> yeni
+ENDIF
+
+
+[FUNCTION IsBoyanabilir]
+IF (<ISITEM>)
+	IF ( <DYE> >= 1 || <CAN>&CAN_I_DYE || <SERV.ITEMDEF.<BASEID>.DYE> >= 1 || <SERV.ITEMDEF.<BASEID>.CAN>&CAN_I_DYE )
+		RETURN 1
+	ENDIF
+ENDIF
+RETURN 0
+
+
+
+[FUNCTION IsWearableItem]
+IF (<LAYER> > 0) && !((<LAYER> == layer_hair) && (<LAYER> == layer_face) && (<LAYER> == layer_beard) && (<LAYER> == layer_pack))
+	RETURN 1
+ENDIF
+RETURN 0
+
+
+
+
+[FUNCTION fIsArmor]
+IF (<fIsMArmor>)
+	RETURN 1
+ELSEIF (<fIsWArmor>)
+	RETURN 1
+ENDIF
+RETURN 0
+
+
+
+[FUNCTION fIsMArmor]
+IF (<TYPE> == T_ARMOR_LEATHER)
+	RETURN 1
+ELSEIF (<MAGEARMOR>)
+	RETURN 1
+ENDIF
+RETURN 0
+
+
+[FUNCTION fIsWArmor]
+IF (<TYPE> == T_ARMOR)
+	RETURN 1
+ELSEIF (<TYPE> == T_ARMOR_RING)
+	RETURN 1
+ELSEIF (<TYPE> == T_ARMOR_CHAIN)
+	RETURN 1
+ELSEIF (<TYPE> == T_ARMOR_BONE)
+	RETURN 1
+ENDIF
+
+RETURN 0
+
+
+[FUNCTION IsEquipTypeArmors]
+ARGS=4,6,7,10,13,19,24
+WHILE (<DARGS>)
+	IF (<FINDLAYER.<ARGV0>>)
+		REF1=<FINDLAYER.<ARGV0>.UID>
+		IF (<REF1.isvalid>) && (<REF1.fIsWArmor>)
+			LOCAL.AR ++
+		ENDIF
+	ENDIF
+	ARGS=<STREAT <ARGS>>
+ENDWHILE
+RETURN <DLOCAL.AR>
+
+
+
+[FUNCTION IsEquipType]
+LOCAL.TYPE=<ARGV0>
+ARGS=4,6,7,10,13,19,24
+WHILE (<DARGS>)
+	IF (<FINDLAYER.<ARGV0>.isvalid>) && (<FINDLAYER.<ARGV0>.TYPE> == <LOCAL.TYPE>)
+		LOCAL.AR ++
+	ENDIF
+	ARGS=<STREAT <ARGS>>
+ENDWHILE
+RETURN <DLOCAL.AR>
+
+
+
+[FUNCTION FullNameItem]
+LOCAL.NAME <NAME>
+IF (<AMOUNT> > 1)
+	LOCAL.NAME .=" (<AMOUNT>)"
+	
+ELSEIF (<IsContainer>)
+	LOCAL.NAME .=" (<ISCONT>)"
+ENDIF
+				
+RETURN <LOCAL.NAME>
+
+
+
+
+[FUNCTION IsNewbie]
+IF (<ATTR>&ATTR_NEWBIE)
+	RETURN 1
+ENDIF
+RETURN 0
+
+
+[FUNCTION IsMagic]
+IF (<ATTR>&ATTR_MAGIC && <MOREY> > 0)
+	RETURN 1
+ENDIF
+RETURN 0
+
+
+
+
+[FUNCTION ISINPACK]
+REF1 <ARGS>
+IF (<REF1.isvalid>)
+	IF !(<REF1.CONT>)
+		RETURN 0
+	ELSEIF ((<REF1.CONT.UID> == <FINDLAYER.21>) || (<REF1.TOPOBJ.UID> == <UID>)) && (<REF1.CONT.UID> != <FINDLAYER.29>)
+		RETURN 1
+	ELSE
+		RETURN 0
+	ENDIF
+ENDIF
+RETURN 0
+
+
+[FUNCTION ISINBANK]
+REF1 <ARGS>
+IF (<REF1.isvalid>)
+	IF !(<REF1.CONT>)
+		RETURN 0
+	ELSEIF (<REF1.CONT.UID> == <FINDLAYER.29>) && !((<REF1.TOPOBJ.UID> == <UID>) && (<REF1.CONT.UID> == <FINDLAYER.21>))
+		RETURN 1
+	ELSE
+		RETURN 0
+	ENDIF
+ENDIF
+RETURN 0
+
+
+[FUNCTION IsMountItem]
+IF (<TYPE> == T_FIGURINE) 
+	RETURN 1
+ELSEIF (<BASEID> == I_YUMURTA_OLGUN)
+	RETURN 1
+ENDIF
+RETURN 0
+
+
+[FUNCTION IsMultiDeed]
+IF (<SERV.MULTIDEF.<MORE1>.TYPE> == T_MULTI) 
+	RETURN 1
+ELSEIF (<SERV.MULTIDEF.<MORE1>.TYPE> == T_MULTI_CUSTOM) 
+	RETURN 1
+ELSEIF (<SERV.MULTIDEF.<MORE1>.TYPE> == T_SHIP)
+	RETURN 1
+ENDIF
+RETURN 0
+
+
+// IsItemTDataFlag <DEF.tilef_impassable>
+// IsItemTDataFlag <DEF.tilef_wall>
+[FUNCTION IsItemTDataFlag]
+IF (<ARGV>) && !(<ISEMPTY <ARGV0>>)
+	IF (<ISITEM>)
+		IF (<SERV.TILEDATA.ITEM(<DISPIDDEC>).FLAGS>&<ARGV0>)
+			return 1
+		ENDIF
+	ENDIF
+ENDIF
+RETURN 0
+
+
+[FUNCTION IsImpassableItemFlag]
+IF (<ISITEM>)
+	IF (<SERV.TILEDATA.ITEM(<DISPIDDEC>).FLAGS>&<DEF.tilef_impassable>)
+		return 1
+	ENDIF
+ENDIF
+RETURN 0
+
+
+
+[FUNCTION IsScrollSpell]
+IF !(<ISEMPTY <ARGS>>)
+	IF (STRMATCH('I_SCROLL_PARALYZE_FIELD','<ARGS>'))
+		LOCAL.SPELL=S_PARALYZATION_FIELD
+	ELSE
+		LOCAL.SPELL=S_<STRSUB 9 99 <ARGS>>
+	ENDIF
+
+	RETURN <LOCAL.SPELL>
+ENDIF
+
+
+
+
+
+[FUNCTION IsTeleItem]
+IF (<BASEID> == I_RUNEBOOK_GATE) 
+	RETURN 1
+ELSEIF (<TYPE> == I_MOONGATE_BLUE) 
+	RETURN 1
+ELSEIF (<TYPE> == I_MOONGATE_RED) 
+	RETURN 1
+ELSEIF (<TYPE> == I_MOONGATE_BLACK) 
+	RETURN 1
+ELSEIF (<TYPE> == I_MOONGATE) 
+	RETURN 1
+ELSEIF (<TYPE> == T_TELEPAD)
+	RETURN 1 
+// ELSEIF (<TYPE> == T_KIIRIN_GATE)
+	// RETURN 1
+ENDIF
+RETURN 0
+
+
+[FUNCTION IsWeaponPoisonLevelName]
+IF (<MOREZ>)
+	IF ((<MOREZ> >= 1) && (<MOREZ> < 53))
+		LOCAL.CONDITION sickly
+	ELSEIF ((<MOREZ> >= 53) && (<MOREZ> < 73))
+		LOCAL.CONDITION very ill
+	ELSEIF ((<MOREZ> >= 73) && (<MOREZ> < 96))
+		LOCAL.CONDITION extremely
+	ELSEIF ((<MOREZ> >= 96) && (<MOREZ> < 127))
+		LOCAL.CONDITION deadly
+	ENDIF
+RETURN <LOCAL.CONDITION>
+ENDIF	
+
+
+
+[FUNCTION IsDamageName]
+IF (<HITS> > <MAXHITS>)
+	LOCAL.STATUSMSG <DEFMSG.ITEMSTATUS_PERFECT> // kusursuz
+	
+ELSEIF (<HITS> == <MAXHITS>)
+	LOCAL.STATUSMSG <DEFMSG.ITEMSTATUS_FULL> // hasarsız
+	
+ELSEIF (<HITS> > <EVAL <MAXHITS> / 2>)
+	LOCAL.STATUSMSG <DEFMSG.ITEMSTATUS_WELLWORN> // iyi
+		
+ELSEIF (<HITS> > <EVAL <MAXHITS> / 3>)
+	LOCAL.STATUSMSG <DEFMSG.ITEMSTATUS_SCRATCHED>  // yıpranmış
+		
+ELSEIF (<HITS> > 3)
+	LOCAL.STATUSMSG <DEFMSG.ITEMSTATUS_BADLY> // ağır hasarlı
+ELSE
+	LOCAL.STATUSMSG <DEFMSG.ITEMSTATUS_FALL_APART> // parçalanmak üzere
+ENDIF
+
+RETURN <LOCAL.STATUSMSG>
+
+
+[FUNCTION IsSignID]
+// START: 0x0BA3 = 2979
+// END: 0x0C0E = 3086
+IF (<DISPID> == 0B95)
+	LOCAL.SIGN=1
+ELSEIF (<DISPID> == 0B96)
+	LOCAL.SIGN=1
+ELSEIF (<DISPID> == 01F28)
+	LOCAL.SIGN=1
+ELSEIF (<DISPID> == 01F29)
+	LOCAL.SIGN=1
+ENDIF
+IF ((<DISPID> >= 2979) && (<DISPID> <= 3086))
+	LOCAL.SIGN=1
+ENDIF
+RETURN <DLOCAL.SIGN>
+
+
+[FUNCTION IsFood]
+IF (<TYPE> == T_FRUIT) || (<TYPE> == T_GRAIN) || (<TYPE> == T_MEAT_RAW) || (<TYPE> == T_FOOD_RAW) || (<TYPE> == T_FOOD) || (<TYPE> == T_FOOD_RAW)
+	RETURN 1
+ENDIF
+RETURN 0
+
+
+[FUNCTION IsContainer]
+IF (<TYPE> == t_container) 
+	RETURN 1
+ELSEIF (<TYPE> == t_container_locked) 
+	RETURN 1
+ELSEIF (<BASEID> == I_RUNEBOOK)
+	RETURN 0
+ENDIF
+RETURN 0
+
+
+[FUNCTION IsDoor]
+IF (<TYPE> == T_DOOR) 
+	RETURN 1
+ELSEIF (<TYPE> == T_DOOR_LOCKED) 
+	RETURN 1
+ELSEIF (<TYPE> == T_PORTCULIS) 
+	RETURN 1
+ELSEIF (<TYPE> == T_DOOR_OPEN)
+	RETURN 1
+ENDIF
+RETURN 0
+
+
+[FUNCTION IsMulti]
+IF (<TYPE> == T_MULTI) 
+	RETURN 1
+ELSEIF (<TYPE> == T_MULTI_CUSTOM)
+	RETURN 1
+ENDIF
+RETURN 0
+
+
+
+[FUNCTION CANTA_MALZEME_SAY]
+FORCONT <FINDLAYER.21> 9999
+	IF (<BASEID> == <args>)
+		LOCAL.ADET +=<AMOUNT>
+	ENDIF
+ENDFOR
+RETURN <DLOCAL.ADET>
+
+
+
+[FUNCTION BANKA_MALZEME_SAY]
+FORCONT <FINDLAYER.29> 9999
+	IF (<BASEID> == <args>)
+		LOCAL.ADET +=<AMOUNT>
+	ENDIF
+ENDFOR
+RETURN <DLOCAL.ADET>
+
+[FUNCTION FamilyCount]
+FORINSTANCES I_AILE_KOLYE_MASTER
+	LOCAL.X ++
+ENDFOR
+RETURN <DLOCAL.X>
+
+
+
+
+
+[FUNCTION IsEmptyLink]
+IF !(<LINK>) 
+	RETURN 1
+ELSEIF (<LINK> == <DEF.link_invalid>) 
+	RETURN 1
+ELSEIF (<LINK> <= 0) 
+	RETURN 1
+ELSEIF (STRMATCH('0','<LINK>)) 
+	RETURN 1
+ELSEIF (STRMATCH('','<LINK>')) 
+	RETURN 1
+ELSEIF (<ISEMPTY <LINK>>) 
+	RETURN 1
+ENDIF
+RETURN 0
+
+
+
+// .show IsGuildAlignCount 0 (natural)
+// .show IsGuildAlignCount 1 (order)
+// .show IsGuildAlignCount 2 (chaos)
+[FUNCTION IsGuildAlignCount]
+IF (<ARGS> >= 0) || (<ARGS> <= 2)
+	FORINSTANCES i_guild_stone
+		IF (<ALIGN> == <ARGS>)
+			LOCAL.ALIGN_<ARGS> ++
+		ENDIF
+	ENDFOR
+	RETURN <DLOCAL.ALIGN_<ARGS>>
+ENDIF
+
+
+
+
+
+[FUNCTION IsFireFieldItem]
+
+[FUNCTION IsPoisonFieldItem]
+
+[FUNCTION IsEnergyFieldItem]
+
+[FUNCTION IsParalyzeFieldItem]
+
+[FUNCTION IsStoneFieldItem]
+
+[FUNCTION IsSpellFieldItem]
+IF (<TYPE> == T_SPELL) 
+	RETURN 1
+ELSEIF (<BASEID> == 080) 
+	RETURN 1
+ELSEIF (STRMATCH(*I_FX_ENERGY_FIELD*,'<BASEID>'))
+	RETURN 1
+ELSEIF (STRMATCH(*I_FX_FIELD_PARALYZE*,'<BASEID>'))
+	RETURN 1
+ELSEIF (STRMATCH(*I_FX_POISON_FIELD*,'<BASEID>'))
+	RETURN 1
+ELSEIF (STRMATCH(*I_FX_FIELD_FIRE*,'<BASEID>'))
+	RETURN 1
+ELSEIF (STRMATCH(*I_FX_FIELD_FIRE_NS*,'<BASEID>'))
+	RETURN 1
+ENDIF
+RETURN 0
+
+[eof]

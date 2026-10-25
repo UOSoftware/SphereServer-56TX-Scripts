@@ -1,0 +1,101 @@
+
+
+
+[TEMPLATE Random_DungeonChests]
+CATEGORY=Treasure Chest
+SUBSECTION=Spawns
+DESCRIPTION=Random TC Spawn
+ITEM={ T_TC_1_W 1 T_TC_2_W 1 T_TC_3_W 1 T_TC_4_W 1 T_TC_5_W 1 T_TC_6_W 1 T_TC_1_M 1 T_TC_2_M 1 T_TC_3_M 1 T_TC_4_M 1 T_TC_5_M 1 T_TC_6_M 1 T_TC_1_A 1 T_TC_2_A 1 T_TC_3_A 1 T_TC_4_A 1 T_TC_5_A 1 T_TC_6_A 1 }
+
+
+// [SPAWN spawn_DungeonChests]
+// CATEGORY=Spawn Groups
+// SUBSECTION=Items
+// DESCRIPTION=Treasures
+// ID=T_TC_1_W 
+// ID=T_TC_2_W 
+// ID=T_TC_3_W 
+// ID=T_TC_4_W 
+// ID=T_TC_5_W 
+// ID=T_TC_6_W 
+// ID=T_TC_1_M 
+// ID=T_TC_2_M 
+// ID=T_TC_3_M 
+// ID=T_TC_4_M 
+// ID=T_TC_5_M 
+// ID=T_TC_6_M 
+// ID=T_TC_1_A 
+// ID=T_TC_2_A 
+// ID=T_TC_3_A 
+// ID=T_TC_4_A 
+// ID=T_TC_5_A 
+// ID=T_TC_6_A
+
+
+[SPAWN spawn_WaterCreatures]
+CATEGORY=Spawn Groups
+SUBSECTION=Animals
+DESCRIPTION=Water Creatures
+ID=c_dolphin
+ID=c_elemental_water
+ID=c_kraken_aos
+ID=c_sea_serpent
+ID=c_sea_serpent_deep
+
+[SPAWN spawn_JungleCreatures]
+CATEGORY=Spawn Groups
+SUBSECTION=Animals
+DESCRIPTION=Jungle Creatures
+ID=c_bear_black
+ID=c_bird
+ID=c_gorilla
+ID=c_horse_gray
+ID=c_leopard
+ID=c_panther
+ID=c_pig_big
+ID=c_slime
+ID=c_snake
+ID=c_wolf_dark
+ID=c_wolf_grey
+ID=c_wolf_silver
+
+[SPAWN spawn_SwampCreatures]
+CATEGORY=Spawn Groups
+SUBSECTION=Animals
+DESCRIPTION=Swamp Creatures
+ID=c_alligator
+ID=c_alligator_small
+ID=c_bird
+ID=c_bullfrog
+ID=c_rat
+ID=c_rat_giant
+ID=c_slime
+ID=c_snake
+ID=c_swamp_tentacles
+ID=c_toad_giant
+
+/////////////////
+// City Spawns //
+/////////////////
+
+[SPAWN spawn_Villagers]
+CATEGORY=Spawn Groups
+SUBSECTION=Humans
+DESCRIPTION=Villagers
+ID=c_noble_f
+ID=c_noble
+ID=c_peasant_f
+ID=c_peasant
+ID=c_priest
+ID=c_priestess_f
+ID=c_actor_f
+ID=c_actor
+ID=c_artist
+ID=c_artist_f
+ID=c_bard_f
+ID=c_bard
+ID=c_sculptor_f
+ID=c_sculptor
+
+
+[EOF]

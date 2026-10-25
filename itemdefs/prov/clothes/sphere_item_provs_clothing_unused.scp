@@ -1,0 +1,31 @@
+
+
+
+
+[ITEMDEF 02795]
+//unused tile named tabi boots tall
+CATEGORY=Miscellaneous
+SUBSECTION=Bad Tiles
+DESCRIPTION=Unused Tile 02795
+
+ON=@Create
+SERV.LOG Kullanilmayan esya olustu ve silindi.
+REMOVE
+
+
+
+
+[ITEMDEF 027e0]
+//unused tile named tabi boots tall
+CATEGORY=Miscellaneous
+SUBSECTION=Bad Tiles
+DESCRIPTION=Unused Tile 027e0
+
+ON=@Create
+SERV.LOG Kullanilmayan esya olustu ve silindi.
+REMOVE
+
+
+
+
+[eof]

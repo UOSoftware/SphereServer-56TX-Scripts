@@ -1,0 +1,162 @@
+///////////////////
+// Animal Spawns //
+///////////////////
+
+[SPAWN spawn_Animals]
+CATEGORY=Spawn Groups
+SUBSECTION=Animals
+DESCRIPTION=All Animals
+ID=c_alligator
+ID=c_alligator_small
+ID=c_bear_black
+ID=c_bear_brown
+ID=c_bear_grizzly
+// ID=c_bear_polar
+ID=c_bull_brown_dk
+ID=c_bull_brown_lt
+ID=c_bullfrog
+ID=c_cat
+ID=c_black_cat
+ID=c_chicken
+ID=c_cougar
+ID=c_cow_brown
+ID=c_cow_bw
+ID=c_doe
+ID=c_dog
+ID=c_eagle
+ID=c_goat
+ID=c_goat_mountain
+ID=c_gorilla
+ID=c_leopard
+ID=c_panther
+ID=c_pig
+ID=c_pig_big
+ID=c_rabbit
+ID=c_rat
+ID=c_rat_giant
+ID=c_sheep_woolly
+ID=c_snake
+ID=c_stag
+ID=c_wolf_dark
+ID=c_wolf_dire
+ID=c_wolf_grey
+ID=c_wolf_silver
+ID=c_wolf_timber
+ID=c_wolf_white
+ID=c_bird
+ID=c_eagle
+ID=c_bird_magpie
+ID=c_bird_tropical
+ID=c_bird_raven
+ID=c_bird_jungle
+
+
+[SPAWN spawn_Birds]
+CATEGORY=Spawn Groups
+SUBSECTION=Animals
+DESCRIPTION=Birds
+ID=c_bird
+ID=c_eagle
+ID=c_bird_magpie
+ID=c_bird_tropical
+ID=c_bird_raven
+ID=c_bird_jungle
+
+[SPAWN spawn_ForestAnimals]
+CATEGORY=Spawn Groups
+SUBSECTION=Animals
+DESCRIPTION=Forest Animals
+ID=c_bear_brown
+ID=c_bird
+ID=c_cougar
+ID=c_doe
+ID=c_eagle
+ID=c_gorilla
+ID=c_jackrabbit
+ID=c_rabbit
+ID=c_rat
+ID=c_snake
+ID=c_stag
+ID=c_wolf_dark
+ID=c_wolf_dire
+ID=c_wolf_silver
+ID=c_wolf_timber
+
+[SPAWN spawn_FarmAnimals]
+CATEGORY=Spawn Groups
+SUBSECTION=Animals
+DESCRIPTION=Farm Animals
+ID=c_bull_brown_dk
+ID=c_bull_brown_lt
+ID=c_chicken
+ID=c_cow_brown
+ID=c_cow_bw
+ID=c_goat
+ID=c_horse_brown_dk
+ID=c_horse_brown_lt
+ID=c_horse_gray
+ID=c_horse_tan
+ID=c_pig
+ID=c_sheep_woolly
+
+[SPAWN spawn_CityAnimals]
+CATEGORY=Spawn Groups
+SUBSECTION=Animals
+DESCRIPTION=City Animals
+ID=c_bird
+ID=c_cat
+ID=c_dog
+
+[SPAWN spawn_MountainAnimals]
+CATEGORY=Spawn Groups
+SUBSECTION=Animals
+DESCRIPTION=Mountain Animals
+ID=c_eagle                  13
+ID=c_goat_mountain          13
+ID=c_horse_brown_lt
+
+[SPAWN spawn_CaveAnimals]
+CATEGORY=Spawn Groups
+SUBSECTION=Animals
+DESCRIPTION=Cave Animals
+ID=c_rat                    19
+ID=c_bear_grizzly           16
+
+[SPAWN spawn_IceAnimals]
+CATEGORY=Spawn Groups
+SUBSECTION=Animals
+DESCRIPTION=Ice Animals
+ID=c_walrus                 15
+ID=c_leopard_snow           13
+ID=c_wolf_white             13
+ID=c_bear_polar
+ID=c_ice_snake              14
+
+[SPAWN spawn_PlainsAnimals]
+CATEGORY=Spawn Groups
+SUBSECTION=Animals
+DESCRIPTION=Plains Animals
+ID=c_rabbit                 14
+ID=c_eagle                  13
+ID=c_snake                  13
+ID=c_horse_tan
+ID=c_goat
+ID=c_horse_brown_dk
+ID=c_horse_brown_lt
+ID=c_horse_gray
+ID=c_horse_tan
+ID=c_wolf_silver            10
+ID=c_bird_crow
+ID=c_bird_raven
+ID=c_bird
+
+[SPAWN spawn_PlainsHorses]
+CATEGORY=Spawn Groups
+SUBSECTION=Animals
+DESCRIPTION=Plains Animals
+ID=c_horse_brown_dk
+ID=c_horse_brown_lt
+ID=c_horse_gray
+ID=c_horse_tan
+
+[eof]

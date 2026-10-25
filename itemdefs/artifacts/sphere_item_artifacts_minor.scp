@@ -1,0 +1,673 @@
+//****************************************************************************
+// FILE LAST UPDATED: Monday, Dec 31, 2018
+//
+VERSION=0.56d
+
+
+[ITEMDEF i_alchemists_bauble]
+ID=i_bracelet_gold
+NAME=Alchemist's Bauble
+TEVENTS=t_equipitem
+CATEGORY=Artifacts
+SUBSECTION=Minor Artifacts
+DESCRIPTION=Alchemist's Bauble
+
+ON=@Create
+COLOR=0290
+
+[ITEMDEF i_arctic_death_dealer]
+ID=i_mace_war
+NAME=Arctic Death Dealer
+TEVENTS=t_equipitem
+CATEGORY=Artifacts
+SUBSECTION=Minor Artifacts
+DESCRIPTION=Arctic Death Dealer
+EXPANSION=-1
+
+ON=@Create
+COLOR=0480
+HITPOINTS=255
+
+[ITEMDEF i_blaze_death]
+ID=i_halberd
+NAME=Blaze of Death
+TEVENTS=t_equipitem
+CATEGORY=Artifacts
+SUBSECTION=Minor Artifacts
+DESCRIPTION=Blaze of Death
+EXPANSION=-1
+
+ON=@Create
+COLOR=0501
+HITPOINTS=255
+
+[ITEMDEF i_bow_juka_king]
+ID=i_bow
+NAME=Bow of the Juka King
+TAG.SlayerGroup=REPTILE
+TEVENTS=t_equipitem
+CATEGORY=Artifacts
+SUBSECTION=Minor Artifacts
+DESCRIPTION=Bow of the Juka King
+EXPANSION=-1
+
+ON=@Create
+COLOR=0460
+HITPOINTS=255
+
+[ITEMDEF i_burglar_bandana]
+ID=i_bandana
+NAME=Burglar's Bandana
+TEVENTS=t_equipitem
+CATEGORY=Artifacts
+SUBSECTION=Minor Artifacts
+DESCRIPTION=Burglar's Bandana
+
+ON=@Create
+COLOR={010 1 058c 1}
+HITPOINTS=255
+
+[ITEMDEF i_candelabra_souls]
+ID=i_candelabra2_lit
+NAME=Candelabra of Souls
+CATEGORY=Artifacts
+SUBSECTION=Minor Artifacts
+DESCRIPTION=Candelabra of Souls
+
+[ITEMDEF i_captain_quacklebush_cutlass]
+ID=i_cutlass
+NAME=Captain Quacklebush's Cutlass
+TEVENTS=t_equipitem
+CATEGORY=Artifacts
+SUBSECTION=Minor Artifacts
+DESCRIPTION=Captain Quacklebush's Cutlass
+EXPANSION=-1
+
+ON=@Create
+COLOR=066c
+HITPOINTS=255
+
+[ITEMDEF i_cavorting_club]
+ID=i_club
+NAME=Cavorting Club
+//SPEED=44
+TEVENTS=t_equipitem
+CATEGORY=Artifacts
+SUBSECTION=Minor Artifacts
+DESCRIPTION=Cavorting Club
+EXPANSION=-1
+
+ON=@Create
+COLOR=0593
+HITPOINTS=255
+
+[ITEMDEF i_cold_blood]
+ID=i_cleaver_meat
+NAME=Cold Blood
+TEVENTS=t_equipitem
+CATEGORY=Artifacts
+SUBSECTION=Minor Artifacts
+DESCRIPTION=Cold Blood
+EXPANSION=-1
+
+ON=@Create
+COLOR=04f2
+HITPOINTS=255
+
+[ITEMDEF i_dread_pirate_hat]
+ID=i_hat_tricorne
+NAME=Dread Pirate Hat
+TEVENTS=t_equipitem
+CATEGORY=Artifacts
+SUBSECTION=Minor Artifacts
+DESCRIPTION=Dread Pirate Hat
+
+ON=@Create
+COLOR=0497
+HITPOINTS=255
+
+[ITEMDEF i_enchanted_titan_leg_bone]
+ID=i_spear_short
+NAME=Enchanted Titan Leg Bone
+TEVENTS=t_equipitem
+CATEGORY=Artifacts
+SUBSECTION=Minor Artifacts
+DESCRIPTION=Enchanted Titan Leg Bone
+EXPANSION=-1
+
+ON=@Create
+COLOR=08a5
+HITPOINTS=255
+
+[ITEMDEF i_ghost_ship_anchor]
+ID=i_anchor
+NAME=Ghost Ship Anchor
+CATEGORY=Artifacts
+SUBSECTION=Minor Artifacts
+DESCRIPTION=Ghost Ship Anchor
+
+ON=@Create
+COLOR=047e
+
+[ITEMDEF i_gloves_pugilist]
+ID=i_leather_gloves
+NAME=Gloves of the Pugilist
+TEVENTS=t_equipitem
+CATEGORY=Artifacts
+SUBSECTION=Minor Artifacts
+DESCRIPTION=Gloves of the Pugilist
+EXPANSION=-1
+
+ON=@Create
+COLOR=06d1
+HITPOINTS=255
+
+[ITEMDEF i_gold_bricks]
+ID=01beb
+NAME=gold bricks
+CATEGORY=Artifacts
+SUBSECTION=Minor Artifacts
+DESCRIPTION=Gold Bricks
+
+[ITEMDEF i_gwennos_harp]
+ID=i_harp_large
+NAME=Gwenno's Harp
+CATEGORY=Artifacts
+SUBSECTION=Minor Artifacts
+DESCRIPTION=Gwenno's Harp
+
+ON=@Create
+COLOR=047e
+
+[ITEMDEF i_helm_swiftness]
+ID=i_helm_winged
+NAME=Helm of Swiftness
+// CanUse=can_u_elf
+MageArmor=1
+TEVENTS=t_equipitem
+CATEGORY=Artifacts
+SUBSECTION=Minor Artifacts
+DESCRIPTION=Helm of Swiftness
+
+ON=@Create
+COLOR=0592
+HITPOINTS=255
+
+[ITEMDEF i_heart_lion]
+ID=i_platemail_chest
+NAME=Heart of the Lion
+MageArmor=1
+TEVENTS=t_equipitem
+CATEGORY=Artifacts
+SUBSECTION=Minor Artifacts
+DESCRIPTION=Heart of the Lion
+EXPANSION=-1
+
+ON=@Create
+COLOR=0501
+HITPOINTS=255
+
+[ITEMDEF i_iolos_lute]
+ID=i_lute
+NAME=Iolo's Lute
+CATEGORY=Artifacts
+SUBSECTION=Minor Artifacts
+DESCRIPTION=Iolo's Lute
+
+ON=@Create
+COLOR=047e
+
+[ITEMDEF i_luna_lance]
+ID=i_lance
+NAME=Luna Lance
+TEVENTS=t_equipitem
+CATEGORY=Artifacts
+SUBSECTION=Minor Artifacts
+DESCRIPTION=Luna Lance
+EXPANSION=-1
+
+ON=@Create
+COLOR=047e
+HITPOINTS=255
+
+[ITEMDEF i_night_kiss]
+ID=i_dagger
+NAME=Night's Kiss
+TAG.SlayerGroup=REPOND
+TEVENTS=t_equipitem
+CATEGORY=Artifacts
+SUBSECTION=Minor Artifacts
+DESCRIPTION=Night's Kiss
+EXPANSION=-1
+
+ON=@Create
+COLOR=0455
+HITPOINTS=255
+
+[ITEMDEF i_nox_ranger_heavy_crossbow]
+ID=i_crossbow_heavy
+NAME=Nox Ranger's Heavy Crossbow
+TEVENTS=t_equipitem
+CATEGORY=Artifacts
+SUBSECTION=Minor Artifacts
+DESCRIPTION=Nox Ranger's Heavy Crossbow
+EXPANSION=-1
+
+ON=@Create
+COLOR=058c
+HITPOINTS=255
+
+[ITEMDEF i_orcish_visage]
+ID=i_mask_orc
+NAME=Orcish Visage
+TEVENTS=t_equipitem
+CATEGORY=Artifacts
+SUBSECTION=Minor Artifacts
+DESCRIPTION=Orcish Visage
+EXPANSION=-1
+
+ON=@Create
+COLOR=0592
+HITPOINTS=255
+
+[ITEMDEF i_pads_of_cu_sidhe]
+ID=i_boots_fur
+NAME=Pads of the Cu Sidhe
+TYPE=t_armor_leather
+CATEGORY=Artifacts
+SUBSECTION=Minor Artifacts
+DESCRIPTION=Pads of the Cu Sidhe
+TEVENTS=t_equipitem
+ReqStr=10
+EXPANSION=-1
+
+
+ON=@Create
+COLOR=047e
+HITPOINTS=255
+
+[ITEMDEF i_phillip_wooden_steed]
+ID=03ffe
+NAME=Phillip's Wooden Steed
+CATEGORY=Artifacts
+SUBSECTION=Minor Artifacts
+DESCRIPTION=Phillip's Wooden Steed
+
+[ITEMDEF i_pixie_swatter]
+ID=i_scepter
+NAME=Pixie Swatter
+TAG.SlayerGroup=FEY
+TEVENTS=t_equipitem
+CATEGORY=Artifacts
+SUBSECTION=Minor Artifacts
+DESCRIPTION=Pixie Swatter
+EXPANSION=-1
+
+
+ON=@Create
+COLOR=08a
+HITPOINTS=255
+
+[ITEMDEF i_polar_bear_mask]
+ID=i_mask_bear
+NAME=Polar Bear Mask
+TEVENTS=t_equipitem
+CATEGORY=Artifacts
+SUBSECTION=Minor Artifacts
+DESCRIPTION=Polar Bear Mask
+EXPANSION=-1
+
+ON=@Create
+COLOR={047e 1 0481 1}
+HITPOINTS=255
+
+[ITEMDEF i_seahorse_statuette]
+ID=i_deed
+// ID=i_seahorse
+NAME=Seahorse Statuette
+CATEGORY=Artifacts
+SUBSECTION=Minor Artifacts
+DESCRIPTION=Seahorse Statuette
+
+ON=@Create
+COLOR={0 1 0482 1 0489 1 0495 1 04f2 1}
+
+[ITEMDEF i_art_shield_invul]
+ID=i_shield_order
+NAME=Shield of Invulnerability
+TEVENTS=t_equipitem
+CATEGORY=Artifacts
+SUBSECTION=Minor Artifacts
+DESCRIPTION=Shield of Invulnerability
+EXPANSION=-1
+
+
+ON=@Create
+COLOR=04f2
+HITPOINTS=255
+
+[ITEMDEF i_ship_model_hmscape]
+ID=i_model_ship
+NAME=Ship Model of the H.M.S. Cape
+CATEGORY=Artifacts
+SUBSECTION=Minor Artifacts
+DESCRIPTION=Ship Model of the H.M.S. Cape
+
+ON=@Create
+COLOR=037b
+
+[ITEMDEF i_staff_of_power]
+ID=i_staff_black
+NAME=Staff of Power
+TEVENTS=t_equipitem
+CATEGORY=Artifacts
+SUBSECTION=Minor Artifacts
+DESCRIPTION=Staff of Power
+EXPANSION=-1
+
+ON=@Create
+COLOR={04f2 1 04ef 1}
+HITPOINTS=255
+
+[ITEMDEF i_admirals_hearty_rum]
+ID=i_bottle_liquor
+NAME=The Admiral's Hearty Rum
+CATEGORY=Artifacts
+SUBSECTION=Minor Artifacts
+DESCRIPTION=The Admiral's Hearty Rum
+
+ON=@Create
+COLOR=066c
+
+[ITEMDEF i_violet_courage]
+ID=i_armor_female_plate
+NAME=Violet Courage
+MageArmor=1
+TEVENTS=t_equipitem
+CATEGORY=Artifacts
+SUBSECTION=Minor Artifacts
+DESCRIPTION=Staff of Power
+EXPANSION=-1
+
+
+ON=@Create
+COLOR={0486 1 0490 1}
+HITPOINTS=255
+
+[ITEMDEF i_wrath_dryad]
+ID=i_staff_gnarled
+NAME=Wrath of the Dryad
+TEVENTS=t_equipitem
+CATEGORY=Artifacts
+SUBSECTION=Minor Artifacts
+DESCRIPTION=Wrath of the Dryad
+EXPANSION=-1
+
+ON=@Create
+COLOR=029c
+HITPOINTS=255
+
+[ITEMDEF i_fire_horn]
+//1049616 "You are too busy to do that at the moment."
+//1049618 "The horn emits a pathetic squeek."
+//1049718 "The fire horn crumbles in your hands."
+//1049620 "Select an area to incinerate."
+//1049621 "You catch your breath."
+ID=0fc7
+NAME=Fire Horn
+CATEGORY=Artifacts
+SUBSECTION=Minor Artifacts
+DESCRIPTION=Fire Horn
+
+ON=@Create
+COLOR=0466
+
+[ITEMDEF i_fire_horn_timer]
+ID=i_fire_horn
+NAME=Fire Horn Timer Memory
+TYPE=t_eq_script
+WEIGHT=0
+
+ON=@Create
+COLOR=0466
+
+[ITEMDEF i_aegis_grace]
+ID=i_dragon_helm
+NAME=Ægis of Grace
+TEVENTS=t_equipitem
+CATEGORY=Artifacts
+SUBSECTION=Minor Artifacts
+DESCRIPTION=Aegis Of Grace
+
+ON=@Create
+COLOR=047e
+HITPOINTS=255
+
+[ITEMDEF i_boomstick]
+ID=i_staff_wild
+NAME=Boomstick
+TWOHANDS=Y
+TEVENTS=t_equipitem
+CATEGORY=Artifacts
+SUBSECTION=Minor Artifacts
+DESCRIPTION=Boomstick
+EXPANSION=-1
+
+ON=@Create
+COLOR=025
+HITPOINTS=255
+
+[ITEMDEF i_bonesmasher]
+ID=i_mace_diamond
+NAME=Bonesmasher
+TEVENTS=t_equipitem
+CATEGORY=Artifacts
+SUBSECTION=Minor Artifacts
+DESCRIPTION=Bonesmasher
+EXPANSION=-1
+
+
+ON=@Create
+COLOR=0482
+HITPOINTS=255
+
+[ITEMDEF i_raeds_glory]
+ID=i_sword_warcleaver
+NAME=Raed's Glory
+TEVENTS=t_equipitem
+CATEGORY=Artifacts
+SUBSECTION=Minor Artifacts
+DESCRIPTION=Raed's Glory
+EXPANSION=-1
+
+ON=@Create
+COLOR=01e6
+HITPOINTS=255
+
+[ITEMDEF i_wildfire_bow]
+ID=i_elven_composite_longbow
+NAME=Wildfire Bow
+TEVENTS=t_equipitem
+CATEGORY=Artifacts
+SUBSECTION=Minor Artifacts
+DESCRIPTION=Wildfire Bow
+EXPANSION=-1
+
+ON=@Create
+COLOR=0489
+HITPOINTS=255
+
+[ITEMDEF i_windsong]
+ID=i_magical_shortbow
+NAME=Windsong
+TEVENTS=t_equipitem
+CATEGORY=Artifacts
+SUBSECTION=Minor Artifacts
+DESCRIPTION=Windsong
+EXPANSION=-1
+
+ON=@Create
+COLOR=0f7
+HITPOINTS=255
+
+[ITEMDEF i_talon_bite]
+ID=i_ornate_axe
+NAME=Talon Bite
+TEVENTS=t_equipitem
+CATEGORY=Artifacts
+SUBSECTION=Minor Artifacts
+DESCRIPTION=Talon Bite
+EXPANSION=-1
+
+ON=@Create
+COLOR=047e
+HITPOINTS=255
+
+[ITEMDEF i_soul_seeker]
+ID=i_radiant_scimitar
+NAME=Soul Seeker
+TAG.SlayerGroup=REPOND
+TEVENTS=t_equipitem
+CATEGORY=Artifacts
+SUBSECTION=Minor Artifacts
+DESCRIPTION=Soul Seeker
+EXPANSION=-1
+
+ON=@Create
+COLOR=038c
+HITPOINTS=255
+
+[ITEMDEF i_blade_dance]
+ID=i_rune_blade
+NAME=Blade Dance
+TEVENTS=t_equipitem
+CATEGORY=Artifacts
+SUBSECTION=Minor Artifacts
+DESCRIPTION=Blade Dance
+EXPANSION=-1
+
+ON=@Create
+COLOR=066c
+HITPOINTS=255
+
+[ITEMDEF i_dreads_revenge]
+ID=i_kryss
+NAME=Dread's Revenge
+TEVENTS=t_equipitem
+CATEGORY=Artifacts
+SUBSECTION=Minor Artifacts
+DESCRIPTION=Dread's Revenge
+EXPANSION=-1
+
+ON=@Create
+COLOR=03a
+HITPOINTS=255
+
+[ITEMDEF i_flesh_ripper]
+ID=i_sword_assassin_spike
+NAME=Flesh Ripper
+TEVENTS=t_equipitem
+CATEGORY=Artifacts
+SUBSECTION=Minor Artifacts
+DESCRIPTION=Flesh Ripper
+EXPANSION=-1
+
+ON=@Create
+COLOR=0341
+HITPOINTS=255
+
+[ITEMDEF i_robe_equinox]
+ID=i_robe
+NAME=Robe of the Equinox
+// CanUse=can_u_elf
+TEVENTS=t_equipitem
+CATEGORY=Artifacts
+SUBSECTION=Minor Artifacts
+DESCRIPTION=Robe of the Equinox
+
+ON=@Create
+COLOR=0d6
+HITPOINTS=255
+
+[ITEMDEF i_robe_eclipse]
+ID=i_robe
+NAME=Robe of the Eclipse
+TEVENTS=t_equipitem
+CATEGORY=Artifacts
+SUBSECTION=Minor Artifacts
+DESCRIPTION=Robe of the Eclipse
+
+ON=@Create
+COLOR=0486
+HITPOINTS=255
+
+[ITEMDEF i_righteous_anger]
+ID=i_elven_machete
+NAME=Righteous Anger
+TEVENTS=t_equipitem
+CATEGORY=Artifacts
+SUBSECTION=Minor Artifacts
+DESCRIPTION=Righteous Anger
+EXPANSION=-1
+
+ON=@Create
+COLOR=0284
+HITPOINTS=255
+
+[ITEMDEF i_bloodwood_spirit]
+ID=i_talisman3
+NAME=Bloodwood Spirit
+TEVENTS=t_equipitem
+CATEGORY=Artifacts
+SUBSECTION=Minor Artifacts
+DESCRIPTION=Bloodwood Spirit
+
+ON=@Create
+COLOR=027
+
+[ITEMDEF i_brightsight_lenses]
+ID=i_elven_glasses
+NAME=Brightsight Lenses
+TEVENTS=t_equipitem
+CATEGORY=Artifacts
+SUBSECTION=Minor Artifacts
+DESCRIPTION=Brightsight Lenses
+
+ON=@Create
+COLOR=0501
+
+[ITEMDEF i_crimson_cincture]
+ID=i_talisman4
+NAME=Crimson Cincture
+TEVENTS=t_equipitem
+CATEGORY=Artifacts
+SUBSECTION=Minor Artifacts
+DESCRIPTION=Crimson Cincture
+
+ON=@Create
+COLOR=0485
+
+[ITEMDEF i_fey_leggings]
+ID=i_chainmail_leggings
+NAME=Fey Leggings
+// CanUse=can_u_elf
+TEVENTS=t_equipitem
+CATEGORY=Artifacts
+SUBSECTION=Minor Artifacts
+DESCRIPTION=Fey Leggings
+
+ON=@Create
+HITPOINTS=255
+
+[ITEMDEF i_totem_of_void]
+ID=i_talisman4
+NAME=Totem of the Void
+TEVENTS=t_equipitem
+CATEGORY=Artifacts
+SUBSECTION=Minor Artifacts
+DESCRIPTION=Totem of the Void
+
+ON=@Create
+COLOR=02d0
+
+[EOF]

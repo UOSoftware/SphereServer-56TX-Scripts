@@ -1,0 +1,74 @@
+
+
+[SPEECH spk_generic_chars]
+
+// bu her zaman en altta ollmali.
+ON=*
+IF (<ACCOUNT.TAG0.Mute>)
+	IF (<FINDID.I_MUTE>)
+		SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Konuşma yasaklısınız. (<Kalansure <FINDID.I_MUTE.TIMER>>)
+	ELSE
+		SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Konuşma yasaklısınız.
+	ENDIF
+	RETURN 1
+ENDIF
+
+// Tum konusmalari native file methodu ile dosyaya yazdir.
+IF !(<FILE.INUSE>)
+    LOCAL.FileName logs/speechs/<uid>.log
+    LOCAL.NeedClean = 0
+    // Temizleme kontrolü
+    IF (<FILE.FILEEXIST <LOCAL.FileName>>)
+        IF (<FILE.FILELINES <LOCAL.FileName>> >= 1000)
+            FILE.DELETEFILE <LOCAL.FileName>
+            LOCAL.NeedClean = 1
+        ENDIF
+    ENDIF
+    // Dosyayı aç ve yaz
+    FILE.MODE.SETDEFAULT
+    FILE.MODE.CREATE=1
+    FILE.MODE.APPEND=1
+    FILE.MODE.WRITEFLAG=1
+    IF (<FILE.OPEN <LOCAL.FileName>>)
+        IF (<LOCAL.NeedClean>)
+            FILE.WRITELINE <SERV.RTIME>: Kayit temizlendi
+        ENDIF
+        FILE.WRITELINE <SERV.RTIME>: <ARGS>
+        FILE.CLOSE
+    ENDIF
+ENDIF
+
+
+
+
+
+[SPEECH spk_generic_char_speechsave]
+ON=*
+// Tum konusmalari native file methodu ile dosyaya yazdir.
+IF !(<FILE.INUSE>)
+    LOCAL.FileName logs/speechs/<uid>.log
+    LOCAL.NeedClean = 0
+    // Temizleme kontrolü
+    IF (<FILE.FILEEXIST <LOCAL.FileName>>)
+        IF (<FILE.FILELINES <LOCAL.FileName>> >= 1000)
+            FILE.DELETEFILE <LOCAL.FileName>
+            LOCAL.NeedClean = 1
+        ENDIF
+    ENDIF
+    // Dosyayı aç ve yaz
+    FILE.MODE.SETDEFAULT
+    FILE.MODE.CREATE=1
+    FILE.MODE.APPEND=1
+    FILE.MODE.WRITEFLAG=1
+    IF (<FILE.OPEN <LOCAL.FileName>>)
+        IF (<LOCAL.NeedClean>)
+            FILE.WRITELINE <SERV.RTIME>: Kayit temizlendi
+        ENDIF
+        FILE.WRITELINE <SERV.RTIME>: <ARGS>
+        FILE.CLOSE
+    ENDIF
+ENDIF
+
+
+
+[EOF]

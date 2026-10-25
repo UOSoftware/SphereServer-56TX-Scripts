@@ -1,0 +1,169 @@
+
+
+[ITEMDEF i_tc_1_a]
+NAME=treasure chest
+ID=i_crate_small
+TYPE=t_container_locked
+FLIP=1
+WEIGHT=1
+TEVENTS=ei_container_treasure
+
+ON=@Create
+MORE=0515
+MOREX=1
+COLOR=0482
+ATTR=ATTR_MOVE_NEVER|ATTR_DECAY
+
+
+[ITEMDEF i_tc_2_a]
+NAME=treasure chest
+ID=i_crate_small
+TYPE=t_container_locked
+FLIP=1
+WEIGHT=1
+TEVENTS=ei_container_treasure
+
+ON=@Create
+MORE=0515
+MOREX=2
+COLOR=0482
+ATTR=ATTR_MOVE_NEVER|ATTR_DECAY
+
+[ITEMDEF i_tc_3_a]
+NAME=treasure chest
+ID=i_crate_small
+TYPE=t_container_locked
+FLIP=1
+WEIGHT=1
+TEVENTS=ei_container_treasure
+
+ON=@Create
+MORE=0515
+MOREX=3
+COLOR=0482
+ATTR=ATTR_MOVE_NEVER|ATTR_DECAY
+
+
+[ITEMDEF i_tc_4_a]
+NAME=treasure chest
+ID=i_crate_small
+TYPE=t_container_locked
+FLIP=1
+WEIGHT=1
+TEVENTS=ei_container_treasure
+
+ON=@Create
+MORE=0515
+MOREX=4
+COLOR=0482
+ATTR=ATTR_MOVE_NEVER|ATTR_DECAY
+
+
+[ITEMDEF i_tc_5_a]
+NAME=treasure chest
+ID=i_crate_small
+TYPE=t_container_locked
+FLIP=1
+WEIGHT=1
+TEVENTS=ei_container_treasure
+
+ON=@Create
+MORE=0515
+MOREX=5
+COLOR=0482
+ATTR=ATTR_MOVE_NEVER|ATTR_DECAY
+
+
+[ITEMDEF i_tc_6_a]
+NAME=treasure chest
+ID=i_crate_small
+TYPE=t_container_locked
+FLIP=1
+WEIGHT=1
+TEVENTS=ei_container_treasure
+
+ON=@Create
+MORE=0515
+MOREX=6
+COLOR=0482
+ATTR=ATTR_MOVE_NEVER|ATTR_DECAY
+
+[TEMPLATE T_TC_1_a]
+NAME=treasure chest
+CATEGORY=Treasure Chest
+SUBSECTION=Archer
+DESCRIPTION=Level 1
+CONTAINER=i_tc_1_a
+TYPE=t_container_locked
+// TEVENTS=ei_container_treasure
+ATTR=ATTR_MOVE_NEVER|ATTR_DECAY
+
+ITEM=i_gold,{500 1000}
+ITEM={ 048fe 1 048ff 1 04900 1 04901 1 04902 1 04903 1 04904 1 }
+
+[TEMPLATE T_TC_2_a]
+NAME=treasure chest
+CATEGORY=Treasure Chest
+SUBSECTION=Archer
+DESCRIPTION=Level 2
+CONTAINER=i_tc_2_a
+TYPE=t_container_locked
+// TEVENTS=ei_container_treasure
+ATTR=ATTR_MOVE_NEVER|ATTR_DECAY
+
+ITEM=i_gold,{1000 1500}
+ITEM=RANDOM_RINGMAIL_DEFENSE,R5
+
+[TEMPLATE T_TC_3_a]
+NAME=treasure chest
+CATEGORY=Treasure Chest
+SUBSECTION=Archer
+DESCRIPTION=Level 3
+CONTAINER=i_tc_3_a
+TYPE=t_container_locked
+// TEVENTS=ei_container_treasure
+ATTR=ATTR_MOVE_NEVER|ATTR_DECAY
+
+ITEM=i_gold,{1500 2000}
+ITEM=RANDOM_RINGMAIL_DEFENSE,R2
+
+[TEMPLATE T_TC_4_a]
+NAME=treasure chest
+CATEGORY=Treasure Chest
+SUBSECTION=Archer
+DESCRIPTION=Level 4
+CONTAINER=i_tc_4_a
+TYPE=t_container_locked
+// TEVENTS=ei_container_treasure
+ATTR=ATTR_MOVE_NEVER|ATTR_DECAY
+
+ITEM=i_gold,{2000 2500}
+ITEM=RANDOM_RINGMAIL_GUARDING,R2
+
+[TEMPLATE T_TC_5_a]
+NAME=treasure chest
+CATEGORY=Treasure Chest
+SUBSECTION=Archer
+DESCRIPTION=Level 5
+CONTAINER=i_tc_5_a
+TYPE=t_container_locked
+// TEVENTS=ei_container_treasure
+ATTR=ATTR_MOVE_NEVER|ATTR_DECAY
+
+ITEM=i_gold,{2500 3500}
+ITEM=RANDOM_PLATEMAIL_HARDENING,R4
+
+[TEMPLATE T_TC_6_a]
+NAME=treasure chest
+CATEGORY=Treasure Chest
+SUBSECTION=Archer
+DESCRIPTION=Level 6
+CONTAINER=i_tc_6_a
+TYPE=t_container_locked
+// TEVENTS=ei_container_treasure
+ATTR=ATTR_MOVE_NEVER|ATTR_DECAY
+
+ITEM=i_gold,{3500 5000}
+ITEM=RANDOM_WEAPON_POWER,R4
+
+[EOF]

@@ -1,0 +1,227 @@
+
+[FUNCTION CHECKTOPLAM]
+IF (<ISPLAYER>)
+	IF (<FINDLAYER.21>)
+		FORCONT <FINDLAYER.21> 9999
+			IF (<ISITEM>)
+				IF (<ISCHECK>)
+					LOCAL._CHECKTOPLAM +=<MORE1>
+				ENDIF
+			ENDIF
+		ENDFOR
+	ENDIF
+	IF (<FINDLAYER.29>)
+		FORCONT <FINDLAYER.29> 9999
+			IF (<ISITEM>)
+				IF (<ISCHECK>)
+					LOCAL._CHECKTOPLAM +=<MORE1>
+				ENDIF
+			ENDIF
+		ENDFOR
+	ENDIF
+	RETURN <DLOCAL._CHECKTOPLAM>
+ENDIF
+RETURN 0
+
+
+[FUNCTION GOLDTOPLAM]
+IF (<ISPLAYER>)
+	IF (<FINDLAYER.21>)
+		FORCONT <FINDLAYER.21> 9999
+			IF (<ISITEM>)
+				IF (<BASEID> == I_GOLD)
+					LOCAL._GOLDTOPLAM +=<AMOUNT>
+				ENDIF
+			ENDIF
+		ENDFOR
+	ENDIF
+	IF (<FINDLAYER.29>)
+		FORCONT <FINDLAYER.29> 9999
+			IF (<ISITEM>)
+				IF (<BASEID> == I_GOLD)
+					LOCAL._GOLDTOPLAM +=<AMOUNT>
+				ENDIF
+			ENDIF
+		ENDFOR
+	ENDIF
+	RETURN <DLOCAL._GOLDTOPLAM>
+ENDIF
+RETURN 0
+
+
+[FUNCTION BANKTOPLAM]
+IF (<SERV.FeatureTOL>&02)
+	// check + virtualgold + fiziksel gold
+	RETURN <EVAL <CHECKTOPLAM>+<VIRTUALGOLD>+<GOLDTOPLAM>>
+ELSE
+	// check + fiziksel gold
+	RETURN <EVAL <CHECKTOPLAM>+<GOLDTOPLAM>>
+ENDIF
+
+
+[FUNCTION ISCHECK]
+IF (<TYPE> == T_CHECK)
+	RETURN 1
+ENDIF
+RETURN 0
+
+
+[ITEMDEF I_CHECK_2500000]
+DEFNAME=I_CHECK_2500000
+ID=I_DEED
+NAME=2.500.000 gp Check
+TYPE=T_CHECK
+WEIGHT=0.1
+RESDISPDNHUE=096d
+
+On=@Create
+COLOR=<SERV.ITEMDEF.<BASEID>.RESDISPDNHUE>
+ATTR=ATTR_NEWBIE
+MORE1=2500000
+IF (<SRC>)
+	MORE2=<SRC.UID>
+ENDIF
+
+[ITEMDEF I_CHECK]
+DEFNAME=I_CHECK
+ID=I_DEED
+TYPE=T_CHECK
+WEIGHT=0.1
+NAME=Check
+RESDISPDNHUE=096d
+
+On=@Create
+COLOR=<SERV.ITEMDEF.<BASEID>.RESDISPDNHUE>
+ATTR=ATTR_NEWBIE
+MORE1=0
+IF (<SRC>)
+	MORE2=<SRC.UID>
+ENDIF
+
+
+[TYPEDEF T_CHECK]
+
+On=@Click
+// ATTR=ATTR_DECAY
+REF1=<MORE2>
+MESSAGE cek karsiligi: <QVAL <DMORE1>?(<Bolukayir <dmore1>> gp):yok>
+IF (<REF1.ISVALIDE>)
+	MESSAGE [<REF1.NAME>]
+ENDIF
+RETURN 1
+
+ON=@DCLICK
+IF !(<SRC.ISINPACK <UID>>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,600036,<NAME>	// Bunu (~1_val~) kullanabilmek için çantanızda veya üzerinizde olmalıdır.
+	RETURN 1
+ELSEIF (<SRC.IsNoFullHp>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,600075 // "Yaralı durumdayken bu işlemi yapamazsınız."
+	RETURN 1
+ELSEIF (<SRC.FINDTYPE.T_EQ_TRADE_WINDOW>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Eşya transfer penceresi açıkken bunu kullanamazsınız.
+	RETURN 1
+ELSEIF (<SRC.FLAGS>&statf_dead)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,600027 // Ölü durumdayken bu işlemi yapamazsınız.
+	RETURN 1
+ELSEIF (<SRC.FLAGS>&statf_freeze)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Freeze bunu kullanamazsınız.
+	RETURN 1
+ELSEIF (<SRC.FLAGS>&statf_stone)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,600028 // Stone durumdayken bu işlemi yapamazsınız.
+	RETURN 1
+ELSEIF (<SRC.FLAGS>&statf_war)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Savaş durumdayken bunu kullanamazsınız.
+	RETURN 1
+ELSEIF (<SRC.ISPOISONED>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,600031 // Zehirli durumdayken bu işlemi yapamazsınız.
+	RETURN 1
+ELSEIF !(<MORE1>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu çek değersiz.
+	// REMOVE
+	RETURN 1
+ELSEIF (<MORE1> > 20000000)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, 20.000.000 gp üzeri checkleri bozduramazsınız. Yetkiliye başvurunuz.
+	RETURN 1
+ENDIF
+TARGET 
+SRC.SYSMESSAGELOC <def.tcolor_grey>,<def.empty_cliloc2>, Checki bozdurmak istediğiniz bankeri seçiniz.
+RETURN 1
+
+
+
+ON=@TARGON_CHAR
+IF !(<SRC.ISINPACK <UID>>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,600036,<NAME>	// Bunu (~1_val~) kullanabilmek için çantanızda veya üzerinizde olmalıdır.
+	RETURN 1
+ELSEIF (<SRC.IsNoFullHp>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,600075 // "Yaralı durumdayken bu işlemi yapamazsınız."
+	RETURN 1
+ELSEIF (<SRC.FINDTYPE.T_EQ_TRADE_WINDOW>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Eşya transfer penceresi açıkken bunu kullanamazsınız.
+	RETURN 1
+ELSEIF (<SRC.FLAGS>&statf_dead)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Ölüyken bunu kullanamazsınız.
+	RETURN 1
+ELSEIF (<SRC.FLAGS>&statf_freeze)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Freeze bunu kullanamazsınız.
+	RETURN 1
+ELSEIF (<SRC.FLAGS>&statf_stone)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,600028 // Stone durumdayken bu işlemi yapamazsınız.
+	RETURN 1
+ELSEIF (<SRC.FLAGS>&statf_war)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Savaş durumdayken bunu kullanamazsınız.
+	RETURN 1
+ELSEIF (<SRC.ISPOISONED>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,600031 // Zehirli durumdayken bu işlemi yapamazsınız.
+	RETURN 1
+ENDIF
+
+IF (<SRC.TARG.NPC> == 5)
+
+	IF (<SRC.ISDIFF 18,<SRC.TARG.UID>>)
+		SRC.SYSMESSAGELOC <def.tcolor_red>,600018,<SRC.TARG.NAME>
+		RETURN 1
+	ENDIF
+	
+	REF1=<MORE2> // YAZAN
+	IF (<MORE1> > 0)
+		SRC.SYSMESSAGELOC <def.tcolor_grey>,<def.empty_cliloc2>, Çek miktarı (<BolukAyir <DMORE1>> gp) bankanıza aktarılmıştır.
+		SRC.Logger CEK AKTARDI: <UID> [<BolukAyir <dMORE1>> gp] <QVAL (<REF1.ISVALIDE>)?YAZAN:<REF1.NAME> [<REF1>]:> SAHIBI:<TOPOBJ.NAME> (<TOPOBJ>)
+		
+		IF (<SERV.FeatureTOL>&02)
+			SRC.VIRTUALGOLD +=<DMORE1>
+		ELSE
+			SRC.GOLD +=<DMORE1>
+		ENDIF
+		
+	ELSE
+		SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Çek miktarı olmadığı için silindi.
+		SRC.Logger HATALI CHECK: <UID> (<MORE1>) YAZAN:<UID.<MORE2>.NAME> (<MORE2>) SAHIBI:<TOPOBJ.NAME> (<TOPOBJ>)
+	ENDIF
+	
+	IF (<SRC.ISDIALOGOPEN.D_BANKER_CHECK>)
+		DIALOGCLOSE D_BANKER_CHECK
+		DIALOG D_BANKER_CHECK
+	ENDIF
+	
+	REMOVE
+	
+ELSE
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Checki sadece banker vendorunda bozdurabilirsiniz.
+ENDIF
+RETURN 1
+
+
+ON=@TARGON_SELF
+RETURN 1
+
+ON=@TARGON_ITEM
+RETURN 1
+
+ON=@TARGON_GROUND
+RETURN 1
+
+
+
+
+[eof]

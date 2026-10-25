@@ -1,0 +1,252 @@
+
+
+[ITEMDEF i_chest_lvl1]
+NAME=treasure chest
+ID=i_chest_metal
+TYPE=t_container_locked
+FLIP=1
+WEIGHT=1
+TEVENTS=ei_container_treasure
+
+On=@Create
+MORE=0515
+MOREX=1
+COLOR=0515
+ATTR=ATTR_MOVE_NEVER|ATTR_DECAY
+
+[ITEMDEF i_chest_lvl2]
+NAME=treasure chest
+ID=i_chest_metal
+TYPE=t_container_locked
+FLIP=1
+WEIGHT=1
+TEVENTS=ei_container_treasure
+
+On=@Create
+MORE=0515
+MOREX=2
+COLOR=0515
+ATTR=ATTR_MOVE_NEVER|ATTR_DECAY
+
+[ITEMDEF i_chest_lvl3]
+NAME=treasure chest
+ID=i_chest_metal
+TYPE=t_container_locked
+FLIP=1
+WEIGHT=1
+TEVENTS=ei_container_treasure
+
+On=@Create
+MORE=0515
+MOREX=3
+COLOR=0515
+ATTR=ATTR_MOVE_NEVER|ATTR_DECAY
+
+
+[ITEMDEF i_chest_lvl4]
+NAME=treasure chest
+ID=i_chest_metal
+TYPE=t_container_locked
+FLIP=1
+WEIGHT=1
+TEVENTS=ei_container_treasure
+
+On=@Create
+MORE=0515
+MOREX=4
+COLOR=0515
+ATTR=ATTR_MOVE_NEVER|ATTR_DECAY
+
+[ITEMDEF i_chest_lvl5]
+NAME=treasure chest
+ID=i_chest_metal
+TYPE=t_container_locked
+FLIP=1
+WEIGHT=1
+TEVENTS=ei_container_treasure
+
+On=@Create
+MORE=0515
+MOREX=5
+COLOR=0515
+ATTR=ATTR_MOVE_NEVER|ATTR_DECAY
+
+
+
+[ITEMDEF i_chest_lvl6]
+NAME=treasure chest
+ID=i_chest_metal
+TYPE=t_container_locked
+FLIP=1
+WEIGHT=1
+TEVENTS=ei_container_treasure
+
+On=@Create
+MORE=0515
+MOREX=6
+COLOR=0515
+ATTR=ATTR_MOVE_NEVER|ATTR_DECAY
+
+
+
+
+
+
+[TEMPLATE t_chest_lvl1]
+NAME=treasure chest
+CATEGORY=Treasure Chest
+DESCRIPTION=Level 1
+CONTAINER=i_chest_lvl1
+TYPE=t_container_locked
+// TEVENTS=ei_container_treasure
+ATTR=ATTR_MOVE_NEVER|ATTR_DECAY
+
+ITEM=i_gold,{500 1000}
+ITEM={ random_first_circle 1 random_second_circle 1 random_third_circle 1 random_fourth_circle 1 }
+ITEM={ random_first_circle 1 random_second_circle 1 random_third_circle 1 random_fourth_circle 1 }
+ITEM={ i_reag_black_pearl 1 i_reag_blood_moss 1 i_reag_garlic 1 i_reag_ginseng 1 i_reag_mandrake_root 1 i_reag_nightshade 1 i_reag_sulfur_ash 1 i_reag_spider_silk 1 },{10 15}
+ITEM={ i_reag_black_pearl 1 i_reag_blood_moss 1 i_reag_garlic 1 i_reag_ginseng 1 i_reag_mandrake_root 1 i_reag_nightshade 1 i_reag_sulfur_ash 1 i_reag_spider_silk 1 },{10 15}
+ITEM={ RANDOM_WAND_ONE 1 RANDOM_WAND_TWO 1 RANDOM_WAND_THREE 1 RANDOM_WAND_FOUR 1 }
+ITEM={ RANDOM_WAND_ONE 1 RANDOM_WAND_TWO 1 RANDOM_WAND_THREE 1 RANDOM_WAND_FOUR 1 }
+ITEM=i_potion_heal
+ITEM=i_potion_heal
+ITEM=i_potion_explosion
+ITEM=i_potion_explosion
+CONTAINER=i_bag
+ITEM={ 048fe 1 048ff 1 04900 1 04901 1 04902 1 04903 1 04904 1 i_tc_r 5 0df0 5 }
+
+[TEMPLATE t_chest_lvl2]
+NAME=treasure chest
+CATEGORY=Treasure Chest
+DESCRIPTION=Level 2
+CONTAINER=i_chest_lvl2
+TYPE=t_container_locked
+// TEVENTS=ei_container_treasure
+ATTR=ATTR_MOVE_NEVER|ATTR_DECAY
+
+ITEM=i_gold,{1000 1500}
+ITEM={ random_first_circle 1 random_second_circle 1 random_third_circle 1 random_fourth_circle 1 }
+ITEM={ random_first_circle 1 random_second_circle 1 random_third_circle 1 random_fourth_circle 1 }
+ITEM={ i_reag_black_pearl 1 i_reag_blood_moss 1 i_reag_garlic 1 i_reag_ginseng 1 i_reag_mandrake_root 1 i_reag_nightshade 1 i_reag_sulfur_ash 1 i_reag_spider_silk 1 },{10 15}
+ITEM={ i_reag_black_pearl 1 i_reag_blood_moss 1 i_reag_garlic 1 i_reag_ginseng 1 i_reag_mandrake_root 1 i_reag_nightshade 1 i_reag_sulfur_ash 1 i_reag_spider_silk 1 },{10 15}
+ITEM={ RANDOM_WAND_ONE 1 RANDOM_WAND_TWO 1 RANDOM_WAND_THREE 1 RANDOM_WAND_FOUR 1 }
+ITEM={ RANDOM_WAND_ONE 1 RANDOM_WAND_TWO 1 RANDOM_WAND_THREE 1 RANDOM_WAND_FOUR 1 }
+ITEM=i_potion_heal
+ITEM=i_potion_heal
+ITEM=i_potion_heal
+ITEM=i_potion_healgreat
+ITEM=i_potion_explosiongreat
+CONTAINER=i_bag
+ITEM={ i_RINGMAIL_SLEEVES_DEFENSE 4 i_RINGMAIL_LEGGINGS_DEFENSE 4 i_RINGMAIL_TUNIC_DEFENSE 4 i_RINGMAIL_GLOVES_DEFENSE 4 i_SCIMITAR_RUIN 1 i_HALBERD_RUIN 1 i_BARDICHE_RUIN 1 i_CUTLASS_RUIN 1 i_sword_viking_RUIN 1 i_KATANA_RUIN 1 i_BROADSWORD_RUIN 1 i_sword_long_RUIN 1 i_PITCHFORK_RUIN 1 i_KRYSS_RUIN 1 i_SPEAR_RUIN 1 i_SPEAR_SHORT_RUIN 1 i_WAR_FORK_RUIN 1 i_CLUB_RUIN 1 i_MACE_RUIN 1 i_MAUL_RUIN 1 i_mace_war_RUIN 1 i_HAMMER_PICK_RUIN 1 i_hammer_war_RUIN 1 i_tc_mr3 3 i_tc_bs3 3 }
+
+[TEMPLATE t_chest_lvl3]
+NAME=treasure chest
+CATEGORY=Treasure Chest
+DESCRIPTION=Level 3
+CONTAINER=i_chest_lvl3
+TYPE=t_container_locked
+// TEVENTS=ei_container_treasure
+ATTR=ATTR_MOVE_NEVER|ATTR_DECAY
+
+ITEM=i_gold,{1500 2000}
+ITEM={ random_first_circle 1 random_second_circle 1 random_third_circle 1 random_fourth_circle 1 }
+ITEM={ random_first_circle 1 random_second_circle 1 random_third_circle 1 random_fourth_circle 1 }
+ITEM={ i_reag_black_pearl 1 i_reag_blood_moss 1 i_reag_garlic 1 i_reag_ginseng 1 i_reag_mandrake_root 1 i_reag_nightshade 1 i_reag_sulfur_ash 1 i_reag_spider_silk 1 },{10 15}
+ITEM={ i_reag_black_pearl 1 i_reag_blood_moss 1 i_reag_garlic 1 i_reag_ginseng 1 i_reag_mandrake_root 1 i_reag_nightshade 1 i_reag_sulfur_ash 1 i_reag_spider_silk 1 },{10 15}
+ITEM={ RANDOM_WAND_ONE 1 RANDOM_WAND_TWO 1 RANDOM_WAND_THREE 1 RANDOM_WAND_FOUR 1 }
+ITEM={ RANDOM_WAND_ONE 1 RANDOM_WAND_TWO 1 RANDOM_WAND_THREE 1 RANDOM_WAND_FOUR 1 }
+ITEM=i_potion_heal
+ITEM=i_potion_heal
+ITEM=i_potion_heal
+ITEM=i_potion_heal
+ITEM=i_potion_healgreat
+ITEM=i_potion_explosiongreat
+ITEM=i_potion_healgreat
+ITEM=i_potion_explosiongreat
+CONTAINER=i_bag
+ITEM={ i_CHAINMAIL_COIF_DEFENSE 4 i_CHAINMAIL_LEGGINGS_DEFENSE 4 i_CHAINMAIL_TUNIC_DEFENSE 4 i_SCIMITAR_MIGHT 1 i_HALBERD_MIGHT 1 i_BARDICHE_MIGHT 1 i_CUTLASS_MIGHT 1 i_sword_viking_MIGHT 1 i_KATANA_MIGHT 1 i_BROADSWORD_MIGHT 1 i_sword_long_MIGHT 1 i_PITCHFORK_MIGHT 1 i_KRYSS_MIGHT 1 i_SPEAR_MIGHT 1 i_SPEAR_SHORT_MIGHT 1 i_WAR_FORK_MIGHT 1 i_CLUB_MIGHT 1 i_MACE_MIGHT 1 i_MAUL_MIGHT 1 i_mace_war_MIGHT 1 i_HAMMER_PICK_MIGHT 1 i_hammer_war_MIGHT 1 i_tc_mr6 3 i_tc_bs6 3 }
+
+[TEMPLATE t_chest_lvl4]
+NAME=treasure chest
+CATEGORY=Treasure Chest
+DESCRIPTION=Level 4
+CONTAINER=i_chest_lvl4
+TYPE=t_container_locked
+// TEVENTS=ei_container_treasure
+ATTR=ATTR_MOVE_NEVER|ATTR_DECAY
+
+ITEM=i_gold,{1500 2500}
+ITEM={ random_first_circle 1 random_second_circle 1 random_third_circle 1 random_fourth_circle 1 }
+ITEM={ random_first_circle 1 random_second_circle 1 random_third_circle 1 random_fourth_circle 1 }
+ITEM={ i_reag_black_pearl 1 i_reag_blood_moss 1 i_reag_garlic 1 i_reag_ginseng 1 i_reag_mandrake_root 1 i_reag_nightshade 1 i_reag_sulfur_ash 1 i_reag_spider_silk 1 },{10 15}
+ITEM={ i_reag_black_pearl 1 i_reag_blood_moss 1 i_reag_garlic 1 i_reag_ginseng 1 i_reag_mandrake_root 1 i_reag_nightshade 1 i_reag_sulfur_ash 1 i_reag_spider_silk 1 },{10 15}
+ITEM={ RANDOM_WAND_ONE 1 RANDOM_WAND_TWO 1 RANDOM_WAND_THREE 1 RANDOM_WAND_FOUR 1 }
+ITEM={ RANDOM_WAND_ONE 1 RANDOM_WAND_TWO 1 RANDOM_WAND_THREE 1 RANDOM_WAND_FOUR 1 }
+ITEM=i_potion_heal
+ITEM=i_potion_heal
+ITEM=i_potion_heal
+ITEM=i_potion_heal
+ITEM=i_potion_healgreat
+ITEM=i_potion_explosiongreat
+ITEM=i_potion_healgreat
+ITEM=i_potion_explosiongreat
+CONTAINER=i_bag
+ITEM={ i_RINGMAIL_SLEEVES_GUARDING 4 i_RINGMAIL_LEGGINGS_GUARDING 4 i_RINGMAIL_TUNIC_GUARDING 4 i_RINGMAIL_GLOVES_GUARDING 4 i_CHAINMAIL_COIF_GUARDING 4 i_CHAINMAIL_LEGGINGS_GUARDING 4 i_CHAINMAIL_TUNIC_GUARDING 4 i_SCIMITAR_MIGHT 1 i_HALBERD_MIGHT 1 i_BARDICHE_MIGHT 1 i_CUTLASS_MIGHT 1 i_sword_viking_MIGHT 1 i_KATANA_MIGHT 1 i_BROADSWORD_MIGHT 1 i_sword_long_MIGHT 1 i_PITCHFORK_MIGHT 1 i_KRYSS_MIGHT 1 i_SPEAR_MIGHT 1 i_SPEAR_SHORT_MIGHT 1 i_WAR_FORK_MIGHT 1 i_CLUB_MIGHT 1 i_MACE_MIGHT 1 i_MAUL_MIGHT 1 i_mace_war_MIGHT 1 i_HAMMER_PICK_MIGHT 1 i_hammer_war_MIGHT 1 i_tc_mr9 3 i_tc_bs9 3 }
+
+[TEMPLATE t_chest_lvl5]
+NAME=treasure chest
+CATEGORY=Treasure Chest
+DESCRIPTION=Level 5
+CONTAINER=i_chest_lvl5
+TYPE=t_container_locked
+// TEVENTS=ei_container_treasure
+ATTR=ATTR_MOVE_NEVER|ATTR_DECAY
+
+ITEM=i_gold,{1500 3000}
+ITEM={ random_first_circle 1 random_second_circle 1 random_third_circle 1 random_fourth_circle 1 }
+ITEM={ random_first_circle 1 random_second_circle 1 random_third_circle 1 random_fourth_circle 1 }
+ITEM={ i_reag_black_pearl 1 i_reag_blood_moss 1 i_reag_garlic 1 i_reag_ginseng 1 i_reag_mandrake_root 1 i_reag_nightshade 1 i_reag_sulfur_ash 1 i_reag_spider_silk 1 },{10 15}
+ITEM={ i_reag_black_pearl 1 i_reag_blood_moss 1 i_reag_garlic 1 i_reag_ginseng 1 i_reag_mandrake_root 1 i_reag_nightshade 1 i_reag_sulfur_ash 1 i_reag_spider_silk 1 },{10 15}
+ITEM={ RANDOM_WAND_ONE 1 RANDOM_WAND_TWO 1 RANDOM_WAND_THREE 1 RANDOM_WAND_FOUR 1 }
+ITEM={ RANDOM_WAND_ONE 1 RANDOM_WAND_TWO 1 RANDOM_WAND_THREE 1 RANDOM_WAND_FOUR 1 }
+ITEM=i_potion_heal
+ITEM=i_potion_heal
+ITEM=i_potion_heal
+ITEM=i_potion_heal
+ITEM=i_potion_healgreat
+ITEM=i_potion_explosiongreat
+ITEM=i_potion_healgreat
+ITEM=i_potion_explosiongreat
+CONTAINER=i_bag
+ITEM={ i_PLATEMAIL_HARDENING 4 i_PLATEMAIL_leggings_HARDENING 4 i_PLATEMAIL_ARMS_HARDENING 4 i_platemail_HELM_HARDENING 4 i_PLATEMAIL_GORGET_HARDENING 4 i_PLATEMAIL_GAUNTLETS_HARDENING 4 i_PLATEMAIL_HARDENING_FEMALE 4 i_CHAINMAIL_COIF_GUARDING 4 i_CHAINMAIL_LEGGINGS_GUARDING 4 i_CHAINMAIL_TUNIC_GUARDING 4 i_SCIMITAR_FORCE 1 i_HALBERD_FORCE 1 i_BARDICHE_FORCE 1 i_CUTLASS_FORCE 1 i_sword_viking_FORCE 1 i_KATANA_FORCE 1 i_BROADSWORD_FORCE 1 i_sword_long_FORCE 1 i_PITCHFORK_FORCE 1 i_KRYSS_FORCE 1 i_SPEAR_FORCE 1 i_SPEAR_SHORT_FORCE 1 i_WAR_FORK_FORCE 1 i_CLUB_FORCE 1 i_MACE_FORCE 1 i_MAUL_FORCE 1 i_mace_war_FORCE 1 i_HAMMER_PICK_FORCE 1 i_hammer_war_FORCE 1 i_tc_mr12 3 i_tc_bs12 3 }
+
+[TEMPLATE t_chest_lvl6]
+NAME=treasure chest
+CATEGORY=Treasure Chest
+DESCRIPTION=Level 6
+CONTAINER=i_chest_lvl6
+TYPE=t_container_locked
+// TEVENTS=ei_container_treasure
+ATTR=ATTR_MOVE_NEVER|ATTR_DECAY
+
+ITEM=i_gold,{2000 3000}
+ITEM={ random_first_circle 1 random_second_circle 1 random_third_circle 1 random_fourth_circle 1 }
+ITEM={ random_first_circle 1 random_second_circle 1 random_third_circle 1 random_fourth_circle 1 }
+ITEM={ i_reag_black_pearl 1 i_reag_blood_moss 1 i_reag_garlic 1 i_reag_ginseng 1 i_reag_mandrake_root 1 i_reag_nightshade 1 i_reag_sulfur_ash 1 i_reag_spider_silk 1 },{10 15}
+ITEM={ i_reag_black_pearl 1 i_reag_blood_moss 1 i_reag_garlic 1 i_reag_ginseng 1 i_reag_mandrake_root 1 i_reag_nightshade 1 i_reag_sulfur_ash 1 i_reag_spider_silk 1 },{10 15}
+ITEM={ RANDOM_WAND_ONE 1 RANDOM_WAND_TWO 1 RANDOM_WAND_THREE 1 RANDOM_WAND_FOUR 1 }
+ITEM={ RANDOM_WAND_ONE 1 RANDOM_WAND_TWO 1 RANDOM_WAND_THREE 1 RANDOM_WAND_FOUR 1 }
+ITEM=i_potion_heal
+ITEM=i_potion_heal
+ITEM=i_potion_heal
+ITEM=i_potion_heal
+ITEM=i_potion_healgreat
+ITEM=i_potion_explosiongreat
+ITEM=i_potion_healgreat
+ITEM=i_potion_explosiongreat
+ITEM=RANDOM_WEAPON_POWER,R4
+CONTAINER=i_bag
+ITEM={ i_PLATEMAIL_DEFENSE 1 i_PLATEMAIL_leggings_DEFENSE 2 i_PLATEMAIL_ARMS_DEFENSE 2 i_platemail_HELM_DEFENSE 2 i_PLATEMAIL_GORGET_DEFENSE 2 i_PLATEMAIL_GAUNTLETS_DEFENSE 2 i_PLATEMAIL_DEFENSE_FEMALE 2 i_tc_mr12 1 i_tc_bs12 1 }
+
+
+[EOF]

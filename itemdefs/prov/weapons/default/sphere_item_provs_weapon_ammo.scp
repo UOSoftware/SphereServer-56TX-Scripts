@@ -1,0 +1,162 @@
+
+
+
+[ITEMDEF 01bfb]
+DEFNAME=i_xbolt
+TYPE=t_weapon_bolt
+FLIP=1
+VALUE=6
+WEIGHT=0.1
+REPLICATE=1
+RESOURCES=1 i_arrow_shaft,1 i_feather
+SKILLMAKE=17.8 Bowcraft
+CATEGORY=Ammunition
+SUBSECTION=Archery
+DESCRIPTION=Crossbow Bolt
+DUPELIST=01bfc,01bfd,01bfe
+
+[ITEMDEF 01bfc]
+DUPEITEM=01bfb
+CATEGORY=Ammunition
+SUBSECTION=Archery
+DESCRIPTION=Crossbow Bolts (5)
+
+[ITEMDEF 01bfd]
+DUPEITEM=01bfb
+CATEGORY=Ammunition
+SUBSECTION=Archery
+DESCRIPTION=Crossbow Bolts (Many)
+
+[ITEMDEF 01bfe]
+//crossbow bolt
+DEFNAME=i_xbolt_x
+DUPEITEM=01bfb
+CATEGORY=Ammunition
+SUBSECTION=Archery
+DESCRIPTION=Crossbow bolt (Straight)
+
+[ITEMDEF 0f3f]
+DEFNAME=i_arrow
+NAME=arrow%s
+TYPE=t_weapon_arrow
+FLIP=0
+WEIGHT=0.1
+VALUE=4
+REPLICATE=1
+RESOURCES=1 i_arrow_shaft,1 i_feather
+SKILLMAKE=Bowcraft 0.0
+CATEGORY=Ammunition
+SUBSECTION=Archery
+DESCRIPTION=Arrow
+DUPELIST=0f3e
+
+[ITEMDEF 0f3e]
+//arrow (its a rock in older clients)
+DUPEITEM=0f3f
+
+
+[ITEMDEF 0f40]
+DEFNAME=i_arrows
+NAME=arrows
+WEIGHT=0.5
+RESOURCES=5 i_arrow
+CATEGORY=Ammunition
+SUBSECTION=Archery
+DESCRIPTION=Arrows
+
+[ITEMDEF 0f41]
+DEFNAME=i_arrow_pile
+NAME=pile of arrows
+WEIGHT=2.0
+RESOURCES=20 i_arrow
+CATEGORY=Ammunition
+SUBSECTION=Archery
+DESCRIPTION=Arrow Pile
+
+[ITEMDEF 0f42]
+//arrow animation
+DEFNAME=i_arrow_x
+
+
+
+[ITEMDEF 027ac]
+//This item is not equiped, it is thrown
+//Like the Fukiya, anyone can use it when they have one hand free
+//To use Shuriken, a Leather Ninja Belt must be worn or within backpack.
+DEFNAME=i_shuriken
+NAME=shuriken
+// TYPE=t_ninja_shuriken
+FLIP=1
+VALUE=6
+WEIGHT=1.0
+RESOURCES=1 i_ingot_iron
+SKILLMAKE=Blacksmithing 45.0
+CATEGORY=Weapons
+SUBSECTION=Thrown
+DESCRIPTION=Shuriken
+DUPELIST=027f7
+
+
+[ITEMDEF 027f7]
+//shuriken
+DUPEITEM=027ac
+
+
+
+
+[ITEMDEF 02804]
+DEFNAME=i_fukiya_dartx
+NAME=fukiya dart%s
+TYPE=t_weapon_arrow
+VALUE=2
+WEIGHT=0.1
+REPLICATE=1
+RESOURCES=1 i_board
+SKILLMAKE=Archery 50.0
+CATEGORY=Ammunition
+SUBSECTION=Darts
+DESCRIPTION=Fukiya Dart (straight)
+
+
+[ITEMDEF 02806]
+DEFNAME=i_fukiya_dart
+NAME=fukiya dart%s
+TYPE=t_weapon_arrow
+VALUE=2
+WEIGHT=0.1
+CATEGORY=Ammunition
+SUBSECTION=Darts
+DESCRIPTION=Fukiya Dart
+
+
+
+[ITEMDEF 02808]
+//This weapon is not equiped, it is thrown
+DEFNAME=i_bomb_smoke
+NAME=smoke bomb
+//TYPE=t_weapon_thrown//fixme:t_smokebomb
+VALUE=7
+WEIGHT=0.7
+SKILLMAKE=Alchemy 95.1
+CATEGORY=Weapons
+SUBSECTION=Thrown
+DESCRIPTION=Smoke Bomb
+
+
+[ITEMDEF 02809]
+//This weapon is not equiped, it is thrown
+DEFNAME=i_bomb_egg
+NAME=egg bomb
+//TYPE=t_weapon_thrown//fixme:t_egg_bomb
+VALUE=7
+WEIGHT=0.7
+RESOURCES=6 i_reag_grave_dust,1 i_eggs_fresh
+SKILLMAKE=Alchemy 95.1
+CATEGORY=Weapons
+SUBSECTION=Thrown
+DESCRIPTION=Egg Bomb
+
+
+
+
+[eof]

@@ -1,0 +1,110 @@
+
+
+[ITEMDEF 02fb9]
+DEFNAME=i_elven_male_robe1
+NAME=hooded elven robe
+TYPE=t_clothing
+DYE=1
+FLIP=1
+// ARMOR=12
+ARMOR=0
+VALUE=80
+WEIGHT=16.1
+RESOURCES=16 i_cloth
+SKILLMAKE=Tailoring 59.0,t_sewing_kit
+// CanUse=can_u_elf
+ReqStr=10
+TEVENTS=t_equipitem
+DUPELIST=03173
+CATEGORY=Clothes
+SUBSECTION=Shirts & Robes
+DESCRIPTION=Elven Male Robe
+
+ON=@Create
+HITPOINTS={36 48}
+
+[ITEMDEF 03173]
+//elven male robe
+DUPEITEM=02fb9
+
+
+[ITEMDEF 02fb7]
+DEFNAME=i_elven_quiver
+NAME=elven quiver
+TYPE=t_clothing
+TDATA2=047
+FLIP=1
+LAYER=layer_tunic
+// ARMOR=8
+ARMOR=0
+WEIGHTREDUCTION=30
+VALUE=32
+WEIGHT=5.1
+RESOURCES=4 i_hides_cut,1 i_wire_silver
+SKILLMAKE=Tailoring 59.0,t_sewing_kit
+ReqStr=10
+DUPELIST=03171
+CATEGORY=Clothes
+SUBSECTION=Quivers
+DESCRIPTION=Elven Quiver
+//FIXME: quiver loading event
+TEVENTS=t_equipitem
+
+
+ON=@Create
+HITPOINTS={36 48}
+
+[ITEMDEF 03171]
+//elven quiver
+DUPEITEM=02fb7
+
+
+
+
+
+[ITEMDEF 02b68]
+DEFNAME=i_woodland_belt
+NAME=woodland belt
+TYPE=t_clothing
+FLIP=1
+// ARMOR=5
+ARMOR=0
+VALUE=84
+WEIGHT=4.0
+RESOURCES=10 i_hides_cut
+SKILLMAKE=Tailoring 80.0,t_sewing_kit
+// CanUse=can_u_elf
+ReqStr=10
+TEVENTS=t_equipitem
+DUPELIST=0315f
+CATEGORY=Provisions - Armor
+SUBSECTION=Elven
+DESCRIPTION=Woodland Belt
+
+ON=@Create
+HITPOINTS={36 48}
+
+[ITEMDEF 0315f]
+//woodland belt
+DUPEITEM=02b68
+
+
+
+
+
+
+[ITEMDEF 02fbb]
+//elven shirt
+//FIXME: Bad tile graphic
+//FIXME: Looks good on paperdoll
+
+[ITEMDEF 02fbc]
+//elven shirt
+//FIXME: Bad tile graphic
+//FIXME: Looks good on paperdoll
+
+
+
+
+
+[eof]

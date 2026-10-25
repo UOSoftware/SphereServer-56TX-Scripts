@@ -1,0 +1,159 @@
+
+
+
+[ITEMDEF 0317b]
+DEFNAME=i_leaf_chest
+NAME=leaf tunic
+TYPE=t_armor_leather
+DYE=1
+FLIP=1
+ARMOR=13
+VALUE=113
+WEIGHT=13.1
+RESOURCES=12 i_hides_cut,1 i_ingot_iron,1 i_thread
+SKILLMAKE=Tailoring 77.2,t_sewing_kit
+CATEGORY=Provisions - Armor
+SUBSECTION=Elven
+DESCRIPTION=Leaf Tunic
+// CanUse=can_u_elf
+REQSTR=20
+TEVENTS=t_equipitem
+DUPELIST=02fc5
+
+ON=@Create
+HITPOINTS={36 48}
+
+[ITEMDEF 0317c]
+DEFNAME=i_leaf_gloves
+NAME=leaf gloves
+TYPE=t_armor_leather
+DYE=1
+FLIP=1
+ARMOR=13
+VALUE=27
+WEIGHT=3.1
+RESOURCES=3 i_hides_cut,1 i_thread
+SKILLMAKE=Tailoring 56.8,t_sewing_kit
+CATEGORY=Provisions - Armor
+SUBSECTION=Elven
+DESCRIPTION=Leaf Gloves
+// CanUse=can_u_elf
+REQSTR=10
+TEVENTS=t_equipitem
+DUPELIST=02fc6
+
+ON=@Create
+HITPOINTS={36 48}
+
+[ITEMDEF 0317d]
+DEFNAME=i_leaf_gorget
+NAME=leaf gorget
+TYPE=t_armor_leather
+DYE=1
+FLIP=1
+ARMOR=13
+VALUE=35
+WEIGHT=4.1
+RESOURCES=4 i_hides_cut,1 i_thread
+SKILLMAKE=Tailoring 59.0,t_sewing_kit
+CATEGORY=Provisions - Armor
+SUBSECTION=Elven
+DESCRIPTION=Leaf Gorget
+// CanUse=can_u_elf
+REQSTR=10
+TEVENTS=t_equipitem
+DUPELIST=02fc7
+
+ON=@Create
+HITPOINTS={36 48}
+
+[ITEMDEF 0317e]
+DEFNAME=i_leaf_arms
+NAME=leaf arms
+TYPE=t_armor_leather
+DYE=1
+FLIP=1
+ARMOR=13
+VALUE=73
+WEIGHT=9.1
+RESOURCES=8 i_hides_cut,1 i_ingot_iron,1 i_thread
+SKILLMAKE=Tailoring 59.0,t_sewing_kit
+CATEGORY=Provisions - Armor
+SUBSECTION=Elven
+DESCRIPTION=Leaf Arms
+// CanUse=can_u_elf
+REQSTR=15
+TEVENTS=t_equipitem
+DUPELIST=02fc8
+
+ON=@Create
+HITPOINTS={36 48}
+
+[ITEMDEF 0317f]
+DEFNAME=i_leaf_leggings
+NAME=leaf leggings
+TYPE=t_armor_leather
+DYE=1
+FLIP=1
+ARMOR=13
+VALUE=89
+WEIGHT=11.1
+RESOURCES=10 i_hides_cut,1 i_ingot_iron,1 i_thread
+SKILLMAKE=Tailoring 59.0,t_sewing_kit
+CATEGORY=Provisions - Armor
+SUBSECTION=Elven
+DESCRIPTION=Leaf Leggings
+// CanUse=can_u_elf
+REQSTR=20
+TEVENTS=t_equipitem
+DUPELIST=02fc9
+
+ON=@Create
+HITPOINTS={36 48}
+
+[ITEMDEF 03180]
+DEFNAME=i_leaf_tonlet
+NAME=leaf tonlet
+TYPE=t_armor_leather
+DYE=1
+FLIP=1
+ARMOR=13
+VALUE=117
+WEIGHT=13.1
+RESOURCES=12 i_hide,1 i_ingot_iron,1 i_thread
+SKILLMAKE=Tailoring 77.2,t_sewing_kit
+CATEGORY=Provisions - Armor
+SUBSECTION=Elven
+DESCRIPTION=Leaf Tonlet
+// CanUse=can_u_elf
+REQSTR=10
+TEVENTS=t_equipitem
+DUPELIST=02fca
+
+ON=@Create
+HITPOINTS={36 48}
+
+[ITEMDEF 03181]
+DEFNAME=i_leaf_chest_female
+NAME=female leaf tunic
+TYPE=t_armor_leather
+DYE=1
+FLIP=1
+ARMOR=13
+VALUE=117
+WEIGHT=13.1
+RESOURCES=12 i_hide,1 i_ingot_iron,1 i_thread
+SKILLMAKE=Tailoring 77.2,t_sewing_kit
+CATEGORY=Provisions - Armor
+SUBSECTION=Elven
+DESCRIPTION=Female Leaf Tunic
+// CanUse=can_u_elf|can_u_female
+REQSTR=20
+TEVENTS=t_equipitem
+DUPELIST=02fcb
+
+ON=@Create
+HITPOINTS={36 48}
+
+
+[eof]

@@ -1,0 +1,461 @@
+//****************************************************************************
+// FILE LAST UPDATED: Monday, Dec 31, 2018
+//
+VERSION=0.56d
+
+
+[ITEMDEF i_ancient_urn]
+ID=i_urn_2
+NAME=Ancient Urn
+CATEGORY=Artifacts
+SUBSECTION=Lesser Treasures of Tokuno
+DESCRIPTION=Ancient Urn
+
+ON=@Create
+DORAND 35
+ARGS=Akira
+ARGS=Avaniaga
+ARGS=Aya
+ARGS=Chie
+ARGS=Emiko
+ARGS=Fumiyo
+ARGS=Gennai
+ARGS=Gennosuke
+ARGS=Genjo
+ARGS=Hamato
+ARGS=Harumi
+ARGS=Ikuyo
+ARGS=Juri
+ARGS=Kaori
+ARGS=Kaoru
+ARGS=Kiyomori
+ARGS=Mayako
+ARGS=Motoki
+ARGS=Musashi
+ARGS=Nami
+ARGS=Nobukazu
+ARGS=Roku
+ARGS=Romi
+ARGS=Ryo
+ARGS=Sanzo
+ARGS=Sakamae
+ARGS=Satoshi
+ARGS=Takamori
+ARGS=Takuro
+ARGS=Teruyo
+ARGS=Toshiro
+ARGS=Yago
+ARGS=Yeijiro
+ARGS=Yoshi
+ARGS=Zeshin
+ENDDO
+NAME .= " of <ARGS>"
+
+[ITEMDEF i_chest_of_heirlooms]
+ID=i_wooden_foot_locker
+NAME=Chest of Heirlooms
+TYPE=t_container
+TDATA1=010b
+CATEGORY=Artifacts
+SUBSECTION=Lesser Treasures of Tokuno
+DESCRIPTION=Chest of Heirlooms
+
+[ITEMDEF i_honorable_swords]
+ID=i_display_swords_black
+NAME=Honorable Swords
+CATEGORY=Artifacts
+SUBSECTION=Lesser Treasures of Tokuno
+DESCRIPTION=Honorable Swords
+
+[ITEMDEF i_lesser_pigments_of_tokuno]
+ID=0eff
+NAME=Pigments of Tokuno
+CATEGORY=Artifacts
+SUBSECTION=Lesser Treasures of Tokuno
+DESCRIPTION=Pigments of Tokuno (Lesser)
+
+ON=@Create
+MORE1=1
+DORAND 10
+COLOR=05		//Chaos Blue
+COLOR=02e		//Pale Orange
+COLOR=0145	//Fresh Plum
+COLOR=01c8	//Light Green
+COLOR=0227	//Noble Gold
+COLOR=024f	//Pale Blue
+COLOR=041a	//Burnt Brown
+COLOR=03e9	//Silver
+COLOR=03f0	//Deep Brown
+COLOR=04b9	//Fresh Rose
+ENDDO
+
+[ITEMDEF i_greater_pigments_of_tokuno]
+ID=0eff
+NAME=Pigments of Tokuno
+CATEGORY=Artifacts
+SUBSECTION=Greater Treasures of Tokuno
+DESCRIPTION=Pigments of Tokuno (Greater)
+
+ON=@Create
+MORE1=1
+DORAND 19
+COLOR=021		//Berserker Red
+COLOR=0455	//Shadow Dancer Black
+COLOR=047e	//Luna White
+COLOR=0486	//VioletCourage Purple
+COLOR=048f	//Dryad Green
+COLOR=04f2	//Invulnerability Blue
+COLOR=0501	//Paragon Gold
+COLOR=054f	//Fire Orange
+COLOR=058c	//Nox Green
+COLOR=066c	//Rum Red
+COLOR=096a	//Faded Coal
+COLOR=096b	//Coal
+COLOR=096c	//Midnight Coal
+COLOR=0972	//Faded Gold
+COLOR=0975	//Faded Bronze
+COLOR=0977	//Storm Bronze
+COLOR=097b	//Faded Rose
+COLOR=097c	//Rose
+COLOR=097e	//Deep Rose
+ENDDO
+
+[ITEMDEF i_ancient_farmer_kasa]
+ID=i_hat_kasa
+NAME=Ancient Farmer Kasa
+TEVENTS=t_equipitem
+CATEGORY=Artifacts
+SUBSECTION=Lesser Treasures of Tokuno
+DESCRIPTION=Ancient Farmer Kasa
+
+ON=@Create
+HITPOINTS=255
+
+[ITEMDEF i_ancient_samurai_do]
+ID=i_platemail_do
+NAME=Ancient Samurai Do
+MageArmor=1
+TEVENTS=t_equipitem
+CATEGORY=Artifacts
+SUBSECTION=Lesser Treasures of Tokuno
+DESCRIPTION=Ancient Samurai Do
+
+ON=@Create
+HITPOINTS=255
+
+[ITEMDEF i_arms_of_tactical_excellence]
+ID=i_leather_hiro_sode
+NAME=Arms of Tactical Excellence
+TEVENTS=t_equipitem
+CATEGORY=Artifacts
+SUBSECTION=Lesser Treasures of Tokuno
+DESCRIPTION=Arms of Tactical Excellence
+
+ON=@Create
+HITPOINTS=255
+
+[ITEMDEF i_black_lotus_hood]
+ID=i_hood_ninja_leather
+NAME=Black Lotus Hood
+TEVENTS=t_equipitem
+CATEGORY=Artifacts
+SUBSECTION=Lesser Treasures of Tokuno
+DESCRIPTION=Black Lotus Hood
+
+ON=@Create
+HITPOINTS=255
+
+[ITEMDEF i_daimyo_helm]
+ID=i_helm_kabuto
+NAME=Daimyo's Helm
+TEVENTS=t_equipitem
+CATEGORY=Artifacts
+SUBSECTION=Lesser Treasures of Tokuno
+DESCRIPTION=Daimyo's Helm
+
+ON=@Create
+HITPOINTS=255
+
+[ITEMDEF i_darkened_sky]
+ID=i_kama
+NAME=Darkened Sky
+TEVENTS=t_equipitem
+CATEGORY=Artifacts
+SUBSECTION=Greater Treasures of Tokuno
+DESCRIPTION=Darkened Sky
+EXPANSION=-1
+
+
+ON=@Create
+HITPOINTS=255
+
+[ITEMDEF i_demon_forks]
+ID=i_sai
+NAME=Demon Forks
+TEVENTS=t_equipitem
+CATEGORY=Artifacts
+SUBSECTION=Lesser Treasures of Tokuno
+DESCRIPTION=Demon Forks
+EXPANSION=-1
+
+ON=@Create
+HITPOINTS=255
+
+[ITEMDEF i_dragon_nunchaku]
+ID=i_nunchaku
+NAME=Dragon Nunchaku
+TEVENTS=t_equipitem
+CATEGORY=Artifacts
+SUBSECTION=Lesser Treasures of Tokuno
+DESCRIPTION=Dragon Nunchaku
+EXPANSION=-1
+
+ON=@Create
+HITPOINTS=255
+
+[ITEMDEF i_exiler]
+ID=i_tetsubo
+NAME=Exiler
+TAG.SlayerGroup=DEMON
+TEVENTS=t_equipitem
+CATEGORY=Artifacts
+SUBSECTION=Lesser Treasures of Tokuno
+DESCRIPTION=Exiler
+EXPANSION=-1
+
+ON=@Create
+HITPOINTS=255
+
+[ITEMDEF i_flute_renewal]
+ID=i_flute_bamboo
+NAME=Flute of Renewal
+CATEGORY=Artifacts
+SUBSECTION=Lesser Treasures of Tokuno
+DESCRIPTION=Flute of Renewal
+
+ON=@Create
+DORAND 24
+TAG.SlayerGroup=REPOND
+TAG.SlayerGroup=OGRE
+TAG.SlayerGroup=ORC
+TAG.SlayerGroup=TROLL
+TAG.SlayerGroup=UNDEAD
+TAG.SlayerGroup=ELEMENTAL
+TAG.SlayerGroup=AIRELEM
+TAG.SlayerGroup=BLOODELEM
+TAG.SlayerGroup=EARTHELEM
+TAG.SlayerGroup=FIREELEM
+TAG.SlayerGroup=POISONELEM
+TAG.SlayerGroup=SNOWELEM
+TAG.SlayerGroup=WATERELEM
+TAG.SlayerGroup=DEMON
+TAG.SlayerGroup=GARGOYLE
+TAG.SlayerGroup=ARACHNID
+TAG.SlayerGroup=SCORPION
+TAG.SlayerGroup=SPIDER
+TAG.SlayerGroup=TERATHAN
+TAG.SlayerGroup=REPTILE
+TAG.SlayerGroup=DRAGON
+TAG.SlayerGroup=LIZARDMAN
+TAG.SlayerGroup=OPHIDIAN
+TAG.SlayerGroup=SNAKE
+ENDDO
+TAG.Charges=300
+
+[ITEMDEF i_gloves_of_the_sun]
+ID=i_leather_gloves
+NAME=Gloves of the Sun
+TEVENTS=t_equipitem
+CATEGORY=Artifacts
+SUBSECTION=Lesser Treasures of Tokuno
+DESCRIPTION=Gloves of the Sun
+
+ON=@Create
+HITPOINTS=255
+
+[ITEMDEF i_hanzos_bow]
+ID=i_yumi
+NAME=Hanzo's Bow
+TEVENTS=t_equipitem
+CATEGORY=Artifacts
+SUBSECTION=Lesser Treasures of Tokuno
+DESCRIPTION=Hanzo's Bow
+EXPANSION=-1
+
+ON=@Create
+HITPOINTS=255
+
+[ITEMDEF i_kasa_of_the_rajin]
+ID=i_hat_kasa
+NAME=Kasa of the Raj-In
+TEVENTS=t_equipitem
+CATEGORY=Artifacts
+SUBSECTION=Greater Treasures of Tokuno
+DESCRIPTION=Kasa of the Raj-In
+EXPANSION=-1
+
+ON=@Create
+HITPOINTS=255
+
+[ITEMDEF i_legs_of_stability]
+ID=i_platemail_suneate
+NAME=Legs of Stability
+LowerReq=100
+MageArmor=1
+TEVENTS=t_equipitem
+CATEGORY=Artifacts
+SUBSECTION=Lesser Treasures of Tokuno
+DESCRIPTION=Legs of Stability
+
+ON=@Create
+HITPOINTS=255
+
+[ITEMDEF i_peasant_bokuto]
+ID=i_bokuto
+NAME=Peasant's Bokuto
+TAG.SlayerGroup=SNAKE
+//HitLowerDef=30
+TEVENTS=t_equipitem
+CATEGORY=Artifacts
+SUBSECTION=Lesser Treasures of Tokuno
+DESCRIPTION=Peasant's Bokuto
+EXPANSION=-1
+
+ON=@Create
+HITPOINTS=255
+
+[ITEMDEF i_pilfered_dancer_fans]
+ID=i_tessen
+NAME=Pilfered Dancer Fans
+SKILL=Macefighting
+TEVENTS=t_equipitem
+CATEGORY=Artifacts
+SUBSECTION=Lesser Treasures of Tokuno
+DESCRIPTION=Pilfered Dancer Fans
+EXPANSION=-1
+
+ON=@Create
+HITPOINTS=255
+
+[ITEMDEF i_rune_beetle_carapace]
+ID=i_platemail_hiro_sode
+NAME=Rune Beetle Carapace
+
+TEVENTS=t_equipitem
+CATEGORY=Artifacts
+SUBSECTION=Greater Treasures of Tokuno
+DESCRIPTION=Rune Beetle Carapace
+
+ON=@Create
+HITPOINTS=255
+
+[ITEMDEF i_stormgrip]
+ID=i_ringmail_gloves
+NAME=Stormgrip
+TEVENTS=t_equipitem
+CATEGORY=Artifacts
+SUBSECTION=Greater Treasures of Tokuno
+DESCRIPTION=Stormgrip
+
+ON=@Create
+HITPOINTS=255
+
+[ITEMDEF i_sword_of_the_stampede]
+ID=i_no_dachi
+NAME=Sword of the Stampede
+TEVENTS=t_equipitem
+CATEGORY=Artifacts
+SUBSECTION=Greater Treasures of Tokuno
+DESCRIPTION=Sword of the Stampede
+EXPANSION=-1
+
+ON=@Create
+HITPOINTS=255
+
+[ITEMDEF i_swords_of_prosperity]
+ID=i_daisho
+NAME=Swords of Prosperity
+TEVENTS=t_equipitem
+CATEGORY=Artifacts
+SUBSECTION=Greater Treasures of Tokuno
+DESCRIPTION=Swords of Prosperity
+EXPANSION=-1
+
+ON=@Create
+HITPOINTS=255
+DORAND 3
+BEGIN
+MageWeapon=<FVAL <R150,300>> Magery
+TAG.OVERRIDE_SKILL=26	//Magic Resistance
+END
+BEGIN
+MageWeapon=<FVAL <R150,300>> Necromancy
+TAG.OVERRIDE_SKILL=50	//Focus
+END
+BEGIN
+MageWeapon=<FVAL <R150,300>> Spellweaving
+TAG.OVERRIDE_SKILL=55	//Mysticism
+END
+ENDDO
+
+[ITEMDEF i_the_destroyer]
+ID=i_no_dachi
+NAME=The Destroyer
+HitLeechStam=40
+TEVENTS=t_equipitem
+CATEGORY=Artifacts
+SUBSECTION=Lesser Treasures of Tokuno
+DESCRIPTION=The Destroyer
+EXPANSION=-1
+
+ON=@Create
+HITPOINTS=255
+
+[ITEMDEF i_the_horselord]
+ID=i_yumi
+NAME=The Horselord
+TAG.SlayerGroup=ELEMENTAL,REPTILE
+TEVENTS=t_equipitem
+CATEGORY=Artifacts
+SUBSECTION=Greater Treasures of Tokuno
+DESCRIPTION=The Horselord
+EXPANSION=-1
+
+ON=@Create
+HITPOINTS=255
+
+[ITEMDEF i_tome_enlightenment]
+ID=i_spellbook
+NAME=Tome of Enlightenment
+TEVENTS=t_equipitem
+CATEGORY=Artifacts
+SUBSECTION=Lesser Treasures of Tokuno
+DESCRIPTION=Tome of Enlightenment
+
+ON=@Create
+COLOR=0455
+
+[ITEMDEF i_tome_of_lost_knowledge]
+ID=i_spellbook
+NAME=Tome of Lost Knowledge
+TEVENTS=t_equipitem
+CATEGORY=Artifacts
+SUBSECTION=Greater Treasures of Tokuno
+DESCRIPTION=Tome of Lost Knowledge
+
+ON=@Create
+COLOR=0530
+
+[ITEMDEF i_winds_edge]
+ID=i_tessen
+NAME=Wind's Edge
+TEVENTS=t_equipitem
+CATEGORY=Artifacts
+SUBSECTION=Greater Treasures of Tokuno
+DESCRIPTION=Wind's Edge
+EXPANSION=-1
+
+ON=@Create
+HITPOINTS=255
+
+[EOF]

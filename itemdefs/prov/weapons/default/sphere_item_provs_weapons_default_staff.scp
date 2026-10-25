@@ -1,0 +1,182 @@
+
+
+
+
+[ITEMDEF 0e8a]
+DEFNAME=i_staff_quarter
+TYPE=t_weapon_mace_staff
+DAM=8,28
+FLIP=1
+SKILL=Macefighting
+// SPEED=32
+//RANGE=0,2 // 55r-2000 de 2 kareden vuran silah yok
+RANGE=0,1
+VALUE=49
+WEIGHT=7.0
+TWOHANDS=Y
+RESOURCES=3 i_log
+SKILLMAKE=Carpentry 15.0,t_carpentry
+CATEGORY=Weapons
+SUBSECTION=Macefighting
+DESCRIPTION=Quarter Staff
+// CanUse=can_u_human|can_u_elf
+ReqStr=30
+TEVENTS=t_equipitem
+DUPELIST=0e89
+
+ON=@Create
+HITPOINTS={100 250}
+
+[ITEMDEF 0e89]
+//quarter staff
+DUPEITEM=0e8a
+
+
+
+
+
+[ITEMDEF 0e81]
+DEFNAME=i_crook_thin
+TYPE=t_weapon_mace_crook
+DAM=3,12
+FLIP=1
+SKILL=Macefighting
+// SPEED=47
+VALUE=55
+WEIGHT=7.0
+TWOHANDS=Y
+RESOURCES=7 i_log
+SKILLMAKE=Carpentry 78.9,t_carpentry
+CATEGORY=Weapons
+SUBSECTION=Macefighting
+DESCRIPTION=Sheperd Crook
+ReqStr=20
+TEVENTS=t_equipitem
+DUPELIST=0e82
+
+ON=@Create
+HITPOINTS={100 250}
+
+[ITEMDEF 0e82]
+//miniature shepherds crook
+DUPEITEM=0e81
+
+
+[ITEMDEF 0df0]
+DEFNAME=i_staff_black
+TYPE=t_weapon_mace_staff
+DAM=8,33
+FLIP=1
+SKILL=Macefighting
+// SPEED=30
+VALUE=28
+WEIGHT=8.0
+TWOHANDS=Y
+//RANGE=0,2 // 55r-2000 de 2 kareden vuran silah yok
+RANGE=0,1
+RESOURCES=8 i_log
+SKILLMAKE=Carpentry 82.0,t_carpentry
+CATEGORY=Weapons
+SUBSECTION=Macefighting
+DESCRIPTION=Black Staff
+ReqStr=35
+TEVENTS=t_equipitem
+DUPELIST=0df1
+
+ON=@Create
+HITPOINTS={100 250}
+
+[ITEMDEF 0df1]
+//black staff
+DUPEITEM=0df0
+
+
+
+[ITEMDEF 013f8]
+DEFNAME=i_staff_gnarled
+TYPE=t_weapon_mace_staff
+DAM=10,30
+FLIP=1
+SKILL=Macefighting
+// SPEED=41
+VALUE=55
+WEIGHT=8.0
+TWOHANDS=Y
+//RANGE=0,2 // 55r-2000 de 2 kareden vuran silah yok
+RANGE=0,1
+RESOURCES=4 i_log
+SKILLMAKE=Carpentry 48.9,t_carpentry
+CATEGORY=Weapons
+SUBSECTION=Macefighting
+DESCRIPTION=Gnarled Staff
+// CanUse=can_u_human|can_u_elf
+ReqStr=20
+TEVENTS=t_equipitem
+DUPELIST=013f9
+
+ON=@Create
+HITPOINTS={100 250}
+
+[ITEMDEF 013f9]
+//gnarled staff
+DUPEITEM=013f8
+
+
+
+[ITEMDEF 013f4]
+DEFNAME=i_shepherds_crook
+TYPE=t_weapon_mace_crook
+NAME=Herding Staff
+DAM=3,12
+FLIP=1
+SKILL=Macefighting
+// SPEED=47
+VALUE=13
+WEIGHT=6.0
+TWOHANDS=Y
+RESOURCES=2 i_log
+SKILLMAKE=Carpentry 78.9,t_carpentry
+CATEGORY=Weapons
+SUBSECTION=Macefighting
+DESCRIPTION=Shepherd Crook
+ReqStr=20
+TEVENTS=t_equipitem
+DUPELIST=013f5
+
+ON=@Create
+HITPOINTS={100 250}
+
+[ITEMDEF 013f5]
+//Shepherd Crook
+DUPEITEM=013f4
+
+
+[ITEMDEF 02d25]
+DEFNAME=i_staff_wild
+NAME=wild staff
+TYPE=t_weapon_mace_staff
+DAM=1,3
+FLIP=1
+SKILL=Macefighting
+// SPEED=50
+VALUE=36
+WEIGHT=9.0
+TWOHANDS=N
+RESOURCES=16 i_log
+SKILLMAKE=Carpentry 63.8,t_carpentry
+CATEGORY=Weapons
+SUBSECTION=Macefighting
+DESCRIPTION=Wild Staff
+ReqStr=40
+TEVENTS=t_equipitem
+DUPELIST=02d31
+
+ON=@Create
+HITPOINTS={100 250}
+
+
+[ITEMDEF 02d31]
+//wild staff
+DUPEITEM=02d25
+
+[eof]

@@ -1,0 +1,404 @@
+
+
+[ITEMDEF I_STAFF_TAMING]
+DEFNAME=I_STAFF_TAMING
+ID=I_STAFF_GNARLED
+NAME=taming staff
+TYPE=T_WEAPON_MACE_STAFF
+TWOHANDS=Y
+LAYER=2
+VALUE=254
+WEIGHT=10.0
+DAM=1,2
+RESOURCES=5 i_log
+SKILLMAKE=Carpentry 33.0
+RESDISPDNHUE=2001
+
+On=@Create
+COLOR=<SERV.ITEMDEF.<BASEID>.RESDISPDNHUE>
+HITPOINTS=100
+MORE2=0
+TIMER -1
+
+On=@DClick
+IF !(<SRC.ISINPACK <UID>>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,600036,<NAME>	// Bunu (~1_val~) kullanabilmek için çantanızda veya üzerinizde olmalıdır.
+	
+ELSEIF  (<SRC.FLAGS>&STATF_HIDDEN)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Gizlenmiş durumdayken kullanamazsınız.
+	
+ELSEIF (<SRC.REGION.FLAGS>&REGION_FLAG_SAFE)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu alanlarda bunu kullanamazsınız.
+	
+ELSEIF (<SRC.FLAGS>&STATF_INVISIBLE|STATF_SLEEPING|STATF_POLYMORPH)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,600032 // "Bu durumdayken bu işlemi yapamazsınız."
+
+ELSEIF (<SRC.FLAGS>&STATF_DEAD)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,600027 // "Ölü durumdayken bu işlemi yapamazsınız."
+
+ELSEIF (<SRC.FLAGS>&STATF_FREEZE)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,600029 // "Freeze durumdayken bu işlemi yapamazsınız."
+
+ELSEIF (<SRC.FLAGS>&STATF_STONE)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,600028 // "Stone durumdayken bu işlemi yapamazsınız."
+
+ELSEIF (<TIMER> == -1)
+       EQUIP
+	TARGET
+	SRC.SYSMESSAGELOC <def.tcolor_grey>,<def.empty_cliloc2>, Hangi hayvanı evcilleştirmek istiyorsunuz?
+ELSE
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Şu an zaten evcilleştirme yapıyorsunuz.
+ENDIF
+RETURN 1
+
+ON=@TameAbort
+// TOPOBJ.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Taming işleminiz iptal oldu!
+TOPOBJ.EVENTS -E_TAMING
+TOPOBJ.ACTION -1
+MORE2 0
+TIMER -1
+LINK <DEF.link_invalid>
+
+ON=@UNEQUIP
+IF (<LINK.ISVALIDE>)
+	TRIGGER @TameAbort
+ENDIF
+
+
+
+
+ON=@TARGON_CHAR
+IF (<SRC.ISDIFF 3,<SRC.TARG.UID>>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Hayvanı göremiyorsunuz.
+	RETURN 1
+
+ELSEIF (<SRC.TARG.MEMORYFINDTYPE.MEMORY_IPET>)
+	IF (<SRC.TARG.MEMORYFINDTYPE.(MEMORY_IPET|MEMORY_GUARD).LINK> == <SRC.UID>)
+		SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, <SRC.TARG.NAME> zaten size ait.
+	ELSE
+		SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, <SRC.TARG.NAME> bir baskasina ait.
+	ENDIF
+	RETURN 1
+
+ELSEIF (<SRC.TARG.IsSummonNpc>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Büyü ile yaratılmış hayvanları evcillestirmezsiniz
+	RETURN 1
+
+ELSEIF (<SRC.TARG.TAG0.TAMER> == <SRC.UID>) 
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Hayvan artik sizi umursamiyor.
+	RETURN 1
+
+ELSEIF (<SRC.FLAGS>&STATF_DEAD)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Tame isleminiz bozuldu.
+	RETURN 1
+
+ELSEIF (<SRC.FLAGS>&STATF_HIDDEN)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Gizlenmiş durumdayken evcilleştiremezsiniz.
+	RETURN 1
+
+ELSEIF (<SRC.REGION.SAFE>&REGION_FLAG_SAFE)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu alanlarda bunu kullanamazsınız.
+	RETURN 1
+
+ELSEIF (<SRC.FLAGS>&STATF_FREEZE|STATF_INVISIBLE|STATF_SLEEPING|STATF_POLYMORPH|STATF_STONE)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,600032 // "Bu durumdayken bu işlemi yapamazsınız."
+	RETURN 1
+
+ELSEIF !(<SRC.TARG.NPC> == BRAIN_ANIMAL)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bunu evcilleştiremesiniz.
+	RETURN 1
+
+ELSEIF (<SRC.TARG.MEMORYFINDTYPE.MEMORY_FIGHT>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Hayvan su an musait degil.
+	RETURN 1
+
+ELSEIF (<SRC.TARG.MEMORYFINDTYPE.MEMORY_FIGHT>)
+	IF (<SRC.TARG.MEMORYFINDTYPE.MEMORY_FIGHT.LINK> == <SRC.UID>)
+		SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Hayvan şu an size çok kızgın.
+		RETURN 1
+	ENDIF
+
+ELSEIF (<SRC.TARG.SPAWNITEM>)
+	IF (<SRC.TARG.DISTANCE <SRC.TARG.SPAWNITEM>> > 5)
+		SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu hayvan yuvasından uzakta.
+		RETURN 1
+	ENDIF
+ENDIF
+IF (<SRC.FINDLAYER.2>) && !((<SRC.FINDLAYER.2.BASEID> == I_STAFF_TAMING))
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Üzerinizde Taming Staff bulunmuyor.
+	RETURN 1
+ENDIF
+IF (<SRC.TAMING> < <SRC.TARG.TAMING>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, <SRC.TARG.name> evcilleştirmek için <SRC.TARG.TAMING> Taming yeteneği gerekmektedir.
+	RETURN 1
+
+ELSEIF (<SRC.ANIMALLORE> < <SRC.TARG.ANIMALLORE>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, <SRC.TARG.NAME> evcilleştirmek için <SRC.TARG.ANIMALLORE> Animallore yeteneği gerekmektedir.
+	RETURN 1
+ENDIF
+
+LINK=<SRC.TARG.UID>
+TIMER=2
+SRC.ANIM 19
+SRC.EVENTS +E_TAMING
+RETURN 1
+
+ON=@TARGON_ITEM
+SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Hatalı seçim.
+TRIGGER @DCLICK
+RETURN 1
+
+
+
+ON=@TIMER
+IF (<LINK.ISVALIDE>)
+	REF1=<LINK.SPAWNITEM>
+	
+	IF !(<LINK.NPC> == BRAIN_ANIMAL)
+		CONT.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bunu evcilleştiremesiniz.
+		TRIGGER @TameAbort
+		RETURN 1
+		
+	ELSEIF (<CONT.FLAGS>&STATF_HIDDEN)
+		CONT.SYSMESSAGELOC <def.tcolor_red>,600041 // "Gizlenmiş durumdayken bu işlemi yapamazsınız."
+		TRIGGER @TameAbort
+		RETURN 1
+
+	ELSEIF (<CONT.FLAGS>&STATF_FREEZE)
+		CONT.SYSMESSAGELOC <def.tcolor_red>,600029 // "Freeze durumdayken bu işlemi yapamazsınız."
+		TRIGGER @TameAbort
+		RETURN 1
+
+	ELSEIF (<CONT.FLAGS>&STATF_STONE)
+		CONT.SYSMESSAGELOC <def.tcolor_red>,600028 // "Stone durumdayken bu işlemi yapamazsınız."
+		TRIGGER @TameAbort
+		RETURN 1
+
+	ELSEIF (<CONT.FLAGS>&STATF_INVISIBLE|STATF_SLEEPING|STATF_POLYMORPH)
+		CONT.SYSMESSAGELOC <def.tcolor_red>,600032 // "Bu durumdayken bu işlemi yapamazsınız."
+		TRIGGER @TameAbort
+		RETURN 1
+		
+	ELSEIF !(<CONT.ISONLINE>)
+		TRIGGER @TameAbort
+		RETURN 1
+		
+	ELSEIF (<CONT.FLAGS>&STATF_DEAD)
+		CONT.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Evcilleştirme işleminiz bozuldu.
+		TRIGGER @TameAbort
+		RETURN 1
+			
+	ELSEIF (<CONT.ISDIFF 3,<LINK>>)
+		CONT.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Hayvana yetişemiyorsunuz.
+		TRIGGER @TameAbort
+		RETURN 1
+		
+	ELSEIF (<LINK.OWNER> == <CONT>)
+		CONT.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, <LINK.NAME> zaten size ait.
+		TRIGGER @TameAbort
+		RETURN 1
+		
+	ELSEIF (<LINK.IsSummonNpc>)
+		CONT.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Büyü ile yaratılmış hayvanları evcillestirmezsiniz
+		TRIGGER @TameAbort
+		RETURN 1
+		
+	ELSEIF (<LINK.TAG0.TAMER> == <CONT.UID>) 
+		CONT.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Hayvan artik sizi umursamiyor.
+		TRIGGER @TameAbort
+		RETURN 1
+		
+	ELSEIF !(<LINK.OWNER> == 0) 
+		CONT.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, <LINK.NAME> isimli bineğin bir sahibi var.
+		TRIGGER @TameAbort
+		RETURN 1
+		
+	ELSEIF (<CONT.FINDLAYER.2>) && !((<CONT.FINDLAYER.2.BASEID> == I_STAFF_TAMING) || (<CONT.FINDLAYER.2.BASEID> == I_STAFF_TAMING_ELDER))
+		CONT.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Üzerinizde Taming Staff bulunmuyor.
+		TRIGGER @TameAbort
+		RETURN 1
+		
+	ELSEIF (<LINK.MEMORYFINDTYPE.MEMORY_FIGHT>)
+		CONT.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Hayvan su an musait degil.
+		TRIGGER @TameAbort
+		RETURN 1
+		
+	ELSEIF (<LINK.MEMORYFINDTYPE.MEMORY_FIGHT>)
+		IF (<LINK.MEMORYFINDTYPE.MEMORY_FIGHT.LINK> == <CONT.UID>)
+			CONT.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Hayvan şu an size çok kızgın.
+			TRIGGER @TameAbort
+			RETURN 1
+		ENDIF
+		
+	ELSEIF (<REF1.ISVALIDE>) && (<LINK.DISTANCE <REF1>> > 5)
+		CONT.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu hayvan yuvasından uzakta.
+		TRIGGER @TameAbort
+		RETURN 1
+	ENDIF
+	
+	IF !(<TAG0.REPEAT>)
+		TAG0.REPEAT=<QVAL (<CONT.ISGM> == 1)?2:<R6,7>>
+	ENDIF
+	
+	IF (<MORE2> < <TAG0.REPEAT>)
+		DORAND 10
+			CONT.SAY @51,,1 Gel <LINK.NAME>, gel...
+			CONT.SAY @51,,1 Sana zarar vermeyecegim <LINK.NAME>...
+			CONT.SAY @51,,1 Sakin ol, <link.name>.
+			CONT.SAY @51,,1 Her zaman senin gibi bir <link.name> sahibi olmak istemistim...
+			CONT.SAY @51,,1 Cok tatlisin, <link.name>.
+			CONT.SAY @51,,1 Gel bir tanem, gel canim..
+			CONT.SAY @51,,1 Seni incitmeyecegim, <link.name>.
+			CONT.SAY @51,,1 Arkadaşın olmak istiyorum.
+			CONT.SAY @51,,1 Gel <cont.sex babana/annene>, <link.name>.
+			CONT.SAY @51,,1 Gel <link.name>, gel <cont.sex babana/annene>.
+		ENDDO
+		DORAND 2
+			CONT.ANIM 17
+			CONT.ANIM 19
+		ENDDO
+		TIMER 2
+		MORE2 (<MORE2> + 1)
+		RETURN 1
+	ENDIF
+
+	MORE2 0
+
+	IF (RAND(100) < 75)	
+		// Spawnbitin süresini ayarla
+		IF (<REF1.ISVALIDE>) && (<REF1.TYPE> == T_SPAWN_CHAR)
+			LOCAL.RESPAWNTIME = <EVAL (<R<REF1.MOREX>,<REF1.MOREY>>)*60>
+			DORAND 2
+				LOCAL.RESPAWNTIME -=<R300,600>
+				LOCAL.RESPAWNTIME +=<R300,600>
+			ENDDO
+			REF1.TIMER <LOCAL.RESPAWNTIME>
+			REF1.DelObj=<LINK>
+		ENDIF
+
+		CONT.EVENTS -E_TAMING
+
+		IF (<LINK.ISVALIDE>)
+			CONT.SYSMESSAGELOC <def.tcolor_green>,<def.empty_cliloc2>, <LINK.NAME> sizi sahibi olarak kabul etti.
+			
+			// Ph olaylari
+			IF ((<CONT.SKILLLOCK[35]> == 0) && (<CONT.SKILLTOTAL> < <CONT.SKILLCLASS.SKILLSUM>))
+				IF (<CONT.TAMING> < 30.0)
+					IF (RAND(3) == 1)
+						CONT.TAMING +=1
+					ENDIF
+				ELSEIF (<CONT.TAMING> < 50.0)
+					IF (RAND(6) == 1)
+						CONT.TAMING +=1
+					ENDIF
+				ELSEIF (<CONT.TAMING> < 75.0)
+					IF (RAND(12) == 1)
+						CONT.TAMING +=1
+					ENDIF
+				ELSEIF (<CONT.TAMING> < 100.0)
+					IF (RAND(24) == 1)
+						CONT.TAMING +=1
+					ENDIF
+				ENDIF
+			ENDIF
+			IF ((<CONT.SKILLLOCK[2]> == 0) && (<CONT.SKILLTOTAL> < <CONT.SKILLCLASS.SKILLSUM>))
+				IF (<CONT.ANIMALLORE> < 30.0)
+					IF (RAND(2) == 1)
+						CONT.ANIMALLORE +=1
+					ENDIF
+				ELSEIF (<CONT.ANIMALLORE> < 50.0)
+					IF (RAND(4) == 1)
+						CONT.ANIMALLORE +=1
+					ENDIF
+				ELSEIF (<CONT.ANIMALLORE> < 75.0)
+					IF (RAND(8) == 1)
+						CONT.ANIMALLORE +=1
+					ENDIF
+				ELSEIF (<CONT.ANIMALLORE> < 100.0)
+					IF (RAND(16) == 1)
+						CONT.ANIMALLORE +=1
+					ENDIF
+				ENDIF
+			ENDIF
+	
+			LINK.FLAGS &= ~STATF_SPAWNED
+			//LINK.FAME=-50
+            LINK.KARMA = -50
+
+			LINK.HOME=0,0
+			LINK.TAG0.TAMER <CONT.UID>	
+			
+			IF (<LINK.NPC> == brain_animal) && !(<LINK.IsMountableNpc>)
+				LINK.FOOD=<R1,3>
+				LINK.REGENFOOD=600
+			ENDIF
+			
+			// IF (<LINK.NPC> == brain_animal) && !(<LINK.ISTEVENT.e_generic_npc_mounts>)
+				// LOCAL.REMOVETIME = <R15,30>
+				// LINK.FUNC_REMOVETIMER <LOCAL.REMOVETIME>
+				// LINK.FUNC_DeathTIMER <LOCAL.REMOVETIME>
+				// TOPOBJ.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, <LINK.NAME> isimli hayvan <dLOCAL.REMOVETIME> sn içinde ölecek.
+			// ENDIF
+			
+			LINK.MAKEMYPET <CONT>
+			LINK <DEF.link_invalid>
+		ENDIF
+		
+		MORE2=0
+		TIMER -1		
+	ELSE			
+		CONT.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Hayvanı evcilleştirmeyi BAŞARAMADIN!
+		LINK <DEF.link_invalid>
+		MORE2=0
+		TIMER -1
+	ENDIF
+ENDIF
+RETURN 1
+
+
+
+
+[EVENTS e_taming]
+
+ON=@Hittry
+SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Konsantrasyonunuzu kaybettiniz, evcillestiremiyorsunuz.
+EVENTS -E_TAMING
+REF1=<FINDLAYER.2>
+IF (<REF1.ISVALIDE> && <REF1.BASEID> == I_STAFF_TAMING)
+	REF1.MORE2 0
+	REF1.TIMER -1
+	REF1.LINK <DEF.link_invalid>
+ENDIF
+
+
+ON=@DEATH 
+SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Konsantrasyonunuzu kaybettiniz, evcillestiremiyorsunuz.
+SRC.EVENTS -E_TAMING
+IF (<SRC.FINDLAYER.2> && <SRC.FINDLAYER.2.BASEID> == I_STAFF_TAMING)
+	SRC.FINDLAYER.2.UNEQUIP
+ENDIF
+
+
+ON=@SPELLEFFECT
+SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Konsantrasyonunuzu kaybettiniz, evcillestiremiyorsunuz.
+SRC.EVENTS -E_TAMING
+REF1=<SRC.FINDLAYER.2>
+IF (<REF1.ISVALIDE> && <REF1.BASEID> == I_STAFF_TAMING)
+	REF1.MORE2 0
+	REF1.TIMER -1
+	REF1.LINK <DEF.link_invalid>
+ENDIF
+
+
+ON=@LOGOUT
+SRC.EVENTS -E_TAMING
+REF1=<SRC.FINDLAYER.2>
+IF (<REF1.ISVALIDE> && <REF1.BASEID> == I_STAFF_TAMING)
+	REF1.MORE2 0
+	REF1.TIMER -1
+	REF1.LINK <DEF.link_invalid>
+ENDIF
+
+
+
+[EOF]

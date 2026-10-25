@@ -1,0 +1,300 @@
+
+[COMMENT]
+
+
+
+[TYPEDEF t_equipitem]
+ON=@CLICK
+IF (<SRC.ISGM>)
+	IF (<ISWEAPON>)
+		MESSAGE [dam: <DAM> speed: <SPEED>/<eval (2000/<weight>)>, wght: <FVAL <WEIGHT>>]
+	ELSEIF (<ISARMOR>)
+		MESSAGE [ar: <ar>, real ar: <fRealAr>]
+	ENDIF
+ENDIF
+
+IF (<ATTR>&ATTR_MAGIC && <MOREY>)
+	MESSAGE a magical <SERV.ITEMDEF.<DISPID>.NAME>
+	IF (<ATTR>&attr_identified)
+		MESSAGE [<ColoredItemTitle>]
+	ENDIF
+	RETURN 1
+ENDIF
+
+
+
+
+
+[COMMENT TYPEDEF t_fish_pole]
+on=@targon_char
+if (<src> == <src.targ.uid>)
+    // SRC.ACTARG1 = 0    
+    SRC.ACTARG2 = 1    
+    SRC.ACTARG3 = 2    
+    SRC.ACT = 0
+	SRC.ACTPRV = <UID>
+    SRC.ACTP = <eval <SRC.P.X> + 1>,<eval <SRC.P.Y>+ 1>,<SRC.P.Z>,<SRC.P.M>
+    SRC.ACTION = 18	
+	RETURN 1
+endif
+
+
+on=@targon_İTEM
+if (<uid> == <src.targ.uid>)
+    // SRC.ACTARG1 = 0    
+    SRC.ACTARG2 = 1    
+    SRC.ACTARG3 = 2    
+    SRC.ACT = 0
+	SRC.ACTPRV = <UID>
+    SRC.ACTP = <eval <SRC.P.X> + 1>,<eval <SRC.P.Y>+ 1>,<SRC.P.Z>,<SRC.P.M>
+    SRC.ACTION = 18	
+	RETURN 1
+endif
+
+
+
+
+[TYPEDEF t_shield]
+ON=@EQUIPTEST
+IF (<SRC.ISPLAYER>)
+	IF (<BASEID> == I_SHIELD_ORDER)
+		LOCAL.SPELLREMOVE=0
+	ELSEIF (<BASEID> == I_SHIELD_CHAOS)
+		LOCAL.SPELLREMOVE=0
+	ELSE
+		LOCAL.SPELLREMOVE=1
+	ENDIF
+	IF (<LOCAL.SPELLREMOVE>)
+		IF (<SRC.FINDID.I_RUNE_PROTECTION>)
+			SRC.SYSMESSAGELOC <def.tcolor_grey>,<def.empty_cliloc2>, Protection etkisi silindi.
+			SRC.FINDID.I_RUNE_PROTECTION.REMOVE
+		ENDIF
+		IF (<SRC.FINDID.I_RUNE_REACTIVE_ARMOR>)
+			SRC.SYSMESSAGELOC <def.tcolor_grey>,<def.empty_cliloc2>, Reactive Armor etkisi silindi.
+			SRC.FINDID.I_RUNE_REACTIVE_ARMOR.REMOVE
+		ENDIF
+	ENDIF
+ENDIF
+
+
+
+[TYPEDEF t_armor]
+ON=@EQUIPTEST
+IF (<SRC.ISPLAYER>)
+	IF (<SRC.FINDID.I_RUNE_PROTECTION>)
+		SRC.SYSMESSAGELOC <def.tcolor_grey>,<def.empty_cliloc2>, Protection etkisi silindi.
+		SRC.FINDID.I_RUNE_PROTECTION.REMOVE
+	ENDIF
+	IF (<SRC.FINDID.I_RUNE_REACTIVE_ARMOR>)
+		SRC.SYSMESSAGELOC <def.tcolor_grey>,<def.empty_cliloc2>, Reactive Armor etkisi silindi.
+		SRC.FINDID.I_RUNE_REACTIVE_ARMOR.REMOVE
+	ENDIF
+ENDIF
+
+[TYPEDEF t_armor_chain]
+ON=@EQUIPTEST
+IF (<SRC.ISPLAYER>)
+	IF (<SRC.FINDID.I_RUNE_PROTECTION>)
+		SRC.SYSMESSAGELOC <def.tcolor_grey>,<def.empty_cliloc2>, Protection etkisi silindi.
+		SRC.FINDID.I_RUNE_PROTECTION.REMOVE
+	ENDIF
+	IF (<SRC.FINDID.I_RUNE_REACTIVE_ARMOR>)
+		SRC.SYSMESSAGELOC <def.tcolor_grey>,<def.empty_cliloc2>, Reactive Armor etkisi silindi.
+		SRC.FINDID.I_RUNE_REACTIVE_ARMOR.REMOVE
+	ENDIF
+ENDIF
+
+
+
+[TYPEDEF t_armor_ring]
+ON=@EQUIPTEST
+IF (<SRC.ISPLAYER>)
+	IF (<SRC.FINDID.I_RUNE_PROTECTION>)
+		SRC.SYSMESSAGELOC <def.tcolor_grey>,<def.empty_cliloc2>, Protection etkisi silindi.
+		SRC.FINDID.I_RUNE_PROTECTION.REMOVE
+	ENDIF
+	IF (<SRC.FINDID.I_RUNE_REACTIVE_ARMOR>)
+		SRC.SYSMESSAGELOC <def.tcolor_grey>,<def.empty_cliloc2>, Reactive Armor etkisi silindi.
+		SRC.FINDID.I_RUNE_REACTIVE_ARMOR.REMOVE
+	ENDIF
+ENDIF
+
+
+
+
+
+[TYPEDEF t_armor_leather]
+
+
+
+[TYPEDEF t_clothing]
+
+
+
+
+
+
+
+
+
+
+
+[TYPEDEF t_robe_gm]
+
+ON=@DCLICK
+IF (<SRC.ISINVIS>)
+	SRC.INVIS=0
+ELSE
+	SRC.INVIS=1
+ENDIF
+
+
+
+
+[TYPEDEF t_spellbook]
+
+ON=@CLICK
+IF (<SPELLCOUNT> <= 0)
+	MESSAGE a spellbook
+ELSE
+	MESSAGE a spellbook [<spellcount>]
+ENDIF
+RETURN 1
+
+
+
+
+[TYPEDEF t_spellbook_necro]
+
+ON=@CLICK
+IF (<SPELLCOUNT> <= 0)
+	MESSAGE a necromancer book
+ELSE
+	MESSAGE a necromancer book [<spellcount>]
+ENDIF
+RETURN 1
+
+
+
+
+
+[TYPEDEF t_hair]
+
+ON=@TIMER
+RETURN 1
+	
+
+
+[TYPEDEF t_beard]
+
+ON=@TIMER
+RETURN 1
+
+
+
+
+[TYPEDEF t_weapon_bow]
+
+ON=@CLICK
+IF (<TOPOBJ> == <SRC>)
+	MESSAGE [Arrows: <EVAL <TOPOBJ.RESCOUNT <TDATA3>>>]
+ENDIF
+
+
+
+[TYPEDEF t_weapon_xbow]
+
+ON=@CLICK
+IF (<TOPOBJ> == <SRC>)
+	MESSAGE [Bolts: <EVAL <TOPOBJ.RESCOUNT <TDATA3>>>]
+ENDIF
+
+
+
+[TYPEDEF t_weapon_mace_crook]
+
+ON=@CLICK
+REF1=<TAG0.NPC>
+IF (<REF1.isvalid>) && (<REF1.ISCHAR>)
+	MESSAGE (<REF1.NAME>)
+ENDIF
+
+IF (<TAG0.TARGP>)
+MESSAGE (<TAG0.TARGP>)
+ENDIF
+
+ON=@TARGON_ITEM
+RETURN 1
+
+ON=@TARGON_CHAR
+IF !(<SRC.TARG.NPC> == brain_animal)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Sadece hayvanları sürebilirsiniz.
+	RETURN 1
+ELSEIF (<SRC.ISDISS 5,<SRC.TARG.UID>>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,600018,<SRC.TARG.NAME>
+	RETURN 1
+ELSEIF (<SRC.TARG.OWNER>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Sahipli hayvanları süremezsiniz.
+	RETURN 1
+ENDIF
+TAG0.NPC=<SRC.TARG.UID>
+
+
+
+[TYPEDEF t_weapon_mace_smith]
+
+ON=@EQUIP
+IF !(<SRC.ISEVENT.e_bonus_shoot_stam>)
+	SRC.EVENTS +e_bonus_shoot_stam
+ENDIF
+
+ON=@UNEQUIP
+IF (<SRC.ISEVENT.e_bonus_shoot_stam>)
+	SRC.EVENTS -e_bonus_shoot_stam
+ENDIF
+
+
+[TYPEDEF t_weapon_mace_sharp]
+
+ON=@EQUIP
+IF !(<SRC.ISEVENT.e_bonus_shoot_stam>)
+	SRC.EVENTS +e_bonus_shoot_stam
+ENDIF
+
+ON=@UNEQUIP
+IF (<SRC.ISEVENT.e_bonus_shoot_stam>)
+	SRC.EVENTS -e_bonus_shoot_stam
+ENDIF
+
+
+[TYPEDEF t_weapon_mace_staff]
+
+ON=@EQUIP
+IF !((<BASEID> = i_staff_taming || <baseid> == i_staff_gnarled))
+	IF !(<SRC.ISEVENT.e_bonus_shoot_stam>)
+		SRC.EVENTS +e_bonus_shoot_stam
+	ENDIF
+ENDIF
+
+ON=@UNEQUIP
+IF (<SRC.ISEVENT.e_bonus_shoot_stam>)
+	SRC.EVENTS -e_bonus_shoot_stam
+ENDIF
+
+
+
+[TYPEDEF t_weapon_mace_pick]
+
+ON=@EQUIP
+IF !(<SRC.ISEVENT.e_bonus_shoot_stam>)
+	SRC.EVENTS +e_bonus_shoot_stam
+ENDIF
+
+ON=@UNEQUIP
+IF (<SRC.ISEVENT.e_bonus_shoot_stam>)
+	SRC.EVENTS -e_bonus_shoot_stam
+ENDIF
+
+
+
+[EOF]

@@ -1,0 +1,454 @@
+
+////////////////////////////////////////////////////////////////////////
+// Custom Memories
+////////////////////////////////////////////////////////////////////////
+
+
+// Freeze Timer Function
+// Use; I.FUNC_FREEZETIMER 50 (ms)
+[FUNCTION FUNC_FreezeTIMER]
+IF !(<ISEMPTY <ARGS>>)
+	CONSUME 999999 I_Freezetimer_Mem
+	
+	SERV.NEWITEM I_Freezetimer_Mem
+	NEW.TIMERMS=1
+	NEW.MORE1=<ARGS>
+	EQUIP <NEW>	
+ENDIF
+
+[ITEMDEF I_Freezetimer_Mem]
+DEFNAME=I_Freezetimer_Mem
+ID=I_MEMORY
+TYPE=T_EQ_SCRIPT
+VALUE=0
+WEIGHT=0
+LAYER=30
+NAME=Freeze Timer Memory
+CAN=can_i_timer_contained
+
+ON=@CREATE
+ATTR=ATTR_INVIS|ATTR_NEWBIE|ATTR_DECAY
+TIMERMS=1
+
+ON=@EQUIP
+TIMERMS=1
+SRC.EVENTS +e_memory_freezetimer_eq
+SRC.FLAGEkle statf_freeze
+
+ON=@UNEQUIP
+SRC.EVENTS -e_memory_freezetimer_eq
+SRC.FLAGSIL statf_freeze
+
+ON=@Timer
+IF (<DMORE1> <= 0)
+	REMOVE
+ELSE
+	MORE1 --
+	TIMERMS=1
+ENDIF
+RETURN 1
+
+
+[EVENTS e_memory_freezetimer_eq]
+
+ON=@Death
+CONSUME 999999 I_Freezetimer_Mem
+
+
+
+
+
+
+// Freeze Timer Function
+// Use; I.FUNC_SpeedModeTIMER 50 (ms)
+[FUNCTION FUNC_SpeedModeTIMER]
+IF !(<ISEMPTY <ARGS>>)
+	CONSUME 999999 I_Speedmodetimer_Mem
+	SERV.NEWITEM I_Speedmodetimer_Mem
+	NEW.TIMERMS=1
+	NEW.MORE1=<ARGS>
+	EQUIP <NEW>	
+ENDIF
+
+[ITEMDEF I_Speedmodetimer_Mem]
+DEFNAME=I_Speedmodetimer_Mem
+ID=I_MEMORY
+TYPE=T_EQ_SCRIPT
+VALUE=0
+WEIGHT=0
+LAYER=30
+NAME=SpeedMode Timer Memory
+CAN=can_i_timer_contained
+
+ON=@CREATE
+ATTR=ATTR_INVIS|ATTR_NEWBIE|ATTR_DECAY
+TIMERMS=1
+
+ON=@EQUIP
+TIMERMS=1
+SRC.EVENTS +e_memory_speedmodetimer_eq
+SRC.Speedmode 4
+
+ON=@UNEQUIP
+SRC.EVENTS -e_memory_speedmodetimer_eq
+SRC.Speedmode 0
+
+ON=@Timer
+IF (<DMORE1> <= 0)
+	REMOVE
+ELSE
+	MORE1 --
+	TIMERMS=1
+ENDIF
+RETURN 1
+
+
+[EVENTS e_memory_speedmodetimer_eq]
+
+ON=@Death
+CONSUME 999999 I_Speedmodetimer_Mem
+
+
+
+
+
+
+
+
+// Reveal Timer Function
+// Use; I.FUNC_STONETIMER 5 (seconds)
+[FUNCTION FUNC_REVEALTIMER]
+IF !(<ISEMPTY <ARGS>>)
+	CONSUME 999999 I_REVEALTIMER_MEM
+	SERV.NEWITEM I_REVEALTIMER_MEM
+	NEW.TIMER=1
+	NEW.MORE1=<ARGS>
+	EQUIP <NEW>	
+ENDIF
+
+[ITEMDEF I_REVEALTIMER_MEM]
+DEFNAME=I_REVEALTIMER_MEM
+ID=I_MEMORY
+TYPE=T_EQ_SCRIPT
+VALUE=0
+WEIGHT=0
+LAYER=30
+NAME=Reveal Timer Memory
+CAN=can_i_timer_contained
+
+ON=@CREATE
+ATTR=ATTR_INVIS|ATTR_NEWBIE|ATTR_DECAY
+TIMER=1
+
+ON=@EQUIP
+TIMER=1
+SRC.EVENTS +e_memory_revealtimer_eq
+SRC.sysmessageloc <def.tcolor_text>, <def.empty_cliloc2>, Gizliliginiz <KalanSure <MORE1>> saniye sonra otomatik olarak bozulacaktir.	
+
+ON=@UNEQUIP
+SRC.EVENTS -e_memory_revealtimer_eq
+IF (<SRC.FLAGS>&STATF_HIDDEN)
+	SRC.FLAGSIL STATF_HIDDEN
+ENDIF
+SRC.sysmessageloc <def.tcolor_text>, <def.empty_cliloc2>, Gizliliginiz otomatik olarak bozuldu.
+
+ON=@Timer
+IF (<DMORE1> <= 0)
+	REMOVE
+ELSE
+	MORE1 --
+	TIMER=1
+ENDIF
+RETURN 1
+
+[EVENTS e_memory_revealtimer_eq]
+
+ON=@Reveal
+IF (<FLAGS>&STATF_HIDDEN)
+	CONSUME 999999 I_REVEALTIMER_MEM
+ENDIF
+
+
+
+
+
+// Disconnect Timer Function
+// Use; FUNC_DISCONNECTIMER 5 (seconds)
+[FUNCTION FUNC_DISCONNECTIMER]
+IF (<ISCHAR>)
+	CONSUME 999999 I_DISCONNECTIMER_MEM
+	SERV.NEWITEM I_DISCONNECTIMER_MEM
+	NEW.TIMER=1
+	NEW.MORE1=<ARGS>
+	EQUIP <NEW>
+ENDIF
+
+[ITEMDEF I_DISCONNECTIMER_MEM]
+DEFNAME=I_DISCONNECTIMER_MEM
+ID=I_MEMORY
+TYPE=T_EQ_SCRIPT
+VALUE=0
+WEIGHT=0
+LAYER=30
+NAME=Disconnect Timer Memory
+CAN=can_i_timer_contained
+
+ON=@CREATE
+ATTR=ATTR_INVIS|ATTR_NEWBIE|ATTR_DECAY
+TIMER=1
+
+ON=@EQUIP
+TIMER=1
+SRC.EVENTS +e_memory_disconnecttimer_eq
+SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, <KalanSure <MORE1>> sonra baglantiniz kesilecektir.
+
+ON=@UNEQUIP
+SRC.EVENTS -e_memory_disconnecttimer_eq
+IF (<SRC.ISONLINE>)
+	SRC.DISCONNECT 2
+ENDIF
+
+ON=@Timer
+IF (<DMORE1> <= 0)
+	REMOVE
+ELSE
+	MORE1 --
+	TIMER=1
+ENDIF
+RETURN 1
+
+
+[events e_memory_disconnecttimer_eq]
+
+ON=@LOGOUT
+SRC.CONSUME 999999 I_DISCONNECTIMER_MEM
+
+
+
+
+
+
+
+// Resurrection Timer Function
+// Use; FUNC_RESTIMER 5 (seconds)
+[FUNCTION FUNC_RESTIMER]
+IF (<ISCHAR>)
+	CONSUME 999999 I_RESURRECTTIMER_MEM
+	SERV.NEWITEM I_RESURRECTTIMER_MEM
+	NEW.TIMER=1
+	NEW.MORE1=<ARGN1>
+	EQUIP <NEW>
+ENDIF
+
+[ITEMDEF I_RESURRECTTIMER_MEM]
+DEFNAME=I_RESURRECTTIMER_MEM
+ID=I_MEMORY
+TYPE=T_EQ_SCRIPT
+VALUE=0
+WEIGHT=0
+LAYER=30
+NAME=Resurrect Timer Memory
+CAN=can_i_timer_contained
+
+ON=@CREATE
+ATTR=ATTR_INVIS|ATTR_NEWBIE|ATTR_DECAY
+TIMER=1
+
+ON=@EQUIP
+TIMER=1
+SRC.EVENTS +e_memory_resurrecttimer_eq
+
+on=@UNEQUIP
+SRC.EVENTS -e_memory_resurrecttimer_eq
+IF (<SRC.FLAGS>&STATF_FREEZE)
+	SRC.FlagSil STATF_FREEZE
+ENDIF
+
+
+ON=@Timer
+IF !(<TOPOBJ.ISDEATH>)
+	TOPOBJ.SYSMESSAGELOC <def.tcolor_red>,600110 // "Zaten hayattasınız."
+	REMOVE
+	RETURN 1
+ENDIF
+TOPOBJ.RESURRECT 2
+REMOVE
+RETURN 1
+
+
+[events e_memory_resurrecttimer_eq]
+
+ON=@RESURRECT
+SRC.CONSUME 99999999 I_RESURRECTTIMER_MEM
+
+
+
+
+
+// Stone Timer Function
+// Use; I.FUNC_STONETIMER 5 (seconds)
+[FUNCTION FUNC_STONETIMER]
+IF (<ISCHAR>)
+	CONSUME 999999999 I_STONETIMER_MEM
+	SERV.NEWITEM I_STONETIMER_MEM
+	NEW.TIMER=1
+	NEW.MORE1=<ARGS>
+	EQUIP <NEW>
+ENDIF
+
+
+[ITEMDEF I_STONETIMER_MEM]
+DEFNAME=I_STONETIMER_MEM
+ID=I_MEMORY
+TYPE=T_EQ_SCRIPT
+VALUE=0
+WEIGHT=0
+LAYER=30
+NAME=Stone Timer Memory
+CAN=can_i_timer_contained
+
+ON=@CREATE
+ATTR=ATTR_INVIS|ATTR_NEWBIE
+
+ON=@EQUIP
+SRC.STONE 1
+SRC.EVENTS +e_memory_stonetimer_eq
+SRC.SYSMESSAGELOC <def.tcolor_grey>,<def.empty_cliloc2>, <KalanSure <MORE1>> saniye stone stoneliğiniz kalkacaktır.
+
+ON=@UNEQUIP
+SRC.STONE 0
+SRC.EVENTS -e_memory_stonetimer_eq
+
+ON=@Timer
+IF (<DMORE1> <= 0)
+	REMOVE
+ELSE
+	MORE1 --
+	TIMER=1
+ENDIF
+RETURN 1
+
+
+[events e_memory_stonetimer_eq]
+
+
+
+
+
+
+
+// Remove Item/Char Timer Function
+// Use; FUNC_REMOVETIMER 5 (seconds)
+[FUNCTION FUNC_REMOVETIMER]
+IF (<ISCHAR>)
+	CONSUME 999999 I_REMOVETIMER_MEM
+	SERV.NEWITEM I_REMOVETIMER_MEM
+	NEW.TIMER=1
+	NEW.MORE1=<ARGS>
+	EQUIP <NEW>
+ENDIF
+
+[ITEMDEF I_REMOVETIMER_MEM]
+DEFNAME=I_REMOVETIMER_MEM
+ID=I_MEMORY
+TYPE=T_EQ_SCRIPT
+VALUE=0
+WEIGHT=0
+LAYER=30
+NAME=Remove Timer Memory
+CAN=can_i_timer_contained
+
+ON=@CREATE
+ATTR=ATTR_INVIS|ATTR_NEWBIE|ATTR_DECAY
+TIMER=1
+MORE1=180
+
+ON=@EQUIP
+TIMER=1
+MORE1=180
+
+ON=@EQUIPTEST
+TIMER=1
+SRC.EVENTS +e_memory_removetimer_eq
+	
+ON=@UNEQUIP
+SRC.EVENTS -e_memory_removetimer_eq
+
+ON=@Timer
+IF (<DMORE1> <= 0)
+	TOPOBJ.REMOVE
+ELSE
+	IF (<DMORE1> == 3)
+		TOPOBJ.SAYU * 3 saniye sonra silinecektir *
+	ENDIF
+	MORE1 --
+	TIMER=1
+ENDIF
+RETURN 1
+
+[events e_memory_removetimer_eq]
+
+
+
+
+
+
+
+
+// Death Item/Char Timer Function
+// Use; FUNC_DeathTIMER 5 (seconds)
+[FUNCTION FUNC_DEATHTIMER]
+IF (<ISCHAR>)
+	CONSUME 999999 I_DEATHTIMER_MEM
+	SERV.NEWITEM I_DEATHTIMER_MEM
+	NEW.TIMER=1
+	NEW.MORE1=<ARGS>
+	EQUIP <NEW>
+ENDIF
+
+[ITEMDEF I_DEATHTIMER_MEM]
+DEFNAME=I_DEATHTIMER_MEM
+ID=I_MEMORY
+TYPE=T_EQ_SCRIPT
+VALUE=0
+WEIGHT=0
+LAYER=30
+NAME=Death Timer Memory
+CAN=can_i_timer_contained
+
+ON=@CREATE
+ATTR=ATTR_INVIS|ATTR_NEWBIE|ATTR_DECAY
+TIMER=1
+
+ON=@EQUIP
+TIMER=1
+SRC.EVENTS +e_memory_deathtimer_eq
+
+ON=@UNEQUIP
+SRC.EVENTS -e_memory_deathtimer_eq
+
+ON=@Timer
+IF (<DMORE1> <= 0)
+	TOPOBJ.HITS=0
+ELSE
+	IF (<DMORE1> == 3)
+		TOPOBJ.SAYU * 3 saniye sonra ölecek *
+	ENDIF
+	MORE1 --
+	TIMER=1
+ENDIF
+RETURN 1
+
+// Otomatik ölen npcnin cesetini sil, ortalik ceset doluyor.
+[EVENTS e_memory_deathtimer_eq]
+
+ON=@DEATHCORPSE
+IF (<NPC>)
+	ARGO.REMOVE
+ENDIF
+
+
+
+
+
+[eof]

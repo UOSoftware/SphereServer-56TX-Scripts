@@ -1,0 +1,45 @@
+
+[ITEMDEF I_BALL_REPUTATION]
+DEFNAME=I_BALL_REPUTATION
+DEFNAME2=i_crystal_reputation
+ID=i_crystal_ball
+NAME=reputation crystal
+VALUE=300
+WEIGHT=20
+TYPE=t_script
+RESDISPDNHUE=0254
+
+ON=@CREATE
+COLOR=<SERV.ITEMDEF.<BASEID>.RESDISPDNHUE>
+ATTR=attr_magic
+
+ON=@CLICK
+message a <name>
+return 1
+
+ON=@DCLICK
+IF !(<SRC.ISINPACK <UID>>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,600036,<NAME>	// Bunu (~1_val~) kullanabilmek için çantanızda veya üzerinizde olmalıdır.
+	RETURN 1
+ELSEIF (<USESMAX> > 0) && (<USESCUR> >= <USESMAX>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Şarj bitmiş.
+	REMOVE
+	RETURN 1
+ENDIF
+SRC.EFFECT 3,I_FX_SPARKLE,2,25,1
+SRC.SOUND SND_SPELL_ARCHPROTECTION
+IF (<SRC.FLAGS>&STATF_CRIMINAL)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Criminal: Evet
+ENDIF
+SRC.SYSMESSAGELOC <def.tcolor_grey>,<def.empty_cliloc2>, Kills: <src.kills>
+SRC.SYSMESSAGELOC <def.tcolor_grey>,<def.empty_cliloc2>, Deaths: <src.Deaths>
+SRC.SYSMESSAGELOC <def.tcolor_grey>,<def.empty_cliloc2>, Fame: <bolukayir <src.fame>>
+SRC.SYSMESSAGELOC <def.tcolor_grey>,<def.empty_cliloc2>, Karma: <bolukayir <src.karma>>
+
+CONSUME
+
+RETURN 1
+
+
+
+[eof]

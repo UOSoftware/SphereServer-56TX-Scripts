@@ -1,0 +1,1120 @@
+//****************************************************************************
+// FILE LAST UPDATED: Monday, Dec 31, 2018
+//
+VERSION=0.56d
+
+
+/////////////////////////////
+// Doom Gauntlet Artifacts //
+/////////////////////////////
+
+[ITEMDEF i_arcane_shield]
+ID=i_shield_kite_wood
+NAME=Arcane Shield
+TEVENTS=t_equipitem
+CATEGORY=Artifacts
+SUBSECTION=Doom (Gauntlet)
+DESCRIPTION=Arcane Shield
+
+ON=@Create
+COLOR=0556
+HITPOINTS=255
+
+[ITEMDEF i_armor_fortune]
+ID=i_leather_tunic
+NAME=Armor of Fortune
+MageArmor=1
+TEVENTS=t_equipitem
+CATEGORY=Artifacts
+SUBSECTION=Doom (Gauntlet)
+DESCRIPTION=Armor of Fortune
+EXPANSION=-1
+
+ON=@Create
+COLOR=0501
+HITPOINTS=255
+
+[ITEMDEF i_axe_heavens]
+ID=i_axe_double
+NAME=Axe of the Heavens
+TEVENTS=t_equipitem
+CATEGORY=Artifacts
+SUBSECTION=Doom (Gauntlet)
+DESCRIPTION=Axe of the Heavens
+EXPANSION=-1
+
+ON=@Create
+COLOR=04d5
+HITPOINTS=255
+
+[ITEMDEF i_blade_insanity]
+ID=i_katana
+NAME=Blade of Insanity
+TEVENTS=t_equipitem
+CATEGORY=Artifacts
+SUBSECTION=Doom (Gauntlet)
+DESCRIPTION=Blade of Insanity
+EXPANSION=-1
+
+ON=@Create
+COLOR=076d
+HITPOINTS=255
+
+[ITEMDEF i_bone_crusher]
+ID=i_mace_war
+NAME=Bone Crusher
+TEVENTS=t_equipitem
+CATEGORY=Artifacts
+SUBSECTION=Doom (Gauntlet)
+DESCRIPTION=Bone Crusher
+EXPANSION=-1
+
+ON=@Create
+COLOR=060c
+HITPOINTS=255
+
+[ITEMDEF i_bracelet_health]
+ID=i_bracelet_gold
+NAME=Bracelet of Health
+TEVENTS=t_equipitem
+CATEGORY=Artifacts
+SUBSECTION=Doom (Gauntlet)
+DESCRIPTION=Bracelet of Health
+
+ON=@Create
+COLOR=021
+
+[ITEMDEF i_breath_dead]
+ID=i_bone_harvester
+NAME=Breath of the Dead
+TYPE=t_weapon_sword
+TEVENTS=t_equipitem
+CATEGORY=Artifacts
+SUBSECTION=Doom (Gauntlet)
+DESCRIPTION=Breath of the Dead
+EXPANSION=-1
+
+ON=@Create
+COLOR=03e1
+HITPOINTS=255
+
+[ITEMDEF i_divine_countenance]
+ID=i_mask_blue
+NAME=Divine Countenance
+TEVENTS=t_equipitem
+CATEGORY=Artifacts
+SUBSECTION=Doom (Gauntlet)
+DESCRIPTION=Divine Countenance
+
+ON=@Create
+COLOR=0482
+HITPOINTS=255
+
+[ITEMDEF i_frostbringer]
+ID=i_bow
+NAME=Frostbringer
+TEVENTS=t_equipitem
+CATEGORY=Artifacts
+SUBSECTION=Doom (Gauntlet)
+DESCRIPTION=Frostbringer
+EXPANSION=-1
+
+ON=@Create
+COLOR=04f2
+HITPOINTS=255
+
+[ITEMDEF i_gauntlets_nobility]
+ID=i_leather_gloves
+NAME=Gauntlets of Nobility
+TEVENTS=t_equipitem
+CATEGORY=Artifacts
+SUBSECTION=Doom (Gauntlet)
+DESCRIPTION=Gauntlets of Nobility
+EXPANSION=-1
+
+ON=@Create
+COLOR=04fe
+HITPOINTS=255
+
+[ITEMDEF i_hat_magi]
+ID=i_hat_wizards
+NAME=Hat of the Magi
+TEVENTS=t_equipitem
+CATEGORY=Artifacts
+SUBSECTION=Doom (Gauntlet)
+DESCRIPTION=Hat of the Magi
+
+ON=@Create
+COLOR=0481
+HITPOINTS=255
+
+[ITEMDEF i_helm_insight]
+ID=i_platemail_helm
+NAME=Helm of Insight
+TEVENTS=t_equipitem
+CATEGORY=Artifacts
+SUBSECTION=Doom (Gauntlet)
+DESCRIPTION=Helm of Insight
+EXPANSION=-1
+
+ON=@Create
+COLOR=0554
+HITPOINTS=255
+
+[ITEMDEF i_holy_knights_breastplate]
+ID=i_platemail_chest
+NAME=Holy Knight's Breastplate
+TEVENTS=t_equipitem
+CATEGORY=Artifacts
+SUBSECTION=Doom (Gauntlet)
+DESCRIPTION=Holy Knight's Breastplate
+EXPANSION=-1
+
+ON=@Create
+COLOR=047e
+HITPOINTS=255
+
+[ITEMDEF i_hunters_headdress]
+ID=i_mask_deer
+NAME=Hunter's Headdress
+TEVENTS=t_equipitem
+CATEGORY=Artifacts
+SUBSECTION=Doom (Gauntlet)
+DESCRIPTION=Hunter's Headdress
+EXPANSION=-1
+
+ON=@Create
+COLOR=0594
+HITPOINTS=255
+
+[ITEMDEF i_jackals_collar]
+ID=i_platemail_gorget
+NAME=Jackal's Collar
+TEVENTS=t_equipitem
+CATEGORY=Artifacts
+SUBSECTION=Doom (Gauntlet)
+DESCRIPTION=Jackal's Collar
+
+ON=@Create
+COLOR=06d1
+HITPOINTS=255
+
+[ITEMDEF i_legacy_dread_lord]
+ID=i_bardiche
+NAME=Legacy of the Dread Lord
+TEVENTS=t_equipitem
+CATEGORY=Artifacts
+SUBSECTION=Doom (Gauntlet)
+DESCRIPTION=Legacy of the Dread Lord
+EXPANSION=-1
+
+ON=@Create
+COLOR=0676
+HITPOINTS=255
+
+[ITEMDEF i_leggings_bane]
+ID=i_ringmail_leggings
+NAME=Leggings of Bane
+TEVENTS=t_equipitem
+CATEGORY=Artifacts
+SUBSECTION=Doom (Gauntlet)
+DESCRIPTION=Leggings of Bane
+EXPANSION=-1
+
+ON=@Create
+COLOR=04f5
+HITPOINTS=255
+
+[ITEMDEF i_midnight_bracers]
+ID=i_bone_arms
+NAME=Midnight Bracers
+MageArmor=1
+TEVENTS=t_equipitem
+CATEGORY=Artifacts
+SUBSECTION=Doom (Gauntlet)
+DESCRIPTION=Midnight Bracers
+
+ON=@Create
+COLOR=0455
+HITPOINTS=255
+
+[ITEMDEF i_ornament_magician]
+ID=i_bracelet_gold
+NAME=Ornament of the Magician
+TEVENTS=t_equipitem
+CATEGORY=Artifacts
+SUBSECTION=Doom (Gauntlet)
+DESCRIPTION=Ornament of the Magician
+
+ON=@Create
+COLOR=0554
+
+[ITEMDEF i_ornate_crown_harrower]
+ID=i_bone_helmet
+NAME=Ornate Crown of the Harrower
+TEVENTS=t_equipitem
+CATEGORY=Artifacts
+SUBSECTION=Doom (Gauntlet)
+DESCRIPTION=Ornate Crown of the Harrower
+
+ON=@Create
+COLOR=04f6
+HITPOINTS=255
+
+[ITEMDEF i_ring_elements]
+ID=i_ring_gold
+NAME=Ring of the Elements
+TEVENTS=t_equipitem
+CATEGORY=Artifacts
+SUBSECTION=Doom (Gauntlet)
+DESCRIPTION=Ring of the Elements
+
+ON=@Create
+COLOR=04e9
+
+[ITEMDEF i_ring_vile]
+ID=i_ring_gold
+NAME=Ring of the Vile
+TEVENTS=t_equipitem
+CATEGORY=Artifacts
+SUBSECTION=Doom (Gauntlet)
+DESCRIPTION=Ring of the Vile
+
+ON=@Create
+COLOR=04f7
+
+[ITEMDEF i_serpents_fang]
+ID=i_kryss
+NAME=Serpent's Fang
+TEVENTS=t_equipitem
+CATEGORY=Artifacts
+SUBSECTION=Doom (Gauntlet)
+DESCRIPTION=Serpent's Fang
+EXPANSION=-1
+
+ON=@Create
+COLOR=0488
+HITPOINTS=255
+
+[ITEMDEF i_shadow_dancer_leggings]
+ID=i_leather_leggings
+NAME=Shadow Dancer Leggings
+TEVENTS=t_equipitem
+CATEGORY=Artifacts
+SUBSECTION=Doom (Gauntlet)
+DESCRIPTION=Shadow Dancer Leggings
+
+ON=@Create
+COLOR=0455
+HITPOINTS=255
+
+[ITEMDEF i_spirit_totem]
+ID=i_mask_bear
+NAME=Spirit of the Totem
+TEVENTS=t_equipitem
+CATEGORY=Artifacts
+SUBSECTION=Doom (Gauntlet)
+DESCRIPTION=Spirit of the Totem
+
+ON=@Create
+COLOR=0455
+HITPOINTS=255
+
+[ITEMDEF i_staff_magi]
+ID=i_staff_black
+NAME=Staff of the Magi
+TEVENTS=t_equipitem
+CATEGORY=Artifacts
+SUBSECTION=Doom (Gauntlet)
+DESCRIPTION=Staff of the Magi
+EXPANSION=-1
+
+ON=@Create
+COLOR=0481
+HITPOINTS=255
+DORAND 3
+   BEGIN
+    MageWeapon=<FVAL <R150,300>> Magery
+      TAG.OVERRIDE_SKILL=26	//Magic Resistance
+   END
+   BEGIN
+      MageWeapon=<FVAL <R150,300>> Necromancy
+      TAG.OVERRIDE_SKILL=50	//Focus
+   END
+   BEGIN
+      MageWeapon=<FVAL <R150,300>> Spellweaving
+      TAG.OVERRIDE_SKILL=55	//Mysticism
+   END
+ENDDO
+
+[ITEMDEF i_the_berserkers_maul]
+ID=i_maul
+NAME=The Berserker's Maul
+TEVENTS=t_equipitem
+CATEGORY=Artifacts
+SUBSECTION=Doom (Gauntlet)
+DESCRIPTION=The Berserker's Maul
+EXPANSION=-1
+
+ON=@Create
+COLOR=021
+HITPOINTS=255
+
+[ITEMDEF i_the_dragon_slayer]
+ID=i_lance
+NAME=The Dragon Slayer
+TAG.SlayerGroup=DRAGON
+TEVENTS=t_equipitem
+CATEGORY=Artifacts
+SUBSECTION=Doom (Gauntlet)
+DESCRIPTION=The Dragon Slayer
+EXPANSION=-1
+
+ON=@Create
+COLOR=0530
+HITPOINTS=255
+
+[ITEMDEF i_the_dryad_bow]
+ID=i_bow
+NAME=The Dryad Bow
+TEVENTS=t_equipitem
+CATEGORY=Artifacts
+SUBSECTION=Doom (Gauntlet)
+DESCRIPTION=The Dryad Bow
+EXPANSION=-1
+
+ON=@Create
+COLOR=048f
+HITPOINTS=255
+
+[ITEMDEF i_the_taskmaster]
+ID=i_war_fork
+NAME=The Taskmaster
+HitAreaPoison=100
+TEVENTS=t_equipitem
+CATEGORY=Artifacts
+SUBSECTION=Doom (Gauntlet)
+DESCRIPTION=The Taskmaster
+EXPANSION=-1
+
+ON=@Create
+COLOR=04f8
+HITPOINTS=255
+
+[ITEMDEF i_tunic_fire]
+ID=i_chainmail_tunic
+NAME=Tunic of Fire
+TEVENTS=t_equipitem
+CATEGORY=Artifacts
+SUBSECTION=Doom (Gauntlet)
+DESCRIPTION=Tunic of Fire
+EXPANSION=-1
+
+ON=@Create
+COLOR=054f
+HITPOINTS=255
+
+[ITEMDEF i_voice_fallen_king]
+ID=i_leather_gorget
+NAME=Voice of the Fallen King
+TEVENTS=t_equipitem
+CATEGORY=Artifacts
+SUBSECTION=Doom (Gauntlet)
+DESCRIPTION=Voice of the Fallen King
+EXPANSION=-1
+
+ON=@Create
+COLOR=076d
+HITPOINTS=255
+
+[ITEMDEF i_aegis]
+ID=i_shield_heater
+NAME=Aegis	//Ægis
+TEVENTS=t_equipitem
+CATEGORY=Artifacts
+SUBSECTION=Doom (Gauntlet)
+DESCRIPTION=Aegis
+
+ON=@Create
+COLOR=047e
+HITPOINTS=255
+
+////////////////////
+// Doom Artifacts //
+////////////////////
+
+[ITEMDEF i_doom_skull_candle]
+ID=i_skull_candle_lit
+TAG.Stealable=1
+TAG.StealingTimer=1
+CATEGORY=Artifacts
+SUBSECTION=Doom (Stealable)
+DESCRIPTION=Skull Candle
+
+[ITEMDEF i_doom_stretched_hide]
+ID=i_hide_stretched
+TAG.Stealable=1
+TAG.StealingTimer=4
+CATEGORY=Artifacts
+SUBSECTION=Doom (Stealable)
+DESCRIPTION=Stretched Hide
+
+[ITEMDEF i_doom_lamppost]
+ID=i_lamppost3_lit
+TAG.Stealable=1
+TAG.StealingTimer=9
+CATEGORY=Artifacts
+SUBSECTION=Doom (Stealable)
+DESCRIPTION=Lamp Post
+
+[ITEMDEF i_doom_goat_skinned]
+ID=i_goat_skinned
+TYPE=t_normal
+TAG.Stealable=1
+TAG.StealingTimer=25
+CATEGORY=Artifacts
+SUBSECTION=Doom (Stealable)
+DESCRIPTION=Skinned Goat
+
+[ITEMDEF i_doom_cards_tarot]
+ID=i_cards_tarot
+TAG.Stealable=1
+TAG.StealingTimer=25
+CATEGORY=Artifacts
+SUBSECTION=Doom (Stealable)
+DESCRIPTION=Tarot Cards
+
+[ITEMDEF i_doom_brazier]
+ID=i_brazier_2
+TAG.Stealable=1
+TAG.StealingTimer=4
+CATEGORY=Artifacts
+SUBSECTION=Doom (Stealable)
+DESCRIPTION=Brazier
+
+[ITEMDEF i_doom_gruesomestandard]
+ID=i_gruesomestandard
+TAG.Stealable=1
+TAG.StealingTimer=25
+CATEGORY=Artifacts
+SUBSECTION=Doom (Stealable)
+DESCRIPTION=Gruesome Standard
+
+[ITEMDEF i_doom_painting_ruined]
+ID=i_painting_ruined
+TAG.Stealable=1
+TAG.StealingTimer=144
+CATEGORY=Artifacts
+SUBSECTION=Doom (Stealable)
+DESCRIPTION=Ruined Painting
+
+[ITEMDEF i_doom_blade_righteous]
+ID=i_sword_long
+NAME=Blade of the Righteous
+TAG.SlayerGroup=DEMON
+TEVENTS=t_equipitem
+CATEGORY=Artifacts
+SUBSECTION=Doom (Stealable)
+DESCRIPTION=Blade of the Righteous
+EXPANSION=-1
+
+ON=@Create
+COLOR=047e
+HITPOINTS=255
+
+[ITEMDEF i_doom_titan_hammer]
+ID=i_hammer_war
+NAME=Titan's Hammer
+TEVENTS=t_equipitem
+CATEGORY=Artifacts
+SUBSECTION=Doom (Stealable)
+DESCRIPTION=Titan's Hammer
+EXPANSION=-1
+
+ON=@Create
+COLOR=0482
+HITPOINTS=255
+
+[ITEMDEF i_doom_zyronic_claw]
+ID=i_axe_exec
+NAME=Zyronic Claw
+TAG.SlayerGroup=ELEMENTAL
+TEVENTS=t_equipitem
+CATEGORY=Artifacts
+SUBSECTION=Doom (Stealable)
+DESCRIPTION=Zyronic Claw
+EXPANSION=RDS_TOL
+
+ON=@Create
+COLOR=0485
+HITPOINTS=255
+
+[ITEMDEF i_doom_inquisitor_resolution]
+ID=i_platemail_gloves
+NAME=Inquisitor's Resolution
+FasterCastRecovery=3
+MageArmor=1
+TAG.Stealable=1
+TAG.StealingTimer=672
+TEVENTS=t_equipitem
+CATEGORY=Artifacts
+SUBSECTION=Doom (Stealable)
+DESCRIPTION=Inquisitor's Revolution
+
+ON=@Create
+COLOR=04f2
+HITPOINTS=255
+
+[ITEMDEF i_doom_berserker_maul]
+ID=i_maul
+NAME=The Berserker's Maul
+TAG.Stealable=1
+TAG.StealingTimer=672
+TEVENTS=t_equipitem
+CATEGORY=Artifacts
+SUBSECTION=Doom (Stealable)
+DESCRIPTION=Berserker's Maul
+EXPANSION=-1
+
+ON=@Create
+COLOR=021
+HITPOINTS=255
+
+[ITEMDEF 09edb]
+DEFNAME=i_doom_incense_burner_lit
+NAME=Incense Burner
+TAG.Stealable=1
+CATEGORY=Artifacts
+SUBSECTION=Doom (Stealable)
+DESCRIPTION=Incense Burner (lit)
+DUPELIST=09edf
+
+[ITEMDEF 09edc]
+//incense burner (lit)(south)(anim)
+
+[ITEMDEF 09edd]
+//incense burner (lit)(south)(anim)
+
+[ITEMDEF 09ede]
+//incense burner (lit)(south)(anim)
+
+[ITEMDEF 09edf]
+//incense burner (lit)(east)
+DUPEITEM=09edb
+
+[ITEMDEF 09ee0]
+//incense burner (lit)(east)(anim)
+
+[ITEMDEF 09ee1]
+//incense burner (lit)(east)(anim)
+
+[ITEMDEF 09ee2]
+//incense burner (lit)(east)(anim)
+
+[ITEMDEF 09ee3]
+DEFNAME=i_doom_alchemist_shelf
+NAME=Alchemist Shelf
+FLIP=1
+TAG.Stealable=1
+CATEGORY=Artifacts
+SUBSECTION=Doom (Stealable)
+DESCRIPTION=Alchemist Shelf
+DUPELIST=09ee4
+
+[ITEMDEF 09ee4]
+//alchemist shelf
+DUPEITEM=09ee3
+
+[ITEMDEF 09ee5]
+DEFNAME=i_doom_arcane_table
+NAME=Arcane Table
+FLIP=1
+TAG.Stealable=1
+CATEGORY=Artifacts
+SUBSECTION=Doom (Stealable)
+DESCRIPTION=Arcane Table
+DUPELIST=09ee6
+
+[ITEMDEF 09ee6]
+//arcane table
+DUPEITEM=09ee5
+
+[ITEMDEF 09ee7]
+DEFNAME=i_doom_hanging_plate_chest
+NAME=Hanging Plate Chest
+FLIP=1
+TAG.Stealable=1
+CATEGORY=Artifacts
+SUBSECTION=Doom (Stealable)
+DESCRIPTION=Hanging Plate Chest
+DUPELIST=09ee8
+
+[ITEMDEF 09ee8]
+//hanging plate chest
+DUPEITEM=09ee7
+
+[ITEMDEF 09ee9]
+DEFNAME=i_doom_hanging_plate_arms
+NAME=Hanging Plate Arms
+FLIP=1
+TAG.Stealable=1
+CATEGORY=Artifacts
+SUBSECTION=Doom (Stealable)
+DESCRIPTION=Hanging Plate Arms
+DUPELIST=09eea
+
+[ITEMDEF 09eea]
+//hanging plate arms
+DUPEITEM=09ee9
+
+[ITEMDEF 09eeb]
+DEFNAME=i_doom_hanging_plate_legs
+NAME=Hanging Plate Legs
+FLIP=1
+TAG.Stealable=1
+CATEGORY=Artifacts
+SUBSECTION=Doom (Stealable)
+DESCRIPTION=Hanging Plate Legs
+DUPELIST=09eec
+
+[ITEMDEF 09eec]
+//hanging plate legs
+DUPEITEM=09eeb
+
+[ITEMDEF 09eed]
+DEFNAME=i_doom_incense_burner
+NAME=Incense Burner
+TAG.Stealable=1
+CATEGORY=Artifacts
+SUBSECTION=Doom (Stealable)
+DESCRIPTION=Incense Burner (unlit)
+DUPELIST=09edf
+
+[ITEMDEF 09eee]
+//incense burner (unlit)
+
+///////////////////////////////////////
+// Yomotsu Mines Stealable Artifacts //
+///////////////////////////////////////
+
+[ITEMDEF i_yomotsu_mines_tower_lantern]
+ID=i_lantern_tower
+TAG.Stealable=1
+TAG.StealingTimer=16
+CATEGORY=Artifacts
+SUBSECTION=Yomotsu Mines
+DESCRIPTION=Tower Lantern
+
+/////////////////////////////
+// Stygian Abyss Artifacts //
+/////////////////////////////
+
+[ITEMDEF i_raptor_claw]
+ID=i_boomerang
+NAME=Raptor Claw
+HitLeechStam=40
+TAG.SlayerGroup=UNDEAD
+// CanUse=can_u_gargoyle
+TEVENTS=t_equipitem
+CATEGORY=Artifacts
+SUBSECTION=Stygian Abyss
+DESCRIPTION=Raptor Claw
+EXPANSION=-1
+
+ON=@Create
+COLOR=035
+HITPOINTS=255
+
+//////////////////////
+// Virtue Artifacts //
+//////////////////////
+
+[ITEMDEF i_katrina_crook]
+ID=i_shepherds_crook
+NAME=Katrina's Crook
+TYPE=t_weapon_mace_crook
+DAM=13,15
+SKILL=Macefighting
+//SPEED=47
+TWOHANDS=Y
+TEVENTS=t_equipitem
+CATEGORY=Artifacts
+SUBSECTION=Virtue
+DESCRIPTION=Katrina's Crook
+EXPANSION=-1
+
+ON=@Create
+HITPOINTS=120
+
+////////////////////////
+// Peerless Artifacts //
+////////////////////////
+
+[ITEMDEF i_gorgon_lens]
+ID=i_dragonscale
+NAME=Gorgon Lens%es
+TYPE=t_normal
+RESOURCES=3 i_crystal_dust,2 i_medusa_scale
+SKILLMAKE=Tinkering 90.0,t_tinker_tools
+CATEGORY=Artifacts
+SUBSECTION=Peerless
+DESCRIPTION=Gorgon Lens
+
+ON=@Create
+COLOR=04f2
+
+[ITEMDEF i_hatchet_melisande]
+ID=i_hatchet
+NAME=Melisande's Corroded Hatchet
+TYPE=t_weapon_axe
+DAM=13,15
+SKILL=Swordsmanship
+//SPEED=41
+TWOHANDS=Y
+ReqStr=20
+SpellChanneling=1
+TEVENTS=t_equipitem
+CATEGORY=Artifacts
+SUBSECTION=Peerless
+DESCRIPTION=Melisande's Corroded Hatchet
+EXPANSION=-1
+
+ON=@Create
+COLOR=0494
+HITPOINTS=255
+
+[ITEMDEF i_scepter_chief]
+ID=i_scepter
+NAME=Scepter of the Chief
+TYPE=t_weapon_mace_smith
+DAM=14,17
+FLIP=0
+SKILL=MaceFighting
+//SPEED=30
+ReqStr=40
+TWOHANDS=N
+TEVENTS=t_equipitem
+CATEGORY=Artifacts
+SUBSECTION=Peerless
+DESCRIPTION=Scepter of the Chief
+EXPANSION=-1
+
+ON=@Create
+COLOR=0481
+HITPOINTS=255
+
+[ITEMDEF i_ring_crystalline]
+ID=i_ring_gold
+NAME=Crystalline Ring
+TEVENTS=t_equipitem
+CATEGORY=Artifacts
+SUBSECTION=Peerless
+DESCRIPTION=Crystalline Ring
+
+ON=@Create
+COLOR=0480
+
+[ITEMDEF i_dread_revenge]
+ID=i_kryss
+NAME=Dread's Revenge
+TYPE=t_weapon_fence
+DAM=10,22
+FLIP=0
+SKILL=Fencing
+//SPEED=53
+ReqStr=10
+TWOHANDS=N
+TEVENTS=t_equipitem
+CATEGORY=Artifacts
+SUBSECTION=Peerless
+DESCRIPTION=Dread's Revenge
+EXPANSION=-1
+
+ON=@Create
+COLOR=03a
+HITPOINTS=255
+
+///////////////////////////
+// Shadowguard Artifacts //
+///////////////////////////
+
+[ITEMDEF 07816]
+DEFNAME=i_robe_hawkwinds
+NAME=Hawkwind's Robe
+TYPE=t_clothing
+// CanUse=can_u_human|can_u_elf
+TEVENTS=t_equipitem
+CATEGORY=Artifacts
+SUBSECTION=Shadowguard
+DESCRIPTION=Hawkwind's Robe
+
+ON=@Create
+HITPOINTS=255
+
+////////////////////////////////
+// Enchanted Origin Artifacts //
+////////////////////////////////
+
+[ITEMDEF 09f64]
+DEFNAME=i_jack_in_the_box_east
+NAME=Jack in the Box
+CATEGORY=Artifacts
+SUBSECTION=Enchanted Origin
+DESCRIPTION=Jack in the Box (east)
+DUPELIST=09f65,09f66,09f67,09f68,09f69,09f6a,09f6b
+
+ON=@DClick
+IF (<TYPE> != t_anim_active)
+TAG.Animate=1
+TAG.Attr=<ATTR>
+ATTR |= attr_move_never
+MORE1=<DISPID>
+MORE2=<TYPE>
+TYPE=t_anim_active
+SOUND 067d
+TIMER=13
+return 1
+ENDIF
+
+ON=@Timer
+IF (<TAG0.Animate>)
+TAG.Animate=
+DISPID=09f65
+TIMER=4
+UPDATE
+return 1
+ELIF (<TAG0.Attr>)
+ATTR=<TAG.Attr>
+TAG.Attr=
+ENDIF
+
+[ITEMDEF 09f65]
+//jack in the box (anim)
+DUPEITEM=09f64
+
+[ITEMDEF 09f66]
+//jack in the box (anim)
+DUPEITEM=09f64
+
+[ITEMDEF 09f67]
+//jack in the box (anim)
+DUPEITEM=09f64
+
+[ITEMDEF 09f68]
+//jack in the box (anim)
+DUPEITEM=09f64
+
+[ITEMDEF 09f69]
+//jack in the box (anim)
+DUPEITEM=09f64
+
+[ITEMDEF 09f6a]
+//jack in the box (anim)
+DUPEITEM=09f64
+
+[ITEMDEF 09f6b]
+//jack in the box (anim)
+DUPEITEM=09f64
+
+[ITEMDEF 09f6c]
+DEFNAME=i_jack_in_the_box_south
+NAME=Jack in the Box
+CATEGORY=Artifacts
+SUBSECTION=Enchanted Origin
+DESCRIPTION=Jack in the Box (south)
+DUPELIST=09f6d,09f6e,09f6f,09f70,09f71,09f72,09f73
+
+ON=@DClick
+IF (<TYPE> != t_anim_active)
+TAG.Animate=1
+TAG.Attr=<ATTR>
+ATTR |= attr_move_never
+MORE1=<DISPID>
+MORE2=<TYPE>
+TYPE=t_anim_active
+SOUND 067d
+TIMER=13
+return 1
+ENDIF
+
+ON=@Timer
+IF (<TAG0.Animate>)
+TAG.Animate=
+DISPID=09f6d
+TIMER=4
+UPDATE
+return 1
+ELIF (<TAG0.Attr>)
+ATTR=<TAG.Attr>
+TAG.Attr=
+ENDIF
+
+[ITEMDEF 09f6d]
+//jack in the box (anim)
+DUPEITEM=09f6c
+
+[ITEMDEF 09f6e]
+//jack in the box (anim)
+DUPEITEM=09f6c
+
+[ITEMDEF 09f6f]
+//jack in the box (anim)
+DUPEITEM=09f6c
+
+[ITEMDEF 09f70]
+//jack in the box (anim)
+DUPEITEM=09f6c
+
+[ITEMDEF 09f71]
+//jack in the box (anim)
+DUPEITEM=09f6c
+
+[ITEMDEF 09f72]
+//jack in the box (anim)
+DUPEITEM=09f6c
+
+[ITEMDEF 09f73]
+//jack in the box (anim)
+DUPEITEM=09f6c
+
+[ITEMDEF 09f74]
+DEFNAME=i_serpents_jawbone
+NAME=Serpent's Jawbone
+FLIP=1
+CATEGORY=Artifacts
+SUBSECTION=Enchanted Origin
+DESCRIPTION=Serpent's Jawbone
+DUPELIST=09f75
+
+ON=@DClick
+SDIALOG d_serpents_jawbone
+return 1
+
+[ITEMDEF 09f75]
+//serpent's jawbone
+DUPEITEM=09f74
+
+[DIALOG d_serpents_jawbone]
+75,75
+resizepic 0 0 9270 400 500
+xmfhtmlgumpcolor 130 15 400 16 1156704 0 0 65535	//Select your destination:
+FOR 1 17
+ xmfhtmlgumpcolor 60 <eval 45+((<LOCAL._FOR>-1)*25)> 250 16 <STRARG <DEF0.SerpentsJawbone.Loc<dLOCAL._FOR>>> 0 0 65535
+ button 20 <eval 50+((<LOCAL._FOR>-1)*25)> 2117 2118 1 0 <LOCAL._FOR>
+ENDFOR
+
+[DIALOG d_serpents_jawbone BUTTON]
+ON=1 17
+IF !(<ATTR> & attr_move_never|attr_lockeddown|attr_secure)
+SRC.SYSMESSAGELOC <def.tcolor_grey>,<def.empty_cliloc2>, This must be locked down or secured in order to use it.
+return 1
+ELIF (<DISTANCE> > 1)
+SRC.SYSMESSAGELOC <def.tcolor_grey>,<def.empty_cliloc2>, You are too far away to use the gate.
+return 1
+ELIF (<SRC.ACTION> != -1)
+SRC.SYSMESSAGELOC <def.tcolor_grey>,<def.empty_cliloc2>, You are too busy to do that at the moment.
+return 1
+ENDIF
+SRC.GO <STREAT <DEF0.SerpentsJawbone.Loc<ARGN>>>
+
+[DEFNAME SerpentsJawboneLocations]
+SerpentsJawbone.Loc1	1157135 1156,1143,-24,2	//The Village of Lakeshire
+SerpentsJawbone.Loc2	1157619 644,854,-56,2	//The Rat Fort
+SerpentsJawbone.Loc3	1157620 1363,1075,-13,2	//Reg Volom
+SerpentsJawbone.Loc4	1016410 1572,1046,-8,2	//Twin Oaks Tavern
+SerpentsJawbone.Loc5	1157621 984,622,-80,2	//The Oasis
+SerpentsJawbone.Loc6	1078308 1746,1221,-1,2	//Blood Dungeon
+SerpentsJawbone.Loc7	1111764 912,1362,-21,2	//Cyclops Dungeon
+SerpentsJawbone.Loc8	1111765 824,774,-80,2	//Exodus Dungeon
+SerpentsJawbone.Loc9	1111766 349,1434,16,2	//The Kirin Passage
+SerpentsJawbone.Loc10	1157622 971,303,54,2	//Pass of Karnaugh
+SerpentsJawbone.Loc11	1157623 1033,1154,-24,2	//The Rat Cave
+SerpentsJawbone.Loc12	1078315 541,466,-72,2	//Terort Skitas
+SerpentsJawbone.Loc13	1111825 1450,1477,-29,2	//Twisted Weald
+SerpentsJawbone.Loc14	1113002 642,1307,-55,2	//Wisp Dungeon
+SerpentsJawbone.Loc15	1157624 753,497,-62,2	//Gwenno's Memorial
+SerpentsJawbone.Loc16	1157625 1504,628,-14,2	//Desert Gypsy Camp
+SerpentsJawbone.Loc17	1113000 1785,573,71,2	//Rock Dungeon
+
+
+[ITEMDEF 09f85]
+DEFNAME=i_jacks_bag_of_tricks
+NAME=Jack's Bag of Tricks
+CATEGORY=Artifacts
+SUBSECTION=Enchanted Origin
+DESCRIPTION=Jack's Bag of Tricks
+DUPELIST=09f86,09f87
+
+[ITEMDEF 09f86]
+//jack's bag of tricks (anim)
+DUPEITEM=09f85
+
+[ITEMDEF 09f87]
+//jack's bag of tricks (anim)
+DUPEITEM=09f85
+
+///////////////////////////
+// Artifacts of the Cult //
+///////////////////////////
+
+[ITEMDEF 0a1c7]
+DEFNAME=i_mask_khal_ankur
+NAME=Mask of Khal Ankur
+TYPE=t_clothing
+FLIP=1
+REQSTR=10
+// CanUse=can_u_human|can_u_elf
+TEVENTS=t_equipitem
+TEVENTS=t_meteor_breath
+CATEGORY=Artifacts
+SUBSECTION=Artifacts of the Cult
+DESCRIPTION=Mask of Khal Ankur
+DUPELIST=0a1c8
+
+ON=@Create
+HITPOINTS=255
+MORE2=1	//meteor breath charges
+
+[ITEMDEF 0a1c8]
+//mask of khal ankur
+DUPEITEM=0a1c7
+
+[ITEMDEF 0a1c9]
+DEFNAME=i_pendant_khal_ankur
+NAME=Pendant of Khal Ankur
+TYPE=t_clothing
+FLIP=1
+REQSTR=10
+// CanUse=can_u_gargoyle
+TEVENTS=t_equipitem
+TEVENTS=t_meteor_breath
+CATEGORY=Artifacts
+SUBSECTION=Artifacts of the Cult
+DESCRIPTION=Pendant of Khal Ankur
+DUPELIST=0a1c8
+
+ON=@Create
+HITPOINTS=255
+MORE2=1	//meteor breath charges
+
+[ITEMDEF 0a1ca]
+//pendant of khal ankur
+DUPEITEM=0a1c9
+
+[TYPEDEF t_meteor_breath]
+
+[FUNCTION MeteorBreath]
+
+[FUNCTION MeteorBreathRecharge]
+
+//TO-DO: This should act as t_clothing + t_container, like some kind of 'quiver' but used to store bandages instead arrows
+[ITEMDEF 0a1f6]
+DEFNAME=i_belt_first_aid
+TYPE=t_clothing
+TDATA2=03c
+DYE=1
+CATEGORY=Artifacts
+SUBSECTION=Artifacts of the Cult
+DESCRIPTION=First Aid Belt
+
+[EOF]

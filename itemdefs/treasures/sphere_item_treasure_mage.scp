@@ -1,0 +1,232 @@
+
+[ITEMDEF i_tc_1_m]
+NAME=treasure chest
+ID=i_crate_small
+TYPE=t_container_locked
+FLIP=1
+WEIGHT=1
+TEVENTS=ei_container_treasure
+
+ON=@Create
+MORE=0515
+MOREX=1
+COLOR=0482
+ATTR=ATTR_MOVE_NEVER|ATTR_DECAY
+
+
+
+[ITEMDEF i_tc_2_m]
+NAME=treasure chest
+ID=i_crate_small
+TYPE=t_container_locked
+FLIP=1
+WEIGHT=1
+TEVENTS=ei_container_treasure
+
+ON=@Create
+MORE=0515
+MOREX=2
+COLOR=0482
+ATTR=ATTR_MOVE_NEVER|ATTR_DECAY
+
+
+
+[ITEMDEF i_tc_3_m]
+NAME=treasure chest
+ID=i_crate_small
+TYPE=t_container_locked
+FLIP=1
+WEIGHT=1
+TEVENTS=ei_container_treasure
+
+ON=@Create
+MORE=0515
+MOREX=3
+COLOR=0482
+ATTR=ATTR_MOVE_NEVER|ATTR_DECAY
+
+
+
+
+[ITEMDEF i_tc_4_m]
+NAME=treasure chest
+ID=i_crate_small
+TYPE=t_container_locked
+FLIP=1
+WEIGHT=1
+TEVENTS=ei_container_treasure
+
+ON=@Create
+MORE=0515
+MOREX=4
+COLOR=0482
+ATTR=ATTR_MOVE_NEVER|ATTR_DECAY
+
+
+
+[ITEMDEF i_tc_5_m]
+NAME=treasure chest
+ID=i_crate_small
+TYPE=t_container_locked
+FLIP=1
+WEIGHT=1
+TEVENTS=ei_container_treasure
+
+ON=@Create
+MORE=0515
+MOREX=5
+COLOR=0482
+ATTR=ATTR_MOVE_NEVER|ATTR_DECAY
+
+[ITEMDEF i_tc_6_m]
+NAME=treasure chest
+ID=i_crate_small
+TYPE=t_container_locked
+FLIP=1
+WEIGHT=1
+TEVENTS=ei_container_treasure
+
+ON=@Create
+MORE=0515
+MOREX=6
+COLOR=0482
+ATTR=ATTR_MOVE_NEVER|ATTR_DECAY
+
+
+[TEMPLATE T_TC_1_m]
+NAME=treasure chest
+CATEGORY=treasure chest
+SUBSECTION=Mage
+DESCRIPTION=Level 1
+CONTAINER=i_tc_1_m
+TYPE=t_container_locked
+// TEVENTS=ei_container_treasure
+ATTR=ATTR_MOVE_NEVER|ATTR_DECAY
+
+ITEM=i_gold,{500 1000}
+ITEM={ random_first_circle 1 random_second_circle 1 random_third_circle 1 random_fourth_circle 1 }
+ITEM={ random_first_circle 1 random_second_circle 1 random_third_circle 1 random_fourth_circle 1 }
+ITEM={ random_first_circle 1 random_second_circle 1 random_third_circle 1 random_fourth_circle 1 }
+ITEM={ i_reag_black_pearl 1 i_reag_blood_moss 1 i_reag_garlic 1 i_reag_ginseng 1 i_reag_mandrake_root 1 i_reag_nightshade 1 i_reag_sulfur_ash 1 i_reag_spider_silk 1 },15
+ITEM={ i_reag_black_pearl 1 i_reag_blood_moss 1 i_reag_garlic 1 i_reag_ginseng 1 i_reag_mandrake_root 1 i_reag_nightshade 1 i_reag_sulfur_ash 1 i_reag_spider_silk 1 },15
+ITEM={ RANDOM_WAND_ONE 1 RANDOM_WAND_TWO 1 RANDOM_WAND_THREE 1 RANDOM_WAND_FOUR 1 }
+ITEM={ RANDOM_WAND_ONE 1 RANDOM_WAND_TWO 1 RANDOM_WAND_THREE 1 RANDOM_WAND_FOUR 1 }
+ITEM={ RANDOM_WAND_ONE 1 RANDOM_WAND_TWO 1 RANDOM_WAND_THREE 1 RANDOM_WAND_FOUR 1 }
+ITEM=i_tc_r //mage robe
+ITEM=i_staff_black //black staff
+
+[TEMPLATE T_TC_2_m]
+NAME=treasure chest
+CATEGORY=treasure chest
+SUBSECTION=Mage
+DESCRIPTION=Level 2
+CONTAINER=i_tc_2_m
+TYPE=t_container_locked
+// TEVENTS=ei_container_treasure
+ATTR=ATTR_MOVE_NEVER|ATTR_DECAY
+
+ITEM=i_gold,{1000 1500}
+ITEM={ random_first_circle 1 random_second_circle 1 random_third_circle 1 random_fourth_circle 1 }
+ITEM={ random_first_circle 1 random_second_circle 1 random_third_circle 1 random_fourth_circle 1 }
+ITEM={ random_first_circle 1 random_second_circle 1 random_third_circle 1 random_fourth_circle 1 }
+ITEM={ i_reag_black_pearl 1 i_reag_blood_moss 1 i_reag_garlic 1 i_reag_ginseng 1 i_reag_mandrake_root 1 i_reag_nightshade 1 i_reag_sulfur_ash 1 i_reag_spider_silk 1 },15
+ITEM={ i_reag_black_pearl 1 i_reag_blood_moss 1 i_reag_garlic 1 i_reag_ginseng 1 i_reag_mandrake_root 1 i_reag_nightshade 1 i_reag_sulfur_ash 1 i_reag_spider_silk 1 },15
+ITEM={ i_reag_black_pearl 1 i_reag_blood_moss 1 i_reag_garlic 1 i_reag_ginseng 1 i_reag_mandrake_root 1 i_reag_nightshade 1 i_reag_sulfur_ash 1 i_reag_spider_silk 1 },15
+ITEM={ RANDOM_WAND_ONE 1 RANDOM_WAND_TWO 1 RANDOM_WAND_THREE 1 RANDOM_WAND_FOUR 1 }
+ITEM={ RANDOM_WAND_ONE 1 RANDOM_WAND_TWO 1 RANDOM_WAND_THREE 1 RANDOM_WAND_FOUR 1 }
+ITEM={ RANDOM_WAND_ONE 1 RANDOM_WAND_TWO 1 RANDOM_WAND_THREE 1 RANDOM_WAND_FOUR 1 }
+ITEM=i_tc_mr3
+ITEM=i_staff_black_ruin
+
+[TEMPLATE T_TC_3_m]
+NAME=treasure chest
+CATEGORY=treasure chest
+SUBSECTION=Mage
+DESCRIPTION=Level 3
+CONTAINER=i_tc_3_m
+TYPE=t_container_locked
+// TEVENTS=ei_container_treasure
+ATTR=ATTR_MOVE_NEVER|ATTR_DECAY
+
+ITEM=i_gold,{1500 2000}
+ITEM={ random_fifth_circle 1 random_second_circle 1 random_third_circle 1 random_fourth_circle 1 }
+ITEM={ random_fifth_circle 1 random_second_circle 1 random_third_circle 1 random_fourth_circle 1 }
+ITEM={ random_fifth_circle 1 random_second_circle 1 random_third_circle 1 random_fourth_circle 1 }
+ITEM={ i_reag_black_pearl 1 i_reag_blood_moss 1 i_reag_garlic 1 i_reag_ginseng 1 i_reag_mandrake_root 1 i_reag_nightshade 1 i_reag_sulfur_ash 1 i_reag_spider_silk 1 },30
+ITEM={ i_reag_black_pearl 1 i_reag_blood_moss 1 i_reag_garlic 1 i_reag_ginseng 1 i_reag_mandrake_root 1 i_reag_nightshade 1 i_reag_sulfur_ash 1 i_reag_spider_silk 1 },30
+ITEM={ RANDOM_WAND_FIVE 1 RANDOM_WAND_TWO 1 RANDOM_WAND_THREE 1 RANDOM_WAND_FOUR 1 }
+ITEM={ RANDOM_WAND_FIVE 1 RANDOM_WAND_TWO 1 RANDOM_WAND_THREE 1 RANDOM_WAND_FOUR 1 }
+ITEM={ RANDOM_WAND_FIVE 1 RANDOM_WAND_TWO 1 RANDOM_WAND_THREE 1 RANDOM_WAND_FOUR 1 }
+ITEM=i_tc_mr6
+ITEM=i_staff_black_might
+
+[TEMPLATE T_TC_4_m]
+NAME=treasure chest
+CATEGORY=treasure chest
+SUBSECTION=Mage
+DESCRIPTION=Level 4
+CONTAINER=i_tc_4_m
+TYPE=t_container_locked
+// TEVENTS=ei_container_treasure
+ATTR=ATTR_MOVE_NEVER|ATTR_DECAY
+
+ITEM=i_gold,{2000 2500}
+ITEM={ random_fifth_circle 1 random_sixth_circle 1 random_third_circle 1 random_fourth_circle 1 }
+ITEM={ random_fifth_circle 1 random_sixth_circle 1 random_third_circle 1 random_fourth_circle 1 }
+ITEM={ random_fifth_circle 1 random_sixth_circle 1 random_third_circle 1 random_fourth_circle 1 }
+ITEM={ i_reag_black_pearl 1 i_reag_blood_moss 1 i_reag_garlic 1 i_reag_ginseng 1 i_reag_mandrake_root 1 i_reag_nightshade 1 i_reag_sulfur_ash 1 i_reag_spider_silk 1 },30
+ITEM={ i_reag_black_pearl 1 i_reag_blood_moss 1 i_reag_garlic 1 i_reag_ginseng 1 i_reag_mandrake_root 1 i_reag_nightshade 1 i_reag_sulfur_ash 1 i_reag_spider_silk 1 },30
+ITEM={ i_reag_black_pearl 1 i_reag_blood_moss 1 i_reag_garlic 1 i_reag_ginseng 1 i_reag_mandrake_root 1 i_reag_nightshade 1 i_reag_sulfur_ash 1 i_reag_spider_silk 1 },30
+ITEM={ RANDOM_WAND_FIVE 1 RANDOM_WAND_SIX 1 RANDOM_WAND_THREE 1 RANDOM_WAND_FOUR 1 }
+ITEM={ RANDOM_WAND_FIVE 1 RANDOM_WAND_SIX 1 RANDOM_WAND_THREE 1 RANDOM_WAND_FOUR 1 }
+ITEM={ RANDOM_WAND_FIVE 1 RANDOM_WAND_SIX 1 RANDOM_WAND_THREE 1 RANDOM_WAND_FOUR 1 }
+ITEM=i_tc_mr9
+ITEM=i_staff_black_force
+
+[TEMPLATE T_TC_5_m]
+NAME=treasure chest
+CATEGORY=treasure chest
+SUBSECTION=Mage
+DESCRIPTION=Level 5
+CONTAINER=i_tc_5_m
+TYPE=t_container_locked
+// TEVENTS=ei_container_treasure
+ATTR=ATTR_MOVE_NEVER|ATTR_DECAY
+
+ITEM=i_gold,{2500 3500}
+ITEM={ random_fifth_circle 1 random_sixth_circle 1 random_seventh_circle 1 random_fourth_circle 1 }
+ITEM={ random_fifth_circle 1 random_sixth_circle 1 random_seventh_circle 1 random_fourth_circle 1 }
+ITEM={ random_fifth_circle 1 random_sixth_circle 1 random_seventh_circle 1 random_fourth_circle 1 }
+ITEM={ i_reag_black_pearl 1 i_reag_blood_moss 1 i_reag_garlic 1 i_reag_ginseng 1 i_reag_mandrake_root 1 i_reag_nightshade 1 i_reag_sulfur_ash 1 i_reag_spider_silk 1 },45
+ITEM={ i_reag_black_pearl 1 i_reag_blood_moss 1 i_reag_garlic 1 i_reag_ginseng 1 i_reag_mandrake_root 1 i_reag_nightshade 1 i_reag_sulfur_ash 1 i_reag_spider_silk 1 },45
+ITEM={ RANDOM_WAND_FIVE 1 RANDOM_WAND_SIX 1 RANDOM_WAND_SEVEN 1 RANDOM_WAND_FOUR 1 }
+ITEM={ RANDOM_WAND_FIVE 1 RANDOM_WAND_SIX 1 RANDOM_WAND_SEVEN 1 RANDOM_WAND_FOUR 1 }
+ITEM={ RANDOM_WAND_FIVE 1 RANDOM_WAND_SIX 1 RANDOM_WAND_SEVEN 1 RANDOM_WAND_FOUR 1 }
+ITEM=i_tc_mr12
+ITEM=i_staff_black_power
+
+[TEMPLATE T_TC_6_m]
+NAME=treasure chest
+CATEGORY=treasure chest
+SUBSECTION=Mage
+DESCRIPTION=Level 6
+CONTAINER=i_tc_6_m
+TYPE=t_container_locked
+// TEVENTS=ei_container_treasure
+ATTR=ATTR_MOVE_NEVER|ATTR_DECAY
+
+
+ITEM=i_gold,{3500 5000}
+ITEM={ random_fifth_circle 1 random_sixth_circle 1 random_seventh_circle 1 random_eighth_circle 1 }
+ITEM={ random_fifth_circle 1 random_sixth_circle 1 random_seventh_circle 1 random_eighth_circle 1 }
+ITEM={ random_fifth_circle 1 random_sixth_circle 1 random_seventh_circle 1 random_eighth_circle 1 }
+ITEM={ i_reag_black_pearl 1 i_reag_blood_moss 1 i_reag_garlic 1 i_reag_ginseng 1 i_reag_mandrake_root 1 i_reag_nightshade 1 i_reag_sulfur_ash 1 i_reag_spider_silk 1 },45
+ITEM={ i_reag_black_pearl 1 i_reag_blood_moss 1 i_reag_garlic 1 i_reag_ginseng 1 i_reag_mandrake_root 1 i_reag_nightshade 1 i_reag_sulfur_ash 1 i_reag_spider_silk 1 },45
+ITEM={ i_reag_black_pearl 1 i_reag_blood_moss 1 i_reag_garlic 1 i_reag_ginseng 1 i_reag_mandrake_root 1 i_reag_nightshade 1 i_reag_sulfur_ash 1 i_reag_spider_silk 1 },45
+ITEM={ RANDOM_WAND_FIVE 1 RANDOM_WAND_SIX 1 RANDOM_WAND_SEVEN 1 RANDOM_WAND_EIGHT 1 }
+ITEM={ RANDOM_WAND_FIVE 1 RANDOM_WAND_SIX 1 RANDOM_WAND_SEVEN 1 RANDOM_WAND_EIGHT 1 }
+ITEM={ RANDOM_WAND_FIVE 1 RANDOM_WAND_SIX 1 RANDOM_WAND_SEVEN 1 RANDOM_WAND_EIGHT 1 }
+ITEM=i_tc_mr15
+ITEM=i_Staff_black_vanq
+
+[EOF]

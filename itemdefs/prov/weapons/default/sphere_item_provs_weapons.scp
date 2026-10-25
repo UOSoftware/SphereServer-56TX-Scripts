@@ -1,0 +1,189 @@
+
+[ITEMDEF i_npc_bow]
+DEFNAME=i_npc_bow
+NAME=bow
+ID=i_bow
+DAM=15,20
+TDATA1=0
+TDATA3=0
+SKILL=Archery
+REQSTR=30
+TWOHANDS=Y
+WEIGHT=1
+
+ON=@CREATE
+HITPOINTS={411 1000}
+	
+[ITEMDEF 0fb4]
+DEFNAME=i_hammer_sledge
+TYPE=t_weapon_mace_smith
+DAM=0
+FLIP=1
+SKILL=Macefighting
+// SPEED=41
+VALUE=26
+WEIGHT=9.0
+TWOHANDS=N
+RESOURCES=4 i_ingot_iron,1 i_log
+SKILLMAKE=Tinkering 40.0,t_tinker_tools
+CATEGORY=Weapons
+SUBSECTION=Macefighting
+DESCRIPTION=Sledge Hammer
+ReqStr=40
+// CanUse=can_u_human|can_u_elf
+TEVENTS=t_equipitem
+DUPELIST=0fb5
+
+ON=@Create
+HITPOINTS={100 250}
+UsesMax={25 75}
+
+[ITEMDEF 0fb5]
+//sledge hammer
+DUPEITEM=0fb4
+
+
+[ITEMDEF 013e3]
+DEFNAME=i_hammer_smith
+TYPE=t_weapon_mace_smith
+DAM=6,18
+FLIP=1
+SKILL=Macefighting
+// SPEED=41
+VALUE=52
+WEIGHT=10.0
+TWOHANDS=N
+RESOURCES=6 i_ingot_iron
+SKILLMAKE=Blacksmithing 10.0,t_tinker_tools
+CATEGORY=Weapons
+SUBSECTION=Macefighting
+DESCRIPTION=Smith Hammer
+ReqStr=30
+TEVENTS=t_equipitem
+DUPELIST=013e4
+
+ON=@Create
+HITPOINTS={100 250}
+
+[ITEMDEF 013e4]
+//smith hammer
+DUPEITEM=013e3
+
+
+
+[ITEMDEF 0ec4]
+DEFNAME=i_knife_skinning
+TYPE=t_weapon_fence
+DAM=1,10
+FLIP=1
+SKILL=Fencing
+// SPEED=53
+VALUE=25
+WEIGHT=2.0
+TWOHANDS=N
+RESOURCES=2 i_ingot_iron
+SKILLMAKE=Tinkering 25.0,t_tinker_tools
+CATEGORY=Weapons
+SUBSECTION=Fencing
+DESCRIPTION=Skinning Knife
+// CanUse=can_u_human|can_u_elf
+ReqStr=5
+TEVENTS=t_equipitem
+DUPELIST=0ec5
+
+ON=@Create
+HITPOINTS={100 250}
+
+[ITEMDEF 0ec5]
+//Skinning Knife
+DUPEITEM=0ec4
+
+
+
+[ITEMDEF 0f52]
+DEFNAME=i_dagger
+TYPE=t_weapon_fence
+DAM=3,15
+FLIP=1
+SKILL=Fencing
+// SPEED=56
+VALUE=35
+WEIGHT=4.0
+TWOHANDS=N
+RESOURCES=4 i_ingot_iron
+SKILLMAKE=Blacksmithing 0.0
+CATEGORY=Weapons
+SUBSECTION=Fencing
+DESCRIPTION=Dagger
+ReqStr=10
+// CanUse=can_u_human|can_u_elf
+TEVENTS=t_equipitem
+DUPELIST=0f51
+
+ON=@Create
+HITPOINTS={100 250}
+
+[ITEMDEF 0f51]
+//dagger
+DUPEITEM=0f52
+
+
+[ITEMDEF 013f7]
+DEFNAME=i_knife_butcher
+TYPE=t_weapon_fence
+DAM=2,14
+FLIP=1
+SKILL=Swordsmanship
+// SPEED=53
+VALUE=26
+WEIGHT=5.0
+TWOHANDS=N
+RESOURCES=2 i_ingot_iron,1 i_log
+SKILLMAKE=Tinkering 25.0,t_tinker_tools
+CATEGORY=Weapons
+SUBSECTION=Swordsmanship
+DESCRIPTION=Butchers Knife
+// CanUse=can_u_human|can_u_elf
+ReqStr=5
+TEVENTS=t_equipitem
+DUPELIST=013f6
+
+ON=@Create
+HITPOINTS={100 250}
+
+[ITEMDEF 013f6]
+//butcher knife
+DUPEITEM=013f7
+
+
+
+
+[ITEMDEF 02d22]
+DEFNAME=i_sword_leafblade
+NAME=leafblade
+TYPE=t_weapon_fence
+DAM=0
+FLIP=1
+SKILL=Fencing
+// SPEED=47
+VALUE=83
+WEIGHT=8.0
+TWOHANDS=N
+RESOURCES=12 i_ingot_iron,1 i_log
+SKILLMAKE=Blacksmithing 70.0
+CATEGORY=Weapons
+SUBSECTION=Fencing
+DESCRIPTION=LeafBlade
+ReqStr=20
+TEVENTS=t_equipitem
+DUPELIST=02d2e
+
+ON=@Create
+HITPOINTS={100 250}
+
+[ITEMDEF 02d2e]
+//leafblade
+DUPEITEM=02d22
+
+
+[EOF]

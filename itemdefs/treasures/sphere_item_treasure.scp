@@ -1,0 +1,157 @@
+
+
+
+[DEFNAME ChestDungeon_Settings]
+DungeonChest_L1_Lockpicking	40.0
+DungeonChest_L1_Guardians	{c_mongbat 1 c_ratman 1 c_headless 1 c_skeleton 1 c_zombie 1}
+
+DungeonChest_L2_Lockpicking	50.0
+DungeonChest_L2_Guardians	{c_orc_mage 1 c_gargoyle 1 c_gazer 1 c_hellhound 1 c_elemental_earth 1}
+
+DungeonChest_L3_Lockpicking	60.0
+DungeonChest_L3_Guardians	{c_lich 1 c_ogre_lord 1 c_spider_dread 1 c_elemental_air 1 c_elemental_fire 1}
+
+DungeonChest_L4_Lockpicking	70.0
+DungeonChest_L4_Guardians	{c_spider_dread 1 c_lich_lord 1 c_demon 1 c_gazer_elder 1 c_ogre_lord 1}
+
+DungeonChest_L5_Lockpicking	80.0
+DungeonChest_L5_Guardians	{c_lich_lord 1 c_demon 1 c_gazer_elder 1 c_elemental_poison 1 c_elemental_blood 1}
+
+DungeonChest_L6_Lockpicking	90.0
+DungeonChest_L6_Guardians	{C_SKELETON_W_AXE 1 C_SKELETON_W_SWORD 1 C_M_GHOUL 1 C_ZOMBIE 1 C_SKELETON_KNIGHT 1 C_SPECTRE 1 C_GRIM_REAPER 1 C_WRAITH 1 C_MUMMY_AOS 1 C_LICHE 1 }
+
+
+[FUNCTION DungeonChest_EnvironClear]
+FORITEMS 7
+	IF (<IsItemTDataFlag <DEF.tilef_impassable>>)
+		TIMER
+	ENDIF
+ENDFOR
+
+
+[FUNCTION DungeonChest_SpawnGuardians]
+IF (<MOREX> < 2)
+	LOCAL.N=<R3,4>
+ELSE
+	LOCAL.N=<R4,5>
+ENDIF
+
+FOR 1 <dLOCAL.N>
+	SERV.NEWNPC <DEF0.DungeonChest_L<DMOREX>_Guardians>
+	NEW.P=<P>
+	NEW.MOVENEAR <UID> <R3,5>
+	// NEW.NAME .= " (Guardian)"
+
+	NEW.HOME=<P>
+	NEW.MODAR = <EVAL <DMOREX>*2> // KORUMALARIN SEVİYEYE GÖRE GÜÇLENMESİ, İSTEĞE GÖRE STAT ARTTIRIMI DA YAPILABİLİR.
+	NEW.HOMEDIST={5 8}
+	NEW.EVENTS +e_dungeon_chest_guardian
+	NEW.TAG0.CHEST=<UID>
+	NEW.FUNC_REMOVETIMER 3600
+ENDFOR
+ 
+
+[EVENTS e_dungeon_chest_guardian]
+ON=@CLICK
+MESSAGE (chest guardian)
+
+On=@Hit
+IF !(<SRC.ISPOISONED>)
+	IF (RAND(6) == 1)
+		SRC.POISON <R5,9>0.0
+		SRC.FUNC_EMOTE_HARMFUL zehirlenir
+	ENDIF
+ENDIF
+
+IF (<ARGN> == 38) || (<ARGN> == 47)
+	IF (<FINDID.I_RUNE_PARALYZE>)
+		FINDID.I_RUNE_PARALYZE.REMOVE
+	ENDIF
+	IF (<FINDID.I_RUNE_PARALYZE_FIELD>)
+		FINDID.I_RUNE_PARALYZE_FIELD.REMOVE
+	ENDIF
+	FUNC_EMOTE_HELPFUL Etkilenmez
+	RETURN 1
+ENDIF
+
+ON=@SPELLEFFECT
+IF (<ARGN> == 20)
+	IF (RAND(3) == 1)
+		FUNC_EMOTE_HELPFUL Büyüyü geri çevirir
+		SRC.SPELLEFFECT S_POISON <R1000,1200>
+		IF (<FINDID.I_RUNE_POISON>)
+			FINDID.I_RUNE_POISON.REMOVE
+		ENDIF
+		EFFECT=3,i_fx_heal_effect,6,35,1 
+		SOUND=snd_spell_greater_heal
+	ELSE
+		FUNC_EMOTE_HELPFUL Büyüden etkilenmez
+		IF (<FINDID.I_RUNE_POISON>)
+			FINDID.I_RUNE_POISON.REMOVE
+		ENDIF
+		EFFECT=3,i_fx_heal_effect,6,35,1 
+		SOUND=snd_spell_greater_heal
+	ENDIF
+RETURN 1
+ENDIF
+
+
+
+
+[typedef ei_container_treasure]
+ON=@DClick
+REF1=<UID>
+FORCHARS 100
+	IF (<TAG0.CHEST> == <REF1>)
+		LOCAL.GUARDIANS ++
+		SRC.SYSMESSAGELOC <def.tcolor_yellow>,<def.empty_cliloc2>, <NAME>
+	ENDIF
+ENDFOR
+IF (<DLOCAL.GUARDIANS>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Önce korumaları öldürmelisiniz. (<DLOCAL.GUARDIANS>)
+	RETURN 1
+ENDIF
+
+IF (<TYPE> == t_container)
+	IF (<TIMER> <= 0)
+		TIMER=300
+	ENDIF
+ENDIF
+
+
+ON=@CLICK
+IF (<SRC.ISGM>)
+
+	MESSAGE @,,1,1 (Level: <dmorex>) GM Only
+ENDIF
+IF !(<TYPE> == T_CONTAINER_LOCKED)
+	IF (<TIMER> > 0)
+		SRC.SYSMESSAGELOC <def.tcolor_yellow>,<def.empty_cliloc2>, <NAME> <KalanSure <TIMER>> sonra silinecektir.
+	ENDIF
+ENDIF
+
+
+// ON=@Timer
+// REMOVE
+// RETURN 1
+
+// ON=@TIMER
+// IF (<TYPE> == T_CONTAINER_LOCKED)
+	// ATTR=ATTR_MOVE_NEVER
+	// TIMER -1
+	// REF1=<SPAWNITEM>
+	// IF (<REF1.ISVALID>)
+		// REF1.STOP
+	// ENDIF
+// ELSE
+	// ATTR=ATTR_MOVE_NEVER|ATTR_DECAY
+	// REF1=<SPAWNITEM>
+	// IF (<REF1.ISVALID>)
+		// REF1.START
+	// ENDIF
+	
+	// REMOVE
+// ENDIF
+// RETURN 1
+
+[eof]

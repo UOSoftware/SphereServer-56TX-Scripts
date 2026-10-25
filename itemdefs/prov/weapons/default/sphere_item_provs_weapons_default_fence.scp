@@ -1,0 +1,372 @@
+
+
+
+[ITEMDEF 0e88]
+DEFNAME=i_pitchfork
+TYPE=t_weapon_fence
+DAM=4,16
+FLIP=1
+SKILL=Fencing
+// SPEED=30
+//RANGE=0,2 // 55r-2000 de 2 kareden vuran silah yok
+RANGE=0,1
+VALUE=48
+WEIGHT=8.0
+TWOHANDS=Y
+RESOURCES=5 i_ingot_iron
+SKILLMAKE=Tinkering 20.0,t_tinker_tools
+CATEGORY=Weapons
+SUBSECTION=Fencing
+DESCRIPTION=Pitchfork
+// CanUse=can_u_human|can_u_elf
+ReqStr=15
+TEVENTS=t_equipitem
+DUPELIST=0e87
+
+ON=@Create
+HITPOINTS={100 250}
+
+[ITEMDEF 0e87]
+//pitchfork
+DUPEITEM=0e88
+
+
+
+
+
+
+
+[ITEMDEF 01404]
+DEFNAME=i_war_fork
+TYPE=t_weapon_fence
+DAM=4,32
+FLIP=1
+SKILL=Fencing
+RANGE=0,1
+// SPEED=35
+VALUE=78
+WEIGHT=6.0
+TWOHANDS=N
+RESOURCES=12 i_ingot_iron
+SKILLMAKE=Blacksmithing 42.9
+CATEGORY=Weapons
+SUBSECTION=Fencing
+DESCRIPTION=War Fork
+// CanUse=can_u_human|can_u_elf
+ReqStr=35
+TEVENTS=t_equipitem
+DUPELIST=01405
+
+ON=@Create
+HITPOINTS={100 250}
+
+[ITEMDEF 01405]
+//war fork
+DUPEITEM=01404
+
+
+
+[ITEMDEF 01402]
+DEFNAME=i_spear_short
+TYPE=t_weapon_fence
+DAM=4,32
+FLIP=1
+RANGE=0,1
+SKILL=Fencing
+// SPEED=36
+VALUE=100
+WEIGHT=4.0
+TWOHANDS=Y
+RESOURCES=6 i_ingot_iron
+SKILLMAKE=Blacksmithing 45.3
+CATEGORY=Weapons
+SUBSECTION=Fencing
+DESCRIPTION=Short Spear
+// CanUse=can_u_human|can_u_elf
+ReqStr=15
+TEVENTS=t_equipitem
+DUPELIST=01403
+
+ON=@Create
+HITPOINTS={100 250}
+
+[ITEMDEF 01403]
+//short spear
+DUPEITEM=01402
+
+
+
+[ITEMDEF 01400]
+DEFNAME=i_kryss
+TYPE=t_weapon_fence
+DAM=3,28
+FLIP=1
+SKILL=Fencing
+// SPEED=42
+RANGE=0,1
+VALUE=103
+WEIGHT=4.2
+TWOHANDS=N
+RESOURCES=8 i_ingot_iron
+SKILLMAKE=Blacksmithing 36.7
+CATEGORY=Weapons
+SUBSECTION=Fencing
+DESCRIPTION=Kryss
+// CanUse=can_u_human|can_u_elf
+ReqStr=10
+TEVENTS=t_equipitem
+DUPELIST=01401
+
+ON=@Create
+HITPOINTS={100 250}
+
+[ITEMDEF 01401]
+//kryss
+DUPEITEM=01400
+
+
+
+[ITEMDEF 0f63]
+DEFNAME=i_spear
+NAME=spear
+TYPE=t_weapon_fence
+DAM=2,36
+FLIP=1
+SKILL=Fencing
+// SPEED=30
+VALUE=154
+WEIGHT=6.5
+TWOHANDS=Y
+//RANGE=0,2 // 55r-2000 de 2 kareden vuran silah yok
+RANGE=0,1
+RESOURCES=12 i_ingot_iron
+SKILLMAKE=Blacksmithing 49.0
+CATEGORY=Weapons
+SUBSECTION=Fencing
+DESCRIPTION=Spear
+ReqStr=30
+// CanUse=can_u_human|can_u_elf
+TEVENTS=t_equipitem
+DUPELIST=0f62
+
+ON=@Create
+HITPOINTS={100 250}
+
+[ITEMDEF 0f62]
+//spear
+DUPEITEM=0f63
+
+
+
+
+[ITEMDEF 026c0]
+DEFNAME=i_lance
+NAME=lance
+TYPE=t_weapon_fence
+DAM=7,12
+FLIP=1
+SKILL=Fencing
+// SPEED=26
+//RANGE=0,2 // 55r-2000 de 2 kareden vuran silah yok
+RANGE=0,1
+VALUE=121
+WEIGHT=12.0
+TWOHANDS=N
+RESOURCES=20 i_ingot_iron,2 i_log
+SKILLMAKE=Blacksmithing 48.0
+CATEGORY=Weapons
+SUBSECTION=Fencing
+DESCRIPTION=Lance
+ReqStr=95
+TEVENTS=t_equipitem
+DUPELIST=026ca
+
+ON=@Create
+HITPOINTS={100 250}
+
+[ITEMDEF 026ca]
+//lance
+DUPEITEM=026c0
+
+
+
+[ITEMDEF 026be]
+DEFNAME=i_pike
+NAME=pike
+TYPE=t_weapon_fence
+DAM=6,13
+FLIP=1
+SKILL=Fencing
+// SPEED=44
+VALUE=72
+WEIGHT=8.0
+TWOHANDS=Y
+RESOURCES=12 i_ingot_iron,2 i_log
+SKILLMAKE=Blacksmithing 47.0
+CATEGORY=Weapons
+SUBSECTION=Fencing
+DESCRIPTION=Pike
+ReqStr=50
+TEVENTS=t_equipitem
+DUPELIST=026c8
+
+ON=@Create
+HITPOINTS={100 250}
+
+[ITEMDEF 026c8]
+//pike
+DUPEITEM=026be
+
+
+
+[ITEMDEF 027af]
+DEFNAME=i_sai
+NAME=sai
+TYPE=t_weapon_fence
+DAM=5,12
+FLIP=1
+SKILL=Fencing
+// SPEED=56
+VALUE=72
+WEIGHT=7.0
+TWOHANDS=Y
+RESOURCES=12 i_ingot_iron
+SKILLMAKE=Blacksmithing 50.0
+CATEGORY=Weapons
+SUBSECTION=Fencing
+DESCRIPTION=Sai
+// CanUse=can_u_human|can_u_elf
+ReqStr=15
+TEVENTS=t_equipitem
+DUPELIST=027fa
+
+ON=@Create
+HITPOINTS={100 250}
+
+[ITEMDEF 027fa]
+//sai
+DUPEITEM=027af
+
+
+
+[ITEMDEF 02d21]
+DEFNAME=i_sword_assassin_spike
+NAME=assassin spike
+TYPE=t_weapon_fence
+DAM=0
+FLIP=1
+SKILL=Fencing
+// SPEED=56
+VALUE=63
+WEIGHT=4.0
+TWOHANDS=N
+RESOURCES=9 i_ingot_iron,1 i_log
+SKILLMAKE=Blacksmithing 70.0
+CATEGORY=Weapons
+SUBSECTION=Fencing
+DESCRIPTION=Assasins Spike
+ReqStr=15
+TEVENTS=t_equipitem
+DUPELIST=02d2d
+
+ON=@Create
+HITPOINTS={100 250}
+
+[ITEMDEF 02d2d]
+//assassin spike
+DUPEITEM=02d21
+
+
+[ITEMDEF 02d20]
+DEFNAME=i_elven_spellblade
+NAME=elven spellblade
+TYPE=t_weapon_fence
+DAM=4,9
+FLIP=1
+SKILL=Fencing
+// SPEED=50
+VALUE=97
+WEIGHT=5.0
+TWOHANDS=Y
+RESOURCES=14 i_ingot_iron,1 i_log
+SKILLMAKE=Blacksmithing 70.0
+CATEGORY=Weapons
+SUBSECTION=Fencing
+DESCRIPTION=Elven SpellBlade
+ReqStr=35
+TEVENTS=t_equipitem
+DUPELIST=02d2c
+
+ON=@Create
+HITPOINTS={100 250}
+
+[ITEMDEF 02d2c]
+//elven spellblade
+DUPEITEM=02d20
+
+
+
+[ITEMDEF 027ab]
+DEFNAME=i_tekagi
+NAME=tekagi
+TYPE=t_weapon_fence
+DAM=4,10
+FLIP=1
+SKILL=Fencing
+// SPEED=56
+VALUE=74
+WEIGHT=5.0
+TWOHANDS=Y
+RESOURCES=12 i_ingot_iron
+SKILLMAKE=Blacksmithing 55.0
+CATEGORY=Weapons
+SUBSECTION=Fencing
+DESCRIPTION=Tekagi
+// CanUse=can_u_human|can_u_elf
+ReqStr=10
+TEVENTS=t_equipitem
+DUPELIST=027f6
+
+ON=@Create
+HITPOINTS={100 250}
+
+[ITEMDEF 027f6]
+//tekagi
+DUPEITEM=027ab
+
+
+
+
+[ITEMDEF 027a7]
+DEFNAME=i_lajatang
+NAME=lajatang
+TYPE=t_weapon_fence
+DAM=7,14
+FLIP=1
+SKILL=Fencing
+// SPEED=38
+VALUE=110
+WEIGHT=12.0
+TWOHANDS=Y
+RESOURCES=25 i_ingot_iron,1 i_log
+SKILLMAKE=Blacksmithing 80.0
+CATEGORY=Weapons
+SUBSECTION=Fencing
+DESCRIPTION=Lajatang
+// CanUse=can_u_human|can_u_elf
+ReqStr=65
+TEVENTS=t_equipitem
+DUPELIST=027f2
+
+ON=@Create
+HITPOINTS={100 250}
+
+[ITEMDEF 027f2]
+//lajatang
+DUPEITEM=027a7
+
+
+
+
+
+[eof]

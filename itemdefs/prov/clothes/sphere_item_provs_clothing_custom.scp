@@ -1,0 +1,173 @@
+
+
+[ITEMDEF i_first_player_robe]
+DEFNAME=i_first_player_robe
+ID=i_robe
+RESOURCES=0
+WEIGHT=0
+TYPE=T_CLOTHING
+DYE=0
+ARMOR=10
+TEVENTS=t_equipitem
+
+ON=@Create
+HITPOINTS=65000
+ATTR=ATTR_NEWBIE
+COLOR=07fff
+LINK=<SRC>
+
+on=@click
+message @1153,,1,1 [İlk Oyuncu]
+IF (<CONT>)
+	message @1153,,1,1 <TOPOBJ.NAME>
+ENDIF
+RETURN 1
+
+ON=@DAMAGE
+HITPOINTS=65000
+RETURN 1
+
+
+// green robe
+[ITEMDEF 0A10E]
+DEFNAME=i_robe_green
+RESOURCES=16 i_cloth
+WEIGHT=3
+TYPE=T_CLOTHING
+NAME=green robe
+DYE=0
+ARMOR=0
+// FLIP=0
+LAYER=22
+SKILLMAKE=TAILORING 59.0, t_sewing_kit
+CATEGORY=Provisions - Clothes
+SUBSECTION=Shirts & Robes
+DESCRIPTION=Robe
+DUPELIST=0A10F
+TEVENTS=t_equipitem
+
+ON=@Create
+HITPOINTS=100
+ATTR=ATTR_NEWBIE
+
+[ITEMDEF 0A10F]
+// green robe
+DUPEITEM=0A10E
+
+
+
+// brown robe
+[ITEMDEF 0A110]
+DEFNAME=i_robe_brown
+RESOURCES=16 i_cloth
+WEIGHT=3
+TYPE=T_CLOTHING
+NAME=brown robe
+DYE=0
+ARMOR=0
+// FLIP=0
+LAYER=22
+SKILLMAKE=TAILORING 59.0, t_sewing_kit
+CATEGORY=Provisions - Clothes
+SUBSECTION=Shirts & Robes
+DESCRIPTION=Robe
+DUPELIST=0A111
+TEVENTS=t_equipitem
+
+ON=@Create
+HITPOINTS=100
+ATTR=ATTR_NEWBIE
+
+[ITEMDEF 0A111]
+// brown robe
+DUPEITEM=0A110
+
+
+// purple robe
+[ITEMDEF 0A112]
+DEFNAME=i_robe_purple
+RESOURCES=16 i_cloth
+WEIGHT=3
+TYPE=T_CLOTHING
+NAME=purple robe
+DYE=0
+ARMOR=0
+// FLIP=0
+LAYER=22
+SKILLMAKE=TAILORING 59.0, t_sewing_kit
+CATEGORY=Provisions - Clothes
+SUBSECTION=Shirts & Robes
+DESCRIPTION=Robe
+DUPELIST=0A113
+TEVENTS=t_equipitem
+
+ON=@Create
+HITPOINTS=100
+ATTR=ATTR_NEWBIE
+
+[ITEMDEF 0A113]
+// purple robe
+DUPEITEM=0A112
+
+
+
+// red robe
+[ITEMDEF 0A114]
+DEFNAME=i_robe_red
+RESOURCES=16 i_cloth
+WEIGHT=3
+TYPE=T_CLOTHING
+NAME=red robe
+DYE=0
+ARMOR=0
+// FLIP=0
+LAYER=22
+SKILLMAKE=TAILORING 59.0, t_sewing_kit
+CATEGORY=Provisions - Clothes
+SUBSECTION=Shirts & Robes
+DESCRIPTION=Robe
+DUPELIST=0A115
+TEVENTS=t_equipitem
+
+ON=@Create
+HITPOINTS=100
+ATTR=ATTR_NEWBIE
+
+[ITEMDEF 0A115]
+// red robe
+DUPEITEM=0A114
+
+
+
+
+
+// drake robe
+[ITEMDEF 0A116]
+DEFNAME=i_robe_drake
+RESOURCES=16 i_cloth
+WEIGHT=3
+TYPE=T_CLOTHING
+NAME=drake robe
+DYE=0
+ARMOR=0
+// FLIP=0
+LAYER=22
+SKILLMAKE=TAILORING 59.0, t_sewing_kit
+CATEGORY=Provisions - Clothes
+SUBSECTION=Shirts & Robes
+DESCRIPTION=Robe
+DUPELIST=0A117
+TEVENTS=t_equipitem
+
+ON=@Create
+HITPOINTS=100
+ATTR=ATTR_NEWBIE
+
+[ITEMDEF 0A117]
+// drake robe
+DUPEITEM=0A116
+
+
+
+
+[eof]

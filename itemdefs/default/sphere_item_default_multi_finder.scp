@@ -1,0 +1,330 @@
+
+[ITEMDEF I_MULTI_FINDER]
+DEFNAME=I_MULTI_FINDER
+NAME=ship & house finder
+ID=014f6
+WEIGHT=1.0
+VALUE=8000
+// TYPE=T_SCRIPT
+TYPE=T_CONTAINER
+TDATA2=03D
+RESDISPDNHUE=052f
+RESOURCES=
+SKILLMAKE=
+CATEGORY=
+SUBSECTION=
+DESCRIPTION=
+
+on=@create
+COLOR=<SERV.ITEMDEF.<BASEID>.RESDISPDNHUE>
+ATTR=ATTR_NEWBIE
+USESCUR=0
+USESMAX=5
+
+ON=@CLICK
+IF (<MORE1> > 0)
+MESSAGE (<DMORE1> kullanim)
+ENDIF
+MESSAGE a <name>
+RETURN 1
+
+ON=@DROPON_SELF
+RETURN 1
+
+on=@dclick
+IF !(<SRC.ISINPACK <UID>>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,600036,<NAME>	// Bunu (~1_val~) kullanabilmek için çantanızda veya üzerinizde olmalıdır.
+	RETURN 1
+	
+ELSEIF (<SRC.IsNoFullHp>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,600075 // "Yaralı durumdayken bu işlemi yapamazsınız."
+	RETURN 1
+	
+ELSEIF (<SRC.FLAGS>&STATF_DEAD)
+	SRC.SYSMESSAGELOC <def.tcolor_red>, 600027 // "Ölü durumdayken bu işlemi yapamazsınız."
+	RETURN 1
+	
+ELSEIF (<SRC.FLAGS>&STATF_WAR)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Savaş halinde bunu kullanamazsınız.
+	RETURN 1	
+	
+ELSEIF (<SRC.FLAGS>&STATF_FREEZE)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu durumda bunu kullanamazsınız.
+	RETURN 1	
+	
+ELSEIF (<SRC.FLAGS>&STATF_STONE)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu durumda bunu kullanamazsınız.
+	RETURN 1
+	
+ELSEIF (<SRC.ISPOISONED>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Zehirliyken bunu kullanamazsınız.
+	RETURN 1
+
+ELSEIF (<SRC.account.priv>&priv_jailed)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Hapisteyken bunu kullanamazsınız.
+	RETURN 1
+	
+ELSEIF (<SRC.ISHELPSTUCK>) 
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Stuck halindeyken bunu kullanamazsınız.
+	RETURN 1
+	
+ELSEIF (<SRC.REGION.FLAGS>&REGION_FLAG_SAFE)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Güvenli alanlarda bunu kullanamazsınız.
+	RETURN 1	
+	
+ELSEIF (<SRC.IsInShip>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Şu an zaten gemi içerisindesiniz.
+	RETURN 1
+	
+ELSEIF (<SRC.IsInHouse>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Şu an zaten ev içerisindesiniz.
+	RETURN 1
+	
+ELSEIF (<SRC.HOUSES> <= 0) && (<SRC.SHIPS> <= 0)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Ev veya Geminiz yok.
+	RETURN 1
+	
+ELSEIF (<SRC.ISUSESKILL Magery>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,600122 // "Büyü yaparken bu işlemi yapamazsınız."
+	RETURN 1
+	
+ELSEIF (<USESCUR> > <USESMAX>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, <NAME> kullanım hakkı bitmiş.
+	REMOVE
+	RETURN 1
+ENDIF
+DIALOGCLOSE D_MULTI_FIND_MAIN
+DIALOG D_MULTI_FIND_MAIN
+RETURN <QVAL (<SRC.ISGM>)?0:1>
+
+
+ON=@PICKUP_PACK
+DIALOGCLOSE D_MULTI_FIND_MAIN
+
+
+
+
+
+[DIALOG D_MULTI_FIND_MAIN]
+<DEF.DSP>
+RESIZE 0,0,160,110,Ship & House Finder
+
+PAGE 1
+
+DORIGIN 20 50
+IF (<SRC.Houses>)
+	BUTTON +0 +0 4006 4007  0 2 2
+	DTEXT +30 +0 <def.tcolor_text> Evlerim (<SRC.Houses>)
+ELSE
+	DTEXT +0 +0 <def.tcolor_red> Evlerim (Yok)
+ENDIF
+
+IF (<SRC.SHIPS>)
+	BUTTON +0 +20 4006 4007  0 3 3
+	DTEXT +30 +20 <def.tcolor_text> Gemilerim (<SRC.SHIPS>)
+ELSE
+	DTEXT +0 +20 <def.tcolor_red> Gemilerim (Yok)
+ENDIF
+
+
+// Evlerim
+PAGE 2
+RESIZE 0,0,570,250,House Finder
+
+DORIGIN 20 50
+DHTMLGUMP +0 +0 200 25 1 0 <DEF.CENTER>EV
+DHTMLGUMP +205 +0 200 25 1 0 <DEF.CENTER>BÖLGE
+DHTMLGUMP +410 +0 120 25 1 0 <DEF.CENTER>KOORDİNAT
+
+IF (<SRC.HOUSES> > 0)
+	FOR m 0 <EVAL <SRC.HOUSES>-1>
+		REF1=<SRC.HOUSE.<DLOCAL.m>>
+		IF (<REF1>) && (<REF1.TYPE> == T_MULTI)
+			BUTTON +0 <EVAL (<LOCAL.m>*25)+80> 4006 4007 1 0 <EVAL <DLOCAL._FOR>+1000>
+			DCROPPEDTEXT +30 <EVAL (<LOCAL.m>*25)+80> 180 25 <def.tcolor_text> <REF1.NAME>
+			DCROPPEDTEXT +205 <EVAL (<LOCAL.m>*25)+80> 180 25 <def.tcolor_text> <SERV.MAP(<REF1.P.X>,<REF1.P.Y>,<REF1.P.Z>,<REF1.P.M>).REGION.NAME>
+			DCROPPEDTEXT +410 <EVAL (<LOCAL.m>*25)+80> 180 25 <def.tcolor_text> <REF1.P>
+		ENDIF
+	ENDFOR
+ELSE
+	DHTMLGUMP +0 +30 530 25 1 0 <def.center><def.bfont_red>Eviniz yok.
+ENDIF
+
+
+// Gemilerim
+PAGE 3
+RESIZE 0,0,570,250,Ship Finder
+
+DORIGIN 20 50
+
+DHTMLGUMP +0 +0 200 25 1 0 <DEF.CENTER>GEMI
+DHTMLGUMP +205 +0 200 25 1 0 <DEF.CENTER>BÖLGE
+DHTMLGUMP +410 +0 120 25 1 0 <DEF.CENTER>KOORDİNAT
+
+IF (<SRC.SHIPS> > 0)
+	FOR s 0 <EVAL <SRC.SHIPS>-1>
+		REF1=<SRC.SHIP.<DLOCAL.s>>
+		IF (<REF1>) && (<REF1.TYPE> == T_SHIP)
+			BUTTON +0 <EVAL (<LOCAL.s>*25)+80> 4006 4007 1 0 <EVAL <DLOCAL._FOR>+1>
+			DCROPPEDTEXT +30 <EVAL (<LOCAL.s>*25)+80> 180 25 <def.tcolor_text> <REF1.NAME>
+			DCROPPEDTEXT +205 <EVAL (<LOCAL.s>*25)+80> 180 25 <def.tcolor_text> <SERV.MAP(<REF1.P.X>,<REF1.P.Y>,<REF1.P.Z>,<REF1.P.M>).REGION.NAME>
+			DCROPPEDTEXT +410 <EVAL (<LOCAL.s>*25)+80> 180 25 <def.tcolor_text> <REF1.P>
+		ENDIF
+	ENDFOR
+ELSE
+	DHTMLGUMP +0 +30 530 25 1 0 <def.center><def.bfont_red>Geminiz yok.
+ENDIF
+
+
+
+[DIALOG D_MULTI_FIND_MAIN PREBUTTON]
+
+
+[DIALOG D_MULTI_FIND_MAIN BUTTON]
+ON=1 2000
+IF !(<SRC.ISINPACK <UID>>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Yanınızda değil.
+	RETURN 1
+	
+ELSEIF (<SRC.IsNoFullHp>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Yaralıyken bunu kullanamazsınız.
+	RETURN 1
+	
+ELSEIF (<SRC.FLAGS>&STATF_DEAD)
+	SRC.SYSMESSAGELOC <def.tcolor_red>, 600027 // "Ölü durumdayken bu işlemi yapamazsınız."
+	RETURN 1
+	
+ELSEIF (<SRC.FLAGS>&STATF_WAR)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Savaş halinde bunu kullanamazsınız.
+	RETURN 1	
+	
+ELSEIF (<SRC.FLAGS>&STATF_FREEZE)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu durumda bunu kullanamazsınız.
+	RETURN 1	
+	
+ELSEIF (<SRC.FLAGS>&STATF_STONE)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu durumda bunu kullanamazsınız.
+	RETURN 1
+	
+ELSEIF (<SRC.ISPOISONED>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Zehirliyken bunu kullanamazsınız.
+	RETURN 1
+
+ELSEIF (<SRC.ISHELPSTUCK>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Stuck halindeyken bunu kullanamazsınız.
+	RETURN 1
+	
+ELSEIF (<SRC.account.priv>&priv_jailed)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Hapisteyken bunu kullanamazsınız.
+	RETURN 1
+	
+ELSEIF (<SRC.REGION.FLAGS>&REGION_FLAG_SAFE)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu alanda kullanamazsınız.
+	RETURN 1	
+	
+ELSEIF (<SRC.IsInShip>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Şu an zaten gemi içerisindesiniz.
+	RETURN 1
+	
+ELSEIF (<SRC.IsInHouse>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Şu an zaten ev içerisindesiniz.
+	RETURN 1
+	
+ELSEIF (<SRC.HOUSES> <= 0) && (<SRC.SHIPS> <= 0)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Ev veya Geminiz yok.
+	RETURN 1
+	
+ELSEIF (<SRC.ISUSESKILL Magery>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,600122 // "Büyü yaparken bu işlemi yapamazsınız."
+	RETURN 1
+	
+ELSEIF (<USESCUR> > <USESMAX>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, <NAME> kullanım hakkı bitmiş.
+	REMOVE
+	RETURN 1
+ENDIF
+
+// GEMI GIT
+IF (<DARGN> >= 1 && <DARGN> <= 999)
+
+	REF1=<SRC.SHIP.<EVAL <DARGN>-1>>
+
+	IF (<REF1.TYPE> == T_SHIP)
+		REF2=<REF1.TILLER> // TILLER
+		EMPTY
+		USESCUR ++
+		
+		// önce oraya bir item koydurup fix ettir. sonra playeri pozisyonuna gönder.
+		SERV.NEWITEM I_DEED
+		NEW.TIMER=3
+		NEW.P=<REF1.P>
+		NEW.MOVENEAR <REF1> 1
+		NEW.ATTR=ATTR_MOVE_NEVER|ATTR_INVIS|ATTR_DECAY
+		NEW.FIX
+		NEW.UPDATEX
+		REF3=<NEW>
+		
+		SERV.NEWITEM I_RUNE_MARKER
+		NEW.CONT=<UID>
+		NEW.MOREP=<REF3.P>
+		NEW.MORE1=65000
+		NEW.MORE2=1
+		REF4=<NEW>
+		
+		SRC.ACTDIFF=<DEF.SKILL_ACTION_DIFF_NOFAIL>
+		// SRC.EVENTS +E_RUNEBOOK_PLAYER
+		SRC.ACTARG1 = 32      
+		SRC.ACT = <REF4>
+		SRC.ACTPRV = <SRC>
+		SRC.ACTP = <REF4.MOREX>,<REF4.MOREY>,<REF4.MOREZ>,<REF4.MOREM>
+		SRC.ACTION = 25	
+		SRC.ACTDIFF=<DEF.SKILL_ACTION_DIFF_NOFAIL>
+				
+	ELSE
+		SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bir hata oluştu. Gemi bulunamadı!
+	ENDIF
+
+// ev git
+ELSEIF (<DARGN> >= 1000 && <DARGN> <= 1999)
+	REF1=<SRC.HOUSE.<EVAL <DARGN>-1000>>
+	IF (<REF1.TYPE> == T_MULTI)
+		REF2=<REF1.LINK> // tabela
+		EMPTY
+		USESCUR ++
+		// önce oraya bir item koydurup fix ettir. sonra playeri gold pozisyonuna gönder.
+		SERV.NEWITEM I_DEED
+		NEW.TIMER=3
+		NEW.P=<REF2.P>
+		NEW.MOVENEAR <REF2> 1
+		NEW.ATTR=ATTR_MOVE_NEVER|ATTR_INVIS|ATTR_DECAY
+		NEW.FIX
+		NEW.UPDATEX
+		REF3=<NEW>
+		
+		SERV.NEWITEM I_RUNE_MARKER
+		NEW.CONT=<UID>
+		NEW.MOREP=<REF3.P>
+		NEW.MORE1=65000
+		NEW.MORE2=1
+		REF4=<NEW>
+		
+		SRC.ACTDIFF=<DEF.SKILL_ACTION_DIFF_NOFAIL>
+		// SRC.EVENTS +E_RUNEBOOK_PLAYER
+		SRC.ACTARG1 = 32      
+		SRC.ACT = <REF4>
+		SRC.ACTPRV = <SRC>
+		SRC.ACTP = <REF4.MOREX>,<REF4.MOREY>,<REF4.MOREZ>,<REF4.MOREM>
+		SRC.ACTION = 25	
+		SRC.ACTDIFF=<DEF.SKILL_ACTION_DIFF_NOFAIL>
+	ELSE
+		SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bir hata oluştu. Ev bulunamadı!
+	ENDIF
+ELSE
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bir hata oluştu.
+ENDIF
+
+
+
+
+
+[EOF]

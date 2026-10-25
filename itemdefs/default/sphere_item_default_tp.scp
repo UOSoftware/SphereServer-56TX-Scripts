@@ -1,0 +1,55 @@
+
+
+[TYPEDEF T_POUCH_TRAPPED]
+
+// arttaki pouch itemi tiledatada container olarak girildiği için pouchun aynısından yeni bir tane arta eklendi.
+[ITEMDEF 00A21] // TP
+
+
+
+
+[ITEMDEF I_POUCH_TRAPPED]
+DEFNAME=I_POUCH_TRAPPED
+// ID=I_POUCH
+ID=00A21
+TYPE=T_POUCH_TRAPPED
+// NAME=trapped pouch%s
+NAME=belt pouch (0 items)
+SKILLMAKE=TINKERING 54.5,t_tinker_tools
+RESOURCES=1 i_ingot_iron,2 i_log
+WEIGHT=5
+VALUE=150
+// RESDISPDNHUE=08a1
+RESDISPDNHUE=0
+CATEGORY=Miscellaneous
+SUBSECTION=
+DESCRIPTION=Trapped Pouch
+
+on=@create
+COLOR=<SERV.ITEMDEF.<BASEID>.RESDISPDNHUE>
+
+ON=@CLICK
+IF (<ATTR>&attr_identified)
+	NAME trapped pouch%s
+ENDIF
+
+ON=@DROPON_SELF
+RETURN 1
+
+
+ON=@DClick
+IF (<ATTR>&ATTR_MOVE_NEVER)
+	RETURN 1
+ENDIF
+IF !(<SRC.IsUseSkill Magery>)
+	SRC.EMOTE makes the trapped pouch explode
+ENDIF
+SRC.EFFECT 3,I_FX_EXPLODE,3,25,1
+SRC.SOUND SND_SPELL_EXPLOSION
+SRC.DAMAGE 10
+CONSUME
+RETURN 1
+
+
+
+[EOF]

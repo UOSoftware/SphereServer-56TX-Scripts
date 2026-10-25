@@ -1,0 +1,60 @@
+
+
+[ITEMDEF I_OIL_CLOTH]
+DEFNAME=I_OIL_CLOTH 
+ID=0e21
+NAME=oil cloth%s
+WEIGHT=0.1
+DYE=0
+VALUE=15
+RESOURCES=i_cloth
+SKILLMAKE=TAILORING 74.6, t_sewing_kit
+TYPE=T_NORMAL
+// RESDISPDNHUE=09CB
+RESDISPDNHUE=0
+CATEGORY=Miscellaneous
+SUBSECTION=
+DESCRIPTION=
+
+ON=@CREATE
+// eğer rengi sıfır olursa bandageself, bandagetarget macrolarında bandage ile karışıyor.
+COLOR=<SERV.ITEMDEF.<BASEID>.RESDISPDNHUE>
+
+ON=@DCLICK
+IF !(<SRC.ISINPACK <UID>>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,600036,<NAME>	// Bunu (~1_val~) kullanabilmek için çantanızda veya üzerinizde olmalıdır.
+	RETURN 1
+ENDIF
+TARGET
+SRC.SYSMESSAGELOC <def.tcolor_grey>,<def.empty_cliloc2>, Zehirli silahı seçiniz.
+RETURN 1
+
+ON=@TargOn_Ground
+SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, <def.msg_invalid_target_tr>
+RETURN 1
+
+ON=@TargOn_Char
+SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, <def.msg_invalid_target_tr>
+RETURN 1
+
+ON=@TARGON_ITEM
+IF (<SRC.TARG.UID>==<UID>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu bir silah değil.
+	RETURN 1
+ELSEIF !(<SRC.TARG.ISWEAPON>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu bir silah değil.
+	RETURN 1
+ELSEIF !(<SRC.TARG.MOREZ> > 0)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu silah zehirli değil.
+	RETURN 1
+// ELSEIF !(<SRC.ISINPACK <SRC.TARG.UID>>)
+	// SRC.SYSMESSAGELOC <def.tcolor_red>,600036,<SRC.TARG.NAME>	// Bunu (~1_val~) kullanabilmek için çantanızda veya üzerinizde olmalıdır.
+	// RETURN 1
+ENDIF
+SRC.TARG.MOREZ 0
+SRC.SYSMESSAGELOC <def.tcolor_grey>,<def.empty_cliloc2>, Silahin zehrini gecirdiniz
+CONSUME
+RETURN 1
+
+
+[eof]

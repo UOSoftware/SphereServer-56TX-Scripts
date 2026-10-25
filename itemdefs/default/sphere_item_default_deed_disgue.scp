@@ -1,0 +1,1454 @@
+﻿
+
+[PLEVEL 1]
+disgue
+
+[FUNCTION disgue]
+IF (<RESTEST 1 I_DISGUE_DEED>)
+	FINDID.I_DISGUE_DEED.USEITEM
+ELSE
+	SYSMESSAGE @38,,1,1 Yanınızda <SERV.ITEMDEF.I_DISGUE_DEED.NAME> yok.
+ENDIF
+
+[ITEMDEF I_DISGUE_DEED]
+DEFNAME=I_DISGUE_DEED
+ID=I_DEED
+NAME=Disgue Deed
+TYPE=T_SCRIPT
+WEIGHT=2
+VALUE=47826
+// RESDISPDNHUE=051B
+RESDISPDNHUE=0455
+
+ON=@CREATE
+ATTR=ATTR_NEWBIE
+COLOR=<SERV.ITEMDEF.<BASEID>.RESDISPDNHUE>
+UsesMax={10 25}
+
+
+ON=@DCLICK
+	IF !(<SRC.ISINPACK <UID>>)
+	SRC.SYSMESSAGE @38,,1,1 <DEF.UNPACKMSG>
+	RETURN 1
+
+ELSEIF !((<SRC.SNOOPING> >= 98.0) || (<SRC.STEALING> >= 98.0) || (<SRC.HIDING> >= 98.0))
+	SRC.SYSMESSAGE @38,,1,1 Sahte kimlik kullanmak için 98.0 Snooping - Stealing - Hiding becerisine ihtiyacın var.
+	RETURN 1
+
+ELSEIF !(<SRC.ISHIDE>)
+	SRC.SYSMESSAGE @38,,1,1 Önce gizlenmelisiniz.
+	RETURN 1
+
+ELSEIF (<SRC.FINDID.I_RUNE_INCOGNITO>)
+	SRC.SYSMESSAGE @38,,1,1 Kimliğiniz zaten Incognito büyüsü ile gizlenmiş.
+	RETURN 1
+		
+ELSEIF (<USESCUR> <= 0)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, <NAME> kullanım hakkı bitmiş.
+	REMOVE
+	RETURN 1
+	
+ENDIF
+
+IF !(<SRC.ISGM>)
+	IF (<SRC.ISDIALOGOPEN D_DISGUE>)
+		SRC.SYSMESSAGE @38,,1,1 Menü zaten açık.
+		RETURN 1
+	ENDIF
+	IF (<SRC.CTAG0.DisgueDeed.Delay> > <SERV.TIME>)
+		RETURN 1	
+	ENDIF
+	SRC.CTAG0.DisgueDeed.Delay=<EVAL <SERV.TIME>+10>
+ENDIF
+
+DIALOGCLOSE D_DISGUE
+DIALOG D_DISGUE
+RETURN 1
+
+
+
+
+
+[DIALOG D_DISGUE]
+<DEF.DSP>
+
+IF (<LDB.CONNECTED>)
+	LDB.EXECUTE CREATE TABLE IF NOT EXISTS 'disgues' ('id' INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, 'account_name' TEXT, 'char_uid' TEXT, 'preset_name' TEXT, 'title' TEXT, 'skill' TEXT, 'karma' INT, 'fame' INT, 'name' TEXT, 'noto_name' TEXT, 'hair_baseid' TEXT, 'beard_baseid' TEXT, 'hair_color' TEXT, 'beard_color' TEXT, 'skin_color' TEXT, 'body' TEXT, 'created_at' TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP, 'updated_at' TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP)	
+ENDIF
+
+IF (<SRC.FINDID.I_DISGUE_MEMORY>)
+
+	RESIZE 0,0,240,190,Disgue
+	DORIGIN 20 40
+	
+	DHTMLGUMP +0 +0 200 100 1 1 <DEF.CENTER>Gerçek kimliğiniz <KalanSure <SRC.FINDID.I_DISGUE_MEMORY.TIMER>> sonra ortaya çıkacak.
+	
+	BUTTON +0 +110 0FB5 0FB6 1 0 996
+	DTEXT +30 +110 38 Kimliğimi göster
+
+ELSE
+
+	RESIZE 0,0,550,510,Disgue
+
+	PAGE 0
+	
+	RESIZEPIC 20 40 2620 145 410
+	
+	// Sol taraf
+	DORIGIN 30 50 
+
+	BUTTON +0 +0 40019 0A5 0 1 1 
+	DHTMLGUMP +5 +5 120 25 0 0 <DEF.CENTER><DEF.BFONT_WHITE>Genel
+	
+	BUTTON +0 +30 40019 0A5 0 2 2
+	DHTMLGUMP +5 +35 120 25 0 0 <DEF.CENTER><DEF.BFONT_WHITE>Skills
+	
+	BUTTON +0 +60 40019 0A5 0 3 3
+	DHTMLGUMP +5 +65 120 25 0 0 <DEF.CENTER><DEF.BFONT_WHITE>Title
+	
+	BUTTON +0 +90 40019 0A5 0 4 4
+	DHTMLGUMP +5 +95 120 25 0 0 <DEF.CENTER><DEF.BFONT_WHITE>Notoriety
+
+	BUTTON +0 +120 40019 0A5 0 5 5
+	DHTMLGUMP +5 +125 120 25 0 0 <DEF.CENTER><DEF.BFONT_WHITE>Style
+
+	BUTTON +0 +150 40019 0A5 0 6 6
+	DHTMLGUMP +5 +155 120 25 0 0 <DEF.CENTER><DEF.BFONT_WHITE>Body
+
+	BUTTON +0 +320 40019 0A5 0 7 7
+	DHTMLGUMP +5 +325 120 25 0 0 <DEF.CENTER><DEF.BFONT_WHITE>Kimliklerim
+
+	BUTTON +0 +410 40020 40030 1 0 998
+	DHTMLGUMP +5 +413 120 25 0 0 <DEF.CENTER><DEF.BFONT_WHITE>Tamamen rastgele
+
+	BUTTON +180 +410 40020 40030 1 0 997
+	DHTMLGUMP +185 +413 120 25 0 0 <DEF.CENTER><DEF.BFONT_WHITE>Kimliklerime kaydet
+
+
+	BUTTON +355 +410 40020 40030 1 0 999
+	DHTMLGUMP +355 +413 120 25 0 0 <DEF.CENTER><DEF.BFONT_WHITE>Uygula
+
+	// Genel
+	PAGE 1
+	
+	DORIGIN 170 20 
+	RESIZEPIC +0 +20 2620 360 110
+		
+	DTEXT +10 +30 <DEF.TCOLOR_WHITE> İsim
+	RESIZEPIC +10 +50 3000 325 30 
+	IF (<ISBLANK <SRC.CTAG0.DISGUE.NAME>>)
+		DTEXTENTRYLIMITED +15 +57 320 30 0 1 16 <SRC.NAME>
+	ELSE
+		DTEXTENTRYLIMITED +15 +57 320 30 0 1 16 <SRC.CTAG0.DISGUE.NAME>
+	ENDIF
+
+	BUTTON +10 +90 4006 4007 1 0 1
+	DTEXT +40 +90 <DEF.TCOLOR_WHITE> Girilen isim
+	
+	BUTTON +220 +90 4006 4007 1 0 2
+	DTEXT +250 +90 <DEF.TCOLOR_WHITE> Rastgele isim
+
+
+	// Skills
+	PAGE 2
+	DORIGIN 170 20 
+	RESIZEPIC +0 +20 2620 360 410
+	DTEXT +10 +30 <DEF.TCOLOR_WHITE> Skills
+	LOCAL._SkillX=180
+	LOCAL._SkillY=70
+	FOR skills 0 45
+		IF !(<SERV.SKILL.<DLOCAL.skills>.FLAGS>&SKF_DISABLED) || (<DLOCAL.skills> == 57)
+		BUTTON <DLOCAL._SkillX> <dLOCAL._SkillY> 4006 4007 1 0 <EVAL <DLOCAL.skills>+100>
+		// DTEXT <EVAL <DLOCAL._SkillX>+30> <dLOCAL._SkillY> <QVAL (STRMATCH('<SRC.CTAG0.DISGUE.SKILL>','<SERV.SKILL.<DLOCAL.skills>.NAME>'))?<DEF.TCOLOR_GREEN>:<DEF.TCOLOR_WHITE>> <SERV.SKILL.<DLOCAL.skills>.NAME>
+		dhtmlgump <EVAL <DLOCAL._SkillX>+30> <dLOCAL._SkillY> 80 20 0 0 <QVAL (STRMATCH('<SRC.CTAG0.DISGUE.SKILL>','<SERV.SKILL.<DLOCAL.skills>.NAME>'))?<DEF.bfont_green>:<DEF.bfont_white>> <SERV.SKILL.<DLOCAL.skills>.NAME>
+		LOCAL._SkillY += 20
+			IF (<LOCAL._SkillY> > 420)
+				LOCAL._SkillX += 115
+				LOCAL._SkillY=70
+			ENDIF
+		ENDIF
+	ENDFOR
+	BUTTON +240 +390 4006 4007 1 0 3
+	DTEXT +270 +390 <DEF.TCOLOR_WHITE> Rastgele
+
+
+
+
+
+	// Titles
+	PAGE 3
+	
+	DORIGIN 170 20 
+	RESIZEPIC +0 +20 2620 360 210
+		
+	DTEXT +10 +30 <def.tcolor_white> Titles
+
+	LOCAL.SKILLLEVELS Apprentice, Journeyman, Expert, Adept, Master, Grandmaster
+	FOR titles <ARRAYCOUNT <LOCAL.SKILLLEVELS>>
+		BUTTON 180 <EVAL (<dLOCAL.titles>*20)+50> 4006 4007 1 0 <EVAL <DLOCAL.titles>+200>
+		DTEXT 210 <EVAL (<dLOCAL.titles>*20)+50> <QVAL (STRMATCH('<SRC.CTAG0.DISGUE.TITLE>','<ARRAY <LOCAL.SKILLLEVELS>,<DLOCAL.titles>>'))?<DEF.TCOLOR_GREEN>:<DEF.TCOLOR_WHITE>> <ARRAY <LOCAL.SKILLLEVELS>,<DLOCAL.titles>>
+	ENDFOR
+	
+	BUTTON +10 +190 4006 4007 1 0 4
+	DTEXT +40 +190 <DEF.TCOLOR_WHITE> Rastgele title
+
+
+
+
+	// Noto
+	PAGE 4
+
+	DORIGIN 170 20 
+	RESIZEPIC +0 +20 2620 360 200
+		
+	SRC.FUNC_KARMA_FAME_LEVELCHECK
+	SRC.FUNC_KARMA_FAME_LEVELCHECK_Disgue
+
+	
+	DTEXT +10 +30 <def.tcolor_white> Notoriety
+	
+	DTEXT +10 +60 <DEF.TCOLOR_WHITE> Geçerli notoriety: <SRC.FUNC_ISSHOW_KARMA_FAME_TITLE_CUSTOM>
+	DTEXT +10 +80 <DEF.TCOLOR_WHITE> Seçili notoriety: <SRC.FUNC_ISSHOW_KARMA_FAME_TITLE_CUSTOM_Disgue>
+
+
+	DORIGIN 170 120 
+	// Karma
+	DTEXT +10 +0 <def.tcolor_white> Karma
+
+	RESIZEPIC +10 +20 3000 70 30 
+	DTEXTENTRYLIMITED +15 +25 80 30 0 2 5 <QVAL (<SRC.dCTAG0.DISGUE.KARMA>)?<SRC.dCTAG0.DISGUE.KARMA>:<SRC.KARMA>>
+	
+	BUTTON +80 +23 4006 4007 1 0 5
+	DTEXT +110 +23 <def.tcolor_white> Girilen karma
+	
+	BUTTON +210 +23 4006 4007 1 0 6
+	DTEXT +240 +23 <def.tcolor_white> Rastgele karma
+
+
+	// Fame
+	DORIGIN 170 170 
+	DTEXT +10 +0 <def.tcolor_white> Fame
+
+	RESIZEPIC +10 +20 3000 70 30 
+	DTEXTENTRYLIMITED +15 +25 80 30 0 3 6 <QVAL (<SRC.dCTAG0.DISGUE.FAME>)?<SRC.dCTAG0.DISGUE.FAME>:<SRC.FAME>>
+	
+	BUTTON +80 +23 4006 4007 1 0 7
+	DTEXT +110 +23 <DEF.TCOLOR_WHITE> Girilen fame
+	
+	BUTTON +210 +23 4006 4007 1 0 8
+	DTEXT +240 +23 <DEF.TCOLOR_WHITE> Rastgele fame
+
+
+
+	// Style
+	PAGE 5
+	DORIGIN 170 20 
+	RESIZEPIC +0 +20 2620 360 410
+		
+	DTEXT +10 +30 <DEF.TCOLOR_WHITE> Style
+
+	// Saç
+	DORIGIN 170 80 
+	DTEXT +10 +0 <DEF.TCOLOR_WHITE> Saç tasarımı
+	
+	// BUTTON +240 +110 4006 4007 1 0 9
+	// DTEXT +240 +130 <QVAL (<SRC.CTAG0.DISGUE.HAIR_COLOR>)?<SRC.CTAG0.DISGUE.HAIR_COLOR>:<DEF.TCOLOR_WHITE>> Rastgele saç rengi
+	
+	LOCAL.Race=<QVAL (<SRC.f_iself>)? "Elf" : "Human">
+	IF (<SRC.CTAG0.DISGUE.BODY> == C_MAN)
+		LOCAL.Gender=Male
+	ELSE
+		LOCAL.Gender=Female
+	ENDIF
+	FOR 16
+		LOCAL._HairX=<eval ((<LOCAL._FOR>-1)%6)*55>
+		LOCAL._HairY=<eval ((<LOCAL._FOR>-1)/6)*55>
+		ARGS=<DEF.Hair.Style.<LOCAL.Race>.<dLOCAL._FOR>.<LOCAL.Gender>>
+		IF !(<isempty <ARGS>>)
+			RESIZEPIC <eval 185+<LOCAL._HairX>> <eval 100+<LOCAL._HairY>> 2620 50 50
+			BUTTON <eval 185+<LOCAL._HairX>> <eval 100+<LOCAL._HairY>> 2103 2104 1 0 <eval <LOCAL._FOR>+300>
+			IF (<SRC.CTAG0.DISGUE.HAIR>)
+				IF (<ARGV[0]> == <SRC.CTAG0.DISGUE.HAIR>)
+					GUMPPIC <eval 185+<LOCAL._HairX>+<ARGV[2]>> <eval 100+<LOCAL._HairY>+<ARGV[3]>> <ARGV[1]> <EVAL 044>
+				ELSE
+					GUMPPIC <eval 185+<LOCAL._HairX>+<ARGV[2]>> <eval 100+<LOCAL._HairY>+<ARGV[3]>> <ARGV[1]>
+				ENDIF
+			ELSE
+				GUMPPIC <eval 185+<LOCAL._HairX>+<ARGV[2]>> <eval 100+<LOCAL._HairY>+<ARGV[3]>> <ARGV[1]>
+			ENDIF
+		ENDIF
+	ENDFOR
+	
+	DORIGIN 170 260 
+	DTEXT +10 +0 <def.tcolor_white> Sakal tasarımı
+	IF (<SRC.CTAG0.DISGUE.BODY> == C_MAN)
+		// BUTTON +240 +110 4006 4007 1 0 10
+		// DTEXT +240 +130 <QVAL (<SRC.CTAG0.DISGUE.BEARD_COLOR>)?<SRC.CTAG0.DISGUE.BEARD_COLOR>:<DEF.TCOLOR_WHITE>> Rastgele sakal rengi
+		
+		FOR 7
+			LOCAL._BeardX=<eval ((<LOCAL._FOR>-1)%6)*55>
+			LOCAL._BeardY=<eval ((<LOCAL._FOR>-1)/6)*55>
+			ARGS=<DEF.Beard.Style.Human.<dLOCAL._FOR>>
+			IF !(<isempty <ARGS>>)
+				RESIZEPIC <eval 185+<LOCAL._BeardX>> <eval 280+<LOCAL._BeardY>> 2620 50 50
+				BUTTON <eval 185+<LOCAL._BeardX>> <eval 280+<LOCAL._BeardY>> 2103 2104 1 0 <eval <LOCAL._FOR>+400>
+					  
+				IF (<SRC.CTAG0.DISGUE.BEARD>)
+					IF (<ARGV[0]> == <SRC.CTAG0.DISGUE.BEARD>)
+						GUMPPIC <EVAL 185+<LOCAL._BeardX>+<ARGV[2]>> <EVAL 280+<LOCAL._BeardY>+<ARGV[3]>> <ARGV[1]> <EVAL 044>
+					ELSE
+						GUMPPIC <EVAL 185+<LOCAL._BeardX>+<ARGV[2]>> <EVAL 280+<LOCAL._BeardY>+<ARGV[3]>> <ARGV[1]> 
+					ENDIF
+				ELSE
+					GUMPPIC <EVAL 185+<LOCAL._BeardX>+<ARGV[2]>> <EVAL 280+<LOCAL._BeardY>+<ARGV[3]>> <ARGV[1]>
+				ENDIF
+				  
+			ENDIF
+		ENDFOR
+	ELSE
+		DTEXT +10 +20 38 Cinsiyet değiştiriniz
+	ENDIF
+	
+
+	// Body
+	PAGE 6
+	DORIGIN 170 20 
+	RESIZEPIC +0 +20 2620 360 410
+		
+	DTEXT +10 +30 <DEF.TCOLOR_WHITE> Body
+
+	// Cinsiyet
+	DORIGIN 170 80 
+	DTEXT +10 +0 <DEF.TCOLOR_WHITE> Cinsiyet: 
+	DTEXT +10 +20 <DEF.TCOLOR_WHITE> Geçerli cinsiyet: <QVAL (<SRC.IsBodyMan>)?Man:Woman>
+	
+	IF (<SRC.CTAG0.DISGUE.BODY> == c_man)
+		DTEXT +10 +40 <DEF.TCOLOR_BLUE> Seçili cinsiyet: Man
+	ELSEIF (<SRC.CTAG0.DISGUE.BODY> == c_woman) 
+		DTEXT +10 +40 <DEF.TCOLOR_WHITE> Seçili cinsiyet: Woman
+	ELSE
+		DTEXT +10 +40 <DEF.TCOLOR_WHITE> Seçili cinsiyet: Yok
+	ENDIF
+	IF !(<SRC.CTAG0.DISGUE.BODY> == c_man)
+		BUTTON +10 +70 0710 0712 1 0 11
+	ELSE
+		GUMPPIC +10 +70 0711
+	ENDIF
+	IF !(<SRC.CTAG0.DISGUE.BODY> == c_woman)
+		BUTTON +260 +70 070d 089 1 0 12
+	ELSE
+		GUMPPIC +260 +70 070E
+	ENDIF
+
+
+
+	// Renk
+	DORIGIN 170 180 
+	DTEXT +10 +0 <DEF.TCOLOR_WHITE> Renk: 
+	DTEXT +10 +20 <eval <SRC.COLOR> &~ 08000|04000> Geçerli renk: <eval <SRC.COLOR> &~ 08000|04000> █
+	DTEXT +10 +40 <eval <SRC.dCTAG0.DISGUE.COLOR> &~ 08000|04000> Seçili renk: <eval <SRC.dCTAG0.DISGUE.COLOR> &~ 08000|04000> █
+	ARGS=1002,1057
+	LOCAL.N=0
+	FOR <ARGV0> <ARGV1>
+		BUTTON <eval 183+((<LOCAL.N>/3)*18)> <eval 268+((<LOCAL.N>%3)*40)> <qval (<dlocal._for> == <SRC.dCTAG0.DISGUE.COLOR>)?2103 2104:2104 2103> 1 0 <EVAL <DLOCAL.N>+500> 
+		DTEXT <eval 180+((<LOCAL.N>/3)*18)> <eval 250+((<LOCAL.N>%3)*40)> <DLOCAL._FOR> █
+		LOCAL.N ++
+	ENDFOR
+	
+	// rastgele
+	BUTTON +337 +168 2103 2104 1 0 600
+	DTEXT +334 +150 <def.tcolor_white> █
+	
+	// Profiller
+	PAGE 7
+	
+	DORIGIN 170 20 
+	RESIZEPIC +0 +20 2620 345 410
+		
+	DTEXT +10 +30 <DEF.TCOLOR_WHITE> Kimliklerim
+
+	IF (<LDB.CONNECTED>)
+		lDB.QUERY "SELECT * FROM 'disgues' WHERE account_name='<SRC.ACCOUNT.NAME>' LIMIT 0,4"
+		IF (<lDB.ROW.NUMROWS>)
+			FOR 0 <EVAL <LDB.ROW.NUMROWS>-1>
+				IF (<lDB.ROW.<DLOCAL._FOR>.id>)
+					LOCAL.NAME = <LDB.ROW.<DLOCAL._FOR>.preset_name>
+					LOCAL.DISGUE_NAME = <LDB.ROW.<DLOCAL._FOR>.name>
+					LOCAL.DISGUE_SKILL = <LDB.ROW.<DLOCAL._FOR>.skill>
+					LOCAL.DISGUE_TITLE = <LDB.ROW.<DLOCAL._FOR>.title>
+					LOCAL.DISGUE_KARMA = <LDB.ROW.<DLOCAL._FOR>.karma>
+					LOCAL.DISGUE_FAME = <LDB.ROW.<DLOCAL._FOR>.fame>
+					LOCAL.DISGUE_HAIR = <serv.itemdef.<LDB.ROW.<DLOCAL._FOR>.hair_baseid>.name>
+					
+					IF !(<ISBLANK <LDB.ROW.<DLOCAL._FOR>.beard_baseid>>)
+						LOCAL.DISGUE_BEARD = <serv.itemdef.<LDB.ROW.<DLOCAL._FOR>.beard_baseid>.name>
+					ELSE
+						LOCAL.DISGUE_BEARD Yok
+					ENDIF
+					
+					IF (<LDB.ROW.<DLOCAL._FOR>.body> == c_man)
+						LOCAL.DISGUE_BODY = Man
+					ELSEIF (<LDB.ROW.<DLOCAL._FOR>.body> == c_woman)
+						LOCAL.DISGUE_BODY = Woman
+					ELSE
+						LOCAL.DISGUE_BODY = Yok
+					ENDIF
+					DHTMLGUMP +10 <EVAL (<DLOCAL._FOR>*100)+80> 320 90 0 1 #<EVAL <DLOCAL._FOR>+1> Profil adı: <LOCAL.NAME><DEF.BR>Kimlik bilgileri; <DEF.BR> Adı: <LOCAL.DISGUE_NAME><DEF.br> Skill: <LOCAL.DISGUE_SKILL><DEF.br> Title: <LOCAL.DISGUE_TITLE><DEF.BR> Karma: <dLOCAL.DISGUE_KARMA><DEF.BR> Fame: <dLOCAL.DISGUE_FAME><DEF.BR> Saç: <LOCAL.DISGUE_HAIR><DEF.BR> Sakal: <LOCAL.DISGUE_BEARD><DEF.BR> Cinsiyet: <LOCAL.DISGUE_BODY>
+					BUTTON +255 <EVAL (<DLOCAL._FOR>*100)+80> 2122 2123 1 0 <EVAL <LDB.ROW.<DLOCAL._FOR>.id>+6000>
+					TOOLTIP <def.empty_cliloc2> @Seç
+					
+					BUTTON +235 <EVAL (<DLOCAL._FOR>*100)+84> 3 4 1 0 <EVAL <LDB.ROW.<DLOCAL._FOR>.id>+7000>
+					TOOLTIP <def.empty_cliloc2> @Sil
+				ENDIF				
+			ENDFOR
+		ENDIF
+	ENDIF
+
+
+	PAGE 98
+	DORIGIN 170 40 
+	DHTMLGUMP +0 +0 360 60 1 1 <DEF.CENTER><DEF.BFONT_GREEN>Tüm seçenekler tamamen rastgele biçimde seçildi. Tamamlayı tıklayarak karakterinize uygulayabilirsiniz.
+	
+
+ENDIF
+
+
+
+[DIALOG D_DISGUE PREBUTTON]
+IF !(<SRC.ISINPACK <UID>>)
+	SRC.SYSMESSAGE @38,,1,1 Çantanızda Disgue deed yok.
+	RETURN 1
+ELSEIF !((<SRC.SNOOPING> >= 98.0) || (<SRC.STEALING> >= 98.0) || (<SRC.HIDING> >= 98.0))
+	SRC.SYSMESSAGE @38,,1,1 Sahte kimlik kullanmak için 98.0 Snooping - Stealing - Hiding becerisine ihtiyacın var.
+	RETURN 1
+ELSEIF (<USESCUR> <= 0)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, <NAME> kullanım hakkı bitmiş.
+	REMOVE
+	RETURN 1
+ENDIF
+
+
+
+[DIALOG D_DISGUE BUTTON]
+// Girilen isim
+ON=1
+IF ((STRMATCH(*Caner*,'<argtxt[1]>')) || (STRMATCH(*gm*,'<argtxt[1]>')) || (STRMATCH(*staff*,'<argtxt[1]>')) || (STRMATCH(*owner*,'<argtxt[1]>')) || (STRMATCH(*developer*,'<argtxt[1]>')) || (STRMATCH(*seer*,'<argtxt[1]>')) || (STRMATCH(*conselor*,'<argtxt[1]>')) || (STRMATCH(*counselor*,'<argtxt[1]>')) || (STRMATCH(*lord*,'<argtxt[1]>')) || (STRMATCH(*lady*,'<argtxt[1]>')) || (STRMATCH(*admin*,'<argtxt[1]>')) || (STRMATCH(*<SERV.NAME>*,'<argtxt[1]>')) || (STRMATCH(*yonet*,'<argtxt[1]>'))  || (STRMATCH(*hesap*,'<argtxt[1]>')) || (STRMATCH(*member*,'<argtxt[1]>')) || (STRMATCH(*founder*,'<argtxt[1]>')) || (STRMATCH(*coder*,'<argtxt[1]>')) || (STRMATCH(*master*,'<argtxt[1]>')) || (STRMATCH(*yetkili*,'<argtxt[1]>')) || (STRMATCH(*server*,'<argtxt[1]>')) || (STRMATCH(*shard*,'<argtxt[1]>')) || (STRMATCH(*sunucu*,'<argtxt[1]>'))
+	SRC.SYSMESSAGE @38,,1,1 Hatalı isim.
+	SRC.CTAG0.DISGUE.NAME =
+	DIALOGCLOSE D_DISGUE
+	DIALOG D_DISGUE,1
+	RETURN 1
+	
+ELSEIF !(strregex(^[a-zA-Z]+$,<argtxt[1]>))
+	SRC.SYSMESSAGE @38,,1,1 Yalnızca alfabetik karakter kullanabilirsiniz.
+	SRC.CTAG0.DISGUE.NAME =
+	DIALOGCLOSE D_DISGUE
+	DIALOG D_DISGUE,1
+	RETURN 1
+ENDIF
+
+FOR 0 <EVAL STRLEN(<ARGTXT[1]>) -1>
+	IF !STRMATCH('[a-zA-Z]','<STRSUB <EVAL <LOCAL._FOR>> 1 <ARGTXT[1]>>')
+		SRC.SYSMESSAGE @38,,1,1 Yalnızca alfabetik karakter kullanabilirsiniz.
+		SRC.CTAG0.DISGUE.NAME =
+		DIALOGCLOSE D_DISGUE
+		DIALOG D_DISGUE,1
+		RETURN 1
+	ENDIF
+ENDFOR
+
+FOR 1 <ARRAYCOUNT <DEF.FORBIDDEN_STRINGS>>
+	IF  (STRMATCH(*<ARRAY <DEF.FORBIDDEN_STRINGS>,<DLOCAL._FOR>>*,'<argtxt[1]>'))
+		SRC.SYSMESSAGE @38,,1,1 Hatalı kullanım. (Argo söz içeriyor)
+		SRC.CTAG0.DISGUE.NAME =
+		DIALOGCLOSE D_DISGUE
+		DIALOG D_DISGUE,1
+		RETURN 1
+	ENDIF
+ENDFOR
+
+FORPLAYERS 7168
+	IF !(<SRC.UID> == <UID>) && (STRMATCH('<argtxt[1]>','<NAME>'))
+		SRC.SYSMESSAGE @38,,1,1 Bu karakter isminden sunucuda bulunuyor.
+		SRC.CTAG0.DISGUE.NAME =
+		DIALOGCLOSE D_DISGUE
+		DIALOG D_DISGUE,1
+		RETURN 1
+	ENDIF
+ENDFOR
+
+IF (STRLEN(<ARGTXT[1]>) > 16) || (STRLEN(<ARGTXT[1]>) < 3)
+	SRC.SYSMESSAGE @38,,1,1 İsminiz en az 3 en fazla 16 karakter olmalıdır.
+	SRC.CTAG0.DISGUE.NAME =
+	DIALOGCLOSE D_DISGUE
+	DIALOG D_DISGUE,1
+	RETURN 1
+ENDIF
+
+LOCAL.NAME = <ARGTXT[1]>
+SRC.CTAG0.DISGUE.NAME = <LOCAL.NAME>
+SRC.SYSMESSAGE @<def.tcolor_green>,,1,1 Girilen İsim : <LOCAL.NAME>
+DIALOGCLOSE D_DISGUE
+DIALOG D_DISGUE,1
+
+
+
+
+// Rastgele Isim
+ON=2
+LOCAL.NAME = <QVAL (<SRC.IsBodyMan>)?#NAMES_HUMANMALE:#NAMES_HUMANFEMALE>
+SRC.CTAG0.DISGUE.NAME = <LOCAL.NAME>
+SRC.SYSMESSAGE @<def.tcolor_text>,,1,1 Rastgele İsim : <LOCAL.NAME>
+DIALOGCLOSE D_DISGUE
+DIALOG D_DISGUE,1
+
+
+
+
+
+
+
+// Skill
+ON=100 199
+LOCAL.SKILL <EVAL (<DARGN>-100)>
+IF !(<SERV.SKILL.<LOCAL.SKILL>.FLAGS>&SKF_DISABLED)
+	SRC.CTAG0.DISGUE.SKILL = <SERV.SKILL.<LOCAL.SKILL>.NAME>
+ENDIF
+SRC.SYSMESSAGE @<def.tcolor_text>,,1,1 Seçilen beceri : <SRC.CTAG0.DISGUE.SKILL>
+DIALOGCLOSE D_DISGUE
+DIALOG D_DISGUE,2
+
+
+
+
+// Rastgele Skill
+ON=3
+LOCAL.SKILLNUM <R0,45>
+IF !(<SERV.SKILL.<DLOCAL.SKILLNUM>.FLAGS>&SKF_DISABLED)
+	SRC.CTAG0.DISGUE.SKILL = <SERV.SKILL.<DLOCAL.SKILLNUM>.NAME>
+ENDIF
+SRC.SYSMESSAGE @<def.tcolor_text>,,1,1 Rastgele beceri : <SRC.CTAG0.DISGUE.SKILL>
+DIALOGCLOSE D_DISGUE
+DIALOG D_DISGUE,2
+
+
+
+
+
+// Title
+ON=200 299
+LOCAL.TITLE=<EVAL (<ARGN>-200)>
+LOCAL.SKILLLEVELS Apprentice, Journeyman, Expert, Adept, Master, Grandmaster
+SRC.SYSMESSAGE @<def.tcolor_text>,,1,1 Seçilen beceri seviyesi : <ARRAY <LOCAL.SKILLLEVELS>,<LOCAL.TITLE>>
+SRC.CTAG0.DISGUE.TITLE = <ARRAY <LOCAL.SKILLLEVELS>,<LOCAL.TITLE>>
+DIALOGCLOSE D_DISGUE
+DIALOG D_DISGUE,3
+
+
+
+// Rastgele Title
+ON=4
+LOCAL.SKILLLEVELS Apprentice, Journeyman, Expert, Adept, Master, Grandmaster
+SRC.CTAG0.DISGUE.TITLE = <ARRAY <LOCAL.SKILLLEVELS>,<R1,6>>
+SRC.SYSMESSAGE @<def.tcolor_text>,,1,1 Rastgele beceri seviyesi : <SRC.CTAG0.DISGUE.TITLE>
+DIALOGCLOSE D_DISGUE
+DIALOG D_DISGUE,3
+
+
+
+
+
+// Girilen karma
+ON=5
+IF !(<ISNUM <ARGTXT[2]>>)
+	SRC.SYSMESSAGE @38,,1,1 Sadece sayı giriniz.
+	SRC.CTAG0.DISGUE.KARMA =
+	DIALOGCLOSE D_DISGUE
+	DIALOG D_DISGUE,4
+	RETURN 1
+ELSEIF (<ARGTXT[2]> <= 0) || (<ARGTXT[2]> >= 10000)
+	SRC.SYSMESSAGE @38,,1,1 Karma en az 0 en fazla 10.000 olmalıdır olmalıdır.
+	SRC.CTAG0.DISGUE.KARMA =
+	DIALOGCLOSE D_DISGUE
+	DIALOG D_DISGUE,4
+	RETURN 1
+ENDIF
+LOCAL.KARMA = <ARGTXT[2]>
+SRC.CTAG0.DISGUE.KARMA = <dLOCAL.KARMA>
+SRC.SYSMESSAGE @<def.tcolor_green>,,1,1 Girilen karma : <dLOCAL.KARMA>
+DIALOGCLOSE D_DISGUE
+DIALOG D_DISGUE,4
+
+
+
+
+// Rastgele karma
+ON=6
+LOCAL.KARMA = <R0,10000>
+SRC.CTAG0.DISGUE.KARMA = <dLOCAL.KARMA>
+SRC.SYSMESSAGE @<def.tcolor_green>,,1,1 Rastgele karma : <dLOCAL.KARMA>
+DIALOGCLOSE D_DISGUE
+DIALOG D_DISGUE,4
+
+
+
+
+// Girilen fame
+ON=7
+IF !(<ISNUM <ARGTXT[3]>>)
+	SRC.SYSMESSAGE @38,,1,1 Sadece sayı giriniz.
+	SRC.CTAG0.DISGUE.FAME =
+	DIALOGCLOSE D_DISGUE
+	DIALOG D_DISGUE,4
+	RETURN 1
+ELSEIF (<ARGTXT[3]> < -10000) || (<ARGTXT[3]> >= 10000)
+	SRC.SYSMESSAGE @38,,1,1 Fame en az -10.000 en fazla 10.000 olmalıdır olmalıdır.
+	SRC.CTAG0.DISGUE.FAME =
+	DIALOGCLOSE D_DISGUE
+	DIALOG D_DISGUE,4
+	RETURN 1
+ENDIF
+LOCAL.FAME = <ARGTXT[3]>
+SRC.CTAG0.DISGUE.FAME = <dLOCAL.FAME>
+SRC.SYSMESSAGE @<def.tcolor_green>,,1,1 Girilen fame : <dLOCAL.FAME>
+DIALOGCLOSE D_DISGUE
+DIALOG D_DISGUE,4
+
+
+
+
+
+// Rastgele fame
+ON=8
+LOCAL.FAME = <R-10000,10000>
+SRC.CTAG0.DISGUE.FAME = <dLOCAL.FAME>
+SRC.SYSMESSAGE @<def.tcolor_green>,,1,1 Rastgele fame : <dLOCAL.FAME>
+DIALOGCLOSE D_DISGUE
+DIALOG D_DISGUE,4
+
+
+// Saç tasarımı
+ON=300 399
+LOCAL.BTN = <EVAL <DARGN>-300>
+LOCAL.Race=<QVAL (<SRC.f_iself>)? "Elf" : "Human">
+LOCAL.Gender=<QVAL (<SRC.f_isfemale>)? "Female" : "Male">
+ARGS=<DEF.Hair.Style.<LOCAL.Race>.<LOCAL.BTN>.<LOCAL.Gender>>
+SRC.CTAG0.DISGUE.HAIR = <ARGV[0]>
+SRC.SYSMESSAGE @<def.tcolor_green>,,1,1 Seçilen saç: <SERV.ITEMDEF.<ARGV[0]>.NAME>
+DIALOGCLOSE D_DISGUE
+DIALOG D_DISGUE,5
+
+
+
+// Sakal tasarımı 
+ON=400 499
+LOCAL.BTN = <EVAL <DARGN>-400>
+ARGS=<DEF.Beard.Style.Human.<LOCAL.BTN>>
+SRC.CTAG0.DISGUE.BEARD = <ARGV[0]>
+SRC.SYSMESSAGE @<def.tcolor_green>,,1,1 Seçilen sakal: <SERV.ITEMDEF.<ARGV[0]>.NAME>
+DIALOGCLOSE D_DISGUE
+DIALOG D_DISGUE,5
+
+
+// Rastgele saç rengi
+ON=9
+SRC.CTAG0.DISGUE.HAIR_COLOR = colors_hair
+SRC.SYSMESSAGE @<SRC.CTAG0.DISGUE.HAIR_COLOR>,,1 Rastgele saç rengi
+DIALOGCLOSE D_DISGUE
+DIALOG D_DISGUE,5
+
+// Rastgele sakal rengi
+ON=10
+SRC.CTAG0.DISGUE.BEARD_COLOR = colors_hair
+SRC.SYSMESSAGE @<SRC.CTAG0.DISGUE.BEARD_COLOR>,,1 Rastgele sakal rengi
+
+DIALOGCLOSE D_DISGUE
+DIALOG D_DISGUE,5
+
+
+// Man
+ON=11
+SRC.CTAG0.DISGUE.BODY c_man
+SRC.SYSMESSAGE @084a,,1 Seçilen cinsiyet: Man
+DIALOGCLOSE D_DISGUE
+DIALOG D_DISGUE,6
+
+
+// WoMan
+ON=12
+SRC.CTAG0.DISGUE.BODY c_woman
+SRC.SYSMESSAGE @18,,1 Seçilen cinsiyet: Woman
+DIALOGCLOSE D_DISGUE
+DIALOG D_DISGUE,6
+
+
+// Body color
+ON=500 599
+LOCAL.ARGN=<EVAL <DARGN>-500>
+ARGS=1002,1057
+FOR <ARGV0> <ARGV1>
+	LOCAL.ID ++
+	IF (<LOCAL.ID> == <DLOCAL.ARGN>)
+		SRC.CTAG0.DISGUE.COLOR = <DLOCAL._FOR>
+	ENDIF
+ENDFOR
+SRC.SYSMESSAGE @<SRC.CTAG0.DISGUE.COLOR>,,1 Seçilen ten rengi
+DIALOGCLOSE D_DISGUE
+DIALOG D_DISGUE,6
+
+
+// Body color RASTGELE:
+ON=600
+SRC.CTAG0.DISGUE.COLOR = <r1002,1057>
+SRC.SYSMESSAGE @<SRC.CTAG0.DISGUE.COLOR>,,1 Rastgele ten rengi
+DIALOGCLOSE D_DISGUE
+DIALOG D_DISGUE,6
+
+
+
+// tamamla, uygula
+ON=999
+IF !(<SRC.ISHIDE>)
+	SRC.SYSMESSAGE @38,,1,1 Sahte kimliğe bürünmeniz için önce gizlenmelisiniz.
+	RETURN 1
+ELSEIF (<SRC.FINDID.I_RUNE_INCOGNITO>)
+	SRC.SYSMESSAGE @38,,1,1 Kimliğiniz zaten Incognito büyüsü ile gizlenmiş.
+	RETURN 1
+ENDIF
+
+IF (<SRC.CTAG0.DISGUE.COLOR>)
+	LOCAL.BODYCOLOR=<SRC.CTAG0.DISGUE.COLOR>
+ELSE
+	LOCAL.BODYCOLOR=<r1002,1057>
+ENDIF
+
+SRC.ONAME=<SRC.NAME>
+
+// Eski değerleri hafızaya al
+SERV.NEWITEM I_DISGUE_MEMORY,1,<SRC>,1
+NEW.TAG0.BASE.NAME <SRC.NAME>
+NEW.TAG0.BASE.TITLE <SRC.TITLE>
+NEW.TAG0.BASE.KARMA <SRC.KARMA>
+NEW.TAG0.BASE.FAME <SRC.FAME>
+NEW.TAG0.BASE.COLOR <LOCAL.BODYCOLOR>
+NEW.TAG0.BASE.BODY <SRC.BODY>
+
+IF (<SRC.FINDLAYER.LAYER_HAIR>)
+	NEW.TAG0.BASE.HAIR <SRC.FINDLAYER.LAYER_HAIR.BASEID>
+ENDIF
+IF (<SRC.FINDLAYER.LAYER_HAIR>)
+	NEW.TAG0.BASE.HAIR_COLOR <SRC.FINDLAYER.LAYER_HAIR.COLOR>
+ENDIF
+
+IF (<SRC.FINDLAYER.LAYER_BEARD>)
+	NEW.TAG0.BASE.BEARD <SRC.FINDLAYER.LAYER_BEARD.BASEID>
+ENDIF
+IF (<SRC.FINDLAYER.LAYER_BEARD>)
+	NEW.TAG0.BASE.BEARD_COLOR <SRC.FINDLAYER.LAYER_BEARD.COLOR>
+ENDIF
+
+// Karakteri değiştir.
+IF !(STRMATCH('0','<SRC.CTAG0.DISGUE.NAME>'))
+	SRC.NAME <SRC.CTAG0.DISGUE.NAME>
+ELSE
+	LOCAL.NAME = <QVAL (<SRC.BODY> == C_MAN)?#NAMES_HUMANMALE:#NAMES_HUMANFEMALE>
+	SRC.NAME=<LOCAL.NAME>
+ENDIF
+
+SRC.TITLE <SRC.CTAG0.DISGUE.TITLE> <SRC.CTAG0.DISGUE.SKILL>
+SRC.COLOR <LOCAL.BODYCOLOR>
+SRC.BODY <SRC.CTAG0.DISGUE.BODY>
+SRC.FAME <SRC.CTAG0.DISGUE.FAME>
+SRC.KARMA <SRC.CTAG0.DISGUE.KARMA>
+
+// SAÇ TİPİ
+IF (<SRC.CTAG0.DISGUE.HAIR>)
+	IF (<SRC.FINDLAYER.LAYER_HAIR>)
+		SRC.FINDLAYER.LAYER_HAIR.REMOVE
+	ENDIF
+	SERV.NEWITEM <SRC.CTAG0.DISGUE.HAIR>,1,<SRC>,1
+ENDIF
+
+// SAKAL TİPİ
+IF (<SRC.CTAG0.DISGUE.BEARD>)
+	IF (<SRC.FINDLAYER.LAYER_BEARD>)
+		SRC.FINDLAYER.LAYER_BEARD.REMOVE
+	ENDIF
+	SERV.NEWITEM <SRC.CTAG0.DISGUE.BEARD>,1,<SRC>,1
+ENDIF
+
+// SAÇ RENGİ
+IF (<SRC.CTAG0.DISGUE.HAIR_COLOR>) && (<SRC.FINDLAYER.LAYER_HAIR>)
+	SRC.FINDLAYER.LAYER_HAIR.COLOR = <SRC.CTAG0.DISGUE.HAIR_COLOR>
+ENDIF
+
+// SAKAL RENGİ
+IF (<SRC.CTAG0.DISGUE.BEARD_COLOR>) && (<SRC.FINDLAYER.LAYER_HAIR>)
+	SRC.FINDLAYER.LAYER_BEARD.COLOR = <SRC.CTAG0.DISGUE.BEARD_COLOR>
+ENDIF
+
+// REMOVE
+USESCUR --
+
+SRC.SYSMESSAGE @<def.tcolor_green>,,1,1 Kimliğin başarıyla gizlendi! 
+SRC.SYSMESSAGE @<def.tcolor_green>,,1,1 Kalan kullanım hakkı: <dUSESCUR>
+SRC.EVENTS +E_DISGUE
+
+
+
+
+
+
+// Tamamen rastgele
+ON=998
+LOCAL.KARMA = <R0,10000>
+LOCAL.FAME = <R-10000,10000>
+LOCAL.NAME = <QVAL (<SRC.BODY> == C_MAN)?#NAMES_HUMANMALE:#NAMES_HUMANFEMALE>
+LOCAL.SKILLNUM <R0,45>
+LOCAL.SKILLLEVELS Apprentice, Journeyman, Expert, Adept, Master, Grandmaster
+
+LOCAL.HAIR_MAN i_hair_long_feather,i_hair_short1,i_hair_elven_mullet,i_hair_elven_long,i_hair_elven_ml,i_hair_elven_spike,i_hair_elven_braid,i_hair_elven_topknot,i_hair_short,i_hair_pageboy,i_hair_mohawk,i_hair_long,i_hair_curly,i_hair_topknot,i_hair_ponytail,i_hair_2_pigtails,i_hair_receding
+LOCAL.HAIR_WOMAN i_hair_long_feather,i_hair_short1,i_hair_elven_mullet,i_hair_elven_topknot,i_hair_elven_braid,i_hair_elven_spike,i_hair_elven_flower,i_hair_elven_buns,i_hair_short,i_hair_pageboy,i_hair_mohawk,i_hair_long,i_hair_curly,i_hair_topknot,i_hair_ponytail,i_hair_2_pigtails,i_hair_buns
+LOCAL.BEARD_MAN i_beard_goatee,i_beard_short_med,i_beard_vandyke,i_beard_long,i_beard_short,i_beard_long_med,i_beard_mustache
+
+SRC.CTAG0.DISGUE.NAME = <LOCAL.NAME>
+
+IF !(<SERV.SKILL.<DLOCAL.SKILLNUM>.FLAGS>&SKF_DISABLED)
+	SRC.CTAG0.DISGUE.SKILL = <SERV.SKILL.<DLOCAL.SKILLNUM>.NAME>
+ENDIF
+
+SRC.CTAG0.DISGUE.TITLE = <ARRAY <LOCAL.SKILLLEVELS>,<R1,6>>
+SRC.CTAG0.DISGUE.COLOR = <r1002,1057>
+
+DORAND 2
+	SRC.CTAG0.DISGUE.BODY  = c_man
+	SRC.CTAG0.DISGUE.BODY  = c_woman
+ENDDO
+
+SRC.CTAG0.DISGUE.FAME  = <LOCAL.KARMA>
+SRC.CTAG0.DISGUE.KARMA = <LOCAL.FAME>
+
+SRC.CTAG0.DISGUE.HAIR_COLOR = colors_hair
+
+IF (<SRC.CTAG0.DISGUE.BODY> == C_MAN)
+	SRC.CTAG0.DISGUE.HAIR <ARRAY <LOCAL.HAIR_MAN>,<R1,<ARRAYCOUNT <LOCAL.HAIR_MAN>>>>
+	
+ELSEIF (<SRC.CTAG0.DISGUE.BODY> == C_WOMAN)
+	SRC.CTAG0.DISGUE.HAIR <ARRAY <LOCAL.HAIR_WOMAN>,<R1,<ARRAYCOUNT <LOCAL.HAIR_WOMAN>>>>
+ELSE
+	SRC.CTAG0.DISGUE.HAIR=
+ENDIF
+
+IF (<SRC.CTAG0.DISGUE.BODY> == C_MAN)
+	SRC.CTAG0.DISGUE.BEARD_COLOR = colors_hair
+	SRC.CTAG0.DISGUE.BEARD = <ARRAY <LOCAL.BEARD_MAN>,<R1,<ARRAYCOUNT <LOCAL.BEARD_MAN>>>>
+ELSE
+	SRC.CTAG0.DISGUE.BEARD =
+	SRC.CTAG0.DISGUE.BEARD_COLOR =
+ENDIF
+
+SRC.SYSMESSAGE @<def.tcolor_green>,,1,1 Tüm seçenekler tamamen rastgele biçimde seçildi. Tamamlayı tıklayarak karakterinize uygulayabilirsiniz.
+DIALOGCLOSE D_DISGUE
+DIALOG D_DISGUE,98
+
+
+
+// Kimliklerime kaydet
+ON=997
+SRC.CTAG0.DISGUE.DEED = <UID>
+
+IF (<ISBLANK <SRC.CTAG0.DISGUE.BODY>>)
+	SRC.SYSMESSAGE @38,,1,1 Ayarlanmamış: Body
+	DIALOGCLOSE D_DISGUE
+	DIALOG D_DISGUE , 6
+	
+ELSEIF (<ISBLANK <SRC.CTAG0.DISGUE.NAME>>)
+	SRC.SYSMESSAGE @38,,1,1 Ayarlanmamış: İsim
+
+ELSEIF (<ISBLANK <SRC.CTAG0.DISGUE.SKILL>>)
+	SRC.SYSMESSAGE @38,,1,1 Ayarlanmamış: Skill
+
+ELSEIF (<ISBLANK <SRC.CTAG0.DISGUE.TITLE>>)
+	SRC.SYSMESSAGE @38,,1,1 Ayarlanmamış: Title
+
+ELSEIF (<ISBLANK <SRC.CTAG0.DISGUE.KARMA>>)
+	SRC.SYSMESSAGE @38,,1,1 Ayarlanmamış: Karma
+	
+ELSEIF (<ISBLANK <SRC.CTAG0.DISGUE.FAME>>)
+	SRC.SYSMESSAGE @38,,1,1 Ayarlanmamış: Fame
+	
+ELSEIF (<ISBLANK <SRC.CTAG0.DISGUE.COLOR>>)
+	SRC.SYSMESSAGE @38,,1,1 Ayarlanmamış: Color
+	DIALOGCLOSE D_DISGUE
+	DIALOG D_DISGUE
+ELSE
+
+	SRC.PROMPTCONSOLE Func_Disgue_Preset_SetName_PrompConsole
+	SRC.SYSMESSAGE @<def.tcolor_text>,,1,1 Kimlik adı giriniz:
+
+ENDIF
+
+
+
+// gizlemeyi kaldir
+ON=996
+IF (<SRC.FINDID.I_DISGUE_MEMORY>)
+	SRC.CONSUME <DDEF.CONSUME_FULL_AMOUNT> I_DISGUE_MEMORY
+ELSE
+	SRC.SYSMESSAGE @38,,1,1 Kimliğiniz gizli değil.
+ENDIF
+
+
+
+
+// ön tanımlıyı sil
+ON=7000 7999
+IF (<LDB.CONNECTED>)
+	LDB.QUERY "SELECT * FROM 'disgues' WHERE account_name='<SRC.ACCOUNT.NAME>' AND id='<EVAL <ARGN>-7000>'"
+	IF (<dlDB.ROW.NUMROWS>)
+		IF (<lDB.ROW.0.id>)
+
+			SRC.SYSMESSAGE @<def.tcolor_green>,,1,1 Ön tanımlı sahte kimlik silindi.
+			LDB.EXECUTE "DELETE FROM 'disgues' WHERE account_name='<SRC.ACCOUNT.NAME>' AND id='<EVAL <ARGN>-7000>'"
+			
+			DIALOGCLOSE D_DISGUE
+			DIALOG D_DISGUE,7
+		ENDIF
+	ENDIF
+ENDIF
+
+
+// ön tanımlıyı uygula
+ON=6000 6999
+IF (<LDB.CONNECTED>)
+	LDB.QUERY "SELECT * FROM 'disgues' WHERE account_name='<SRC.ACCOUNT.NAME>' AND id='<EVAL <ARGN>-6000>'"
+	IF (<dlDB.ROW.NUMROWS>)
+		IF (<lDB.ROW.0.id>)
+			LOCAL.DISGUE_NAME = <LDB.ROW.0.name>
+			LOCAL.DISGUE_SKILL = <LDB.ROW.0.skill>
+			LOCAL.DISGUE_TITLE = <LDB.ROW.0.title>
+			LOCAL.DISGUE_KARMA = <LDB.ROW.0.karma>
+			LOCAL.DISGUE_FAME = <LDB.ROW.0.fame>
+			LOCAL.DISGUE_COLOR = <LDB.ROW.0.skin_color>
+			
+			IF (<LDB.ROW.<DLOCAL._FOR>.hair_baseid>)
+				SRC.CTAG0.DISGUE.HAIR = <LDB.ROW.<DLOCAL._FOR>.hair_baseid>
+			ENDIF
+			IF (<LDB.ROW.<DLOCAL._FOR>.hair_color>)
+				SRC.CTAG0.DISGUE.HAIR_COLOR = <LDB.ROW.<DLOCAL._FOR>.hair_color>
+			ENDIF
+			IF (<LDB.ROW.<DLOCAL._FOR>.beard_baseid>)
+				SRC.CTAG0.DISGUE.BEARD = <LDB.ROW.<DLOCAL._FOR>.beard_baseid>
+			ENDIF
+			
+			IF (<LDB.ROW.<DLOCAL._FOR>.beard_color>)
+				SRC.CTAG0.DISGUE.BEARD_COLOR = <LDB.ROW.<DLOCAL._FOR>.beard_color>
+			ENDIF
+			
+			SRC.CTAG0.DISGUE.BODY = <LDB.ROW.<DLOCAL._FOR>.body>
+			SRC.CTAG0.DISGUE.NAME = <LOCAL.DISGUE_NAME>
+			SRC.CTAG0.DISGUE.SKILL = <LOCAL.DISGUE_SKILL>
+			SRC.CTAG0.DISGUE.TITLE = <LOCAL.DISGUE_TITLE>
+			SRC.CTAG0.DISGUE.KARMA = <LOCAL.DISGUE_KARMA>
+			SRC.CTAG0.DISGUE.FAME = <LOCAL.DISGUE_FAME>
+			SRC.CTAG0.DISGUE.COLOR = <LOCAL.DISGUE_COLOR>
+			
+			SRC.SYSMESSAGE @<def.tcolor_green>,,1,1 Ön tanımlı sahte kimlik seçildi. Tamamlayı tıklayarak uygulayabilirsiniz.
+			DIALOGCLOSE D_DISGUE
+			DIALOG D_DISGUE,7
+		ENDIF
+	ENDIF
+ENDIF
+
+
+
+
+[FUNCTION Func_Disgue_Preset_SetName_PrompConsole]
+IF (<ISBADCHAR <ARGS>>)
+	SRC.SYSMESSAGE @38,,1,1 Hatalı karakter girdiniz.
+ELSEIF (<ISBLANK <ARGS>>)
+	SRC.SYSMESSAGE @38,,1,1 Boş giriş yapamazsınız.
+ELSE
+
+	IF (<LDB.CONNECTED>)
+		LDB.QUERY "SELECT id FROM 'disgues' WHERE account_name='<SRC.ACCOUNT.NAME>'"
+		IF (<dlDB.ROW.NUMROWS> >= 4)
+			SRC.SYSMESSAGE @38,,1,1 En fazla 4 adet sahte kimlik profili oluşturabilirsiniz.
+			RETURN 1
+		ENDIF
+		
+		LDB.QUERY INSERT INTO 'disgues' (account_name, char_uid, preset_name, title, skill, karma, fame, name, noto_name, hair_baseid, beard_baseid, hair_color, beard_color, skin_color, body) VALUES ("<SRC.ACCOUNT.NAME>","<SRC>","<ARGS>","<SRC.CTAG0.DISGUE.TITLE>","<SRC.CTAG0.DISGUE.SKILL>","<SRC.CTAG0.DISGUE.KARMA>","<SRC.CTAG0.DISGUE.FAME>","<SRC.CTAG0.DISGUE.NAME>","0","<SRC.CTAG0.DISGUE.HAIR>","<SRC.CTAG0.DISGUE.BEARD>","<SRC.CTAG0.DISGUE.HAIR_COLOR>","<SRC.CTAG0.DISGUE.BEARD_COLOR>","<SRC.CTAG0.DISGUE.COLOR>","<SRC.CTAG0.DISGUE.BODY>")
+		SRC.SYSMESSAGE @<def.tcolor_green>,,1,1 Sahte kimlik profiline eklendi.
+		
+		REF1=<SRC.CTAG0.DISGUE.DEED>
+		IF (<REF1.ISVALID>) && (<SRC.ISINPACK <REF1>>)
+			REF1.DIALOGCLOSE D_DISGUE
+			REF1.DIALOG D_DISGUE,7
+		ENDIF
+	ENDIF
+
+
+ENDIF
+
+
+[ITEMDEF I_DISGUE_MEMORY]
+DEFNAME=I_DISGUE_MEMORY
+NAME=Disgue Memory
+ID=i_deed
+TYPE=T_EQ_SCRIPT
+WEIGHT=0
+LAYER=layer_special
+
+ON=@CREATE
+ATTR=ATTR_NEWBIE
+TIMER=900
+
+ON=@EQUIP
+TIMER=900
+SRC.ADDBUFF 1033,<DEF.buffcliloc_Empty>,0,<TIMER>,Disgue,0,1
+
+ON=@UNEQUIP
+SRC.NAME <TAG0.BASE.NAME>
+SRC.KARMA <TAG0.BASE.KARMA>
+SRC.FAME <TAG0.BASE.FAME>
+SRC.COLOR <TAG0.BASE.COLOR>
+SRC.REMOVEBUFF 1033
+
+IF !(STRMATCH('0','<TAG0.BASE.TITLE>'))
+	SRC.TITLE <TAG0.BASE.TITLE>
+ELSE
+	SRC.TITLE=
+ENDIF
+
+SRC.BODY <TAG0.BASE.BODY>
+
+IF (<SRC.FINDLAYER.LAYER_HAIR>)
+	SRC.FINDLAYER.LAYER_HAIR.REMOVE
+ENDIF
+	
+IF (<TAG0.BASE.HAIR>)
+	SERV.NEWITEM <TAG0.BASE.HAIR>,1,<SRC>,1
+ENDIF
+
+IF (<SRC.FINDLAYER.LAYER_BEARD>)
+	SRC.FINDLAYER.LAYER_BEARD.REMOVE
+ENDIF
+	
+IF (<TAG0.BASE.BEARD>)
+	SERV.NEWITEM <TAG0.BASE.BEARD>,1,<SRC>,1
+ENDIF
+
+IF (<TAG0.BASEID.HAIR_COLOR>) && (<SRC.FINDLAYER.LAYER_HAIR>)
+	SRC.FINDLAYER.LAYER_HAIR.COLOR = <TAG0.BASEID.HAIR_COLOR>
+ENDIF
+IF (<TAG0.BASEID.BEARD_COLOR>) && (<SRC.FINDLAYER.LAYER_BEARD>)
+	SRC.FINDLAYER.LAYER_BEARD.COLOR = <TAG0.BASEID.BEARD_COLOR>
+ENDIF
+SRC.SYSMESSAGE @<def.tcolor_yellow>,,1,1 Gerçek kimliğiniz ortaya çıktı.
+SRC.EVENTS -E_DISGUE
+SRC.REMOVEBUFF 1033
+
+ON=@TIMER
+REMOVE
+RETURN 1
+
+
+
+
+
+[EVENTS e_disgue]
+ON=@DEATH
+IF (<FINDID.I_DISGUE_MEMORY>)
+	FINDID.I_DISGUE_MEMORY.REMOVE
+ENDIF
+
+
+
+
+
+
+
+[FUNCTION FUNC_KARMA_FAME_LEVELCHECK_Disgue]
+FUNC_FameLevelCheck_Disgue
+FUNC_KarmaLevelCheck_Disgue
+
+
+
+[FUNCTION FUNC_FAMELEVELCHECK_Disgue]
+IF (<CTAG0.DISGUE.FAME> >= 9900)
+	TAG.FAME_DISGUE.LEVEL = 4
+ELIF (<CTAG0.DISGUE.FAME> >= 5000) && (<CTAG0.DISGUE.FAME> <= 9899)
+	TAG.FAME_DISGUE.LEVEL = 3
+ELIF (<CTAG0.DISGUE.FAME> >= 1000) && (<CTAG0.DISGUE.FAME> <= 4999)
+	TAG.FAME_DISGUE.LEVEL = 2
+ELIF (<CTAG0.DISGUE.FAME> >= 499) && (<CTAG0.DISGUE.FAME> <= 999)
+	TAG.FAME_DISGUE.LEVEL = 1
+ELIF (<CTAG0.DISGUE.FAME> <= 499)
+	TAG.FAME_DISGUE.LEVEL = 0
+ENDIF
+
+
+
+
+[FUNCTION FUNC_KARMALEVELCHECK_Disgue]
+IF (<CTAG0.DISGUE.KARMA> >= 9900)
+	TAG.KARMA_DISGUE.LEVEL = 5
+ 
+ELIF (<CTAG0.DISGUE.KARMA> >= 5000) && (<CTAG0.DISGUE.KARMA> <= 9899)
+	TAG.KARMA_DISGUE.LEVEL = 4
+ 
+ELIF (<CTAG0.DISGUE.KARMA> >= 1000) && (<CTAG0.DISGUE.KARMA> <= 4999)
+	TAG.KARMA_DISGUE.LEVEL = 3
+ 
+ELIF (<CTAG0.DISGUE.KARMA> >= 500) && (<CTAG0.DISGUE.KARMA> <= 999)
+	TAG.KARMA_DISGUE.LEVEL = 2
+ 
+ELIF (<CTAG0.DISGUE.KARMA> >= 100) && (<CTAG0.DISGUE.KARMA> <= 499)
+	TAG.KARMA_DISGUE.LEVEL = 1
+ 
+ELIF (<CTAG0.DISGUE.KARMA> >= -100) && (<CTAG0.DISGUE.KARMA> <= 99)
+	TAG.KARMA_DISGUE.LEVEL = 0
+ 
+ELIF (<CTAG0.DISGUE.KARMA> <= -500) && (<CTAG0.DISGUE.KARMA> >= -99)
+	TAG.KARMA_DISGUE.LEVEL = -1
+ 
+ELIF (<CTAG0.DISGUE.KARMA> <= -1000) && (<CTAG0.DISGUE.KARMA> >= -499)
+	TAG.KARMA_DISGUE.LEVEL = -2
+ 
+ELIF (<CTAG0.DISGUE.KARMA> <= -5000) && (<CTAG0.DISGUE.KARMA> >= -999)
+	TAG.KARMA_DISGUE.LEVEL = -3
+ 
+ELIF (<CTAG0.DISGUE.KARMA> <= -9899) && (<CTAG0.DISGUE.KARMA> >= -4999)
+	TAG.KARMA_DISGUE.LEVEL = -4
+ 
+ELIF (<CTAG0.DISGUE.KARMA> <= -9900)
+	TAG.KARMA_DISGUE.LEVEL = -5
+ENDIF
+
+
+
+
+[Function FUNC_ISSHOW_KARMA_FAME_TITLE_CUSTOM_Disgue]
+DoSwitch <dTag.FAME_DISGUE.Level>
+
+ Begin
+  if <DTag.KARMA_DISGUE.Level> == 5
+   RETURN Trustworthy
+  ELIF <DTag.KARMA_DISGUE.Level> == 4
+   RETURN Honest
+  ELIF <DTag.KARMA_DISGUE.Level> == 3
+   RETURN Good
+  ELIF <DTag.KARMA_DISGUE.Level> == 2
+   RETURN Kind
+  ELIF <DTag.KARMA_DISGUE.Level> == 1
+   RETURN Fair
+  ELIF <DTag.KARMA_DISGUE.Level> == 0
+   RETURN
+  ELIF <DTag.KARMA_DISGUE.Level> == -1
+   RETURN Rude
+  ELIF <DTag.KARMA_DISGUE.Level> == -2
+   RETURN Unsavory
+  ELIF <DTag.KARMA_DISGUE.Level> == -3
+   RETURN Scoundrel
+  ELIF <DTag.KARMA_DISGUE.Level> == -4
+   RETURN Despicable
+  ELIF <DTag.KARMA_DISGUE.Level> == -5
+   RETURN Outcast
+  ENDIF
+ END
+ 
+ Begin
+  if <Eval <Tag.KARMA_DISGUE.Level>> == 5
+   RETURN Estimable
+  ELIF <Eval <Tag.KARMA_DISGUE.Level>> == 4
+   RETURN Commendable
+  ELIF <Eval <Tag.KARMA_DISGUE.Level>> == 3
+   RETURN Honorable
+  ELIF <Eval <Tag.KARMA_DISGUE.Level>> == 2
+   RETURN Respectable
+  ELIF <Eval <Tag.KARMA_DISGUE.Level>> == 1
+   RETURN Upstanding
+  ELIF <Eval <Tag.KARMA_DISGUE.Level>> == 0
+   RETURN Notable
+  ELIF <Eval <Tag.KARMA_DISGUE.Level>> == -1
+   RETURN Disreputable
+  ELIF <Eval <Tag.KARMA_DISGUE.Level>> == -2
+   RETURN Dishonorbable
+  ELIF <Eval <Tag.KARMA_DISGUE.Level>> == -3
+   RETURN Malicious
+  ELIF <Eval <Tag.KARMA_DISGUE.Level>> == -4
+   RETURN Dastardly
+  ELIF <Eval <Tag.KARMA_DISGUE.Level>> == -5
+   RETURN Wretched
+  endif
+ End
+ 
+ Begin
+  if <Eval <Tag.KARMA_DISGUE.Level>> == 5
+   RETURN Great
+  ELIF <Eval <Tag.KARMA_DISGUE.Level>> == 4
+   RETURN Famed
+  ELIF <Eval <Tag.KARMA_DISGUE.Level>> == 3
+   RETURN Admirable
+  ELIF <Eval <Tag.KARMA_DISGUE.Level>> == 2
+   RETURN Proper
+  ELIF <Eval <Tag.KARMA_DISGUE.Level>> == 1
+   RETURN Reputable
+  ELIF <Eval <Tag.KARMA_DISGUE.Level>> == 0
+   RETURN Prominent
+  ELIF <Eval <Tag.KARMA_DISGUE.Level>> == -1
+   RETURN Notorious
+  ELIF <Eval <Tag.KARMA_DISGUE.Level>> == -2
+   RETURN Ignoble
+  ELIF <Eval <Tag.KARMA_DISGUE.Level>> == -3
+   RETURN Vile
+  ELIF <Eval <Tag.KARMA_DISGUE.Level>> == -4
+   RETURN Wicked
+  ELIF <Eval <Tag.KARMA_DISGUE.Level>> == -5
+   RETURN Nefarious
+  endif
+ End
+ 
+ Begin
+  if <Eval <Tag.KARMA_DISGUE.Level>> == 5
+   RETURN Glorious
+  ELIF <Eval <Tag.KARMA_DISGUE.Level>> == 4
+   RETURN Illustrious
+  ELIF <Eval <Tag.KARMA_DISGUE.Level>> == 3
+   RETURN Noble
+  ELIF <Eval <Tag.KARMA_DISGUE.Level>> == 2
+   RETURN Eminent
+  ELIF <Eval <Tag.KARMA_DISGUE.Level>> == 1
+   RETURN Distinguished
+  ELIF <Eval <Tag.KARMA_DISGUE.Level>> == 0
+   RETURN Renowned
+  ELIF <Eval <Tag.KARMA_DISGUE.Level>> == -1
+   RETURN Infamous
+  ELIF <Eval <Tag.KARMA_DISGUE.Level>> == -2
+   RETURN Sinister
+  ELIF <Eval <Tag.KARMA_DISGUE.Level>> == -3
+   RETURN Villanious
+  ELIF <Eval <Tag.KARMA_DISGUE.Level>> == -4
+   RETURN Evil
+  ELIF <Eval <Tag.KARMA_DISGUE.Level>> == -5
+   RETURN Dread
+  endif
+ End
+ 
+ Begin
+  if <Eval <Tag.KARMA_DISGUE.Level>> == 5
+   RETURN Glorious <Src.Sex Lord/Lady>
+  ELIF <Eval <Tag.KARMA_DISGUE.Level>> == 4
+   RETURN Illustrious <Src.Sex Lord/Lady>
+  ELIF <Eval <Tag.KARMA_DISGUE.Level>> == 3
+   RETURN Noble <Src.Sex Lord/Lady>
+  ELIF <Eval <Tag.KARMA_DISGUE.Level>> == 2
+   RETURN Eminent <Src.Sex Lord/Lady>
+  ELIF <Eval <Tag.KARMA_DISGUE.Level>> == 1
+   RETURN Distinguished <Src.Sex Lord/Lady>
+  ELIF <Eval <Tag.KARMA_DISGUE.Level>> == 0
+   RETURN <Src.Sex Lord/Lady>
+  ELIF <Eval <Tag.KARMA_DISGUE.Level>> == -1
+   RETURN Dishonored <Src.Sex Lord/Lady>
+  ELIF <Eval <Tag.KARMA_DISGUE.Level>> == -2
+   RETURN Sinister <Src.Sex Lord/Lady>
+  ELIF <Eval <Tag.KARMA_DISGUE.Level>> == -3
+   RETURN Dark <Src.Sex Lord/Lady>
+  ELIF <Eval <Tag.KARMA_DISGUE.Level>> == -4
+   RETURN Evil <Src.Sex Lord/Lady>
+  ELIF <Eval <Tag.KARMA_DISGUE.Level>> == -5
+   RETURN Dread <Src.Sex Lord/Lady>
+  ENDIF
+  END
+  
+ENDDO
+
+
+
+
+[FUNCTION FUNC_KARMA_FAME_LEVELCHECK]
+FUNC_FameLevelCheck
+FUNC_KarmaLevelCheck
+
+[FUNCTION FUNC_FAMELEVELCHECK]
+IF (<FAME> >= 9900)
+	TAG.FAME.LEVEL = 4
+ELIF (<FAME> >= 5000) && (<FAME> <= 9899)
+	TAG.FAME.LEVEL = 3
+ELIF (<FAME> >= 1000) && (<FAME> <= 4999)
+	TAG.FAME.LEVEL = 2
+ELIF (<FAME> >= 499) && (<FAME> <= 999)
+	TAG.FAME.LEVEL = 1
+ELIF (<FAME> <= 499)
+	TAG.FAME.LEVEL = 0
+ENDIF
+
+
+
+
+[FUNCTION FUNC_KARMALEVELCHECK]
+IF (<KARMA> >= 9900)
+	TAG.KARMA.LEVEL = 5
+ELIF (<KARMA> >= 5000) && (<KARMA> <= 9899)
+	TAG.KARMA.LEVEL = 4
+ELIF (<KARMA> >= 1000) && (<KARMA> <= 4999)
+	TAG.KARMA.LEVEL = 3
+ELIF (<KARMA> >= 500) && (<KARMA> <= 999)
+	TAG.KARMA.LEVEL = 2
+ELIF (<KARMA> >= 100) && (<KARMA> <= 499)
+	TAG.KARMA.LEVEL = 1
+ELIF (<KARMA> >= -100) && (<KARMA> <= 99)
+	TAG.KARMA.LEVEL = 0
+ELIF (<KARMA> <= -500) && (<KARMA> >= -99)
+	TAG.KARMA.LEVEL = -1
+ELIF (<KARMA> <= -1000) && (<KARMA> >= -499)
+	TAG.KARMA.LEVEL = -2
+ELIF (<KARMA> <= -5000) && (<KARMA> >= -999)
+	TAG.KARMA.LEVEL = -3
+ELIF (<KARMA> <= -9899) && (<KARMA> >= -4999)
+	TAG.KARMA.LEVEL = -4
+ELIF (<KARMA> <= -9900)
+	TAG.KARMA.LEVEL = -5
+ENDIF
+
+
+
+
+[Function FUNC_ISSHOW_KARMA_FAME_TITLE_CUSTOM]
+DOSWITCH <DTAG.FAME.LEVEL>
+
+	BEGIN
+		IF (<DTAG.KARMA.LEVEL> == 5)
+			RETURN Trustworthy
+		ELIF (<DTAG.KARMA.LEVEL> == 4)
+			RETURN Honest
+		ELIF (<DTAG.KARMA.LEVEL> == 3)
+			RETURN Good
+  ELIF (<Eval <Tag.Karma.Level>> == 2)
+   RETURN Kind
+  ELIF (<Eval <Tag.Karma.Level>> == 1)
+   RETURN Fair
+  ELIF (<Eval <Tag.Karma.Level>> == 0)
+   RETURN
+  ELIF (<Eval <Tag.Karma.Level>> == -1)
+   RETURN Rude
+  ELIF (<Eval <Tag.Karma.Level>> == -2)
+   RETURN Unsavory
+  ELIF (<Eval <Tag.Karma.Level>> == -3)
+   RETURN Scoundrel
+  ELIF (<Eval <Tag.Karma.Level>> == -4)
+   RETURN Despicable
+  ELIF (<Eval <Tag.Karma.Level>> == -5)
+   RETURN Outcast
+  endif
+ End
+ 
+ Begin
+  if <Eval <Tag.Karma.Level>> == 5
+   RETURN Estimable
+  ELIF <Eval <Tag.Karma.Level>> == 4
+   RETURN Commendable
+  ELIF <Eval <Tag.Karma.Level>> == 3
+   RETURN Honorable
+  ELIF <Eval <Tag.Karma.Level>> == 2
+   RETURN Respectable
+  ELIF <Eval <Tag.Karma.Level>> == 1
+   RETURN Upstanding
+  ELIF <Eval <Tag.Karma.Level>> == 0
+   RETURN Notable
+  ELIF <Eval <Tag.Karma.Level>> == -1
+   RETURN Disreputable
+  ELIF <Eval <Tag.Karma.Level>> == -2
+   RETURN Dishonorbable
+  ELIF <Eval <Tag.Karma.Level>> == -3
+   RETURN Malicious
+  ELIF <Eval <Tag.Karma.Level>> == -4
+   RETURN Dastardly
+  ELIF <Eval <Tag.Karma.Level>> == -5
+   RETURN Wretched
+  endif
+ End
+ 
+ Begin
+  if <Eval <Tag.Karma.Level>> == 5
+   RETURN Great
+  ELIF <Eval <Tag.Karma.Level>> == 4
+   RETURN Famed
+  ELIF <Eval <Tag.Karma.Level>> == 3
+   RETURN Admirable
+  ELIF <Eval <Tag.Karma.Level>> == 2
+   RETURN Proper
+  ELIF <Eval <Tag.Karma.Level>> == 1
+   RETURN Reputable
+  ELIF <Eval <Tag.Karma.Level>> == 0
+   RETURN Prominent
+  ELIF <Eval <Tag.Karma.Level>> == -1
+   RETURN Notorious
+  ELIF <Eval <Tag.Karma.Level>> == -2
+   RETURN Ignoble
+  ELIF <Eval <Tag.Karma.Level>> == -3
+   RETURN Vile
+  ELIF <Eval <Tag.Karma.Level>> == -4
+   RETURN Wicked
+  ELIF <Eval <Tag.Karma.Level>> == -5
+   RETURN Nefarious
+  endif
+ End
+ 
+ Begin
+  if <Eval <Tag.Karma.Level>> == 5
+   RETURN Glorious
+  ELIF <Eval <Tag.Karma.Level>> == 4
+   RETURN Illustrious
+  ELIF <Eval <Tag.Karma.Level>> == 3
+   RETURN Noble
+  ELIF <Eval <Tag.Karma.Level>> == 2
+   RETURN Eminent
+  ELIF <Eval <Tag.Karma.Level>> == 1
+   RETURN Distinguished
+  ELIF <Eval <Tag.Karma.Level>> == 0
+   RETURN Renowned
+  ELIF <Eval <Tag.Karma.Level>> == -1
+   RETURN Infamous
+  ELIF <Eval <Tag.Karma.Level>> == -2
+   RETURN Sinister
+  ELIF <Eval <Tag.Karma.Level>> == -3
+   RETURN Villanious
+  ELIF <Eval <Tag.Karma.Level>> == -4
+   RETURN Evil
+  ELIF <Eval <Tag.Karma.Level>> == -5
+   RETURN Dread
+  endif
+ End
+ 
+ Begin
+  if <Eval <Tag.Karma.Level>> == 5
+   RETURN Glorious <Src.Sex Lord/Lady>
+  ELIF <Eval <Tag.Karma.Level>> == 4
+   RETURN Illustrious <Src.Sex Lord/Lady>
+  ELIF <Eval <Tag.Karma.Level>> == 3
+   RETURN Noble <Src.Sex Lord/Lady>
+  ELIF <Eval <Tag.Karma.Level>> == 2
+   RETURN Eminent <Src.Sex Lord/Lady>
+  ELIF <Eval <Tag.Karma.Level>> == 1
+   RETURN Distinguished <Src.Sex Lord/Lady>
+  ELIF <Eval <Tag.Karma.Level>> == 0
+   RETURN <Src.Sex Lord/Lady>
+  ELIF <Eval <Tag.Karma.Level>> == -1
+   RETURN Dishonored <Src.Sex Lord/Lady>
+  ELIF <Eval <Tag.Karma.Level>> == -2
+   RETURN Sinister <Src.Sex Lord/Lady>
+  ELIF <Eval <Tag.Karma.Level>> == -3
+   RETURN Dark <Src.Sex Lord/Lady>
+  ELIF <Eval <Tag.Karma.Level>> == -4
+   RETURN Evil <Src.Sex Lord/Lady>
+  ELIF <Eval <Tag.Karma.Level>> == -5
+   RETURN Dread <Src.Sex Lord/Lady>
+  ENDIF
+  END
+  
+ENDDO
+
+
+
+[EOF]

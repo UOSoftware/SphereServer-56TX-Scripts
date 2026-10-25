@@ -1,0 +1,253 @@
+
+
+[ITEMDEF I_YOUNG_TICKET]
+DEFNAME=I_YOUNG_TICKET
+NAME=odul bileti
+ID=I_DEED
+TYPE=T_SCRIPT
+WEIGHT=0.1
+
+ON=@Create
+ATTR=ATTR_NEWBIE
+// color=colors_all
+COLOR=0
+// TIMER=86400
+
+// ON=@CLICK
+// IF (<TIMER>)
+	// MESSAGE [<KALANSURE <TIMER>> sonra silinecek]
+	// SRC.SYSMESSAGELOC <def.tcolor_grey>,<def.empty_cliloc2>, <name> <KALANSURE <TIMER>> sonra silinecek
+// ENDIF
+
+ON=@PICKUP_PACK
+DIALOGCLOSE d_young_ticket
+
+ON=@DROPON_GROUND
+DIALOGCLOSE d_young_ticket
+
+ON=@DClick
+// IF (<TIMER> <= 0)
+	// SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu eşyanın süresi dolmuş.
+	// REMOVE
+	// RETURN 1
+// ENDIF
+DIALOGCLOSE d_young_ticket
+DIALOG d_young_ticket
+RETURN 1
+
+// ON=@TIMER
+// REMOVE
+// RETURN 1
+
+
+[DIALOG d_young_ticket]
+<DEF.DSP>
+
+RESIZE 0,0,260,280,Yeni oyuncu - Odul bileti
+
+DORIGIN 20 50
+
+BUTTON +0 +0 4005 4007 1 0 1
+TILEPICHUE +25 +0 <SERV.ITEMDEF.i_sextant.ID> 0
+DTEXT +70 +0 <def.tcolor_text> Pusula
+
+BUTTON +0 +30 4005 4007 1 0 2
+TILEPICHUE +25 +30 <SERV.ITEMDEF.i_hat_wizards.ID> 0
+DTEXT +70 +30 <def.tcolor_text> Wizard Hat
+
+BUTTON +0 +60 4005 4007 1 0 3
+TILEPICHUE +25 +60 <SERV.ITEMDEF.i_spellbook.ID> 0
+DTEXT +70 +60 <def.tcolor_text> 8/3 Spellbook
+
+BUTTON +0 +90 4005 4007 1 0 4
+TILEPICHUE +25 +90 <SERV.ITEMDEF.i_fireworks_wand.ID> 0
+DTEXT +70 +90 <def.tcolor_text> Firework wand
+
+BUTTON +0 +120 4005 4007 1 0 5
+TILEPICHUE +25 +120 <SERV.ITEMDEF.i_kartopu.ID> <dSERV.ITEMDEF.i_kartopu.RESDISPDNHUE> 
+DTEXT +70 +120 <def.tcolor_text> Kar Topu
+
+BUTTON +0 +150 4005 4007 1 0 6
+TILEPICHUE +25 +150 <SERV.ITEMDEF.i_dye_tub.ID> 0
+TILEPICHUE +25 +150 <SERV.ITEMDEF.i_dyes.ID> 0
+DTEXT +70 +150 <def.tcolor_text> Boya Kupu Ve Boya
+
+BUTTON +0 +180 4005 4007 1 0 7
+TILEPICHUE +35 +180 <SERV.ITEMDEF.i_pet_horse.ID> 0 
+DTEXT +70 +180 <def.tcolor_text> Horse
+
+
+[DIALOG d_young_ticket BUTTON]
+ON=1,7
+IF (<ARGN> == 1)
+	LOCAL.ITEMS i_sextant
+ELSEIF (<ARGN> == 2)
+	LOCAL.ITEMS i_hat_wizards
+ELSEIF (<ARGN> == 3)
+	LOCAL.ITEMS i_spellbook
+ELSEIF (<ARGN> == 4)
+	LOCAL.ITEMS i_fireworks_wand
+ELSEIF (<ARGN> == 5)
+	LOCAL.ITEMS i_kartopu
+ELSEIF (<ARGN> == 6)
+	LOCAL.ITEMS i_dye_tub,i_dyes
+ELSEIF (<ARGN> == 7)
+	DORAND 4
+		LOCAL.ITEMS I_PET_HORSE_GRAY_2 
+		LOCAL.ITEMS I_PET_HORSE_TAN_2
+		LOCAL.ITEMS I_PET_HORSE_BROWN_LT
+		LOCAL.ITEMS I_PET_HORSE_BROWN_DK
+	ENDDO
+ENDIF
+
+FOR 1 <ARRAYCOUNT <LOCAL.ITEMS>>
+	LOCAL.ITEM <ARRAY <LOCAL.ITEMS>,<DLOCAL._FOR>>
+	SERV.NEWITEM <LOCAL.ITEM>
+	// SERV.B <LOCAL.ITEM>
+	IF (<LOCAL.ITEM> == I_SPELLBOOK)
+		NEW.MORE 0ffffff
+	ENDIF
+	NEW.BOUNCE
+ENDFOR
+REMOVE
+
+
+[ITEMDEF i_wand_fireworks]
+DEFNAME=i_wand_fireworks
+DEFNAME2=i_fireworks_wand
+ID=i_wand_3
+NAME=Fireworks wand
+VALUE=70
+TYPE=t_wand
+RESOURCES=1 i_wand_3
+CATEGORY=Provisions - Alchemy & Magic
+SUBSECTION=Wands
+DESCRIPTION=Wand of Fireworks
+
+ON=@Create
+MORE2={20 50}
+ATTR=attr_magic|attr_newbie
+COLOR=colors_all
+
+ON=@CLICK
+MESSAGE (Charges: <DMORE2>)
+
+ON=@DCLICK
+IF !(<SRC.ISINPACK <UID>>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,600036,<NAME>	// Bunu (~1_val~) kullanabilmek için çantanızda veya üzerinizde olmalıdır.
+	RETURN 1
+ENDIF
+
+IF (<MORE2>==0)
+	SRC.SYSMESSAGELOC <def.tcolor_grey>,<def.empty_cliloc2>, It seems to be out of charges.
+	REMOVE
+	RETURN 1
+	
+ELSE
+
+MORE2 -=1
+
+FOR <R3,5>
+	SERV.NEWITEM { I_FX_SPARKLE 1 I_FX_HEAL_EFFECT 1  I_FX_BLESS_EFFECT 1 I_FX_CURSE 1  I_FX_SPARKLE_2 1}
+	NEW.P=<SRC.P>
+	NEW.NAME=a Fireworks display
+	NEW.COLOR=COLORS_ALL
+	NEW.ATTR ATTR_MOVE_NEVER|ATTR_DECAY
+	NEW.TIMER={19 24}
+	NEW.NUDGEUP=<R15,35>
+	NEW.MOVENEAR <SRC> <R0,15>
+ENDFOR
+
+// SRC.SOUND={ 011e 1 011f 1 }
+SECTOR.ALLCLIENTS SOUND { 011b 1 011c 1 011c 1 011e 1 }
+RETURN 1
+ENDIF
+
+
+
+
+[ITEMDEF I_KARTOPU]
+DEFNAME=I_KARTOPU
+ID=0913
+NAME=kar parcasi
+TYPE=t_script
+RESDISPDNHUE=0481
+
+ON=@CREATE
+COLOR=<SERV.ITEMDEF.<BASEID>.RESDISPDNHUE>
+ATTR=ATTR_NEWBIE
+TIMER=3
+
+ON=@DCLICK
+IF (<TIMER> >= 1)
+	SRC.SYSMESSAGELOC <def.tcolor_grey>,<def.empty_cliloc2>, Kartopu henuz hazir degil!
+ELSE
+	TARGET Kime atmak istiyorsun?
+ENDIF
+RETURN 1
+
+ON=@TargOn_Char
+IF (<SRC.TARG.UID> != <SRC>)
+	SRC.ANIM 11
+	SRC.TARG.EFFECT 0,0f27,10
+	SRC.TARG.ANIM 20
+	SRC.SOUND 0145
+	DORAND 6
+		SRC.TARG.SAYU *ahhh*
+		SRC.TARG.SAYU *grrh*
+		SRC.TARG.SAYU *ouch*
+		SRC.TARG.SAYU *argh*
+		SRC.TARG.SAYU *pehh*
+		SRC.TARG.SAYU *ooppf*
+	ENDDO
+	
+	SOUND 0145
+	// EFFECT type, item_id, speed, loop, explode, colour(hue), rendermode
+	SRC.TARG.EFFECT 2,i_fx_smoke,15,20,0,color_snow,0
+	SRC.TARG.SYSMESSAGELOC <def.tcolor_grey>,<def.empty_cliloc2>, <SRC.NAME> sana kartopu atti!
+	REMOVE
+ELSE
+	SRC.SYSMESSAGELOC <def.tcolor_grey>,<def.empty_cliloc2>, Kendine kartopu atamazsin..
+	TIMER 3
+ENDIF
+RETURN 1
+
+
+ON=@TARGON_GROUND
+IF (<SRC.CANSEELOS <SRC.TARGP>>)
+	SRC.ANIM 11
+	// SRC.TARGP.EFFECT 2,0f27,10
+	SRC.SOUND 0145
+	// EFFECT type, item_id, speed, loop, explode, colour(hue), rendermode
+	SERV.NEWITEM i_fx_smoke
+	NEW.ATTR=ATTR_DECAY|ATTR_MOVE_NEVER
+	NEW.TIMER=3
+	NEW.P=<SRC.TARGP>
+	NEW.FIX
+	// NEW.COLOR=colors_white
+	NEW.COLOR=color_snow
+	REMOVE
+ELSE
+	SRC.SYSMESSAGELOC <def.tcolor_grey>,<def.empty_cliloc2>, Burayi goremiyorsun.
+	TIMER 3
+ENDIF
+RETURN 1
+
+
+ON=@TARGON_ITEM
+IF !(<SRC.TARG.CONT>)
+	SRC.ANIM 11
+	SRC.TARG.EFFECT 0,0f27,10
+	SRC.SOUND 0145
+	// EFFECT type, item_id, speed, loop, explode, colour(hue), rendermode
+	SRC.TARG.EFFECT 3,i_fx_smoke,15,20,0,color_snow,0
+	REMOVE
+ELSE
+	SRC.SYSMESSAGELOC <def.tcolor_grey>,<def.empty_cliloc2>, Cantadaki esyalara kartopu atamazsin..
+	TIMER 3
+ENDIF
+RETURN 1
+
+
+
+[eof]

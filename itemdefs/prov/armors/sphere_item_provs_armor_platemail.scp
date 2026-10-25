@@ -1,0 +1,321 @@
+
+// Deed
+[ITEMDEF I_Deed_Armor_Plate]
+DEFNAME=I_Deed_Armor_Plate
+ID=i_deed_2
+TYPE=T_SCRIPT
+NAME=Platemail Armor Deed
+VALUE=2000
+WEIGHT=0
+RESDISPDNHUE=0
+CATEGORY=Zirhlar
+SUBSECTION=Warrior
+TAG0.PARTS=I_PLATEMAIL_HELM,I_PLATEMAIL_GORGET,I_PLATEMAIL_ARMS,I_PLATEMAIL_GLOVES,I_PLATEMAIL_CHEST,I_PLATEMAIL_LEGGINGS,I_SHIELD_HEATER
+TEVENTS=ei_deed_parts
+
+ON=@Create
+COLOR=<SERV.ITEMDEF.<BASEID>.RESDISPDNHUE>
+
+
+
+
+
+
+
+
+
+
+
+
+[ITEMDEF 01408]
+DEFNAME=i_helm_closed
+TYPE=t_armor
+FLIP=1
+ARMOR=25
+VALUE=60
+WEIGHT=5.0
+RESOURCES=15 i_ingot_iron
+SKILLMAKE=Blacksmithing 37.9
+CATEGORY=Helmets
+SUBSECTION=Iron
+DESCRIPTION=Close Helmet
+// CanUse=can_u_human|can_u_elf
+REQSTR=35
+TEVENTS=t_equipitem
+DUPELIST=01409
+
+ON=@Create
+HITPOINTS=100
+
+[ITEMDEF 01409]
+//close helmet
+DUPEITEM=01408
+
+
+
+
+
+[ITEMDEF 0140a]
+DEFNAME=i_helm_open
+TYPE=t_armor
+FLIP=1
+ARMOR=25
+VALUE=60
+WEIGHT=5.0
+RESOURCES=15 i_ingot_iron
+SKILLMAKE=Blacksmithing 37.9
+CATEGORY=Helmets
+SUBSECTION=Iron
+DESCRIPTION=Helmet
+// CanUse=can_u_human|can_u_elf
+REQSTR=15
+TEVENTS=t_equipitem
+DUPELIST=0140b
+
+ON=@Create
+HITPOINTS=100
+
+[ITEMDEF 0140b]
+//helmet
+DUPEITEM=0140a
+
+
+
+
+
+[ITEMDEF 0140c]
+DEFNAME=i_bascinet
+NAME=bascinet
+TYPE=t_armor
+FLIP=1
+ARMOR=25
+VALUE=60
+WEIGHT=5.0
+RESOURCES=15 i_ingot_iron
+SKILLMAKE=Blacksmithing 28.3
+CATEGORY=Helmets
+SUBSECTION=Iron
+DESCRIPTION=Bascinet
+// CanUse=can_u_human|can_u_elf
+REQSTR=30
+TEVENTS=t_equipitem
+DUPELIST=0140d
+
+ON=@Create
+HITPOINTS={36 48}
+
+[ITEMDEF 0140d]
+//bascinet
+DUPEITEM=0140c
+
+
+
+
+
+[ITEMDEF 0140e]
+DEFNAME=i_helm_nose
+NAME=norse helm
+TYPE=t_armor
+FLIP=1
+ARMOR=25
+VALUE=60
+WEIGHT=5.0
+RESOURCES=15 i_ingot_iron
+SKILLMAKE=Blacksmithing 37.9
+CATEGORY=Helmets
+SUBSECTION=Iron
+DESCRIPTION=Norse Helm
+// CanUse=can_u_human|can_u_elf
+REQSTR=35
+TEVENTS=t_equipitem
+DUPELIST=0140f
+
+ON=@Create
+HITPOINTS=100
+
+[ITEMDEF 0140f]
+//norse helm
+DUPEITEM=0140e
+
+
+
+
+
+[ITEMDEF 01410]
+DEFNAME=i_platemail_arms
+TYPE=t_armor
+FLIP=1
+ARMOR=40
+VALUE=72
+WEIGHT=5.0
+RESOURCES=18 i_ingot_iron
+SKILLMAKE=Blacksmithing 66.3
+CATEGORY=Armors
+SUBSECTION=Iron
+DESCRIPTION=Platemail Arms
+// CanUse=can_u_human|can_u_elf
+REQSTR=50
+TEVENTS=t_equipitem
+DUPELIST=01417
+
+ON=@Create
+HITPOINTS=100
+
+[ITEMDEF 01417]
+//platemail arms
+DUPEITEM=01410
+
+
+
+[ITEMDEF 01411]
+DEFNAME=i_platemail_leggings
+TYPE=t_armor
+FLIP=1
+ARMOR=36
+VALUE=80
+WEIGHT=7.0
+RESOURCES=20 i_ingot_iron
+SKILLMAKE=Blacksmithing 51.8
+CATEGORY=Armors
+SUBSECTION=Iron
+DESCRIPTION=Platemail Legs
+// CanUse=can_u_human|can_u_elf
+REQSTR=60
+TEVENTS=t_equipitem
+DUPELIST=0141a
+
+ON=@Create
+HITPOINTS={36 48}
+
+
+[ITEMDEF 0141a]
+//platemail legs
+DUPEITEM=01411
+
+
+
+
+[ITEMDEF 01412]
+DEFNAME=i_platemail_helm
+TYPE=t_armor
+FLIP=1
+ARMOR=25
+VALUE=60
+WEIGHT=5.0
+RESOURCES=15 i_ingot_iron
+SKILLMAKE=Blacksmithing 52.6
+CATEGORY=Helmets
+SUBSECTION=Iron
+DESCRIPTION=Plate Helm
+// CanUse=can_u_human|can_u_elf
+REQSTR=50
+TEVENTS=t_equipitem
+DUPELIST=01419
+
+ON=@Create
+HITPOINTS=100
+
+
+[ITEMDEF 01419]
+//plate helm
+DUPEITEM=01412
+
+
+
+
+
+[ITEMDEF 01413]
+DEFNAME=i_platemail_gorget
+TYPE=t_armor
+FLIP=1
+ARMOR=55
+VALUE=40
+WEIGHT=2.0
+RESOURCES=10 i_ingot_iron
+SKILLMAKE=Blacksmithing 46.4
+CATEGORY=Armors
+SUBSECTION=Iron
+DESCRIPTION=Platemail Gorget
+// CanUse=can_u_human|can_u_elf
+REQSTR=45
+TEVENTS=t_equipitem
+
+ON=@Create
+HITPOINTS=100
+
+
+
+
+
+[ITEMDEF 01414]
+DEFNAME=i_platemail_gloves
+TYPE=t_armor
+FLIP=1
+ARMOR=45
+VALUE=48
+WEIGHT=2.0
+RESOURCES=12 i_ingot_iron
+SKILLMAKE=Blacksmithing 48.9
+CATEGORY=Armors
+SUBSECTION=Iron
+DESCRIPTION=Platemail Gloves
+// CanUse=can_u_human|can_u_elf
+REQSTR=40
+TEVENTS=t_equipitem
+DUPELIST=01418
+
+ON=@Create
+HITPOINTS=100
+
+
+[ITEMDEF 01418]
+//platemail gloves
+DUPEITEM=01414
+
+
+
+
+
+[ITEMDEF 01415]
+DEFNAME=i_platemail_chest
+TYPE=t_armor
+FLIP=1
+ARMOR=32
+VALUE=100
+WEIGHT=10.0
+RESOURCES=25 i_ingot_iron
+SKILLMAKE=Blacksmithing 75.0
+CATEGORY=Armors
+SUBSECTION=Iron
+DESCRIPTION=Platemail Tunic
+// CanUse=can_u_human|can_u_elf
+REQSTR=50
+TEVENTS=t_equipitem
+DUPELIST=01416
+
+ON=@Create
+HITPOINTS=100
+
+
+[ITEMDEF 01416]
+//platemail
+DUPEITEM=01415
+
+
+// ON=@EQUIP
+// IF !(<SRC.NPC>)
+	// IF (<SRC.DEX> < 45)
+		// SRC.sysmessageloc <def.tcolor_text>, <def.empty_cliloc2>, You are not agile enough to wear this.
+		// fUnequip
+		// RETURN 1
+	// ENDIF
+	// SRC.DEX -=8 // olmali mi ?
+// ENDIF
+
+// ON=@UNEQUIP
+// IF !(<SRC.NPC>)
+	// SRC.DEX +=8  // olmali mi ?
+// ENDIF
+
+
+[eof]

@@ -1,0 +1,740 @@
+
+
+[ITEMDEF i_scimitar_power]
+ID=i_scimitar
+NAME=Scimitar of Power
+VALUE=7500
+TEVENTS=t_equipitem
+CATEGORY=Provisions - Weapons - Magic
+SUBSECTION=Magic Scimitars
+DESCRIPTION=Scimitar of Power
+RESDISPDNHUE=color_magic_weap_power
+
+ON=@Create
+MOREY=morey_magic_weap_power
+ATTR=attr_magic
+HITPOINTS={125 126}
+COLOR=color_magic_weap
+
+
+[ITEMDEF i_halberd_power]
+ID=i_halberd
+NAME=Halberd of Power
+//RANGE=0,2 // 55r-2000 de 2 kareden vuran silah yok
+RANGE=0,1
+VALUE=7500
+TEVENTS=t_equipitem
+CATEGORY=Provisions - Weapons - Magic
+SUBSECTION=Magic Halberds
+DESCRIPTION=Halberd of Power
+RESDISPDNHUE=color_magic_weap_power
+
+ON=@Create
+MOREY=morey_magic_weap_power
+ATTR=attr_magic
+HITPOINTS={125 126}
+COLOR=color_magic_weap
+
+
+[ITEMDEF i_bardiche_power]
+ID=i_bardiche
+NAME=Bardiche of Power
+//RANGE=0,2 // 55r-2000 de 2 kareden vuran silah yok
+RANGE=0,1
+VALUE=7500
+TEVENTS=t_equipitem
+CATEGORY=Provisions - Weapons - Magic
+SUBSECTION=Magic Bardiches
+DESCRIPTION=Bardiche of Power
+RESDISPDNHUE=color_magic_weap_power
+
+ON=@Create
+MOREY=morey_magic_weap_power
+ATTR=attr_magic
+HITPOINTS={125 126}
+COLOR=color_magic_weap
+
+
+
+[ITEMDEF i_cutlass_power]
+ID=i_cutlass
+NAME=Cutlass of Power
+VALUE=7500
+TEVENTS=t_equipitem
+CATEGORY=Provisions - Weapons - Magic
+SUBSECTION=Magic Cutlasses
+DESCRIPTION=Cutlass of Power
+RESDISPDNHUE=color_magic_weap_power
+
+ON=@Create
+MOREY=morey_magic_weap_power
+ATTR=attr_magic
+HITPOINTS={125 126}
+COLOR=color_magic_weap
+
+
+
+[ITEMDEF i_sword_viking_power]
+ID=i_sword_viking
+NAME=Viking Sword of Power
+VALUE=7500
+TEVENTS=t_equipitem
+CATEGORY=Provisions - Weapons - Magic
+SUBSECTION=Magic Viking Swords
+DESCRIPTION=Viking Sword of Power
+RESDISPDNHUE=color_magic_weap_power
+
+ON=@Create
+MOREY=morey_magic_weap_power
+ATTR=attr_magic
+HITPOINTS={125 126}
+COLOR=color_magic_weap
+
+
+
+[ITEMDEF i_katana_power]
+ID=i_katana
+NAME=Katana of Power
+VALUE=7500
+TEVENTS=t_equipitem
+CATEGORY=Provisions - Weapons - Magic
+SUBSECTION=Magic Katanas
+DESCRIPTION=Katana of Power
+RESDISPDNHUE=color_magic_weap_power
+
+ON=@Create
+MOREY=morey_magic_weap_power
+ATTR=attr_magic
+HITPOINTS={125 126}
+COLOR=color_magic_weap
+
+
+
+
+
+[ITEMDEF i_pitchfork_power]
+ID=i_pitchfork
+NAME=Pitchfork of Power
+//RANGE=0,2 // 55r-2000 de 2 kareden vuran silah yok
+RANGE=0,1
+VALUE=7500
+TEVENTS=t_equipitem
+CATEGORY=Provisions - Weapons - Magic
+SUBSECTION=Magic Pitchforks
+DESCRIPTION=Pitchfork of Power
+RESDISPDNHUE=color_magic_weap_power
+
+ON=@Create
+MOREY=morey_magic_weap_power
+ATTR=attr_magic
+HITPOINTS={125 126}
+COLOR=color_magic_weap
+
+
+
+[ITEMDEF i_broadsword_power]
+DEFNAME2=I_SWORD_BROAD_POWER
+ID=i_sword_broad
+NAME=Broadsword of Power
+VALUE=7500
+TEVENTS=t_equipitem
+CATEGORY=Provisions - Weapons - Magic
+SUBSECTION=Magic Broadswords
+DESCRIPTION=Broadsword of Power
+RESDISPDNHUE=color_magic_weap_power
+
+ON=@Create
+MOREY=morey_magic_weap_power
+ATTR=attr_magic
+HITPOINTS={125 126}
+COLOR=color_magic_weap
+
+
+
+[ITEMDEF i_kryss_power]
+ID=i_kryss
+NAME=Kryss of Power
+VALUE=7500
+TEVENTS=t_equipitem
+CATEGORY=Provisions - Weapons - Magic
+SUBSECTION=Magic Krysses
+DESCRIPTION=Kryss of Power
+RESDISPDNHUE=color_magic_weap_power
+
+
+ON=@Create
+MOREY=morey_magic_weap_power
+ATTR=attr_magic
+HITPOINTS={125 126}
+COLOR=color_magic_weap
+
+
+
+[ITEMDEF i_sword_long_power]
+ID=i_sword_long
+NAME=Longsword of Power
+VALUE=7500
+TEVENTS=t_equipitem
+CATEGORY=Provisions - Weapons - Magic
+SUBSECTION=Magic Longswords
+DESCRIPTION=Longsword of Power
+RESDISPDNHUE=color_magic_weap_power
+
+ON=@Create
+MOREY=morey_magic_weap_power
+ATTR=attr_magic
+HITPOINTS={125 126}
+COLOR=color_magic_weap
+
+
+[ITEMDEF i_spear_power]
+ID=i_spear
+NAME=Spear of Power
+TEVENTS=t_equipitem
+//RANGE=0,2 // 55r-2000 de 2 kareden vuran silah yok
+RANGE=0,1
+VALUE=7500
+CATEGORY=Provisions - Weapons - Magic
+SUBSECTION=Magic Spears
+DESCRIPTION=Spear of Power
+RESDISPDNHUE=color_magic_weap_power
+
+ON=@Create
+MOREY=morey_magic_weap_power
+ATTR=attr_magic
+HITPOINTS={125 126}
+COLOR=color_magic_weap
+
+
+
+[ITEMDEF i_spear_short_power]
+ID=i_spear_short
+NAME=Short Spear of Power
+VALUE=7500
+TEVENTS=t_equipitem
+CATEGORY=Provisions - Weapons - Magic
+SUBSECTION=Magic Short Spears
+DESCRIPTION=Short Spear of Power
+RESDISPDNHUE=color_magic_weap_power
+
+ON=@Create
+MOREY=morey_magic_weap_power
+ATTR=attr_magic
+HITPOINTS={125 126}
+COLOR=color_magic_weap
+
+
+[ITEMDEF i_war_fork_power]
+ID=i_war_fork
+NAME=War Fork of Power
+VALUE=7500
+TEVENTS=t_equipitem
+CATEGORY=Provisions - Weapons - Magic
+SUBSECTION=Magic War Forks
+DESCRIPTION=War Fork of Power
+RESDISPDNHUE=color_magic_weap_power
+
+ON=@Create
+MOREY=morey_magic_weap_power
+ATTR=attr_magic
+HITPOINTS={125 126}
+COLOR=color_magic_weap
+
+[ITEMDEF i_mace_power]
+ID=i_mace
+NAME=Mace of Power
+VALUE=7500
+TEVENTS=t_equipitem
+CATEGORY=Provisions - Weapons - Magic
+SUBSECTION=Magic Maces
+DESCRIPTION=Mace of Power
+RESDISPDNHUE=color_magic_weap_power
+
+ON=@Create
+MOREY=morey_magic_weap_power
+ATTR=attr_magic
+HITPOINTS={125 126}
+COLOR=color_magic_weap
+
+
+
+[ITEMDEF i_mace_war_power]
+ID=i_mace_war
+NAME=War Mace of Power
+VALUE=7500
+TEVENTS=t_equipitem
+CATEGORY=Provisions - Weapons - Magic
+SUBSECTION=Magic War Maces
+DESCRIPTION=War Mace of Power
+RESDISPDNHUE=color_magic_weap_power
+
+ON=@Create
+MOREY=morey_magic_weap_power
+ATTR=attr_magic
+HITPOINTS={125 126}
+COLOR=color_magic_weap
+
+
+
+[ITEMDEF i_maul_power]
+ID=i_maul
+NAME=Maul of Power
+VALUE=7500
+TEVENTS=t_equipitem
+CATEGORY=Provisions - Weapons - Magic
+SUBSECTION=Magic Mauls
+DESCRIPTION=Maul of Power
+RESDISPDNHUE=color_magic_weap_power
+
+ON=@Create
+MOREY=morey_magic_weap_power
+ATTR=attr_magic
+HITPOINTS={125 126}
+COLOR=color_magic_weap
+
+
+
+
+[ITEMDEF i_hammer_pick_power]
+ID=i_hammer_pick
+NAME=Hammer Pick of Power
+VALUE=7500
+TEVENTS=t_equipitem
+CATEGORY=Provisions - Weapons - Magic
+SUBSECTION=Magic Hammer Picks
+DESCRIPTION=Hammer Pick of Power
+RESDISPDNHUE=color_magic_weap_power
+
+ON=@Create
+MOREY=morey_magic_weap_power
+ATTR=attr_magic
+HITPOINTS={125 126}
+COLOR=color_magic_weap
+
+
+
+[ITEMDEF i_hammer_war_power]
+ID=i_hammer_war
+NAME=War Hammer of Power
+VALUE=7500
+TEVENTS=t_equipitem
+CATEGORY=Provisions - Weapons - Magic
+SUBSECTION=Magic War Hammers
+DESCRIPTION=War Hammer of Power
+RESDISPDNHUE=color_magic_weap_power
+
+ON=@Create
+MOREY=morey_magic_weap_power
+ATTR=attr_magic
+HITPOINTS={125 126}
+COLOR=color_magic_weap
+
+
+[ITEMDEF i_axe_power]
+ID=i_axe
+NAME=Axe of Power
+VALUE=7500
+TEVENTS=t_equipitem
+CATEGORY=Provisions - Weapons - Magic
+SUBSECTION=Magic Axes
+DESCRIPTION=Axe of Power
+RESDISPDNHUE=color_magic_weap_power
+
+ON=@Create
+MOREY=morey_magic_weap_power
+ATTR=attr_magic
+HITPOINTS={125 126}
+COLOR=color_magic_weap
+
+
+
+[ITEMDEF i_axe_exec_power]
+ID=i_axe_exec
+NAME=Executioner's Axe of Power
+VALUE=7500
+TEVENTS=t_equipitem
+CATEGORY=Provisions - Weapons - Magic
+SUBSECTION=Magic Executioner's Axes
+DESCRIPTION=Executioner's Axe of Power
+RESDISPDNHUE=color_magic_weap_power
+
+ON=@Create
+MOREY=morey_magic_weap_power
+ATTR=attr_magic
+HITPOINTS={125 126}
+COLOR=color_magic_weap
+
+
+[ITEMDEF i_axe_battle_power]
+ID=i_axe_battle
+NAME=Battle Axe of Power
+VALUE=7500
+TEVENTS=t_equipitem
+CATEGORY=Provisions - Weapons - Magic
+SUBSECTION=Magic Battle Axes
+DESCRIPTION=Battle Axe of Power
+RESDISPDNHUE=color_magic_weap_power
+
+ON=@Create
+MOREY=morey_magic_weap_power
+ATTR=attr_magic
+HITPOINTS={125 126}
+COLOR=color_magic_weap
+
+
+
+[ITEMDEF i_axe_double_power]
+DEFNAME=i_axe_double_power
+ID=i_axe_double
+NAME=Double Axe of Power
+VALUE=7500
+TEVENTS=t_equipitem
+CATEGORY=Provisions - Weapons - Magic
+SUBSECTION=Magic Double Axes
+DESCRIPTION=Double Axe of Power
+RESDISPDNHUE=color_magic_weap_power
+
+ON=@Create
+MOREY=morey_magic_weap_power
+ATTR=attr_magic
+HITPOINTS={125 126}
+COLOR=color_magic_weap
+
+
+
+[ITEMDEF i_axe_two_hand_power]
+ID=i_axe_two_hand
+NAME=Two Handed Axe of Power
+VALUE=7500
+TEVENTS=t_equipitem
+CATEGORY=Provisions - Weapons - Magic
+SUBSECTION=Magic Two Handed Axes
+DESCRIPTION=Two Handed Axe of Power
+RESDISPDNHUE=color_magic_weap_power
+
+ON=@Create
+MOREY=morey_magic_weap_power
+ATTR=attr_magic
+HITPOINTS={125 126}
+COLOR=color_magic_weap
+
+
+[ITEMDEF i_axe_war_power]
+ID=i_axe_war
+NAME=War Axe of Power
+VALUE=7500
+TEVENTS=t_equipitem
+SKILL=Macefighting
+CATEGORY=Provisions - Weapons - Magic
+SUBSECTION=Magic War Axes
+DESCRIPTION=War Axe of Power
+RESDISPDNHUE=color_magic_weap_power
+
+ON=@Create
+MOREY=morey_magic_weap_power
+ATTR=attr_magic
+HITPOINTS={125 126}
+COLOR=color_magic_weap
+
+[ITEMDEF i_axe_battle_large_power]
+ID=i_axe_battle_large
+NAME=Large Battle Axe of Power
+VALUE=7500
+TEVENTS=t_equipitem
+CATEGORY=Provisions - Weapons - Magic
+SUBSECTION=Magic Large Battle Axes
+DESCRIPTION=Large Battle Axe of Power
+RESDISPDNHUE=color_magic_weap_power
+
+ON=@Create
+MOREY=morey_magic_weap_power
+ATTR=attr_magic
+HITPOINTS={125 126}
+COLOR=color_magic_weap
+
+
+[ITEMDEF i_club_power]
+ID=i_club
+NAME=Club of Power
+VALUE=7500
+TEVENTS=t_equipitem
+CATEGORY=Provisions - Weapons - Magic
+SUBSECTION=Magic Clubs
+DESCRIPTION=Club of Power
+RESDISPDNHUE=color_magic_weap_power
+
+ON=@Create
+MOREY=morey_magic_weap_power
+ATTR=attr_magic
+HITPOINTS={125 126}
+COLOR=color_magic_weap
+
+
+
+
+[ITEMDEF i_bow_power]
+ID=i_bow
+NAME=Bow of Power
+VALUE=7500
+TEVENTS=t_equipitem
+CATEGORY=Provisions - Weapons - Magic
+SUBSECTION=Magic Bows
+DESCRIPTION=Bow of Power
+RESDISPDNHUE=color_magic_weap_power
+
+ON=@Create
+MOREY=morey_magic_weap_power
+ATTR=attr_magic
+HITPOINTS={125 126}
+COLOR=color_magic_weap
+
+
+[ITEMDEF i_yumi_power]
+ID=i_yumi
+NAME=Yumi of Power
+VALUE=7500
+TEVENTS=t_equipitem
+CATEGORY=Provisions - Weapons - Magic
+SUBSECTION=Magic Bows
+DESCRIPTION=Yumi of Power
+RESDISPDNHUE=color_magic_weap_power
+
+ON=@Create
+MOREY=morey_magic_weap_power
+ATTR=attr_magic
+HITPOINTS={125 126}
+COLOR=color_magic_weap
+
+
+[ITEMDEF i_magical_shortbow_power]
+ID=i_magical_shortbow
+NAME=Shortbow of Power
+VALUE=7500
+TEVENTS=t_equipitem
+CATEGORY=Provisions - Weapons - Magic
+SUBSECTION=Magic Bows
+DESCRIPTION=Shortbow of Power
+RESDISPDNHUE=color_magic_weap_power
+
+ON=@Create
+MOREY=morey_magic_weap_power
+ATTR=attr_magic
+HITPOINTS={125 126}
+COLOR=color_magic_weap
+
+
+[ITEMDEF i_crossbow_power]
+ID=i_crossbow
+NAME=Crossbow of Power
+VALUE=7500
+TEVENTS=t_equipitem
+CATEGORY=Provisions - Weapons - Magic
+SUBSECTION=Magic Crossbows
+DESCRIPTION=Crossbow of Power
+RESDISPDNHUE=color_magic_weap_power
+
+ON=@Create
+MOREY=morey_magic_weap_power
+ATTR=attr_magic
+HITPOINTS={125 126}
+COLOR=color_magic_weap
+
+
+[ITEMDEF i_crossbow_heavy_power]
+ID=i_crossbow_heavy
+NAME=Heavy Crossbow of Power
+VALUE=7500
+TEVENTS=t_equipitem
+CATEGORY=Provisions - Weapons - Magic
+SUBSECTION=Magic Heavy Crossbows
+DESCRIPTION=Heavy Crossbow of Power
+RESDISPDNHUE=color_magic_weap_power
+
+ON=@Create
+MOREY=morey_magic_weap_power
+ATTR=attr_magic
+HITPOINTS={125 126}
+COLOR=color_magic_weap
+
+[ITEMDEF I_STAFF_BLACK_POWER]
+ID=I_STAFF_BLACK
+NAME=Black Staff of Power
+//RANGE=0,2 // 55r-2000 de 2 kareden vuran silah yok
+RANGE=0,1
+VALUE=7500
+TEVENTS=t_equipitem
+CATEGORY=Provisions - Weapons - Magic
+SUBSECTION=Magic Broadswords
+DESCRIPTION=Black Staff
+RESDISPDNHUE=color_magic_weap_power
+
+ON=@Create
+MOREY=morey_magic_weap_power
+ATTR=attr_magic
+HITPOINTS={125 126}
+COLOR=color_magic_weap
+
+
+[ITEMDEF I_STAFF_QUARTER_POWER]
+DEFNAME=I_STAFF_QUARTER_POWER
+ID=I_STAFF_QUARTER
+NAME=Quarter Staff of Power
+//RANGE=0,2 // 55r-2000 de 2 kareden vuran silah yok
+RANGE=0,1
+VALUE=7500
+TEVENTS=t_equipitem
+CATEGORY=Provisions - Weapons - Magic
+SUBSECTION=Magic Broadswords
+DESCRIPTION=Quarter Staff
+RESDISPDNHUE=color_magic_weap_power
+
+ON=@Create
+MOREY=morey_magic_weap_power
+ATTR=attr_magic
+HITPOINTS={125 126}
+COLOR=color_magic_weap
+
+
+[ITEMDEF I_PIKE_Power]
+DEFNAME=I_PIKE_Power
+ID=I_PIKE
+NAME=Pike of Power
+//RANGE=0,2 // 55r-2000 de 2 kareden vuran silah yok
+RANGE=0,1
+VALUE=7500
+TEVENTS=t_equipitem
+CATEGORY=Silahlar
+SUBSECTION=Pike
+DESCRIPTION=Pike of Power
+RESDISPDNHUE=color_magic_weap_power
+
+ON=@Create
+MOREY=morey_magic_weap_power
+ATTR=attr_magic
+HITPOINTS={125 126}
+COLOR=color_magic_weap
+
+
+[ITEMDEF I_SWORD_PALADIN_Power]
+DEFNAME=I_SWORD_PALADIN_Power
+ID=I_SWORD_PALADIN
+NAME=Paladin Sword of Power
+VALUE=7500
+TEVENTS=t_equipitem
+CATEGORY=Silahlar
+SUBSECTION=Paladin Sword
+DESCRIPTION=Paladin Sword of Power
+RESDISPDNHUE=color_magic_weap_power
+
+ON=@Create
+MOREY=morey_magic_weap_power
+ATTR=attr_magic
+HITPOINTS={125 126}
+COLOR=color_magic_weap
+
+
+
+
+[ITEMDEF I_STAFF_BLADED_Power]
+DEFNAME=I_STAFF_BLADED_Power
+ID=I_STAFF_BLADED
+NAME=Bladed Staff of Power
+//RANGE=0,2 // 55r-2000 de 2 kareden vuran silah yok
+RANGE=0,1
+VALUE=7500
+TEVENTS=t_equipitem
+CATEGORY=Silahlar
+SUBSECTION=Bladed Staff
+DESCRIPTION=Bladed Staff of Power
+RESDISPDNHUE=color_magic_weap_power
+
+ON=@Create
+MOREY=morey_magic_weap_power
+ATTR=attr_magic
+HITPOINTS={125 126}
+COLOR=color_magic_weap
+
+
+
+[ITEMDEF I_SCYTHE_Power]
+DEFNAME=I_SCYTHE_Power
+ID=I_SCYTHE
+NAME=Scythe of Power
+//RANGE=0,2 // 55r-2000 de 2 kareden vuran silah yok
+RANGE=0,1
+VALUE=7500
+TEVENTS=t_equipitem
+CATEGORY=Silahlar
+SUBSECTION=Scythe
+DESCRIPTION=Scythe of Power
+RESDISPDNHUE=color_magic_weap_power
+
+
+ON=@Create
+MOREY=morey_magic_weap_power
+ATTR=attr_magic
+HITPOINTS={125 126}
+COLOR=color_magic_weap
+
+
+
+[ITEMDEF I_LANCE_Power]
+DEFNAME=I_LANCE_Power
+ID=I_LANCE
+NAME=Lance of Power
+//RANGE=0,2 // 55r-2000 de 2 kareden vuran silah yok
+RANGE=0,1
+VALUE=7500
+TEVENTS=t_equipitem
+CATEGORY=Silahlar
+SUBSECTION=Lance
+DESCRIPTION=Lance of Power
+RESDISPDNHUE=color_magic_weap_power
+
+ON=@Create
+MOREY=morey_magic_weap_power
+ATTR=attr_magic
+HITPOINTS={125 126}
+COLOR=color_magic_weap
+
+
+
+[ITEMDEF i_bow_composite_power]
+DEFNAME=i_bow_composite_power
+ID=i_bow_composite
+NAME=Composite Bow of Power
+VALUE=11000
+TEVENTS=t_equipitem
+CATEGORY=Silahlar
+SUBSECTION=Composite Bow
+DESCRIPTION=Composite Bow of Power
+RESDISPDNHUE=color_magic_weap_power
+
+ON=@Create
+MOREY=morey_magic_weap_power
+ATTR=attr_magic
+HITPOINTS={125 126}
+COLOR=color_magic_weap
+
+
+
+[ITEMDEF i_ornate_axe_power]
+DEFNAME=i_ornate_axe_power
+ID=i_ornate_axe
+NAME=Ornate Axe of Power
+VALUE=11000
+TEVENTS=t_equipitem
+CATEGORY=Silahlar
+SUBSECTION=Ornate Axe
+DESCRIPTION=Ornate Axe of Power
+RESDISPDNHUE=color_magic_weap_power
+
+ON=@Create
+MOREY=morey_magic_weap_power
+ATTR=attr_magic
+HITPOINTS={125 126}
+COLOR=color_magic_weap
+
+
+
+[eof]

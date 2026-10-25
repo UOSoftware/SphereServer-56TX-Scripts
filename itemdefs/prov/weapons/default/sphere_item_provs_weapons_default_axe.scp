@@ -1,0 +1,311 @@
+
+
+// speedler silindi
+// weightler ayarlandı,
+// silah hızları weightler üzerinden hesaplıyor. (old style)
+
+[ITEMDEF 0e85]
+DEFNAME=i_pickaxe
+TYPE=t_weapon_mace_pick
+DAM=1,15
+FLIP=1
+SKILL=Swordsmanship
+// SPEED=44
+VALUE=48
+WEIGHT=8.7
+TWOHANDS=N
+RESOURCES=4 i_ingot_iron,1 i_log
+SKILLMAKE=Tinkering 42.1,t_tinker_tools
+CATEGORY=Weapons
+SUBSECTION=Swordsmanship
+DESCRIPTION=PickAxe
+ReqStr=50
+TEVENTS=t_equipitem
+DUPELIST=0e86
+
+ON=@Create
+HITPOINTS={500 1000}
+//UsesMax=50
+
+
+ON=@TARGON_CHAR
+IF (<SRC.TARG.UID> == <SRC>)
+    //SRC.ACTARG1 = 32   
+    SRC.ACTARG2 = 1      
+    SRC.ACTARG3 = 2      
+
+    //SRC.ACT = <REF4>
+    SRC.ACTPRV = <UID>
+    SRC.ACTP = <eval <SRC.P.X> + 1>,<eval <SRC.P.Y>+ 1>,<SRC.P.Z>,<SRC.P.M>
+    SRC.ACTION = 45	
+    RETURN 1
+ENDIF	
+
+
+ON=@TARGON_ITEM
+IF (<SRC.TARG.UID> == <UID>)
+
+   // SRC.ACTARG1 = 32   
+    SRC.ACTARG2 = 1   
+    SRC.ACTARG3 = 2    
+    SRC.ACT = <REF4>
+    //SRC.ACTPRV = <UID>
+    SRC.ACTP = <eval <SRC.P.X> + 1>,<eval <SRC.P.Y>+ 1>,<SRC.P.Z>,<SRC.P.M>
+    SRC.ACTION = 45	
+    RETURN 1
+ENDIF
+
+
+[ITEMDEF 0e86]
+//pickaxe
+DUPEITEM=0e85
+
+
+
+
+[ITEMDEF 013fa]
+DEFNAME=i_axe_battle_large
+TYPE=t_weapon_axe
+DAM=6,38
+FLIP=1
+SKILL=Swordsmanship
+// SPEED=35
+VALUE=138
+WEIGHT=8.0
+TWOHANDS=Y
+RESOURCES=20 i_ingot_iron
+SKILLMAKE=Blacksmithing 28.0
+CATEGORY=Weapons
+SUBSECTION=Swordsmanship
+DESCRIPTION=Large Battle Axe
+// CanUse=can_u_human|can_u_elf
+ReqStr=45
+TEVENTS=t_equipitem
+DUPELIST=013fb
+
+ON=@Create
+HITPOINTS={100 250}
+UsesMax=150
+
+[ITEMDEF 013fb]
+//Large Battle Axe
+DUPEITEM=013fa
+
+
+
+
+[ITEMDEF 0f4c]
+DEFNAME=i_axe_double
+TYPE=t_weapon_axe
+DAM=5,35
+FLIP=1
+SKILL=Swordsmanship
+// SPEED=41
+VALUE=124
+WEIGHT=8.0
+TWOHANDS=Y
+RESOURCES=12 i_ingot_iron
+SKILLMAKE=Blacksmithing 29.3
+CATEGORY=Weapons
+SUBSECTION=Swordsmanship
+DESCRIPTION=Double Axe
+ReqStr=45
+// CanUse=can_u_human|can_u_elf
+TEVENTS=t_equipitem
+DUPELIST=0F4B
+
+ON=@Create
+HITPOINTS={100 250}
+UsesMax=150
+
+[ITEMDEF 0F4B]
+//double axe
+DUPEITEM=0f4c
+
+
+
+
+[ITEMDEF 0f4a]
+DEFNAME=i_axe
+TYPE=t_weapon_axe
+DAM=6,33
+FLIP=1
+SKILL=Swordsmanship
+// SPEED=44
+VALUE=147
+WEIGHT=7.0
+TWOHANDS=Y
+RESOURCES=14 i_ingot_iron
+SKILLMAKE=Blacksmithing  34.2
+CATEGORY=Weapons
+SUBSECTION=Swordsmanship
+DESCRIPTION=Axe
+ReqStr=35
+// CanUse=can_u_human|can_u_elf
+TEVENTS=t_equipitem
+DUPELIST=0f49
+
+ON=@Create
+HITPOINTS={100 250}
+UsesMax=150
+
+[ITEMDEF 0f49]
+//axe
+DUPEITEM=0f4a
+
+
+
+[ITEMDEF 0f48]
+DEFNAME=i_axe_battle
+TYPE=t_weapon_axe
+DAM=6,38
+FLIP=1
+SKILL=Swordsmanship
+// SPEED=38
+VALUE=141
+WEIGHT=8.0
+TWOHANDS=Y
+RESOURCES=14 i_ingot_iron
+SKILLMAKE=Blacksmithing 30.5
+CATEGORY=Weapons
+SUBSECTION=Swordsmanship
+DESCRIPTION=Battle Axe
+ReqStr=40
+// CanUse=can_u_human|can_u_elf
+TEVENTS=t_equipitem
+DUPELIST=0f47
+
+ON=@Create
+HITPOINTS={100 250}
+UsesMax=150
+
+[ITEMDEF 0f47]
+//battle axe
+DUPEITEM=0f48
+
+
+
+[ITEMDEF 0f45]
+DEFNAME=i_axe_exec
+TYPE=t_weapon_axe
+DAM=6,33
+FLIP=1
+SKILL=Swordsmanship
+// SPEED=41
+VALUE=163
+RANGE=0,1
+WEIGHT=7.0
+TWOHANDS=Y
+RESOURCES=16 i_ingot_iron
+SKILLMAKE=Blacksmithing 34.2
+CATEGORY=Weapons
+SUBSECTION=Swordsmanship
+DESCRIPTION=Executioner Axe
+ReqStr=35
+// CanUse=can_u_human|can_u_elf
+TEVENTS=t_equipitem
+DUPELIST=0f46
+
+ON=@Create
+HITPOINTS={100 250}
+UsesMax=150
+
+[ITEMDEF 0f46]
+//Executioner Axe
+DUPEITEM=0f45
+
+
+[ITEMDEF 0f44]
+DEFNAME=i_hatchet
+TYPE=t_weapon_axe
+DAM=2,17 
+FLIP=1
+SKILL=Swordsmanship
+// SPEED=47
+VALUE=33
+RANGE=0,1
+WEIGHT=5.0
+// TWOHANDS=Y
+TWOHANDS=N
+RESOURCES=4 i_ingot_iron
+SKILLMAKE=Tinkering 99.9,t_tinker_tools
+CATEGORY=Weapons
+SUBSECTION=Swordsmanship
+DESCRIPTION=Hatchet
+REQSTR=15
+// CanUse=can_u_human|can_u_elf
+TEVENTS=t_equipitem
+DUPELIST=0f43
+
+ON=@Create
+HITPOINTS={500 1000}
+//UsesMax=150
+
+[ITEMDEF 0f43]
+//hatchet
+DUPEITEM=0f44
+
+
+[ITEMDEF 01442]
+DEFNAME=i_axe_two_hand
+TYPE=t_weapon_axe
+DAM=5,39
+FLIP=1
+SKILL=Swordsmanship
+// SPEED=38
+VALUE=161
+RANGE=0,1
+WEIGHT=10.0
+TWOHANDS=Y
+RESOURCES=16 i_ingot_iron
+SKILLMAKE=Blacksmithing 33.0
+CATEGORY=Weapons
+SUBSECTION=Swordsmanship
+DESCRIPTION=Two Handed Axe
+ReqStr=40
+// CanUse=can_u_human|can_u_elf
+TEVENTS=t_equipitem
+DUPELIST=01443
+
+ON=@Create
+HITPOINTS={100 250}
+UsesMax=150
+
+[ITEMDEF 01443]
+//two handed axe
+DUPEITEM=01442
+
+
+
+[ITEMDEF 013af]
+DEFNAME=i_axe_war
+TYPE=t_weapon_axe
+DAM=9,27
+FLIP=1
+SKILL=Macefighting
+// SPEED=37
+VALUE=171
+RANGE=0,1
+WEIGHT=6.0
+TWOHANDS=N
+RESOURCES=16 i_ingot_iron
+SKILLMAKE=Blacksmithing 39.1
+CATEGORY=Weapons
+SUBSECTION=Macefighting
+DESCRIPTION=War Axe
+// CanUse=can_u_human|can_u_elf
+ReqStr=35
+TEVENTS=t_equipitem
+DUPELIST=013b0
+
+ON=@Create
+HITPOINTS={100 250}
+UsesMax=150
+
+[ITEMDEF 013b0]
+//War Axe
+DUPEITEM=013af
+
+
+
+[eof]

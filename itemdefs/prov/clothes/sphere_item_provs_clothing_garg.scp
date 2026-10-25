@@ -1,0 +1,183 @@
+
+
+[ITEMDEF 04000]
+DEFNAME=i_gargish_robe
+NAME=Gargish robe
+TYPE=t_clothing
+DYE=1
+FLIP=1
+// ARMOR=7
+ARMOR=0
+VALUE=105
+WEIGHT=16.1
+RESOURCES=16 i_cloth
+SKILLMAKE=Tailoring 59.0,t_sewing_kit
+// CanUse=can_u_gargoyle
+ReqStr=10
+TEVENTS=t_equipitem
+DUPELIST=04001
+CATEGORY=Clothes
+SUBSECTION=Shirts & Robes
+DESCRIPTION=Gargish Robe
+
+ON=@Create
+HITPOINTS={36 48}
+
+[ITEMDEF 04001]
+//Gargish robe
+DUPEITEM=04000
+
+[ITEMDEF 04002]
+DEFNAME=i_gargish_robe_fancy
+NAME=Gargish fancy robe
+TYPE=t_clothing
+DYE=1
+FLIP=1
+// ARMOR=7
+ARMOR=0
+VALUE=105
+WEIGHT=16.1
+RESOURCES=16 i_cloth
+SKILLMAKE=Tailoring 59.0,t_sewing_kit
+// CanUse=can_u_gargoyle
+ReqStr=10
+TEVENTS=t_equipitem
+DUPELIST=04003
+CATEGORY=Clothes
+SUBSECTION=Shirts & Robes
+DESCRIPTION=Gargish Fancy Robe
+
+ON=@Create
+HITPOINTS={36 48}
+
+[ITEMDEF 04003]
+//Gargish robe fancy
+DUPEITEM=04002
+
+
+[ITEMDEF 045a4]
+DEFNAME=i_gargish_cloth_wings
+NAME=Gargish cloth wing armor
+TYPE=t_clothing
+DYE=1
+FLIP=1
+// ARMOR=5
+ARMOR=0
+VALUE=70
+WEIGHT=9.1
+RESOURCES=9 i_cloth
+SKILLMAKE=Tailoring 69.0,t_sewing_kit
+ReqStr=10
+// CanUse=can_u_gargoyle
+TEVENTS=t_equipitem
+DUPELIST=045a5
+CATEGORY=Clothes
+SUBSECTION=Gargoyle Cloth Armor
+DESCRIPTION=Gargish Cloth Wing Armor
+
+ON=@Create
+HITPOINTS={36 48}
+
+[ITEMDEF 045a5]
+//gargoyle cloth wings
+DUPEITEM=045a4
+
+
+[ITEMDEF 046aa]
+DEFNAME=i_gargish_sash_female
+TYPE=t_clothing
+DYE=1
+FLIP=1
+// ARMOR=1
+ARMOR=0
+VALUE=14
+WEIGHT=4.1
+RESOURCES=4 i_cloth
+SKILLMAKE=Tailoring 4.5,t_sewing_kit
+// CanUse=can_u_gargoyle|can_u_female
+ReqStr=10
+TEVENTS=t_equipitem
+DUPELIST=046ab
+CATEGORY=Clothes
+SUBSECTION=Miscellaneous
+DESCRIPTION=Gargish Female Sash
+
+ON=@Create
+HITPOINTS={36 48}
+
+[ITEMDEF 046ab]
+//gargish female sash
+DUPEITEM=046aa
+
+
+[ITEMDEF 046b4]
+DEFNAME=i_gargish_sash
+NAME=Gargish sash
+TYPE=t_clothing
+DYE=1
+FLIP=1
+// ARMOR=1
+ARMOR=0
+VALUE=14
+WEIGHT=4.1
+RESOURCES=4 i_cloth
+SKILLMAKE=Tailoring 4.5,t_sewing_kit
+// CanUse=can_u_gargoyle
+//TAG.MaleOnly=1
+ReqStr=10
+TEVENTS=t_equipitem
+DUPELIST=046b5
+CATEGORY=Clothes
+SUBSECTION=Miscellaneous
+DESCRIPTION=Gargish Sash
+
+ON=@Create
+HITPOINTS={36 48}
+
+[ITEMDEF 046b5]
+//gargish sash
+DUPEITEM=046b4
+
+
+[ITEMDEF 050d8]
+DEFNAME=i_gargish_apron
+NAME=Gargish half apron
+TYPE=t_clothing
+DYE=1
+FLIP=1
+// ARMOR=2
+ARMOR=0
+VALUE=24
+WEIGHT=6.1
+RESOURCES=6 i_hides_cut
+SKILLMAKE=Tailoring 22.7,t_sewing_kit
+// CanUse=can_u_gargoyle
+ReqStr=10
+TEVENTS=t_equipitem
+DUPELIST=050d9
+CATEGORY=Clothes
+SUBSECTION=Miscellaneous
+DESCRIPTION=Gargish Half Apron
+
+ON=@Create
+HITPOINTS={36 48}
+
+[ITEMDEF 050d9]
+//Gargish half apron
+DUPEITEM=050d8
+
+
+[ITEMDEF 09986]
+DEFNAME=i_epaulette_garg
+NAME=Gargish Epaulette
+TYPE=t_clothing
+// CanUse=can_u_gargoyle
+TEVENTS=t_equipitem
+CATEGORY=Clothes
+SUBSECTION=Miscellaneous
+DESCRIPTION=Gargish Epaulette
+
+
+
+
+[eof]

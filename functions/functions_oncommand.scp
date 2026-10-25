@@ -1,0 +1,142 @@
+
+
+
+
+[function f_oncommand]
+IF (<ARGN>)
+
+	// PLEVEL = General
+	IF (STRMATCH(*MySQL*,'<args>'))
+		SRC.SYSMESSAGELOC <def.tcolor_red>,600115 // "Hatalı komut."
+		RETURN 1
+	ENDIF
+				
+	IF (STRMATCH('where','<ARGS>'))
+		SRC.FUNC_WHERE
+	ENDIF
+	
+	// PLEVEL = Player
+	IF (<SRC.ACCOUNT.PLEVEL> == 1)
+		IF (<SRC.CTAG0.COMMAND.DELAY> > <SERV.TIME>)
+			SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu kadar hızlı komut giremezsiniz.
+			RETURN 1
+		ELSEIF !(STRMATCH('pinim','<ARGS>')) && !(<SRC.ISPINLOGIN>)
+			SRC.PINIM
+			RETURN 1
+		ENDIF
+		SRC.CTAG0.COMMAND.DELAY=<EVAL <SERV.TIME>+20>
+	ENDIF
+
+	
+	// PLEVEL =STAFF
+	IF (<SRC.ACCOUNT.PLEVEL> > 1)
+		IF !(<SRC.ISPINLOGIN>)
+			SRC.PINIM
+			RETURN 1
+		ENDIF
+		IF (<SRC.ACCOUNT.PLEVEL> < 6)
+			IF ((STRMATCH(*nuke*,'<ARGS>')) || (STRMATCH(*dispid*,'<ARGS>')) || (STRMATCH(*static*,'<ARGS>')) || (STRMATCH(*gold*,'<ARGS>')) || (STRMATCH(*CLEARTAGS*,'<ARGS>')) || (STRMATCH(*TAG0.CREAT*,'<ARGS>')) || (STRMATCH(*TAG0.SILINMEZ*,'<ARGS>')) || (STRMATCH(*DUPE*,'<ARGS>')) || (STRMATCH(*AMOUNT*,'<ARGS>')) || (STRMATCH(*ADD*,'<ARGS>')) || (STRMATCH(*disconnect*,'<ARGS>')) || (STRMATCH(*yetkilendir*,'<ARGS>')) || (STRMATCH(*PLEVEL*,'<ARGS>')) || (STRMATCH(*DELETEFILE*,'<ARGS>')) || (STRMATCH(*WRITEFILE*,'<ARGS>')) || (STRMATCH(*FILE*,'<ARGS>')) || (STRMATCH(*MYSQL*,'<ARGS>')) || (STRMATCH(*SERV*,'<ARGS>')) || (STRMATCH(*EXPORT*,'<ARGS>')) || (STRMATCH(*IMPORT*,'<ARGS>')) || (STRMATCH('LIST','<ARGS>')) || (STRMATCH(*INSERT*,'<ARGS>')) || (STRMATCH(*SELECT*,'<ARGS>')) || (STRMATCH(*UPDATE*,'<ARGS>')) || (STRMATCH(*EXECUTE*,'<ARGS>')) || (STRMATCH(*DELETE*,'<ARGS>')) || (STRMATCH(*DROP*,'<ARGS>')))	
+				SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu komutlar kapalıdır.
+				RETURN 1
+			ENDIF
+		ENDIF
+		
+		IF ( (STRMATCH('REMOVE','<ARGS>')) || (STRMATCH('DESTROY','<ARGS>')) )
+			SRC.TARGETF FUNC_TARGETF_REMOVE
+			SRC.SYSMESSAGELOC <def.tcolor_grey>,<def.empty_cliloc2>, What item or char do you want to remove?
+			RETURN 1
+			
+		ELSEIF (STRMATCH('FLIP','<ARGS>'))
+			SRC.TARGETF FUNC_TARGETF_FLIP
+			SRC.SYSMESSAGELOC <def.tcolor_grey>,<def.empty_cliloc2>, What item or char do you want to flip?
+			RETURN 1	
+			
+		ELSEIF (STRMATCH('mtele','<ARGS>'))
+			SRC.SYSMESSAGELOC <def.tcolor_grey>,<def.empty_cliloc2>, <defmsg.select_magic_target>
+			SRC.TARGETFG FUNC_TARGETFG_MTELE
+			RETURN 1		
+		ENDIF
+		
+	ENDIF
+
+ENDIF
+
+
+
+
+//  Custom Flip Function
+[FUNCTION FUNC_TARGETF_FLIP]
+REF1=<ARGO>
+IF (<REF1>)
+	REF1.FLIP
+	SRC.SYSMESSAGELOC <def.tcolor_green>,<def.empty_cliloc2>, Flipped: <REF1.NAME>
+	SRC.TARGETF FUNC_TARGETF_FLIP
+ELSE
+	RETURN 1
+ENDIF
+
+
+
+
+// Custom Remove Function
+[FUNCTION FUNC_TARGETF_REMOVE]
+IF !(<ARGO>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,600020 //"Hatalı seçim/hedef."
+	RETURN 1
+ENDIF
+IF (<SRC.ACCOUNT.PLEVEL> < 7)
+	IF (<ARGO.TAG0.SILINMEZ>)
+		SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu nesneyi siz silemezsiniz.
+		SRC.TARGETF FUNC_TARGETF_REMOVE
+		RETURN 1
+	ENDIF
+ENDIF
+IF (<ARGO.ISCHAR>)
+	IF (<ARGO.ISPLAYER>)
+		SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Oyuncular bu şekilde silinemez.
+		RETURN 1
+	ELSE
+		IF (<ARGO.OWNER>)
+			SRC.Logger [Char Removed]: Name=<ARGO.NAME>, Serial=<ARGO.UID>, <QVAL (<ARGO.OWNER>) ? Owner=<ARGO.OWNER.NAME> : Sahipsiz>
+		ENDIF
+		SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Char: <ARGO.NAME> removed.
+		ARGO.REMOVE
+	ENDIF
+ELSEIF (<ARGO.ISITEM>)
+	SRC.Logger [Item Removed]: <QVAL (<ARGO.TOPOBJ>)?:Sahibi=<ARGO.TOPOBJ.NAME>>, Topobj Serial=<ARGO.TOPOBJ.UID>, Name=<ARGO.NAME> Serial=<ARGO.UID>
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Item: <ARGO.NAME> removed.
+	ARGO.REMOVE
+ELSE
+   RETURN 1
+ENDIF
+
+SRC.TARGETF FUNC_TARGETF_REMOVE
+RETURN 1
+
+
+
+
+
+
+//  Custom Tele Function
+[FUNCTION FUNC_TARGETFG_MTELE]
+TARGETFG FUNC_TELE
+SYSMESSAGELOC <def.tcolor_grey>,<def.empty_cliloc2>, <defmsg.select_magic_target>
+
+[FUNCTION FUNC_TELE]
+SRC.FACE <SRC.TARGP>
+IF (<SRC.PRIVSHOW>)
+	SRC.GO <SRC.TARGP>
+ELSE
+	SRC.MOVETO <SRC.TARGP>
+ENDIF
+
+
+src.sysmessage <SRC.TARGP.X>,<SRC.TARGP.Y>,<SRC.TARGP.Z>,<SRC.TARGP.M>
+SRC.TARGETFG FUNC_TELE
+// RETURN 1
+
+
+
+
+[eof]

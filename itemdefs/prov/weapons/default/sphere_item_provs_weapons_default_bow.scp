@@ -1,0 +1,431 @@
+
+[ITEMDEF i_bow_Elven] // elven bow
+DEFNAME=i_bow_Elven
+NAME=elven bow
+ID=i_bow
+DAM=15,25
+SKILL=Archery
+REQSTR=30
+TWOHANDS=Y
+WEIGHT=5
+RESOURCES=20 i_log
+SKILLMAKE=99.5 BOWCRAFT, 60.0 MAGERY
+CATEGORY=Provisions - Weapons
+SUBSECTION=Bows - Exceptional
+DESCRIPTION=Elven Bow
+RESDISPDNHUE=237
+TEVENTS=t_equipitem
+
+ON=@Create
+HITPOINTS={100 200}
+COLOR=237
+
+ON=@EQUIP
+IF (<SRC.ARCHERY> < 90.0)
+	SRC.SYSMESSAGE You must be at least Master Archer to use this! 
+	fUnequip
+	RETURN 1
+ENDIF
+	
+ON=@DCLICK
+IF (<SRC.ARCHERY> < 90.0)
+	SRC.SYSMESSAGE You must be at least Master Archer to use this! 
+	fUnequip
+	RETURN 1
+ENDIF
+
+
+[ITEMDEF 013b1]
+DEFNAME=i_bow
+NAME=bow
+TYPE=t_weapon_bow
+TDATA3=i_arrow
+TDATA4=i_arrow_x
+DAM=9,41
+FLIP=1
+SKILL=Archery
+// SPEED=29
+RANGE=2,15
+VALUE=30
+WEIGHT=12.5
+TWOHANDS=Y
+RESOURCES=7 i_log
+SKILLMAKE=Bowcraft 17.8
+CATEGORY=Bows
+SUBSECTION=
+DESCRIPTION=
+// CanUse=can_u_human|can_u_elf
+ReqStr=20
+TEVENTS=t_equipitem
+DUPELIST=013b2
+
+ON=@Create
+HITPOINTS={100 250}
+
+[ITEMDEF 013b2]
+//bow
+DUPEITEM=013b1
+
+
+
+[ITEMDEF I_BOW_EXCEP] // exceptional bow
+DEFNAME=I_BOW_EXCEP
+ID=i_bow
+NAME=exceptional bow
+RESOURCES=9 i_log
+SKILLMAKE=75.5 BOWCRAFT
+DAM=9,41
+RANGE=2,15
+SKILL=Archery
+REQSTR=30
+TWOHANDS=Y
+WEIGHT=10.5
+CATEGORY=Provisions - Weapons
+SUBSECTION=Bows - Exceptional
+DESCRIPTION=Exceptional Bow
+TEVENTS=t_equipitem
+
+ON=@Create
+HITPOINTS={51 120}
+
+
+
+[ITEMDEF I_BOW_SUP] // superior bow
+DEFNAME=I_BOW_SUP
+ID=i_bow
+NAME=superior bow
+SKILLMAKE=45.0 BOWCRAFT
+RESOURCES=8 i_log
+DAM=9,41
+RANGE=2,15
+SKILL=Archery
+REQSTR=30
+TWOHANDS=Y
+WEIGHT=8.5
+CATEGORY=Provisions - Weapons
+SUBSECTION=Bows - Exceptional
+DESCRIPTION=Superior Bow
+TEVENTS=t_equipitem
+
+ON=@Create
+HITPOINTS={41 80}
+
+
+
+
+[ITEMDEF 0f50]
+DEFNAME=i_crossbow
+NAME=crossbow
+TYPE=t_weapon_xbow
+TDATA3=i_xbolt
+TDATA4=i_xbolt_x
+DAM=8,43
+FLIP=1
+SKILL=Archery
+// SPEED=26
+RANGE=2,15
+VALUE=120
+WEIGHT=12.0
+TWOHANDS=Y
+RESOURCES=7 i_log
+SKILLMAKE=Bowcraft 37.8
+CATEGORY=Bows
+SUBSECTION=
+DESCRIPTION=
+ReqStr=30
+// CanUse=can_u_human|can_u_elf
+TEVENTS=t_equipitem
+DUPELIST=0f4f
+
+ON=@Create
+HITPOINTS={100 250}
+
+[ITEMDEF 0f4f]
+//crossbow
+DUPEITEM=0f50
+
+
+[ITEMDEF I_XBOW_EXCEP] // exceptional crossbow
+DEFNAME=I_XBOW_EXCEP
+ID=i_crossbow
+NAME=exceptional crossbow
+RESOURCES=10 i_log
+SKILLMAKE=85.5 BOWCRAFT
+DAM=8,43
+RANGE=2,15
+SKILL=Archery
+REQSTR=30
+TWOHANDS=Y
+WEIGHT=11.0
+CATEGORY=Provisions - Weapons
+SUBSECTION=Bows - Exceptional
+DESCRIPTION=Exceptional Crossbow
+TEVENTS=t_equipitem
+
+ON=@Create
+HITPOINTS={51 140}
+
+
+[ITEMDEF I_XBOW_SUP] // superior crossbow
+DEFNAME=I_XBOW_SUP
+NAME=superior crossbow
+ID=i_crossbow
+RESOURCES=8 i_log
+SKILLMAKE=55.0 BOWCRAFT
+DAM=8,43
+RANGE=2,15
+SKILL=Archery
+REQSTR=30
+TWOHANDS=Y
+VALUE=100
+WEIGHT=9.0
+CATEGORY=Provisions - Weapons
+SUBSECTION=Bows - Exceptional
+DESCRIPTION=Superior Crossbow
+TEVENTS=t_equipitem
+
+ON=@Create
+HITPOINTS={41 100}
+
+
+
+
+[ITEMDEF 013fc]
+DEFNAME=i_crossbow_heavy
+NAME=heavy crossbow
+TYPE=t_weapon_xbow
+TDATA3=i_xbolt
+TDATA4=i_xbolt_x
+DAM=11,56
+FLIP=1
+SKILL=Archery
+// SPEED=20
+RANGE=2,15
+VALUE=150
+WEIGHT=20.0
+TWOHANDS=Y
+RESOURCES=10 i_log
+SKILLMAKE=Bowcraft 57.8
+CATEGORY=Bows
+SUBSECTION=
+DESCRIPTION=
+// CanUse=can_u_human|can_u_elf
+ReqStr=40
+TEVENTS=t_equipitem
+DUPELIST=013fd
+
+ON=@Create
+HITPOINTS={100 250}
+
+[ITEMDEF 013fd]
+//heavy crossbow
+DUPEITEM=013fc
+
+
+[ITEMDEF I_HXBOW_EXCEP] // exceptional heavy crossbow
+DEFNAME=I_HXBOW_EXCEP
+ID=i_crossbow_heavy
+NAME=exceptional heavy crossbow
+DAM=11,56
+RANGE=2,15
+SKILL=Archery
+REQSTR=30
+TWOHANDS=Y
+WEIGHT=13
+SKILLMAKE=95.5 BOWCRAFT
+RESOURCES=13 i_log
+CATEGORY=Provisions - Weapons
+SUBSECTION=Bows - Exceptional
+DESCRIPTION=Exceptional Heavy Crossbow
+TEVENTS=t_equipitem
+
+ON=@Create
+HITPOINTS={41 100}
+
+
+[ITEMDEF I_HXBOW_SUP] // superior heavy crossbow
+DEFNAME=I_HXBOW_SUP
+ID=i_crossbow_heavy
+NAME=superior heavy crossbow
+SKILLMAKE=65.0 BOWCRAFT
+RESOURCES=11 i_log
+DAM=11,56
+RANGE=2,15
+SKILL=Archery
+REQSTR=30
+TWOHANDS=Y
+WEIGHT=11
+CATEGORY=Provisions - Weapons
+SUBSECTION=Bows - Exceptional
+DESCRIPTION=Superior Heavy Crossbow
+TEVENTS=t_equipitem
+
+ON=@Create
+HITPOINTS={41 120}
+
+
+
+
+[ITEMDEF 026c2]
+DEFNAME=i_bow_composite
+NAME=composite bow
+TYPE=t_weapon_bow
+TDATA3=i_arrow
+TDATA4=i_arrow_x
+DAM=7,15
+FLIP=1
+SKILL=Archery
+// SPEED=32
+RANGE=2,15
+VALUE=26
+WEIGHT=14.9
+TWOHANDS=Y
+RESOURCES=7 i_log
+SKILLMAKE=Bowcraft 70.0
+CATEGORY=Bows
+SUBSECTION=
+DESCRIPTION=
+ReqStr=45
+TEVENTS=t_equipitem
+DUPELIST=026cc
+
+ON=@Create
+HITPOINTS={100 250}
+
+[ITEMDEF 026cc]
+//composite bow
+DUPEITEM=026c2
+
+
+
+[ITEMDEF 027a5]
+DEFNAME=i_yumi
+NAME=yumi
+TYPE=t_weapon_bow
+TDATA3=i_arrow
+TDATA4=i_arrow_x
+DAM=6,13
+FLIP=1
+SKILL=Archery
+// SPEED=26
+RANGE=2,15
+VALUE=29
+WEIGHT=10.9
+TWOHANDS=Y
+RESOURCES=10 i_log
+SKILLMAKE=Bowcraft 90.0
+CATEGORY=Provisions - Weapons
+SUBSECTION=Archery
+DESCRIPTION=Yumi
+// CanUse=can_u_human|can_u_elf
+ReqStr=75
+TEVENTS=t_equipitem
+DUPELIST=027f0
+
+ON=@Create
+HITPOINTS={100 250}
+
+[ITEMDEF 027f0]
+//yumi
+DUPEITEM=027a5
+
+
+
+
+
+
+[ITEMDEF 02d1e]
+DEFNAME=i_elven_composite_longbow
+NAME=elven composite longbow
+TYPE=t_weapon_bow
+TDATA3=i_arrow
+TDATA4=i_arrow_x
+DAM=7,14
+FLIP=1
+SKILL=Archery
+// SPEED=32
+RANGE=2,15
+VALUE=35
+WEIGHT=10.0
+TWOHANDS=Y
+RESOURCES=20 i_log
+SKILLMAKE=Bowcraft 95.0
+CATEGORY=Bows
+SUBSECTION=
+DESCRIPTION=
+ReqStr=45
+TEVENTS=t_equipitem
+DUPELIST=02d2a
+
+ON=@Create
+HITPOINTS={100 250}
+
+[ITEMDEF 02d2a]
+//elven composite longbow
+DUPEITEM=02d1e
+
+
+
+
+[ITEMDEF 02d1f]
+DEFNAME=i_magical_shortbow
+NAME=magical shortbow
+TYPE=t_weapon_bow
+TDATA3=i_arrow
+TDATA4=i_arrow_x
+DAM=5,11
+FLIP=1
+SKILL=Archery
+// SPEED=44
+RANGE=2,15
+VALUE=93
+WEIGHT=12.0
+TWOHANDS=Y
+RESOURCES=15 i_log
+SKILLMAKE=Bowcraft 85.0
+CATEGORY=Bows
+SUBSECTION=
+DESCRIPTION=
+ReqStr=45
+TEVENTS=t_equipitem
+DUPELIST=02d2b
+
+ON=@Create
+HITPOINTS={100 250}
+
+[ITEMDEF 02d2b]
+//magical shortbow
+DUPEITEM=02d1f
+
+
+[ITEMDEF 026c3]
+DEFNAME=i_crossbow_repeating
+NAME=repeating crossbow
+TYPE=t_weapon_xbow
+TDATA3=i_xbolt
+TDATA4=i_xbolt_x
+DAM=7,13
+FLIP=1
+SKILL=Archery
+// SPEED=47
+RANGE=2,15
+VALUE=34
+WEIGHT=22.0
+TWOHANDS=Y
+RESOURCES=10 i_log
+SKILLMAKE=Bowcraft 90.0
+CATEGORY=Bows
+SUBSECTION=
+DESCRIPTION=
+ReqStr=30
+TEVENTS=t_equipitem
+DUPELIST=026cd
+
+ON=@Create
+HITPOINTS={100 250}
+
+[ITEMDEF 026cd]
+//repeating crossbow
+DUPEITEM=026c3
+
+[eof]

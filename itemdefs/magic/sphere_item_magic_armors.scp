@@ -1,0 +1,1989 @@
+
+[ITEMDEF i_buckler_shield_defense]
+ID=i_shield_buckler
+NAME=Buckler Shield of Defense
+TEVENTS=t_equipitem
+CATEGORY=Provisions - Armor - Magic
+SUBSECTION=Shields
+DESCRIPTION=Buckler Shield of Defense
+VALUE=140
+RESDISPDNHUE=color_magic_defense
+
+ON=@Create
+MOREY=20.0
+ATTR=attr_magic
+HITPOINTS=55
+COLOR=<SERV.ITEMDEF.<BASEID>.RESDISPDNHUE>
+
+[ITEMDEF i_buckler_shield_guarding]
+ID=i_shield_buckler
+NAME=Buckler Shield of Guarding
+TEVENTS=t_equipitem
+CATEGORY=Provisions - Armor - Magic
+SUBSECTION=Shields
+DESCRIPTION=Buckler Shield of Guarding
+VALUE=180
+RESDISPDNHUE=color_magic_guarding
+
+ON=@Create
+MOREY=40.0
+ATTR=attr_magic
+HITPOINTS=60
+COLOR=<SERV.ITEMDEF.<BASEID>.RESDISPDNHUE>
+
+[ITEMDEF i_buckler_shield_hardening]
+ID=i_shield_buckler
+NAME=Buckler Shield of Hardening
+TEVENTS=t_equipitem
+CATEGORY=Provisions - Armor - Magic
+SUBSECTION=Shields
+DESCRIPTION=Buckler Shield of Hardening
+VALUE=220
+RESDISPDNHUE=color_magic_hardening
+
+ON=@Create
+MOREY=60.0
+ATTR=attr_magic
+HITPOINTS=65
+COLOR=<SERV.ITEMDEF.<BASEID>.RESDISPDNHUE>
+
+[ITEMDEF i_buckler_shield_fortification]
+ID=i_shield_buckler
+NAME=Buckler Shield of Fortification
+TEVENTS=t_equipitem
+CATEGORY=Provisions - Armor - Magic
+SUBSECTION=Shields
+DESCRIPTION=Buckler Shield of Fortification
+VALUE=260
+RESDISPDNHUE=color_magic_fortification
+
+ON=@Create
+MOREY=80.0
+ATTR=attr_magic
+HITPOINTS=70
+COLOR=<SERV.ITEMDEF.<BASEID>.RESDISPDNHUE>
+
+[ITEMDEF i_buckler_shield_invulnerability]
+ID=i_shield_buckler
+NAME=Buckler Shield of Invulnerability
+TEVENTS=t_equipitem
+CATEGORY=Provisions - Armor - Magic
+SUBSECTION=Shields
+DESCRIPTION=Buckler Shield of Invulnerability
+VALUE=300
+RESDISPDNHUE=color_magic_invulnerability
+
+ON=@Create
+MOREY=100.0
+ATTR=attr_magic
+HITPOINTS=75
+COLOR=<SERV.ITEMDEF.<BASEID>.RESDISPDNHUE>
+
+[ITEMDEF i_wooden_shield_defense]
+ID=i_shield_wood
+NAME=Wooden Shield of Defense
+TEVENTS=t_equipitem
+CATEGORY=Provisions - Armor - Magic
+SUBSECTION=Shields
+DESCRIPTION=Wooden Shield of Defense
+VALUE=71
+RESDISPDNHUE=color_magic_defense
+
+ON=@Create
+MOREY=20.0
+ATTR=attr_magic
+HITPOINTS={21 23}
+COLOR=<SERV.ITEMDEF.<BASEID>.RESDISPDNHUE>
+
+[ITEMDEF i_wooden_shield_guarding]
+ID=i_shield_wood
+NAME=Wooden Shield of Guarding
+TEVENTS=t_equipitem
+CATEGORY=Provisions - Armor - Magic
+SUBSECTION=Shields
+DESCRIPTION=Wooden Shield of Guarding
+VALUE=111
+RESDISPDNHUE=color_magic_guarding
+
+ON=@Create
+MOREY=40.0
+ATTR=attr_magic
+HITPOINTS=30
+COLOR=<SERV.ITEMDEF.<BASEID>.RESDISPDNHUE>
+
+[ITEMDEF i_wooden_shield_hardening]
+ID=i_shield_wood
+NAME=Wooden Shield of Hardening
+TEVENTS=t_equipitem
+CATEGORY=Provisions - Armor - Magic
+SUBSECTION=Shields
+DESCRIPTION=Wooden Shield of Hardening
+VALUE=151
+RESDISPDNHUE=color_magic_hardening
+
+ON=@Create
+MOREY=60.0
+ATTR=attr_magic
+HITPOINTS=35
+COLOR=<SERV.ITEMDEF.<BASEID>.RESDISPDNHUE>
+
+[ITEMDEF i_wooden_shield_fortification]
+ID=i_shield_wood
+NAME=Wooden Shield of Fortification
+TEVENTS=t_equipitem
+CATEGORY=Provisions - Armor - Magic
+SUBSECTION=Shields
+DESCRIPTION=Wooden Shield of Fortification
+VALUE=191
+RESDISPDNHUE=color_magic_fortification
+
+ON=@Create
+MOREY=80.0
+ATTR=attr_magic
+HITPOINTS=40
+COLOR=<SERV.ITEMDEF.<BASEID>.RESDISPDNHUE>
+
+[ITEMDEF i_wooden_shield_invulnerability]
+ID=i_shield_wood
+NAME=Wooden Shield of Invulnerability
+TEVENTS=t_equipitem
+CATEGORY=Provisions - Armor - Magic
+SUBSECTION=Shields
+DESCRIPTION=Wooden Shield of Invulnerability
+VALUE=231
+RESDISPDNHUE=color_magic_invulnerability
+
+ON=@Create
+MOREY=100.0
+ATTR=attr_magic
+HITPOINTS=45
+COLOR=<SERV.ITEMDEF.<BASEID>.RESDISPDNHUE>
+
+[ITEMDEF i_bronze_shield_defense]
+ID=i_shield_round_bronze
+NAME=Bronze Shield of Defense
+TEVENTS=t_equipitem
+CATEGORY=Provisions - Armor - Magic
+SUBSECTION=Shields
+DESCRIPTION=Bronze Shield of Defense
+VALUE=110
+RESDISPDNHUE=color_magic_defense
+
+ON=@Create
+MOREY=20.0
+ATTR=attr_magic
+HITPOINTS=35
+COLOR=<SERV.ITEMDEF.<BASEID>.RESDISPDNHUE>
+
+[ITEMDEF i_bronze_shield_guarding]
+ID=i_shield_round_bronze
+NAME=Bronze Shield of Guarding
+TEVENTS=t_equipitem
+CATEGORY=Provisions - Armor - Magic
+SUBSECTION=Shields
+DESCRIPTION=Bronze Shield of Guarding
+VALUE=150
+RESDISPDNHUE=color_magic_guarding
+
+ON=@Create
+MOREY=40.0
+ATTR=attr_magic
+HITPOINTS=40
+COLOR=<SERV.ITEMDEF.<BASEID>.RESDISPDNHUE>
+
+[ITEMDEF i_bronze_shield_hardening]
+ID=i_shield_round_bronze
+NAME=Bronze Shield of Hardening
+TEVENTS=t_equipitem
+CATEGORY=Provisions - Armor - Magic
+SUBSECTION=Shields
+DESCRIPTION=Bronze Shield of Hardening
+VALUE=190
+RESDISPDNHUE=color_magic_hardening
+
+ON=@Create
+MOREY=60.0
+ATTR=attr_magic
+HITPOINTS=45
+COLOR=<SERV.ITEMDEF.<BASEID>.RESDISPDNHUE>
+
+[ITEMDEF i_bronze_shield_fortification]
+ID=i_shield_round_bronze
+NAME=Bronze Shield of Fortification
+TEVENTS=t_equipitem
+CATEGORY=Provisions - Armor - Magic
+SUBSECTION=Shields
+DESCRIPTION=Bronze Shield of Fortification
+VALUE=230
+RESDISPDNHUE=color_magic_fortification
+
+ON=@Create
+MOREY=80.0
+ATTR=attr_magic
+HITPOINTS=50
+COLOR=<SERV.ITEMDEF.<BASEID>.RESDISPDNHUE>
+
+[ITEMDEF i_bronze_shield_invulnerability]
+ID=i_shield_round_bronze
+NAME=Bronze Shield of Invulnerability
+TEVENTS=t_equipitem
+CATEGORY=Provisions - Armor - Magic
+SUBSECTION=Shields
+DESCRIPTION=Bronze Shield of Invulnerability
+VALUE=270
+RESDISPDNHUE=color_magic_invulnerability
+
+ON=@Create
+MOREY=100.0
+ATTR=attr_magic
+HITPOINTS=55
+COLOR=<SERV.ITEMDEF.<BASEID>.RESDISPDNHUE>
+
+[ITEMDEF i_metal_shield_defense]
+ID=i_shield_round_metal
+NAME=Metal Shield of Defense
+TEVENTS=t_equipitem
+CATEGORY=Provisions - Armor - Magic
+SUBSECTION=Shields
+DESCRIPTION=Metal Shield of Defense
+VALUE=159
+RESDISPDNHUE=color_magic_defense
+
+ON=@Create
+MOREY=20.0
+ATTR=attr_magic
+HITPOINTS=70
+COLOR=<SERV.ITEMDEF.<BASEID>.RESDISPDNHUE>
+
+[ITEMDEF i_metal_shield_guarding]
+ID=i_shield_round_metal
+NAME=Metal Shield of Guarding
+TEVENTS=t_equipitem
+CATEGORY=Provisions - Armor - Magic
+SUBSECTION=Shields
+DESCRIPTION=Metal Shield of Guarding
+VALUE=199
+RESDISPDNHUE=color_magic_guarding
+
+ON=@Create
+MOREY=40.0
+ATTR=attr_magic
+HITPOINTS=75
+COLOR=<SERV.ITEMDEF.<BASEID>.RESDISPDNHUE>
+
+[ITEMDEF i_metal_shield_hardening]
+ID=i_shield_round_metal
+NAME=Metal Shield of Hardening
+TEVENTS=t_equipitem
+CATEGORY=Provisions - Armor - Magic
+SUBSECTION=Shields
+DESCRIPTION=Metal Shield of Hardening
+VALUE=239
+RESDISPDNHUE=color_magic_hardening
+
+ON=@Create
+MOREY=60.0
+ATTR=attr_magic
+HITPOINTS=80
+COLOR=<SERV.ITEMDEF.<BASEID>.RESDISPDNHUE>
+
+[ITEMDEF i_metal_shield_fortification]
+ID=i_shield_round_metal
+NAME=Metal Shield of Fortification
+TEVENTS=t_equipitem
+CATEGORY=Provisions - Armor - Magic
+SUBSECTION=Shields
+DESCRIPTION=Metal Shield of Fortification
+VALUE=279
+RESDISPDNHUE=color_magic_Fortification
+
+ON=@Create
+MOREY=80.0
+ATTR=attr_magic
+HITPOINTS=85
+COLOR=<SERV.ITEMDEF.<BASEID>.RESDISPDNHUE>
+
+[ITEMDEF i_metal_shield_invulnerability]
+ID=i_shield_round_metal
+NAME=Metal Shield of Invulnerability
+TEVENTS=t_equipitem
+CATEGORY=Provisions - Armor - Magic
+SUBSECTION=Shields
+DESCRIPTION=Metal Shield of Invulnerability
+VALUE=319
+RESDISPDNHUE=color_magic_Invulnerability
+
+ON=@Create
+MOREY=100.0
+ATTR=attr_magic
+HITPOINTS=90
+COLOR=<SERV.ITEMDEF.<BASEID>.RESDISPDNHUE>
+
+[ITEMDEF i_metal_kite_shield_defense]
+ID=i_shield_kite_metal
+NAME=Metal Kite Shield of Defense
+TEVENTS=t_equipitem
+CATEGORY=Provisions - Armor - Magic
+SUBSECTION=Shields
+DESCRIPTION=Metal Kite Shield of Defense
+VALUE=150
+RESDISPDNHUE=color_magic_Defense
+
+ON=@Create
+MOREY=20.0
+ATTR=attr_magic
+HITPOINTS=35
+COLOR=<SERV.ITEMDEF.<BASEID>.RESDISPDNHUE>
+
+[ITEMDEF i_metal_kite_shield_guarding]
+ID=i_shield_kite_metal
+NAME=Metal Kite Shield of Guarding
+TEVENTS=t_equipitem
+CATEGORY=Provisions - Armor - Magic
+SUBSECTION=Shields
+DESCRIPTION=Metal Kite Shield of Guarding
+VALUE=190
+RESDISPDNHUE=color_magic_Guarding
+
+ON=@Create
+MOREY=40.0
+ATTR=attr_magic
+HITPOINTS=40
+COLOR=<SERV.ITEMDEF.<BASEID>.RESDISPDNHUE>
+
+[ITEMDEF i_metal_kite_shield_hardening]
+ID=i_shield_kite_metal
+NAME=Metal Kite Shield of Hardening
+TEVENTS=t_equipitem
+CATEGORY=Provisions - Armor - Magic
+SUBSECTION=Shields
+DESCRIPTION=Metal Kite Shield of Hardening
+VALUE=230
+RESDISPDNHUE=color_magic_Hardening
+
+ON=@Create
+MOREY=60.0
+ATTR=attr_magic
+HITPOINTS=45
+COLOR=<SERV.ITEMDEF.<BASEID>.RESDISPDNHUE>
+
+[ITEMDEF i_metal_kite_shield_fortification]
+ID=i_shield_kite_metal
+NAME=Metal Kite Shield of Fortification
+TEVENTS=t_equipitem
+CATEGORY=Provisions - Armor - Magic
+SUBSECTION=Shields
+DESCRIPTION=Metal Kite Shield of Fortification
+VALUE=270
+RESDISPDNHUE=color_magic_Fortification
+
+ON=@Create
+MOREY=80.0
+ATTR=attr_magic
+HITPOINTS=50
+COLOR=<SERV.ITEMDEF.<BASEID>.RESDISPDNHUE>
+
+[ITEMDEF i_metal_kite_shield_invulnerability]
+ID=i_shield_kite_metal
+NAME=Metal Kite Shield of Invulnerability
+TEVENTS=t_equipitem
+CATEGORY=Provisions - Armor - Magic
+SUBSECTION=Shields
+DESCRIPTION=Metal Kite Shield of Invulnerability
+VALUE=310
+RESDISPDNHUE=color_magic_Invulnerability
+
+ON=@Create
+MOREY=100.0
+ATTR=attr_magic
+HITPOINTS=55
+COLOR=<SERV.ITEMDEF.<BASEID>.RESDISPDNHUE>
+
+[ITEMDEF i_wooden_kite_shield_defense]
+ID=i_shield_kite_wood
+NAME=Tear Kite Shield of Defense
+TEVENTS=t_equipitem
+CATEGORY=Provisions - Armor - Magic
+SUBSECTION=Shields
+DESCRIPTION=Tear Kite Shield of Defense
+VALUE=113
+RESDISPDNHUE=color_magic_Defense
+
+ON=@Create
+MOREY=20.0
+ATTR=attr_magic
+HITPOINTS=60
+COLOR=<SERV.ITEMDEF.<BASEID>.RESDISPDNHUE>
+
+[ITEMDEF i_wooden_kite_shield_guarding]
+ID=i_shield_kite_wood
+NAME=Tear Kite Shield of Guarding
+TEVENTS=t_equipitem
+CATEGORY=Provisions - Armor - Magic
+SUBSECTION=Shields
+DESCRIPTION=Tear Kite Shield of Guarding
+VALUE=153
+RESDISPDNHUE=color_magic_Guarding
+
+ON=@Create
+MOREY=40.0
+ATTR=attr_magic
+HITPOINTS=65
+COLOR=<SERV.ITEMDEF.<BASEID>.RESDISPDNHUE>
+
+[ITEMDEF i_wooden_kite_shield_hardening]
+ID=i_shield_kite_wood
+NAME=Tear Kite Shield of Hardening
+TEVENTS=t_equipitem
+CATEGORY=Provisions - Armor - Magic
+SUBSECTION=Shields
+DESCRIPTION=Tear Kite Shield of Hardening
+VALUE=193
+RESDISPDNHUE=color_magic_Hardening
+
+ON=@Create
+MOREY=60.0
+ATTR=attr_magic
+HITPOINTS=70
+COLOR=<SERV.ITEMDEF.<BASEID>.RESDISPDNHUE>
+
+[ITEMDEF i_wooden_kite_shield_fortification]
+ID=i_shield_kite_wood
+NAME=Tear Kite Shield of Fortification
+TEVENTS=t_equipitem
+CATEGORY=Provisions - Armor - Magic
+SUBSECTION=Shields
+DESCRIPTION=Tear Kite Shield of Fortification
+VALUE=233
+RESDISPDNHUE=color_magic_Fortification
+
+ON=@Create
+MOREY=80.0
+ATTR=attr_magic
+HITPOINTS=75
+COLOR=<SERV.ITEMDEF.<BASEID>.RESDISPDNHUE>
+
+[ITEMDEF i_wooden_kite_shield_invulnerability]
+ID=i_shield_kite_wood
+NAME=Tear Kite Shield of Invulnerability
+TEVENTS=t_equipitem
+CATEGORY=Provisions - Armor - Magic
+SUBSECTION=Shields
+DESCRIPTION=Tear Kite Shield of Invulnerability
+VALUE=273
+RESDISPDNHUE=color_magic_Invulnerability
+
+ON=@Create
+MOREY=100.0
+ATTR=attr_magic
+HITPOINTS=80
+COLOR=<SERV.ITEMDEF.<BASEID>.RESDISPDNHUE>
+
+[ITEMDEF i_heater_shield_defense]
+ID=i_shield_heater
+NAME=Heater Shield of Defense
+TEVENTS=t_equipitem
+CATEGORY=Provisions - Armor - Magic
+SUBSECTION=Shields
+DESCRIPTION=Heater Shield of Defense
+VALUE=204
+RESDISPDNHUE=color_magic_Defense
+
+ON=@Create
+MOREY=20.0
+ATTR=attr_magic
+HITPOINTS=40
+COLOR=<SERV.ITEMDEF.<BASEID>.RESDISPDNHUE>
+
+[ITEMDEF i_heater_shield_guarding]
+ID=i_shield_heater
+NAME=Heater Shield of Guarding
+TEVENTS=t_equipitem
+CATEGORY=Provisions - Armor - Magic
+SUBSECTION=Shields
+DESCRIPTION=Heater Shield of Guarding
+VALUE=244
+RESDISPDNHUE=color_magic_Guarding
+
+ON=@Create
+MOREY=40.0
+ATTR=attr_magic
+HITPOINTS=45
+COLOR=<SERV.ITEMDEF.<BASEID>.RESDISPDNHUE>
+
+[ITEMDEF i_heater_shield_hardening]
+ID=i_shield_heater
+NAME=Heater Shield of Hardening
+TEVENTS=t_equipitem
+CATEGORY=Provisions - Armor - Magic
+SUBSECTION=Shields
+DESCRIPTION=Heater Shield of Hardening
+VALUE=284
+RESDISPDNHUE=color_magic_Hardening
+
+ON=@Create
+MOREY=60.0
+ATTR=attr_magic
+HITPOINTS=50
+COLOR=<SERV.ITEMDEF.<BASEID>.RESDISPDNHUE>
+
+[ITEMDEF i_heater_shield_fortification]
+ID=i_shield_heater
+NAME=Heater Shield of Fortification
+TEVENTS=t_equipitem
+CATEGORY=Provisions - Armor - Magic
+SUBSECTION=Shields
+DESCRIPTION=Heater Shield of Fortification
+VALUE=324
+RESDISPDNHUE=color_magic_Fortification
+
+ON=@Create
+MOREY=80.0
+ATTR=attr_magic
+HITPOINTS=55
+COLOR=<SERV.ITEMDEF.<BASEID>.RESDISPDNHUE>
+
+[ITEMDEF i_heater_shield_invulnerability]
+ID=i_shield_heater
+NAME=Heater Shield of Invulnerability
+TEVENTS=t_equipitem
+CATEGORY=Provisions - Armor - Magic
+SUBSECTION=Shields
+DESCRIPTION=Heater Shield of Invulnerability
+VALUE=364
+RESDISPDNHUE=color_magic_Invulnerability
+
+ON=@Create
+MOREY=100.0
+ATTR=attr_magic
+HITPOINTS=60
+COLOR=<SERV.ITEMDEF.<BASEID>.RESDISPDNHUE>
+
+[ITEMDEF i_platemail_defense]
+ID=i_platemail_chest
+NAME=Platemail Chest of Defense
+TEVENTS=t_equipitem
+CATEGORY=Provisions - Armor - Magic
+SUBSECTION=Platemail
+DESCRIPTION=Platemail Chest of Defense
+VALUE=300
+RESDISPDNHUE=color_magic_Defense
+
+ON=@Create
+MOREY=20.0
+ATTR=attr_magic
+HITPOINTS=70
+COLOR=<SERV.ITEMDEF.<BASEID>.RESDISPDNHUE>
+
+[ITEMDEF i_platemail_guarding]
+ID=i_platemail_chest
+NAME=Platemail Chest of Guarding
+TEVENTS=t_equipitem
+CATEGORY=Provisions - Armor - Magic
+SUBSECTION=Platemail
+DESCRIPTION=Platemail Chest of Guarding
+VALUE=340
+RESDISPDNHUE=color_magic_Guarding
+
+ON=@Create
+MOREY=40.0
+ATTR=attr_magic
+HITPOINTS=75
+COLOR=<SERV.ITEMDEF.<BASEID>.RESDISPDNHUE>
+
+[ITEMDEF i_platemail_hardening]
+ID=i_platemail_chest
+NAME=Platemail Chest of Hardening
+TEVENTS=t_equipitem
+CATEGORY=Provisions - Armor - Magic
+SUBSECTION=Platemail
+DESCRIPTION=Platemail Chest of Hardening
+VALUE=380
+RESDISPDNHUE=color_magic_Hardening
+
+ON=@Create
+MOREY=60.0
+ATTR=attr_magic
+HITPOINTS=80
+COLOR=<SERV.ITEMDEF.<BASEID>.RESDISPDNHUE>
+
+[ITEMDEF i_platemail_fortification]
+ID=i_platemail_chest
+NAME=Platemail Chest of Fortification
+TEVENTS=t_equipitem
+CATEGORY=Provisions - Armor - Magic
+SUBSECTION=Platemail
+DESCRIPTION=Platemail Chest of Fortification
+VALUE=420
+RESDISPDNHUE=color_magic_Fortification
+
+ON=@Create
+MOREY=80.0
+ATTR=attr_magic
+HITPOINTS=85
+COLOR=<SERV.ITEMDEF.<BASEID>.RESDISPDNHUE>
+
+[ITEMDEF i_platemail_invulnerability]
+ID=i_platemail_chest
+NAME=Platemail Chest of Invulnerability
+TEVENTS=t_equipitem
+CATEGORY=Provisions - Armor - Magic
+SUBSECTION=Platemail
+DESCRIPTION=Platemail Chest of Invulnerability
+VALUE=460
+RESDISPDNHUE=color_magic_Invulnerability
+
+ON=@Create
+MOREY=100.0
+ATTR=attr_magic
+HITPOINTS=90
+COLOR=<SERV.ITEMDEF.<BASEID>.RESDISPDNHUE>
+
+[ITEMDEF i_platemail_leggings_defense]
+ID=i_platemail_leggings
+NAME=Platemail Legs of Defense
+TEVENTS=t_equipitem
+CATEGORY=Provisions - Armor - Magic
+SUBSECTION=Platemail
+DESCRIPTION=Platemail Legs of Defense
+VALUE=250
+RESDISPDNHUE=color_magic_Defense
+
+ON=@Create
+MOREY=20.0
+ATTR=attr_magic
+HITPOINTS=70
+COLOR=<SERV.ITEMDEF.<BASEID>.RESDISPDNHUE>
+
+[ITEMDEF i_platemail_leggings_guarding]
+ID=i_platemail_leggings
+NAME=Platemail Legs of Guarding
+TEVENTS=t_equipitem
+CATEGORY=Provisions - Armor - Magic
+SUBSECTION=Platemail
+DESCRIPTION=Platemail Legs of Guarding
+VALUE=290
+RESDISPDNHUE=color_magic_Guarding
+
+ON=@Create
+MOREY=40.0
+ATTR=attr_magic
+HITPOINTS=75
+COLOR=<SERV.ITEMDEF.<BASEID>.RESDISPDNHUE>
+
+[ITEMDEF i_platemail_leggings_hardening]
+ID=i_platemail_leggings
+NAME=Platemail Legs of Hardening
+TEVENTS=t_equipitem
+CATEGORY=Provisions - Armor - Magic
+SUBSECTION=Platemail
+DESCRIPTION=Platemail Legs of Hardening
+VALUE=330
+RESDISPDNHUE=color_magic_Hardening
+
+ON=@Create
+MOREY=60.0
+ATTR=attr_magic
+HITPOINTS=80
+COLOR=<SERV.ITEMDEF.<BASEID>.RESDISPDNHUE>
+
+[ITEMDEF i_platemail_leggings_fortification]
+ID=i_platemail_leggings
+NAME=Platemail Legs of Fortification
+TEVENTS=t_equipitem
+CATEGORY=Provisions - Armor - Magic
+SUBSECTION=Platemail
+DESCRIPTION=Platemail Legs of Fortification
+VALUE=370
+RESDISPDNHUE=color_magic_Fortification
+
+ON=@Create
+MOREY=80.0
+ATTR=attr_magic
+HITPOINTS=85
+COLOR=<SERV.ITEMDEF.<BASEID>.RESDISPDNHUE>
+
+[ITEMDEF i_platemail_leggings_invulnerability]
+ID=i_platemail_leggings
+NAME=Platemail Legs of Invulnerability
+TEVENTS=t_equipitem
+CATEGORY=Provisions - Armor - Magic
+SUBSECTION=Platemail
+DESCRIPTION=Platemail Legs of Invulnerability
+VALUE=410
+RESDISPDNHUE=color_magic_Invulnerability
+
+ON=@Create
+MOREY=100.0
+ATTR=attr_magic
+HITPOINTS=90
+COLOR=<SERV.ITEMDEF.<BASEID>.RESDISPDNHUE>
+
+[ITEMDEF i_platemail_arms_defense]
+ID=i_platemail_arms
+NAME=Platemail Arms of Defense
+TEVENTS=t_equipitem
+CATEGORY=Provisions - Armor - Magic
+SUBSECTION=Platemail
+DESCRIPTION=Platemail Arms of Defense
+VALUE=230
+RESDISPDNHUE=color_magic_Defense
+
+ON=@Create
+MOREY=20.0
+ATTR=attr_magic
+HITPOINTS=70
+COLOR=<SERV.ITEMDEF.<BASEID>.RESDISPDNHUE>
+
+[ITEMDEF i_platemail_arms_guarding]
+ID=i_platemail_arms
+NAME=Platemail Arms of Guarding
+TEVENTS=t_equipitem
+CATEGORY=Provisions - Armor - Magic
+SUBSECTION=Platemail
+DESCRIPTION=Platemail Arms of Guarding
+VALUE=270
+RESDISPDNHUE=color_magic_Guarding
+
+ON=@Create
+MOREY=40.0
+ATTR=attr_magic
+HITPOINTS=75
+COLOR=<SERV.ITEMDEF.<BASEID>.RESDISPDNHUE>
+
+[ITEMDEF i_platemail_arms_hardening]
+ID=i_platemail_arms
+NAME=Platemail Arms of Hardening
+TEVENTS=t_equipitem
+CATEGORY=Provisions - Armor - Magic
+SUBSECTION=Platemail
+DESCRIPTION=Platemail Arms of Hardening
+VALUE=310
+RESDISPDNHUE=color_magic_Hardening
+
+ON=@Create
+MOREY=60.0
+ATTR=attr_magic
+HITPOINTS=80
+COLOR=<SERV.ITEMDEF.<BASEID>.RESDISPDNHUE>
+
+[ITEMDEF i_platemail_arms_fortification]
+ID=i_platemail_arms
+NAME=Platemail Arms of Fortification
+TEVENTS=t_equipitem
+CATEGORY=Provisions - Armor - Magic
+SUBSECTION=Platemail
+DESCRIPTION=Platemail Arms of Fortification
+VALUE=350
+RESDISPDNHUE=color_magic_Fortification
+
+ON=@Create
+MOREY=80.0
+ATTR=attr_magic
+HITPOINTS=85
+COLOR=<SERV.ITEMDEF.<BASEID>.RESDISPDNHUE>
+
+[ITEMDEF i_platemail_arms_invulnerability]
+ID=i_platemail_arms
+NAME=Platemail Arms of Invulnerability
+TEVENTS=t_equipitem
+CATEGORY=Provisions - Armor - Magic
+SUBSECTION=Platemail
+DESCRIPTION=Platemail Arms of Invulnerability
+VALUE=390
+RESDISPDNHUE=color_magic_Invulnerability
+
+ON=@Create
+MOREY=100.0
+ATTR=attr_magic
+HITPOINTS=90
+COLOR=<SERV.ITEMDEF.<BASEID>.RESDISPDNHUE>
+
+[ITEMDEF i_platemail_helm_defense]
+ID=i_platemail_helm
+NAME=Plate Helm of Defense
+TEVENTS=t_equipitem
+CATEGORY=Provisions - Armor - Magic
+SUBSECTION=Platemail
+DESCRIPTION=Plate Helm of Defense
+VALUE=201
+RESDISPDNHUE=color_magic_Defense
+
+ON=@Create
+MOREY=20.0
+ATTR=attr_magic
+HITPOINTS=60
+COLOR=<SERV.ITEMDEF.<BASEID>.RESDISPDNHUE>
+
+[ITEMDEF i_platemail_helm_guarding]
+ID=i_platemail_helm
+NAME=Plate Helm of Guarding
+TEVENTS=t_equipitem
+CATEGORY=Provisions - Armor - Magic
+SUBSECTION=Platemail
+DESCRIPTION=Plate Helm of Guarding
+VALUE=241
+RESDISPDNHUE=color_magic_Guarding
+
+ON=@Create
+MOREY=40.0
+ATTR=attr_magic
+HITPOINTS=65
+COLOR=<SERV.ITEMDEF.<BASEID>.RESDISPDNHUE>
+
+[ITEMDEF i_platemail_helm_hardening]
+ID=i_platemail_helm
+NAME=Plate Helm of Hardening
+TEVENTS=t_equipitem
+CATEGORY=Provisions - Armor - Magic
+SUBSECTION=Platemail
+DESCRIPTION=Plate Helm of Hardening
+VALUE=281
+RESDISPDNHUE=color_magic_Hardening
+
+ON=@Create
+MOREY=60.0
+ATTR=attr_magic
+HITPOINTS=70
+COLOR=<SERV.ITEMDEF.<BASEID>.RESDISPDNHUE>
+
+[ITEMDEF i_platemail_helm_fortification]
+ID=i_platemail_helm
+NAME=Plate Helm of Fortification
+TEVENTS=t_equipitem
+CATEGORY=Provisions - Armor - Magic
+SUBSECTION=Platemail
+DESCRIPTION=Plate Helm of Fortification
+VALUE=321
+RESDISPDNHUE=color_magic_Fortification
+
+ON=@Create
+MOREY=80.0
+ATTR=attr_magic
+HITPOINTS=75
+COLOR=<SERV.ITEMDEF.<BASEID>.RESDISPDNHUE>
+
+[ITEMDEF i_platemail_helm_invulnerability]
+ID=i_platemail_helm
+NAME=Plate Helm of Invulnerability
+TEVENTS=t_equipitem
+CATEGORY=Provisions - Armor - Magic
+SUBSECTION=Platemail
+DESCRIPTION=Plate Helm of Invulnerability
+VALUE=161
+RESDISPDNHUE=color_magic_Invulnerability
+
+ON=@Create
+MOREY=100.0
+ATTR=attr_magic
+HITPOINTS=80
+COLOR=<SERV.ITEMDEF.<BASEID>.RESDISPDNHUE>
+
+[ITEMDEF i_platemail_gorget_defense]
+ID=i_platemail_gorget
+NAME=Platemail Gorget of Defense
+TEVENTS=t_equipitem
+CATEGORY=Provisions - Armor - Magic
+SUBSECTION=Platemail
+DESCRIPTION=Platemail Gorget of Defense
+VALUE=151
+RESDISPDNHUE=color_magic_Defense
+
+ON=@Create
+MOREY=20.0
+ATTR=attr_magic
+HITPOINTS=70
+COLOR=<SERV.ITEMDEF.<BASEID>.RESDISPDNHUE>
+
+[ITEMDEF i_platemail_gorget_guarding]
+ID=i_platemail_gorget
+NAME=Platemail Gorget of Guarding
+TEVENTS=t_equipitem
+CATEGORY=Provisions - Armor - Magic
+SUBSECTION=Platemail
+DESCRIPTION=Platemail Gorget of Guarding
+VALUE=191
+RESDISPDNHUE=color_magic_Guarding
+
+ON=@Create
+MOREY=40.0
+ATTR=attr_magic
+HITPOINTS=75
+COLOR=<SERV.ITEMDEF.<BASEID>.RESDISPDNHUE>
+
+[ITEMDEF i_platemail_gorget_hardening]
+ID=i_platemail_gorget
+NAME=Platemail Gorget of Hardening
+TEVENTS=t_equipitem
+CATEGORY=Provisions - Armor - Magic
+SUBSECTION=Platemail
+DESCRIPTION=Platemail Gorget of Hardening
+VALUE=231
+RESDISPDNHUE=color_magic_Hardening
+
+ON=@Create
+MOREY=60.0
+ATTR=attr_magic
+HITPOINTS=80
+COLOR=<SERV.ITEMDEF.<BASEID>.RESDISPDNHUE>
+
+[ITEMDEF i_platemail_gorget_fortification]
+ID=i_platemail_gorget
+NAME=Platemail Gorget of Fortification
+TEVENTS=t_equipitem
+CATEGORY=Provisions - Armor - Magic
+SUBSECTION=Platemail
+DESCRIPTION=Platemail Gorget of Fortification
+VALUE=271
+RESDISPDNHUE=color_magic_Fortification
+
+ON=@Create
+MOREY=80.0
+ATTR=attr_magic
+HITPOINTS=85
+COLOR=<SERV.ITEMDEF.<BASEID>.RESDISPDNHUE>
+
+[ITEMDEF i_platemail_gorget_invulnerability]
+ID=i_platemail_gorget
+NAME=Platemail Gorget of Invulnerability
+TEVENTS=t_equipitem
+CATEGORY=Provisions - Armor - Magic
+SUBSECTION=Platemail
+DESCRIPTION=Platemail Gorget of Invulnerability
+VALUE=311
+RESDISPDNHUE=color_magic_Invulnerability
+
+ON=@Create
+MOREY=100.0
+ATTR=attr_magic
+HITPOINTS=90
+COLOR=<SERV.ITEMDEF.<BASEID>.RESDISPDNHUE>
+
+[ITEMDEF i_platemail_gauntlets_defense]
+ID=i_platemail_gloves
+NAME=Platemail Gauntlets of Defense
+TEVENTS=t_equipitem
+CATEGORY=Provisions - Armor - Magic
+SUBSECTION=Platemail
+DESCRIPTION=Platemail Gauntlets of Defense
+VALUE=171
+RESDISPDNHUE=color_magic_Defense
+
+ON=@Create
+MOREY=20.0
+ATTR=attr_magic
+HITPOINTS=70
+COLOR=<SERV.ITEMDEF.<BASEID>.RESDISPDNHUE>
+
+[ITEMDEF i_platemail_gauntlets_guarding]
+ID=i_platemail_gloves
+NAME=Platemail Gauntlets of Guarding
+TEVENTS=t_equipitem
+CATEGORY=Provisions - Armor - Magic
+SUBSECTION=Platemail
+DESCRIPTION=Platemail Gauntlets of Guarding
+VALUE=211
+RESDISPDNHUE=color_magic_Guarding
+
+ON=@Create
+MOREY=40.0
+ATTR=attr_magic
+HITPOINTS=75
+COLOR=<SERV.ITEMDEF.<BASEID>.RESDISPDNHUE>
+
+[ITEMDEF i_platemail_gauntlets_hardening]
+ID=i_platemail_gloves
+NAME=Platemail Gauntlets of Hardening
+TEVENTS=t_equipitem
+CATEGORY=Provisions - Armor - Magic
+SUBSECTION=Platemail
+DESCRIPTION=Platemail Gauntlets of Guarding
+VALUE=251
+RESDISPDNHUE=color_magic_Guarding
+
+ON=@Create
+MOREY=60.0
+ATTR=attr_magic
+HITPOINTS=80
+COLOR=<SERV.ITEMDEF.<BASEID>.RESDISPDNHUE>
+
+[ITEMDEF i_platemail_gauntlets_fortification]
+ID=i_platemail_gloves
+NAME=Platemail Gauntlets of Fortification
+TEVENTS=t_equipitem
+CATEGORY=Provisions - Armor - Magic
+SUBSECTION=Platemail
+DESCRIPTION=Platemail Gauntlets of Fortification
+VALUE=291
+RESDISPDNHUE=color_magic_Fortification
+
+ON=@Create
+MOREY=80.0
+ATTR=attr_magic
+HITPOINTS=85
+COLOR=<SERV.ITEMDEF.<BASEID>.RESDISPDNHUE>
+
+[ITEMDEF i_platemail_gauntlets_invulnerability]
+ID=i_platemail_gloves
+NAME=Platemail Gauntlets of Invulnerability
+TEVENTS=t_equipitem
+CATEGORY=Provisions - Armor - Magic
+SUBSECTION=Platemail
+DESCRIPTION=Platemail Gauntlets of Invulnerability
+VALUE=331
+RESDISPDNHUE=color_magic_Invulnerability
+
+ON=@Create
+MOREY=100.0
+ATTR=attr_magic
+HITPOINTS=90
+COLOR=<SERV.ITEMDEF.<BASEID>.RESDISPDNHUE>
+
+[ITEMDEF i_platemail_defense_female]
+ID=i_armor_female_plate
+NAME=Female Platemail of Defense
+TEVENTS=t_equipitem
+CATEGORY=Provisions - Armor - Magic
+SUBSECTION=Platemail
+DESCRIPTION=Female Platemail of Defense
+VALUE=218
+RESDISPDNHUE=color_magic_Defense
+
+ON=@Create
+MOREY=20.0
+ATTR=attr_magic
+HITPOINTS=65
+COLOR=<SERV.ITEMDEF.<BASEID>.RESDISPDNHUE>
+
+[ITEMDEF i_platemail_guarding_female]
+ID=i_armor_female_plate
+NAME=Female Platemail of Guarding
+TEVENTS=t_equipitem
+CATEGORY=Provisions - Armor - Magic
+SUBSECTION=Platemail
+DESCRIPTION=Female Platemail of Guarding
+VALUE=258
+RESDISPDNHUE=color_magic_Guarding
+
+ON=@Create
+MOREY=40.0
+ATTR=attr_magic
+HITPOINTS=70
+COLOR=<SERV.ITEMDEF.<BASEID>.RESDISPDNHUE>
+
+[ITEMDEF i_platemail_hardening_female]
+ID=i_armor_female_plate
+NAME=Female Platemail of Hardening
+TEVENTS=t_equipitem
+CATEGORY=Provisions - Armor - Magic
+SUBSECTION=Platemail
+DESCRIPTION=Female Platemail of Hardening
+VALUE=298
+RESDISPDNHUE=color_magic_Hardening
+
+ON=@Create
+MOREY=60.0
+ATTR=attr_magic
+HITPOINTS=65
+COLOR=<SERV.ITEMDEF.<BASEID>.RESDISPDNHUE>
+
+[ITEMDEF i_platemail_fortification_female]
+ID=i_armor_female_plate
+NAME=Female Platemail of Fortification
+TEVENTS=t_equipitem
+
+
+CATEGORY=Provisions - Armor - Magic
+SUBSECTION=Platemail
+DESCRIPTION=Female Platemail of Fortification
+VALUE=338
+RESDISPDNHUE=color_magic_Fortification
+
+ON=@Create
+MOREY=80.0
+ATTR=attr_magic
+HITPOINTS=65
+COLOR=<SERV.ITEMDEF.<BASEID>.RESDISPDNHUE>
+
+[ITEMDEF i_platemail_invulnerability_female]
+ID=i_armor_female_plate
+NAME=Female Platemail of Invulnerability
+TEVENTS=t_equipitem
+CATEGORY=Provisions - Armor - Magic
+SUBSECTION=Platemail
+DESCRIPTION=Female Platemail of Invulnerability
+VALUE=378
+RESDISPDNHUE=color_magic_Invulnerability
+
+ON=@Create
+MOREY=100.0
+ATTR=attr_magic
+HITPOINTS=65
+COLOR=<SERV.ITEMDEF.<BASEID>.RESDISPDNHUE>
+
+[ITEMDEF i_chainmail_coif_defense]
+ID=i_chainmail_coif
+NAME=Chainmail Coif of Defense
+TEVENTS=t_equipitem
+CATEGORY=Provisions - Armor - Magic
+SUBSECTION=Chainmail
+DESCRIPTION=Chainmail Coif of Defense
+VALUE=136
+RESDISPDNHUE=color_magic_Defense
+
+ON=@Create
+MOREY=20.0
+ATTR=attr_magic
+HITPOINTS=45
+COLOR=<SERV.ITEMDEF.<BASEID>.RESDISPDNHUE>
+
+[ITEMDEF i_chainmail_coif_guarding]
+ID=i_chainmail_coif
+NAME=Chainmail Coif of Guarding
+TEVENTS=t_equipitem
+CATEGORY=Provisions - Armor - Magic
+SUBSECTION=Chainmail
+DESCRIPTION=Chainmail Coif of Guarding
+VALUE=176
+RESDISPDNHUE=color_magic_Guarding
+
+ON=@Create
+MOREY=40.0
+ATTR=attr_magic
+HITPOINTS=50
+COLOR=<SERV.ITEMDEF.<BASEID>.RESDISPDNHUE>
+
+[ITEMDEF i_chainmail_coif_hardening]
+ID=i_chainmail_coif
+NAME=Chainmail Coif of Hardening
+TEVENTS=t_equipitem
+CATEGORY=Provisions - Armor - Magic
+SUBSECTION=Chainmail
+DESCRIPTION=Chainmail Coif of Hardening
+VALUE=216
+RESDISPDNHUE=color_magic_Hardening
+
+ON=@Create
+MOREY=60.0
+ATTR=attr_magic
+HITPOINTS=55
+COLOR=<SERV.ITEMDEF.<BASEID>.RESDISPDNHUE>
+
+[ITEMDEF i_chainmail_coif_fortification]
+ID=i_chainmail_coif
+NAME=Chainmail Coif of Fortification
+TEVENTS=t_equipitem
+CATEGORY=Provisions - Armor - Magic
+SUBSECTION=Chainmail
+DESCRIPTION=Chainmail Coif of Fortification
+VALUE=256
+RESDISPDNHUE=color_magic_Fortification
+
+ON=@Create
+MOREY=80.0
+ATTR=attr_magic
+HITPOINTS={60 61}
+COLOR=<SERV.ITEMDEF.<BASEID>.RESDISPDNHUE>
+
+[ITEMDEF i_chainmail_coif_invulnerability]
+ID=i_chainmail_coif
+NAME=Chainmail Coif of Invulnerability
+TEVENTS=t_equipitem
+CATEGORY=Provisions - Armor - Magic
+SUBSECTION=Chainmail
+DESCRIPTION=Chainmail Coif of Invulnerability
+VALUE=296
+RESDISPDNHUE=color_magic_Invulnerability
+
+ON=@Create
+MOREY=100.0
+ATTR=attr_magic
+HITPOINTS={65 66}
+COLOR=<SERV.ITEMDEF.<BASEID>.RESDISPDNHUE>
+
+[ITEMDEF i_chainmail_leggings_defense]
+ID=i_chainmail_leggings
+NAME=Chainmail Leggings of Defense
+TEVENTS=t_equipitem
+CATEGORY=Provisions - Armor - Magic
+SUBSECTION=Chainmail
+DESCRIPTION=Chainmail Leggings of Defense
+VALUE=204
+RESDISPDNHUE=color_magic_Defense
+
+ON=@Create
+MOREY=20.0
+ATTR=attr_magic
+HITPOINTS={60 61}
+COLOR=<SERV.ITEMDEF.<BASEID>.RESDISPDNHUE>
+
+[ITEMDEF i_chainmail_leggings_guarding]
+ID=i_chainmail_leggings
+NAME=Chainmail Leggings of Guarding
+TEVENTS=t_equipitem
+CATEGORY=Provisions - Armor - Magic
+SUBSECTION=Chainmail
+DESCRIPTION=Chainmail Leggings of Guarding
+VALUE=244
+RESDISPDNHUE=color_magic_Guarding
+
+ON=@Create
+MOREY=40.0
+ATTR=attr_magic
+HITPOINTS={65 66}
+COLOR=<SERV.ITEMDEF.<BASEID>.RESDISPDNHUE>
+
+[ITEMDEF i_chainmail_leggings_hardening]
+ID=i_chainmail_leggings
+NAME=Chainmail Leggings of Hardening
+TEVENTS=t_equipitem
+CATEGORY=Provisions - Armor - Magic
+SUBSECTION=Chainmail
+DESCRIPTION=Chainmail Leggings of Hardening
+VALUE=284
+RESDISPDNHUE=color_magic_Hardening
+
+ON=@Create
+MOREY=60.0
+ATTR=attr_magic
+HITPOINTS={70 71}
+COLOR=<SERV.ITEMDEF.<BASEID>.RESDISPDNHUE>
+
+[ITEMDEF i_chainmail_leggings_fortification]
+ID=i_chainmail_leggings
+NAME=Chainmail Leggings of Fortification
+TEVENTS=t_equipitem
+CATEGORY=Provisions - Armor - Magic
+SUBSECTION=Chainmail
+DESCRIPTION=Chainmail Leggings of Fortification
+VALUE=324
+RESDISPDNHUE=color_magic_Fortification
+
+ON=@Create
+MOREY=80.0
+ATTR=attr_magic
+HITPOINTS={75 76}
+COLOR=<SERV.ITEMDEF.<BASEID>.RESDISPDNHUE>
+
+[ITEMDEF i_chainmail_leggings_invulnerability]
+ID=i_chainmail_leggings
+NAME=Chainmail Leggings of Invulnerability
+TEVENTS=t_equipitem
+CATEGORY=Provisions - Armor - Magic
+SUBSECTION=Chainmail
+DESCRIPTION=Chainmail Leggings of Invulnerability
+VALUE=364
+RESDISPDNHUE=color_magic_Invulnerability
+
+ON=@Create
+MOREY=100.0
+ATTR=attr_magic
+HITPOINTS={80 81}
+COLOR=<SERV.ITEMDEF.<BASEID>.RESDISPDNHUE>
+
+[ITEMDEF i_chainmail_tunic_defense]
+ID=i_chainmail_tunic
+NAME=Chainmail Tunic of Defense
+TEVENTS=t_equipitem
+CATEGORY=Provisions - Armor - Magic
+SUBSECTION=Chainmail
+DESCRIPTION=Chainmail Tunic of Defense
+VALUE=224
+RESDISPDNHUE=color_magic_Defense
+
+ON=@Create
+MOREY=20.0
+ATTR=attr_magic
+HITPOINTS={60 61}
+COLOR=<SERV.ITEMDEF.<BASEID>.RESDISPDNHUE>
+
+[ITEMDEF i_chainmail_tunic_guarding]
+ID=i_chainmail_tunic
+NAME=Chainmail Tunic of Guarding
+TEVENTS=t_equipitem
+CATEGORY=Provisions - Armor - Magic
+SUBSECTION=Chainmail
+DESCRIPTION=Chainmail Tunic of Guarding
+VALUE=264
+RESDISPDNHUE=color_magic_Guarding
+
+ON=@Create
+MOREY=40.0
+ATTR=attr_magic
+HITPOINTS={65 66}
+COLOR=<SERV.ITEMDEF.<BASEID>.RESDISPDNHUE>
+
+[ITEMDEF i_chainmail_tunic_hardening]
+ID=i_chainmail_tunic
+NAME=Chainmail Tunic of Hardening
+TEVENTS=t_equipitem
+CATEGORY=Provisions - Armor - Magic
+SUBSECTION=Chainmail
+DESCRIPTION=Chainmail Tunic of Hardening
+VALUE=304
+RESDISPDNHUE=color_magic_Hardening
+
+ON=@Create
+MOREY=60.0
+ATTR=attr_magic
+HITPOINTS={70 71}
+COLOR=<SERV.ITEMDEF.<BASEID>.RESDISPDNHUE>
+
+[ITEMDEF i_chainmail_tunic_fortification]
+ID=i_chainmail_tunic
+NAME=Chainmail Tunic of Fortification
+TEVENTS=t_equipitem
+CATEGORY=Provisions - Armor - Magic
+SUBSECTION=Chainmail
+DESCRIPTION=Chainmail Tunic of Fortification
+VALUE=344
+RESDISPDNHUE=color_magic_Fortification
+
+ON=@Create
+MOREY=80.0
+ATTR=attr_magic
+HITPOINTS={75 76}
+COLOR=<SERV.ITEMDEF.<BASEID>.RESDISPDNHUE>
+
+[ITEMDEF i_chainmail_tunic_invulnerability]
+ID=i_chainmail_tunic
+NAME=Chainmail Tunic of Invulnerability
+TEVENTS=t_equipitem
+CATEGORY=Provisions - Armor - Magic
+SUBSECTION=Chainmail
+DESCRIPTION=Chainmail Tunic of Invulnerability
+VALUE=384
+RESDISPDNHUE=color_magic_Invulnerability
+
+ON=@Create
+MOREY=100.0
+ATTR=attr_magic
+HITPOINTS={80 81}
+COLOR=<SERV.ITEMDEF.<BASEID>.RESDISPDNHUE>
+
+[ITEMDEF i_ringmail_leggings_defense]
+ID=i_ringmail_leggings
+NAME=Ringmail Leggings of Defense
+TEVENTS=t_equipitem
+CATEGORY=Provisions - Armor - Magic
+SUBSECTION=Ringmail
+DESCRIPTION=Ringmail Leggings of Defense
+VALUE=184
+RESDISPDNHUE=color_magic_Defense
+
+ON=@Create
+MOREY=20.0
+ATTR=attr_magic
+HITPOINTS={55 56}
+COLOR=<SERV.ITEMDEF.<BASEID>.RESDISPDNHUE>
+
+[ITEMDEF i_ringmail_leggings_guarding]
+ID=i_ringmail_leggings
+NAME=Ringmail Leggings of Guarding
+TEVENTS=t_equipitem
+CATEGORY=Provisions - Armor - Magic
+SUBSECTION=Ringmail
+DESCRIPTION=Ringmail Leggings of Guarding
+VALUE=224
+RESDISPDNHUE=color_magic_Guarding
+
+ON=@Create
+MOREY=40.0
+ATTR=attr_magic
+HITPOINTS={60 61}
+COLOR=<SERV.ITEMDEF.<BASEID>.RESDISPDNHUE>
+
+[ITEMDEF i_ringmail_leggings_hardening]
+ID=i_ringmail_leggings
+NAME=Ringmail Leggings of Hardening
+TEVENTS=t_equipitem
+CATEGORY=Provisions - Armor - Magic
+SUBSECTION=Ringmail
+DESCRIPTION=Ringmail Leggings of Hardening
+VALUE=264
+RESDISPDNHUE=color_magic_Hardening
+
+ON=@Create
+MOREY=60.0
+ATTR=attr_magic
+HITPOINTS={65 66}
+COLOR=<SERV.ITEMDEF.<BASEID>.RESDISPDNHUE>
+
+[ITEMDEF i_ringmail_leggings_fortification]
+ID=i_ringmail_leggings
+NAME=Ringmail Leggings of Fortification
+TEVENTS=t_equipitem
+CATEGORY=Provisions - Armor - Magic
+SUBSECTION=Ringmail
+DESCRIPTION=Ringmail Leggings of Fortification
+VALUE=304
+RESDISPDNHUE=color_magic_Fortification
+
+ON=@Create
+MOREY=80.0
+ATTR=attr_magic
+HITPOINTS={70 71}
+COLOR=<SERV.ITEMDEF.<BASEID>.RESDISPDNHUE>
+
+[ITEMDEF i_ringmail_leggings_invulnerability]
+ID=i_ringmail_leggings
+NAME=Ringmail Leggings of Invulnerability
+TEVENTS=t_equipitem
+CATEGORY=Provisions - Armor - Magic
+SUBSECTION=Ringmail
+DESCRIPTION=Ringmail Leggings of Invulnerability
+VALUE=344
+RESDISPDNHUE=color_magic_Invulnerability
+
+ON=@Create
+MOREY=100.0
+ATTR=attr_magic
+HITPOINTS={75 76}
+COLOR=<SERV.ITEMDEF.<BASEID>.RESDISPDNHUE>
+
+[ITEMDEF i_ringmail_sleeves_defense]
+ID=i_ringmail_sleeves
+NAME=Ringmail Sleeves of Defense
+TEVENTS=t_equipitem
+CATEGORY=Provisions - Armor - Magic
+SUBSECTION=Ringmail
+DESCRIPTION=Ringmail Sleeves of Defense
+VALUE=167
+RESDISPDNHUE=color_magic_Defense
+
+ON=@Create
+MOREY=20.0
+ATTR=attr_magic
+HITPOINTS={55 56}
+COLOR=<SERV.ITEMDEF.<BASEID>.RESDISPDNHUE>
+
+[ITEMDEF i_ringmail_sleeves_guarding]
+ID=i_ringmail_sleeves
+NAME=Ringmail Sleeves of Guarding
+TEVENTS=t_equipitem
+CATEGORY=Provisions - Armor - Magic
+SUBSECTION=Ringmail
+DESCRIPTION=Ringmail Sleeves of Guarding
+VALUE=207
+RESDISPDNHUE=color_magic_Guarding
+
+ON=@Create
+MOREY=40.0
+ATTR=attr_magic
+HITPOINTS={60 61}
+COLOR=<SERV.ITEMDEF.<BASEID>.RESDISPDNHUE>
+
+[ITEMDEF i_ringmail_sleeves_hardening]
+ID=i_ringmail_sleeves
+NAME=Ringmail Sleeves of Hardening
+TEVENTS=t_equipitem
+CATEGORY=Provisions - Armor - Magic
+SUBSECTION=Ringmail
+DESCRIPTION=Ringmail Sleeves of Hardening
+VALUE=247
+RESDISPDNHUE=color_magic_Hardening
+
+ON=@Create
+MOREY=60.0
+ATTR=attr_magic
+HITPOINTS={65 66}
+COLOR=<SERV.ITEMDEF.<BASEID>.RESDISPDNHUE>
+
+[ITEMDEF i_ringmail_sleeves_fortification]
+ID=i_ringmail_sleeves
+NAME=Ringmail Sleeves of Fortification
+TEVENTS=t_equipitem
+CATEGORY=Provisions - Armor - Magic
+SUBSECTION=Ringmail
+DESCRIPTION=Ringmail Sleeves of Fortification
+VALUE=287
+RESDISPDNHUE=color_magic_Fortification
+
+ON=@Create
+MOREY=80.0
+ATTR=attr_magic
+HITPOINTS={70 71}
+COLOR=<SERV.ITEMDEF.<BASEID>.RESDISPDNHUE>
+
+[ITEMDEF i_ringmail_sleeves_invulnerability]
+ID=i_ringmail_sleeves
+NAME=Ringmail Sleeves of Invulnerability
+TEVENTS=t_equipitem
+CATEGORY=Provisions - Armor - Magic
+SUBSECTION=Ringmail
+DESCRIPTION=Ringmail Sleeves of Invulnerability
+VALUE=237
+RESDISPDNHUE=color_magic_Invulnerability
+
+ON=@Create
+MOREY=100.0
+ATTR=attr_magic
+HITPOINTS={75 76}
+COLOR=<SERV.ITEMDEF.<BASEID>.RESDISPDNHUE>
+
+[ITEMDEF i_ringmail_gloves_defense]
+ID=i_ringmail_gloves
+NAME=Ringmail Gloves of Defense
+TEVENTS=t_equipitem
+CATEGORY=Provisions - Armor - Magic
+SUBSECTION=Ringmail
+DESCRIPTION=Ringmail Gloves of Defense
+VALUE=133
+RESDISPDNHUE=color_magic_Defense
+
+ON=@Create
+MOREY=20.0
+ATTR=attr_magic
+HITPOINTS={55 56}
+COLOR=<SERV.ITEMDEF.<BASEID>.RESDISPDNHUE>
+
+[ITEMDEF i_ringmail_gloves_guarding]
+ID=i_ringmail_gloves
+NAME=Ringmail Gloves of Guarding
+TEVENTS=t_equipitem
+CATEGORY=Provisions - Armor - Magic
+SUBSECTION=Ringmail
+DESCRIPTION=Ringmail Gloves of Guarding
+VALUE=173
+RESDISPDNHUE=color_magic_Guarding
+
+ON=@Create
+MOREY=40.0
+ATTR=attr_magic
+HITPOINTS={60 61}
+COLOR=<SERV.ITEMDEF.<BASEID>.RESDISPDNHUE>
+
+[ITEMDEF i_ringmail_gloves_hardening]
+ID=i_ringmail_gloves
+NAME=Ringmail Gloves of Hardening
+TEVENTS=t_equipitem
+CATEGORY=Provisions - Armor - Magic
+SUBSECTION=Ringmail
+DESCRIPTION=Ringmail Gloves of Hardening
+VALUE=213
+RESDISPDNHUE=color_magic_Hardening
+
+ON=@Create
+MOREY=60.0
+ATTR=attr_magic
+HITPOINTS={65 66}
+COLOR=<SERV.ITEMDEF.<BASEID>.RESDISPDNHUE>
+
+[ITEMDEF i_ringmail_gloves_fortification]
+ID=i_ringmail_gloves
+NAME=Ringmail Gloves of Fortification
+TEVENTS=t_equipitem
+CATEGORY=Provisions - Armor - Magic
+SUBSECTION=Ringmail
+DESCRIPTION=Ringmail Gloves of Fortification
+VALUE=253
+RESDISPDNHUE=color_magic_Fortification
+
+ON=@Create
+MOREY=80.0
+ATTR=attr_magic
+HITPOINTS={70 71}
+COLOR=<SERV.ITEMDEF.<BASEID>.RESDISPDNHUE>
+
+[ITEMDEF i_ringmail_gloves_invulnerability]
+ID=i_ringmail_gloves
+NAME=Ringmail Gloves of Invulnerability
+TEVENTS=t_equipitem
+CATEGORY=Provisions - Armor - Magic
+SUBSECTION=Ringmail
+DESCRIPTION=Ringmail Gloves of Invulnerability
+VALUE=293
+RESDISPDNHUE=color_magic_Invulnerability
+
+ON=@Create
+MOREY=100.0
+ATTR=attr_magic
+HITPOINTS={75 76}
+COLOR=<SERV.ITEMDEF.<BASEID>.RESDISPDNHUE>
+
+[ITEMDEF i_ringmail_tunic_defense]
+ID=i_ringmail_tunic
+NAME=Ringmail Tunic of Defense
+TEVENTS=t_equipitem
+CATEGORY=Provisions - Armor - Magic
+SUBSECTION=Ringmail
+DESCRIPTION=Ringmail Tunic of Defense
+VALUE=201
+RESDISPDNHUE=color_magic_Defense
+
+ON=@Create
+MOREY=20.0
+ATTR=attr_magic
+HITPOINTS={55 56}
+COLOR=<SERV.ITEMDEF.<BASEID>.RESDISPDNHUE>
+
+[ITEMDEF i_ringmail_tunic_guarding]
+ID=i_ringmail_tunic
+NAME=Ringmail Tunic of Guarding
+TEVENTS=t_equipitem
+CATEGORY=Provisions - Armor - Magic
+SUBSECTION=Ringmail
+DESCRIPTION=Ringmail Tunic of Guarding
+VALUE=241
+RESDISPDNHUE=color_magic_Guarding
+
+ON=@Create
+MOREY=40.0
+ATTR=attr_magic
+HITPOINTS={60 61}
+COLOR=<SERV.ITEMDEF.<BASEID>.RESDISPDNHUE>
+
+[ITEMDEF i_ringmail_tunic_hardening]
+ID=i_ringmail_tunic
+NAME=Ringmail Tunic of Hardening
+TEVENTS=t_equipitem
+CATEGORY=Provisions - Armor - Magic
+SUBSECTION=Ringmail
+DESCRIPTION=Ringmail Tunic of Hardening
+VALUE=281
+RESDISPDNHUE=color_magic_Hardening
+
+ON=@Create
+MOREY=60.0
+ATTR=attr_magic
+HITPOINTS={65 66}
+COLOR=<SERV.ITEMDEF.<BASEID>.RESDISPDNHUE>
+
+[ITEMDEF i_ringmail_tunic_fortification]
+ID=i_ringmail_tunic
+NAME=Ringmail Tunic of Fortification
+TEVENTS=t_equipitem
+CATEGORY=Provisions - Armor - Magic
+SUBSECTION=Ringmail
+DESCRIPTION=Ringmail Tunic of Fortification
+VALUE=321
+RESDISPDNHUE=color_magic_Fortification
+
+ON=@Create
+MOREY=80.0
+ATTR=attr_magic
+HITPOINTS={70 71}
+COLOR=<SERV.ITEMDEF.<BASEID>.RESDISPDNHUE>
+
+[ITEMDEF i_ringmail_tunic_invulnerability]
+ID=i_ringmail_tunic
+NAME=Ringmail Tunic of Invulnerability
+TEVENTS=t_equipitem
+CATEGORY=Provisions - Armor - Magic
+SUBSECTION=Ringmail
+DESCRIPTION=Ringmail Tunic of Invulnerability
+VALUE=361
+RESDISPDNHUE=color_magic_Invulnerability
+
+ON=@Create
+MOREY=100.0
+ATTR=attr_magic
+HITPOINTS={75 76}
+COLOR=<SERV.ITEMDEF.<BASEID>.RESDISPDNHUE>
+
+
+
+[COMMENT ATTR_MAGIC]
+// Property: Armor Resistance Increase. Prefixes. (ascending order)
+Defense
+Guarding
+Hardening
+Fortification
+Invulnerability
+
+// Property: Armor Resistance Increase. Bonus calculation.
+Based on s_enchant MOREY...
+
+[ITEMDEF i_leather_sleeves_invulnerability]
+ID=i_leather_sleeves
+NAME=Leather Sleeves of Invulnerability
+TEVENTS=t_equipitem
+CATEGORY=Provisions - Armor - Magic
+SUBSECTION=Leather
+DESCRIPTION=Leather Sleeves of Invulnerability
+VALUE=
+RESDISPDNHUE=color_magic_Invulnerability
+MageArmor=1
+
+ON=@Create
+MOREY=100.0
+ATTR=attr_magic
+HITPOINTS={31 37}
+COLOR=<SERV.ITEMDEF.<BASEID>.RESDISPDNHUE>
+
+[ITEMDEF i_leather_gorget_invulnerability]
+ID=i_leather_gorget
+NAME=Leather Gorget of Invulnerability
+TEVENTS=t_equipitem
+CATEGORY=Provisions - Armor - Magic
+SUBSECTION=Leather
+DESCRIPTION=Leather Gorget of Invulnerability
+VALUE=
+RESDISPDNHUE=color_magic_Invulnerability
+MageArmor=1
+
+ON=@Create
+MOREY=100.0
+ATTR=attr_magic
+HITPOINTS={31 37}
+COLOR=<SERV.ITEMDEF.<BASEID>.RESDISPDNHUE>
+
+[ITEMDEF i_leather_leggings_invulnerability]
+ID=i_leather_leggings
+NAME=Leather Leggings of Invulnerability
+TEVENTS=t_equipitem
+CATEGORY=Provisions - Armor - Magic
+SUBSECTION=Leather
+DESCRIPTION=Leather Leggings of Invulnerability
+VALUE=
+RESDISPDNHUE=color_magic_Invulnerability
+MageArmor=1
+
+ON=@Create
+MOREY=100.0
+ATTR=attr_magic
+HITPOINTS={31 37}
+COLOR=<SERV.ITEMDEF.<BASEID>.RESDISPDNHUE>
+
+[ITEMDEF i_leather_tunic_invulnerability]
+ID=i_leather_tunic
+NAME=Leather Tunic of Invulnerability
+TEVENTS=t_equipitem
+CATEGORY=Provisions - Armor - Magic
+SUBSECTION=Leather
+DESCRIPTION=Leather Tunic of Invulnerability
+VALUE=
+RESDISPDNHUE=color_magic_Invulnerability
+MageArmor=1
+
+ON=@Create
+MOREY=100.0
+ATTR=attr_magic
+HITPOINTS={31 37}
+COLOR=<SERV.ITEMDEF.<BASEID>.RESDISPDNHUE>
+
+[ITEMDEF i_leather_gloves_invulnerability]
+ID=i_leather_gloves
+NAME=Leather Gloves of Invulnerability
+TEVENTS=t_equipitem
+CATEGORY=Provisions - Armor - Magic
+SUBSECTION=Leather
+DESCRIPTION=Leather Gloves of Invulnerability
+VALUE=
+RESDISPDNHUE=color_magic_Invulnerability
+MageArmor=1
+
+ON=@Create
+MOREY=100.0
+ATTR=attr_magic
+HITPOINTS={31 37}
+COLOR=<SERV.ITEMDEF.<BASEID>.RESDISPDNHUE>
+
+[ITEMDEF i_leather_cap_invulnerability]
+ID=i_leather_cap
+NAME=Leather Cap of Invulnerability
+TEVENTS=t_equipitem
+CATEGORY=Provisions - Armor - Magic
+SUBSECTION=Leather
+DESCRIPTION=Leather Cap of Invulnerability
+VALUE=
+RESDISPDNHUE=color_magic_Invulnerability
+MageArmor=1
+
+ON=@Create
+MOREY=100.0
+ATTR=attr_magic
+HITPOINTS={31 37}
+COLOR=<SERV.ITEMDEF.<BASEID>.RESDISPDNHUE>
+
+[ITEMDEF i_leather_shorts_invulnerability]
+ID=i_armor_female_shorts
+NAME=Leather Shorts of Invulnerability
+TEVENTS=t_equipitem
+CATEGORY=Provisions - Armor - Magic
+SUBSECTION=Leather
+DESCRIPTION=Leather Shorts of Invulnerability
+VALUE=
+RESDISPDNHUE=color_magic_Invulnerability
+MageArmor=1
+
+ON=@Create
+MOREY=100.0
+ATTR=attr_magic
+HITPOINTS={31 37}
+COLOR=<SERV.ITEMDEF.<BASEID>.RESDISPDNHUE>
+
+[ITEMDEF i_leather_armor_invulnerability_female]
+ID=i_armor_female_leather
+NAME=Leather Armor of Invulnerability
+TEVENTS=t_equipitem
+CATEGORY=Provisions - Armor - Magic
+SUBSECTION=Leather
+DESCRIPTION=Leather Armor of Invulnerability
+VALUE=
+RESDISPDNHUE=color_magic_Invulnerability
+MageArmor=1
+
+ON=@Create
+MOREY=100.0
+ATTR=attr_magic
+HITPOINTS={31 37}
+COLOR=<SERV.ITEMDEF.<BASEID>.RESDISPDNHUE>
+
+[ITEMDEF i_leather_skirt_invulnerability]
+ID=i_armor_female_skirt
+NAME=Leather Skirt of Invulnerability
+TEVENTS=t_equipitem
+CATEGORY=Provisions - Armor - Magic
+SUBSECTION=Leather
+DESCRIPTION=Leather Skirt of Invulnerability
+VALUE=
+RESDISPDNHUE=color_magic_Invulnerability
+MageArmor=1
+
+ON=@Create
+MOREY=100.0
+ATTR=attr_magic
+HITPOINTS={31 37}
+COLOR=<SERV.ITEMDEF.<BASEID>.RESDISPDNHUE>
+
+[ITEMDEF i_leather_bustier_invulnerability]
+ID=i_armor_female_bustier
+NAME=Leather Bustier of Invulnerability
+TEVENTS=t_equipitem
+CATEGORY=Provisions - Armor - Magic
+SUBSECTION=Leather
+DESCRIPTION=Leather Bustier of Invulnerability
+VALUE=
+RESDISPDNHUE=color_magic_Invulnerability
+MageArmor=1
+
+ON=@Create
+MOREY=100.0
+ATTR=attr_magic
+HITPOINTS={31 37}
+COLOR=<SERV.ITEMDEF.<BASEID>.RESDISPDNHUE>
+
+
+// studded
+[ITEMDEF i_studded_sleeves_invulnerability]
+ID=i_studded_sleeves
+NAME=Studded Sleeves of Invulnerability
+TEVENTS=t_equipitem
+CATEGORY=Provisions - Armor - Magic
+SUBSECTION=Studded
+DESCRIPTION=Studded Sleeves of Invulnerability
+VALUE=
+RESDISPDNHUE=color_magic_Invulnerability
+MageArmor=1
+
+ON=@Create
+MOREY=100.0
+ATTR=attr_magic
+HITPOINTS={36 44}
+COLOR=<SERV.ITEMDEF.<BASEID>.RESDISPDNHUE>
+
+[ITEMDEF i_studded_gloves_invulnerability]
+ID=i_studded_gloves
+NAME=Studded Gloves of Invulnerability
+TEVENTS=t_equipitem
+CATEGORY=Provisions - Armor - Magic
+SUBSECTION=Studded
+DESCRIPTION=Studded Gloves of Invulnerability
+VALUE=
+RESDISPDNHUE=color_magic_Invulnerability
+MageArmor=1
+
+ON=@Create
+MOREY=100.0
+ATTR=attr_magic
+HITPOINTS={36 44}
+COLOR=<SERV.ITEMDEF.<BASEID>.RESDISPDNHUE>
+
+[ITEMDEF i_studded_gorget_invulnerability]
+ID=i_studded_gorget
+NAME=Studded Gorget of Invulnerability
+TEVENTS=t_equipitem
+CATEGORY=Provisions - Armor - Magic
+SUBSECTION=Studded
+DESCRIPTION=Studded Gorget of Invulnerability
+VALUE=
+RESDISPDNHUE=color_magic_Invulnerability
+MageArmor=1
+
+ON=@Create
+MOREY=100.0
+ATTR=attr_magic
+HITPOINTS={36 44}
+COLOR=<SERV.ITEMDEF.<BASEID>.RESDISPDNHUE>
+
+[ITEMDEF i_studded_leggings_invulnerability]
+ID=i_studded_leggings
+NAME=Studded Leggings of Invulnerability
+TEVENTS=t_equipitem
+CATEGORY=Provisions - Armor - Magic
+SUBSECTION=Studded
+DESCRIPTION=Studded Leggings of Invulnerability
+VALUE=
+RESDISPDNHUE=color_magic_Invulnerability
+MageArmor=1
+
+ON=@Create
+MOREY=100.0
+ATTR=attr_magic
+HITPOINTS={36 44}
+COLOR=<SERV.ITEMDEF.<BASEID>.RESDISPDNHUE>
+
+[ITEMDEF i_studded_tunic_invulnerability]
+ID=i_studded_tunic
+NAME=Studded Tunic of Invulnerability
+TEVENTS=t_equipitem
+CATEGORY=Provisions - Armor - Magic
+SUBSECTION=Studded
+DESCRIPTION=Studded Tunic of Invulnerability
+VALUE=
+RESDISPDNHUE=color_magic_Invulnerability
+MageArmor=1
+
+ON=@Create
+MOREY=100.0
+ATTR=attr_magic
+HITPOINTS={36 44}
+COLOR=<SERV.ITEMDEF.<BASEID>.RESDISPDNHUE>
+
+[ITEMDEF i_studded_armor_invulnerability]
+ID=i_armor_female_studded
+NAME=Studded Armor of Invulnerability
+TEVENTS=t_equipitem
+CATEGORY=Provisions - Armor - Magic
+SUBSECTION=Studded
+DESCRIPTION=Studded Armor of Invulnerability
+VALUE=
+RESDISPDNHUE=color_magic_Invulnerability
+MageArmor=1
+
+ON=@Create
+MOREY=100.0
+ATTR=attr_magic
+HITPOINTS={36 44}
+COLOR=<SERV.ITEMDEF.<BASEID>.RESDISPDNHUE>
+
+[ITEMDEF i_studded_bustier_invulnerability]
+ID=i_armor_female_bustier_studded
+NAME=Studded Bustier of Invulnerability
+TEVENTS=t_equipitem
+CATEGORY=Provisions - Armor - Magic
+SUBSECTION=Studded
+DESCRIPTION=Studded Bustier of Invulnerability
+VALUE=
+RESDISPDNHUE=color_magic_Invulnerability
+MageArmor=1
+
+ON=@Create
+MOREY=100.0
+ATTR=attr_magic
+HITPOINTS={36 44}
+COLOR=<SERV.ITEMDEF.<BASEID>.RESDISPDNHUE>
+
+[EOF]
+

@@ -1,0 +1,178 @@
+
+
+
+[ITEMDEF i_deed_armor_leather]
+DEFNAME=i_deed_armor_leather
+ID=i_deed_2
+TYPE=T_SCRIPT
+NAME=Leather Armor Deed
+VALUE=1000
+WEIGHT=0
+RESDISPDNHUE=0
+CATEGORY=Zirhlar
+SUBSECTION=Warrior
+TAG0.PARTS=i_leather_cap, i_leather_gorget,i_leather_sleeves,i_leather_gloves,i_leather_tunic,i_leather_leggings
+TEVENTS=ei_deed_parts
+
+ON=@Create
+COLOR=<SERV.ITEMDEF.<BASEID>.RESDISPDNHUE>
+
+
+
+[ITEMDEF 01db9]
+DEFNAME=i_leather_cap
+TYPE=t_armor_leather
+FLIP=1
+ARMOR=10
+VALUE=13
+WEIGHT=2.1
+RESOURCES=2 i_hides_cut
+SKILLMAKE=Tailoring 6.8,t_sewing_kit
+CATEGORY=Leather Armor
+SUBSECTION=
+DESCRIPTION=Leather Cap
+REQSTR=20
+TEVENTS=t_equipitem
+DUPELIST=01dba
+MageArmor=1
+
+ON=@Create
+HITPOINTS=100
+
+[ITEMDEF 01dba]
+//leather cap
+DUPEITEM=01db9
+
+
+
+
+
+[ITEMDEF 013c7]
+DEFNAME=i_leather_gorget
+TYPE=t_armor_leather
+FLIP=1
+ARMOR=18
+VALUE=32
+WEIGHT=1.0
+RESOURCES=4 i_hides_cut
+SKILLMAKE=Tailoring 53.9,t_sewing_kit
+CATEGORY=Leather Armor
+SUBSECTION=
+DESCRIPTION=Leather Gorget
+REQSTR=20
+TEVENTS=t_equipitem
+MageArmor=1
+
+ON=@Create
+HITPOINTS=100
+
+
+
+
+
+[ITEMDEF 013c5]
+DEFNAME=i_leather_sleeves
+TYPE=t_armor_leather
+FLIP=1
+ARMOR=20
+VALUE=70
+WEIGHT=2.0
+RESOURCES=4 i_hides_cut
+SKILLMAKE=Tailoring 59.0,t_sewing_kit
+CATEGORY=Leather Armor
+SUBSECTION=
+DESCRIPTION=Leather Sleeves
+REQSTR=20
+TEVENTS=t_equipitem
+DUPELIST=013cd
+MageArmor=1
+
+ON=@Create
+HITPOINTS=100
+
+[ITEMDEF 013cd]
+// leather sleeves
+DUPEITEM=013c5
+
+
+
+
+[ITEMDEF 013c6]
+DEFNAME=i_leather_gloves
+NAME=leather gloves
+TYPE=t_armor_leather
+FLIP=1
+ARMOR=16
+VALUE=24
+WEIGHT=1.0
+RESOURCES=3 i_hides_cut
+SKILLMAKE=Tailoring 51.8,t_sewing_kit
+CATEGORY=Leather Armor
+SUBSECTION=
+DESCRIPTION=Leather Gloves
+REQSTR=20
+TEVENTS=t_equipitem
+DUPELIST=013ce
+MageArmor=1
+
+ON=@Create
+HITPOINTS=100
+
+[ITEMDEF 013ce]
+// Leather Gloves
+DUPEITEM=013c6
+
+
+
+
+[ITEMDEF 013cc]
+DEFNAME=i_leather_tunic
+TYPE=t_armor_leather
+FLIP=1
+ARMOR=15
+VALUE=115
+WEIGHT=6.0
+RESOURCES=12 i_hides_cut
+SKILLMAKE=Tailoring 70.5,t_sewing_kit
+CATEGORY=Leather Armor
+SUBSECTION=
+DESCRIPTION=Leather Tunic
+REQSTR=25
+TEVENTS=t_equipitem
+DUPELIST=013d3
+MageArmor=1
+
+ON=@Create
+HITPOINTS=100
+
+[ITEMDEF 013d3]
+//leather tunic
+DUPEITEM=013cc
+
+
+
+[ITEMDEF 013cb]
+DEFNAME=i_leather_leggings
+TYPE=t_armor_leather
+FLIP=1
+ARMOR=16
+VALUE=86
+WEIGHT=4.0
+RESOURCES=10 i_hides_cut
+SKILLMAKE=Tailoring 66.3,t_sewing_kit
+CATEGORY=Leather Armor
+SUBSECTION=
+DESCRIPTION=Leather Leggings
+REQSTR=20
+TEVENTS=t_equipitem
+DUPELIST=013d2
+MageArmor=1
+
+ON=@Create
+HITPOINTS=100
+
+[ITEMDEF 013d2]
+//leather leggings
+DUPEITEM=013cb
+
+[eof]

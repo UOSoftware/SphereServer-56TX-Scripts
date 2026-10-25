@@ -1,0 +1,125 @@
+
+
+[ITEMDEF 02b67]
+DEFNAME=i_woodland_chest
+NAME=woodland chest
+TYPE=t_armor
+FLIP=1
+ARMOR=30
+VALUE=175
+WEIGHT=8.0
+RESOURCES=20 i_board,6 i_bark
+SKILLMAKE=Carpentry 90.0,Armslore 25.0
+CATEGORY=Provisions - Armor
+SUBSECTION=Elven
+DESCRIPTION=Woodland Chest
+REQSTR=95
+TEVENTS=t_equipitem
+DUPELIST=0315e
+
+ON=@Create
+HITPOINTS={36 48}
+
+
+[ITEMDEF 02b69]
+DEFNAME=i_woodland_gorget
+NAME=woodland gorget
+TYPE=t_armor
+FLIP=1
+ARMOR=30
+VALUE=63
+WEIGHT=10.0
+RESOURCES=15 i_board,4 i_bark
+SKILLMAKE=Carpentry 85.0,Armslore 25.0
+CATEGORY=Provisions - Armor
+SUBSECTION=Elven
+DESCRIPTION=Woodland Gorget
+REQSTR=45
+TEVENTS=t_equipitem
+DUPELIST=03160
+
+ON=@Create
+HITPOINTS={36 48}
+
+[ITEMDEF 02b6a]
+DEFNAME=i_woodland_gauntlets
+NAME=woodland gauntlets
+TYPE=t_armor
+FLIP=1
+ARMOR=30
+VALUE=76
+WEIGHT=12.0
+RESOURCES=15 i_board,4 i_bark
+SKILLMAKE=Carpentry 85.0,Armslore 25.0
+CATEGORY=Provisions - Armor
+SUBSECTION=Elven
+DESCRIPTION=Woodland Gauntlets
+REQSTR=70
+TEVENTS=t_equipitem
+DUPELIST=03161
+
+ON=@Create
+HITPOINTS={36 48}
+
+[ITEMDEF 02b6b]
+DEFNAME=i_woodland_leggings
+NAME=woodland leggings
+TYPE=t_armor
+FLIP=1
+ARMOR=30
+VALUE=122
+WEIGHT=18.0
+RESOURCES=15 i_board,4 i_bark
+SKILLMAKE=Carpentry 85.0,Armslore 25.0
+CATEGORY=Provisions - Armor
+SUBSECTION=Elven
+DESCRIPTION=Woodland Leggings
+REQSTR=90
+TEVENTS=t_equipitem
+DUPELIST=03162
+
+ON=@Create
+HITPOINTS={36 48}
+
+[ITEMDEF 02b6c]
+DEFNAME=i_woodland_arms
+NAME=woodland arms
+TYPE=t_armor
+FLIP=1
+ARMOR=30
+VALUE=100
+WEIGHT=15.0
+RESOURCES=15 i_board,4 i_bark
+SKILLMAKE=Carpentry 85.0,Armslore 25.0
+CATEGORY=Provisions - Armor
+SUBSECTION=Elven
+DESCRIPTION=Woodland Arms
+REQSTR=80
+TEVENTS=t_equipitem
+DUPELIST=03163
+
+ON=@Create
+HITPOINTS={36 48}
+
+[ITEMDEF 02b6d]
+DEFNAME=i_woodland_chest_female
+NAME=female woodland chest
+TYPE=t_armor
+FLIP=1
+ARMOR=30
+VALUE=140
+WEIGHT=20.0
+RESOURCES=20 i_board,6 i_bark
+SKILLMAKE=Carpentry 90.0,Armslore 25.0
+CATEGORY=Provisions - Armor
+SUBSECTION=Elven
+DESCRIPTION=Woodland Chest (female)
+REQSTR=95
+TEVENTS=t_equipitem
+DUPELIST=03164
+
+ON=@Create
+HITPOINTS={36 48}
+
+
+[eof]

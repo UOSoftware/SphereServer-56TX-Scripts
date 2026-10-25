@@ -1,0 +1,764 @@
+
+
+
+[ITEMDEF 013fe]
+DEFNAME=i_katana
+TYPE=t_weapon_sword
+DAM=5,26
+FLIP=1
+SKILL=Swordsmanship
+// SPEED=42
+RANGE=0,1
+VALUE=114
+WEIGHT=4.0
+TWOHANDS=N
+RESOURCES=8 i_ingot_iron
+SKILLMAKE=Blacksmithing 44.1
+CATEGORY=Weapons
+SUBSECTION=Swordsmanship
+DESCRIPTION=Katana
+ReqStr=10
+// CanUse=can_u_human|can_u_elf
+TEVENTS=t_equipitem
+DUPELIST=013ff
+
+ON=@Create
+HITPOINTS={100 250}
+
+[ITEMDEF 013ff]
+//katana
+DUPEITEM=013fe
+
+
+[ITEMDEF 0f60]
+DEFNAME=i_sword_long
+NAME=longsword
+TYPE=t_weapon_sword
+DAM=5,33
+FLIP=1
+SKILL=Swordsmanship
+// SPEED=35
+RANGE=0,1
+VALUE=122
+WEIGHT=7.0
+TWOHANDS=N
+RESOURCES=12 i_ingot_iron
+SKILLMAKE=Blacksmithing 53.8
+CATEGORY=Weapons
+SUBSECTION=Swordsmanship
+DESCRIPTION=Longsword
+ReqStr=25
+// CanUse=can_u_human|can_u_elf
+TEVENTS=t_equipitem
+DUPELIST=0f61
+
+ON=@Create
+HITPOINTS={100 250}
+
+[ITEMDEF 0f61]
+//longsword
+DUPEITEM=0f60
+
+
+
+
+
+[ITEMDEF 013b7]
+DEFNAME=i_sword_long_b
+TYPE=t_weapon_sword
+DAM=5,33
+FLIP=1
+// SPEED=35
+SKILL=Swordsmanship
+VALUE=122
+WEIGHT=7.0
+TWOHANDS=N
+RESOURCES=10 i_ingot_iron
+SKILLMAKE=Blacksmithing 50.2
+CATEGORY=Weapons
+SUBSECTION=Swordsmanship
+DESCRIPTION=Longsword (jian)
+// CanUse=can_u_human|can_u_elf
+ReqStr=40
+TEVENTS=t_equipitem
+DUPELIST=013b8
+
+ON=@Create
+HITPOINTS={100 250}
+
+[ITEMDEF 013b8]
+//long sword b
+DUPEITEM=013b7
+
+
+
+
+[ITEMDEF 013b5]
+DEFNAME=i_scimitar
+TYPE=t_weapon_sword
+DAM=4,30
+FLIP=1
+SKILL=Swordsmanship
+// SPEED=45
+RANGE=0,1
+VALUE=111
+WEIGHT=6.7
+TWOHANDS=N
+RESOURCES=10 i_ingot_iron
+SKILLMAKE=Blacksmithing 31.7
+CATEGORY=Weapons
+SUBSECTION=Swordsmanship
+DESCRIPTION=Scimitar
+ReqStr=10
+// CanUse=can_u_human|can_u_elf
+TEVENTS=t_equipitem
+DUPELIST=013b6
+
+ON=@Create
+HITPOINTS={100 250}
+
+[ITEMDEF 013b6]
+//scimitar
+DUPEITEM=013b5
+
+
+[ITEMDEF 013ba]
+DEFNAME=i_sword_viking
+TYPE=t_weapon_sword
+DAM=6,34
+FLIP=1
+SKILL=Swordsmanship
+// SPEED=35
+VALUE=132
+WEIGHT=8.0
+TWOHANDS=N
+RESOURCES=14 i_ingot_iron
+SKILLMAKE=Blacksmithing 24.3
+CATEGORY=Weapons
+SUBSECTION=Swordsmanship
+DESCRIPTION=Viking Sword
+// CanUse=can_u_human|can_u_elf
+ReqStr=40
+TEVENTS=t_equipitem
+DUPELIST=013b9
+
+ON=@Create
+HITPOINTS={100 250}
+
+[ITEMDEF 013b9]
+//viking sword
+DUPEITEM=013ba
+
+
+
+
+[ITEMDEF 0143e]
+DEFNAME=i_halberd
+TYPE=t_weapon_sword
+DAM=5,49
+FLIP=1
+SKILL=Swordsmanship
+// SPEED=28
+VALUE=203
+//RANGE=0,2
+RANGE=0,1
+WEIGHT=11.2
+TWOHANDS=Y
+RESOURCES=20 i_ingot_iron
+SKILLMAKE=Blacksmithing 39.1
+CATEGORY=Weapons
+SUBSECTION=Swordsmanship
+DESCRIPTION=Halberd
+ReqStr=45
+// CanUse=can_u_human|can_u_elf
+TEVENTS=t_equipitem
+DUPELIST=0143f
+
+ON=@Create
+HITPOINTS={100 250}
+// UsesMax=150
+
+[ITEMDEF 0143f]
+//halberd
+DUPEITEM=0143e
+
+
+[ITEMDEF 01440]
+DEFNAME=i_cutlass
+TYPE=t_weapon_sword 
+DAM=6,28
+FLIP=1
+SKILL=Swordsmanship
+// SPEED=44
+RANGE=0,1
+VALUE=84
+WEIGHT=5.0
+TWOHANDS=N
+RESOURCES=8 i_ingot_iron
+SKILLMAKE=Blacksmithing 24.3
+CATEGORY=Weapons
+SUBSECTION=Swordsmanship
+DESCRIPTION=Cutlass
+ReqStr=25
+// CanUse=can_u_human|can_u_elf
+TEVENTS=t_equipitem
+DUPELIST=01441
+
+ON=@Create
+HITPOINTS={100 250}
+
+[ITEMDEF 01441]
+//cutlass
+DUPEITEM=01440
+
+
+
+
+[ITEMDEF 0f4e]
+DEFNAME=i_bardiche
+TYPE=t_weapon_sword
+DAM=5,43
+FLIP=1
+SKILL=Swordsmanship
+// SPEED=30
+VALUE=175
+WEIGHT=9.5
+//RANGE=0,2
+RANGE=0,1
+TWOHANDS=Y
+RESOURCES=18 i_ingot_iron
+SKILLMAKE=Blacksmithing 31.7
+CATEGORY=Weapons
+SUBSECTION=Swordsmanship
+DESCRIPTION=Bardiche
+ReqStr=40
+// CanUse=can_u_human|can_u_elf
+TEVENTS=t_equipitem
+DUPELIST=0f4d
+
+ON=@Create
+HITPOINTS={100 250}
+// UsesMax=150
+
+[ITEMDEF 0f4d]
+//bardiche
+DUPEITEM=0f4e
+
+
+
+
+[ITEMDEF 0f5f]
+DEFNAME=i_sword_broad
+TYPE=t_weapon_sword
+DAM=5,29
+FLIP=1
+SKILL=Swordsmanship
+// SPEED=35
+VALUE=117
+WEIGHT=6.0
+TWOHANDS=N
+RESOURCES=10 i_ingot_iron
+SKILLMAKE=Blacksmithing 35.4
+CATEGORY=Weapons
+SUBSECTION=Swordsmanship
+DESCRIPTION=Broadsword
+ReqStr=25
+// CanUse=can_u_human|can_u_elf
+TEVENTS=t_equipitem
+DUPELIST=0f5e
+
+ON=@Create
+HITPOINTS={100 250}
+
+[ITEMDEF 0f5e]
+//broadsword
+DUPEITEM=0f5f
+
+
+
+
+
+[ITEMDEF 026ce]
+//FIXME: this is not on stratics?
+DEFNAME=i_sword_paladin
+NAME=paladin sword
+TYPE=t_weapon_sword
+DAM=8,15
+FLIP=1
+SKILL=Swordsmanship
+// SPEED=35
+VALUE=142
+WEIGHT=16.0
+TWOHANDS=Y
+RESOURCES=24 i_ingot_iron,1 i_board
+SKILLMAKE=Blacksmithing 46.0
+CATEGORY=Weapons
+SUBSECTION=Swordsmanship
+DESCRIPTION=Paladin Sword
+ReqStr=90
+TEVENTS=t_equipitem
+DUPELIST=026cf
+
+ON=@Create
+HITPOINTS={100 250}
+
+[ITEMDEF 026cf]
+//paladin sword
+DUPEITEM=026ce
+
+
+
+[ITEMDEF 026ba]
+DEFNAME=i_scythe
+NAME=scythe
+TYPE=t_weapon_sword
+DAM=5,12
+FLIP=1
+SKILL=Swordsmanship
+// SPEED=38
+//RANGE=0,2
+RANGE=0,1
+VALUE=81
+WEIGHT=5.0
+TWOHANDS=Y
+RESOURCES=14 i_ingot_iron,2 i_board
+SKILLMAKE=Blacksmithing 39.0
+CATEGORY=Weapons
+SUBSECTION=Swordsmanship
+DESCRIPTION=Scythe
+ReqStr=45
+TEVENTS=t_equipitem
+DUPELIST=026c4
+
+ON=@Create
+HITPOINTS={100 250}
+// UsesMax=150
+
+[ITEMDEF 026c4]
+//scythe
+DUPEITEM=026ba
+
+
+[ITEMDEF 026c1]
+DEFNAME=i_crescent_blade
+NAME=crescent blade
+TYPE=t_weapon_sword
+DAM=4,9
+FLIP=1
+SKILL=Swordsmanship
+// SPEED=50
+VALUE=110
+WEIGHT=1.0
+TWOHANDS=Y
+RESOURCES=14 i_ingot_iron
+SKILLMAKE=Blacksmithing 45.0
+CATEGORY=Weapons
+SUBSECTION=Swordsmanship
+DESCRIPTION=Crescent Blade
+ReqStr=55
+TEVENTS=t_equipitem
+DUPELIST=026cb
+
+ON=@Create
+HITPOINTS={100 250}
+
+[ITEMDEF 026cb]
+//crescent blade
+DUPEITEM=026c1
+
+
+
+
+[ITEMDEF 0ec2]
+DEFNAME=i_cleaver_meat
+TYPE=t_weapon_sword
+DAM=11,13
+FLIP=1
+SKILL=Swordsmanship
+// SPEED=50
+VALUE=33
+WEIGHT=3.0
+TWOHANDS=N
+RESOURCES=3 i_ingot_iron
+SKILLMAKE=Tinkering 20.0,t_tinker_tools
+CATEGORY=Weapons
+SUBSECTION=Swordsmanship
+DESCRIPTION=Cleaver
+// CanUse=can_u_human|can_u_elf
+ReqStr=10
+TEVENTS=t_equipitem
+DUPELIST=0ec3
+
+ON=@Create
+HITPOINTS={100 250}
+
+[ITEMDEF 0ec3]
+//cleaver
+DUPEITEM=0ec2
+
+
+[ITEMDEF 026bb]
+DEFNAME=i_bone_harvester
+NAME=bone harvester
+TYPE=t_weapon_sword
+DAM=3,8
+FLIP=1
+SKILL=Swordsmanship
+// SPEED=44
+VALUE=55
+WEIGHT=3.0
+TWOHANDS=N
+RESOURCES=10 i_ingot_iron,1 i_log
+SKILLMAKE=Blacksmithing 33.0
+CATEGORY=Weapons
+SUBSECTION=Swordsmanship
+DESCRIPTION=Bone Harvester
+ReqStr=25
+TEVENTS=t_equipitem
+DUPELIST=026c5
+
+ON=@Create
+HITPOINTS={100 250}
+
+
+[ITEMDEF 026c5]
+//bone harvester
+DUPEITEM=026bb
+
+
+
+
+[ITEMDEF 02d23]
+DEFNAME=i_sword_warcleaver
+NAME=war cleaver
+TYPE=t_weapon_sword
+DAM=5,9
+FLIP=1
+SKILL=Swordsmanship
+// SPEED=56
+VALUE=104
+WEIGHT=5.0
+TWOHANDS=Y
+RESOURCES=18 i_ingot_iron,1 i_board
+SKILLMAKE=Blacksmithing 70.0
+CATEGORY=Weapons
+SUBSECTION=Fencing
+DESCRIPTION=War Cleaver
+ReqStr=10
+TEVENTS=t_equipitem
+DUPELIST=02d2f
+
+ON=@Create
+HITPOINTS={100 250}
+
+[ITEMDEF 02d2f]
+//war cleaver
+DUPEITEM=02d23
+
+
+[ITEMDEF 02d28]
+DEFNAME=i_ornate_axe
+NAME=ornate axe
+TYPE=t_weapon_axe
+DAM=8,15
+FLIP=1
+SKILL=Swordsmanship
+// SPEED=38
+VALUE=124
+WEIGHT=12.0
+TWOHANDS=Y
+RESOURCES=18 i_ingot_iron,1 i_board
+SKILLMAKE=Blacksmithing 70.0
+CATEGORY=Weapons
+SUBSECTION=Swordsmanship
+DESCRIPTION=Ornate Axe
+ReqStr=45
+TEVENTS=t_equipitem
+DUPELIST=02d34
+
+ON=@Create
+HITPOINTS={100 250}
+// UsesMax=150
+
+[ITEMDEF 02d34]
+//ornate axe
+DUPEITEM=02d28
+
+
+[ITEMDEF 02d29]
+DEFNAME=i_elven_machete
+NAME=elven machete
+TYPE=t_weapon_sword
+DAM=5,10
+FLIP=1
+SKILL=Swordsmanship
+// SPEED=47
+VALUE=97
+WEIGHT=6.0
+TWOHANDS=N
+RESOURCES=14 i_ingot_iron,1 i_board
+SKILLMAKE=Blacksmithing 70.0
+CATEGORY=Weapons
+SUBSECTION=Swordsmanship
+DESCRIPTION=Elven Machete
+ReqStr=20
+TEVENTS=t_equipitem
+DUPELIST=02d35
+
+ON=@Create
+HITPOINTS={100 250}
+
+[ITEMDEF 02d35]
+//elven machete
+DUPEITEM=02d29
+
+
+[ITEMDEF 02d27]
+DEFNAME=i_radiant_scimitar
+NAME=radiant scimitar
+TYPE=t_weapon_sword
+DAM=5,11
+FLIP=1
+SKILL=Swordsmanship
+// SPEED=50
+VALUE=107
+WEIGHT=9.0
+TWOHANDS=N
+RESOURCES=15 i_ingot_iron,1 i_log
+SKILLMAKE=Blacksmithing 75.0
+CATEGORY=Weapons
+SUBSECTION=Swordsmanship
+DESCRIPTION=Radiant Scimitar
+ReqStr=20
+TEVENTS=t_equipitem
+DUPELIST=02d33
+
+ON=@Create
+HITPOINTS={100 250}
+
+[ITEMDEF 02d33]
+//radiant scimitar
+DUPEITEM=02d27
+
+
+[ITEMDEF 02d26]
+DEFNAME=i_rune_blade
+NAME=rune blade
+TYPE=t_weapon_sword
+DAM=6,11
+FLIP=1
+SKILL=Swordsmanship
+// SPEED=44
+VALUE=104
+WEIGHT=7.0
+TWOHANDS=Y
+RESOURCES=15 i_ingot_iron,1 i_log
+SKILLMAKE=Blacksmithing 70.0
+CATEGORY=Weapons
+SUBSECTION=Swordsmanship
+DESCRIPTION=Rune Blade
+ReqStr=30
+TEVENTS=t_equipitem
+DUPELIST=02d32
+
+ON=@Create
+HITPOINTS={100 250}
+
+[ITEMDEF 02d32]
+//rune blade
+DUPEITEM=02d26
+
+
+
+[ITEMDEF 027ad]
+DEFNAME=i_kama
+NAME=kama
+TYPE=t_weapon_sword
+DAM=5,10
+FLIP=1
+SKILL=Fencing
+// SPEED=56
+VALUE=182
+//LAYER=layer_hand2
+VALUE=48
+WEIGHT=7.0
+TWOHANDS=Y
+RESOURCES=14 i_ingot_iron,2 i_log
+SKILLMAKE=Blacksmithing 40.0
+CATEGORY=Weapons
+SUBSECTION=Fencing
+DESCRIPTION=Kama
+// CanUse=can_u_human|can_u_elf
+ReqStr=15
+TEVENTS=t_equipitem
+DUPELIST=027f8
+
+ON=@Create
+HITPOINTS={100 250}
+
+[ITEMDEF 027f8]
+//kama
+DUPEITEM=027ad
+
+
+
+[ITEMDEF 020e]
+// A Bone Machete is used to enter the Blighted Grove. It can be crafted by
+// Blacksmiths who have access to the elven city of Heartwood and have
+// found the proper recqipe.
+DEFNAME=i_bone_machete
+NAME=bone machete
+TYPE=t_weapon_sword
+DAM=13,15
+SKILL=Swordsmanship
+// SPEED=47
+VALUE=142
+WEIGHT=7.0
+TWOHANDS=N
+RESOURCES=14 i_ingot_iron
+SKILLMAKE=Blacksmithing 70.0
+CATEGORY=Quest
+SUBSECTION=Blighted Grove
+DESCRIPTION=Bone Machete
+ReqStr=20
+EXPANSION=RDS_TOL
+
+ON=@Create
+HITPOINTS={100 250}
+
+
+
+
+
+
+[ITEMDEF 027a9]
+DEFNAME=i_daisho
+NAME=daisho
+TYPE=t_weapon_sword
+DAM=7,12
+FLIP=1
+SKILL=Swordsmanship
+// SPEED=47
+VALUE=166
+WEIGHT=8.0
+TWOHANDS=Y
+RESOURCES=1 i_katana,1 i_wakizashi
+SKILLMAKE=Blacksmithing 60.0
+CATEGORY=Weapons
+SUBSECTION=Swordsmanship
+DESCRIPTION=Daisho
+// CanUse=can_u_human|can_u_elf
+ReqStr=40
+TEVENTS=t_equipitem
+DUPELIST=027f4
+
+ON=@Create
+HITPOINTS={100 250}
+
+[ITEMDEF 027f4]
+//daisho
+DUPEITEM=027a9
+
+
+
+
+
+[ITEMDEF 027a8]
+DEFNAME=i_bokuto
+NAME=bokuto
+TYPE=t_weapon_sword
+DAM=4,10
+FLIP=1
+//LAYER=layer_hand1
+SKILL=Swordsmanship
+// SPEED=56
+VALUE=85
+VALUE=10
+WEIGHT=7.0
+TWOHANDS=N
+RESOURCES=6 i_board
+SKILLMAKE=Carpentry 70.0,t_carpentry
+CATEGORY=Weapons
+SUBSECTION=Swordsmanship
+DESCRIPTION=Bokuto
+// CanUse=can_u_human|can_u_elf
+ReqStr=20
+TEVENTS=t_equipitem
+DUPELIST=027f3
+
+ON=@Create
+HITPOINTS={100 250}
+
+[ITEMDEF 027f3]
+//bokuto
+DUPEITEM=027a8
+
+
+
+
+[ITEMDEF 027a2]
+DEFNAME=i_no_dachi
+NAME=no-dachi
+TYPE=t_weapon_sword
+DAM=8,13
+FLIP=1
+SKILL=Swordsmanship
+// SPEED=38
+RANGE=0,1
+VALUE=137
+WEIGHT=10.0
+// TWOHANDS=Y
+TWOHANDS=N
+RESOURCES=18 i_ingot_iron,1 i_board
+SKILLMAKE=Blacksmithing 75.0
+CATEGORY=Weapons
+SUBSECTION=Swordsmanship
+DESCRIPTION=No-dachi
+// CanUse=can_u_human|can_u_elf
+ReqStr=40
+TEVENTS=t_equipitem
+DUPELIST=027ed
+
+ON=@Create
+HITPOINTS={100 250}
+
+[ITEMDEF 027ed]
+//no-dachi
+DUPEITEM=027a2
+
+
+
+
+
+[ITEMDEF 027a4]
+DEFNAME=i_wakizashi
+NAME=wakizashi
+TYPE=t_weapon_sword
+DAM=3,9
+FLIP=1
+//LAYER=layer_hand2
+SKILL=Swordsmanship
+// SPEED=50
+VALUE=48
+WEIGHT=5.0
+TWOHANDS=N
+RESOURCES=8 i_ingot_iron
+SKILLMAKE=Blacksmithing 50.0
+CATEGORY=Weapons
+SUBSECTION=Swordsmanship
+DESCRIPTION=Wakizashi
+// CanUse=can_u_human|can_u_elf
+ReqStr=20
+TEVENTS=t_equipitem
+DUPELIST=027ef
+
+ON=@Create
+HITPOINTS={100 250}
+
+[ITEMDEF 027ef]
+//wakizashi
+DUPEITEM=027a4
+
+
+
+[eof]

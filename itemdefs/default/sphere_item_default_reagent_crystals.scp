@@ -1,0 +1,178 @@
+
+
+
+[ITEMDEF i_magic_reg30_necro]
+ID=i_crystal_green_big 
+Value=9500
+WEIGHT=0
+NAME=necro reg crystal [30]
+TYPE=T_REAGENT_CRYSTAL
+
+ON=@Create
+TAG0.REAGENT_AMOUNT 30
+TAG0.REAGENT_TYPE=NECROMANCY
+COLOR=0455
+ATTR=ATTR_NEWBIE
+
+
+[ITEMDEF i_magic_reg60_necro]
+ID=i_crystal_green_big 
+Value=13000
+WEIGHT=0
+NAME=necro reg crystal [60]
+TYPE=T_REAGENT_CRYSTAL
+
+
+ON=@Create
+TAG0.REAGENT_AMOUNT 60
+TAG0.REAGENT_TYPE=NECROMANCY
+COLOR=0455
+ATTR=ATTR_NEWBIE
+
+
+[ITEMDEF i_magic_reg90_necro]
+ID=i_crystal_green_big 
+Value=18000
+WEIGHT=0
+NAME=necro reg crystal [90]
+TYPE=T_REAGENT_CRYSTAL
+
+ON=@Create
+TAG0.REAGENT_AMOUNT 90
+TAG0.REAGENT_TYPE=NECROMANCY
+COLOR=0455
+ATTR=ATTR_NEWBIE
+
+// magery reagents
+
+
+[ITEMDEF i_magic_reg30]
+ID=i_crystal_green_big 
+Value=1500
+WEIGHT=1.0
+NAME=reg crystal (30)
+TYPE=T_REAGENT_CRYSTAL
+
+
+ON=@Create
+TAG0.REAGENT_AMOUNT 30
+TAG0.REAGENT_TYPE=MAGERY
+COLOR=0
+ATTR=ATTR_NEWBIE
+
+ON=@Click
+message a lesser reagent crystal
+return 1
+
+[ITEMDEF i_magic_reg60]
+ID=i_crystal_green_big 
+Value=2500
+WEIGHT=2.0
+NAME=reg crystal (60)
+TYPE=T_REAGENT_CRYSTAL
+
+ON=@Create
+TAG0.REAGENT_AMOUNT 60
+TAG0.REAGENT_TYPE=MAGERY
+COLOR=0
+ATTR=ATTR_NEWBIE
+
+ON=@Click
+message a reagent crystal
+return 1
+
+
+[ITEMDEF i_magic_reg90]
+ID=i_crystal_green_big 
+Value=4000
+WEIGHT=3.0
+NAME=reg crystal (90)
+TYPE=T_REAGENT_CRYSTAL
+
+ON=@Create
+TAG0.REAGENT_AMOUNT 90
+TAG0.REAGENT_TYPE=MAGERY
+COLOR=0
+ATTR=ATTR_NEWBIE
+
+ON=@Click
+message a greater reagent crystal
+return 1
+
+
+
+[TYPEDEF T_REAGENT_CRYSTAL]
+
+ON=@Click
+ATTR=ATTR_NEWBIE
+LOCAL.AMOUNT = <DTAG0.REAGENT_AMOUNT>
+
+IF (<LOCAL.AMOUNT> == 30)
+	MESSAGE a lesser reagent crystal(<DLOCAL.AMOUNT>)
+
+ELSEIF (<LOCAL.AMOUNT> == 60)
+	MESSAGE a reagent crystal(<DLOCAL.AMOUNT>)
+
+ELSEIF (<LOCAL.AMOUNT> == 90)
+	MESSAGE a greater reagent crystal(<DLOCAL.AMOUNT>)
+ENDIF
+RETURN 1
+
+ON=@DClick
+ATTR=ATTR_NEWBIE
+LOCAL.AMOUNT = <DTAG0.REAGENT_AMOUNT>
+LOCAL.REAGENTS <DEF.RESOURCE_<TAG0.REAGENT_TYPE>_REAGENTS>
+
+IF !(<SRC.ISINPACK <UID>>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,600036,<NAME>	// Bunu (~1_val~) kullanabilmek için çantanızda veya üzerinizde olmalıdır.
+	RETURN 1
+
+ELSEIF (<DLOCAL.AMOUNT> <= 0)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Hatalı reagent adeti.
+	RETURN 1
+
+ELSEIF !(<EVAL STRLEN(<LOCAL.REAGENTS>)>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Hatalı reagent tür.
+	RETURN 1
+ENDIF
+
+// FOR 1 <ARRAYCOUNT <LOCAL.REAGENTS>>
+	// LOCAL.REAGENT <ARRAY <LOCAL.REAGENTS>,<DLOCAL._FOR>>
+	// SERV.B <LOCAL.REAGENT> = <SERV.ITEMDEF.<LOCAL.REAGENT>.WEIGHT>
+	// LOCAL.ReglerinToplamAgirligi +=<SERV.ITEMDEF.<LOCAL.REAGENT>.WEIGHT>
+// ENDFOR
+
+// SERV.B <LOCAL.ReglerinToplamAgirligi>
+// IF (<SRC.WEIGHT> >= <SRC.MAXWEIGHT>)
+	// SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Ağırlığınız maksimum seviyeye ulaştığı için bunu kullanamazsınız.
+	// RETURN 1
+// ENDIF
+
+FOR 1 <ARRAYCOUNT <LOCAL.REAGENTS>>
+	LOCAL.REAGENT <ARRAY <LOCAL.REAGENTS>,<DLOCAL._FOR>>
+	SERV.NEWITEM <LOCAL.REAGENT>,<DLOCAL.AMOUNT>,<SRC>
+	// NEW.AMOUNT <DLOCAL.AMOUNT>
+	// NEW.CONT = <SRC.FINDLAYER.21>
+	// NEW.BOUNCE
+	//NEW.CONTP <CONTP> // Bad CONTP usage (item is not in a container) hatasi veriyor.
+ENDFOR
+
+IF !(<SRC.IsUseSkill Magery>)
+	IF (<DLOCAL.AMOUNT> == 30)
+		SRC.EMOTE use lesser reagent crystal
+	ELSEIF (<DLOCAL.AMOUNT> == 60)
+		src.EMOTE use reagent crystal
+	ELSEIF (<DLOCAL.AMOUNT> == 90)
+		SRC.EMOTE use greater reagent crystal
+	ELSEIF (<DLOCAL.AMOUNT> == 120)
+		SRC.EMOTE use greater reagent crystal
+	ELSE
+		SRC.EMOTE use custom reagent crystal
+	ENDIF
+ENDIF
+
+REMOVE
+RETURN 1
+
+
+[eof]

@@ -1,0 +1,91 @@
+
+
+[ITEMDEF 0df2]
+DEFNAME=i_wand_1
+NAME=blank wand
+TYPE=t_wand
+DAM=9,11
+SKILL=Macefighting
+SPEED=47
+//TAG.OVERRIDE.SPEED=27	// 27.5
+VALUE=77
+WEIGHT=4.1
+TWOHANDS=N
+RESOURCES=1 i_log,2 i_wire_silver,1 i_wire_gold,1 i_gem_diamond
+SKILLMAKE=Carpentry 37.1,t_carpentry
+CATEGORY=Provisions - Weapons
+SUBSECTION=Macefighting
+DESCRIPTION=Blank Wand 1
+ReqStr=5
+TEVENTS=t_equipitem
+
+ON=@Create
+HITPOINTS={36 48}
+
+[ITEMDEF 0df3]
+DEFNAME=i_wand_2
+NAME=blank wand
+TYPE=t_wand
+DAM=9,11
+SKILL=Macefighting
+//SPEED=47
+//TAG.OVERRIDE.SPEED=27	// 27.5
+VALUE=77
+WEIGHT=4.1
+TWOHANDS=N
+RESOURCES=1 i_log,2 i_wire_silver,1 i_wire_gold,1 i_gem_diamond
+SKILLMAKE=Carpentry 37.1,t_carpentry
+CATEGORY=Provisions - Weapons
+SUBSECTION=Macefighting
+DESCRIPTION=Blank Wand 2
+ReqStr=5
+TEVENTS=t_equipitem
+
+ON=@Create
+HITPOINTS={36 48}
+
+[ITEMDEF 0df4]
+DEFNAME=i_wand_3
+NAME=blank wand
+TYPE=t_wand
+DAM=9,11
+SKILL=Macefighting
+//SPEED=47
+//TAG.OVERRIDE.SPEED=27	// 27.5
+VALUE=59
+WEIGHT=4.1
+TWOHANDS=N
+RESOURCES=2 i_log,2 i_wire_gold,1 i_gem_diamond
+SKILLMAKE=Carpentry 37.1,t_carpentry
+CATEGORY=Provisions - Weapons
+SUBSECTION=Macefighting
+DESCRIPTION=Blank Wand 3
+ReqStr=5
+TEVENTS=t_equipitem
+
+ON=@Create
+HITPOINTS={36 48}
+
+[ITEMDEF 0df5]
+DEFNAME=i_wand_4
+NAME=blank wand
+TYPE=t_wand
+DAM=9,11
+SKILL=Macefighting
+//SPEED=47
+//TAG.OVERRIDE.SPEED=27	// 27.5
+VALUE=59
+WEIGHT=4.1
+TWOHANDS=N
+RESOURCES=2 i_log,2 i_wire_gold,1 i_gem_diamond
+SKILLMAKE=Carpentry 37.1,t_carpentry
+CATEGORY=Provisions - Weapons
+SUBSECTION=Macefighting
+DESCRIPTION=Blank Wand 4
+ReqStr=5
+TEVENTS=t_equipitem
+
+ON=@Create
+HITPOINTS={36 48}
+
+[eof]

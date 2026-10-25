@@ -1,0 +1,175 @@
+
+
+
+
+
+// +3
+[ITEMDEF I_ROBE_MAGE_defense]
+DEFNAME=I_ROBE_MAGE_defense
+DEFNAME2=i_tc_mr3
+ID=I_DEATHSHROUD_CRAFT
+NAME=Mage Robe of Defense
+ARMOR=15
+VALUE=0
+WEIGHT=5.0
+DYE=0
+CATEGORY=Provisions - Cloth - Magic
+SUBSECTION=Deathshrouds
+DESCRIPTION=Mage Robe of Defense
+RESDISPDNHUE=color_magic_defense
+TEVENTS=t_equipitem
+SKILL=EVALUATINGINTEL
+
+ON=@Create
+COLOR=<SERV.ITEMDEF.<BASEID>.RESDISPDNHUE>
+ATTR=ATTR_MAGIC
+MOREY=morey_magic_armor_defense
+HITPOINTS={100 250}
+
+ON=@Equip
+IF !(<SRC.ISGM>)	
+	IF ((<SRC.MAGERY> < 800) || (<SRC.EVALUATINGINTEL> < 800))
+			SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu eşyayı kullanabilecek yeteneğe sahip değilsiniz. (80.0 Magery - Evaluating Int)
+			fUnequip
+		RETURN 1
+	ENDIF
+ENDIF
+
+
+// +6
+[ITEMDEF I_ROBE_MAGE_guarding]
+DEFNAME=I_ROBE_MAGE_guarding
+DEFNAME2=i_tc_mr6
+ID=I_DEATHSHROUD_CRAFT
+NAME=Mage Robe of Guarding
+ARMOR=20
+VALUE=0
+WEIGHT=5.0
+DYE=0
+CATEGORY=Provisions - Cloth - Magic
+SUBSECTION=Deathshrouds
+DESCRIPTION=Mage Robe of guarding
+RESDISPDNHUE=color_magic_guarding
+TEVENTS=t_equipitem
+SKILL=EVALUATINGINTEL
+
+ON=@Create
+COLOR=<SERV.ITEMDEF.<BASEID>.RESDISPDNHUE>
+ATTR=ATTR_MAGIC
+MOREY=morey_magic_armor_guarding
+HITPOINTS={100 250}
+
+ON=@Equip
+IF !(<SRC.ISGM>)	
+	IF ((<SRC.MAGERY> < 850) || (<SRC.EVALUATINGINTEL> < 850))
+			SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu eşyayı kullanabilecek yeteneğe sahip değilsiniz. (85.0 Magery - Evaluating Int)
+			fUnequip
+		RETURN 1
+	ENDIF
+ENDIF
+
+
+
+
+// +9
+[ITEMDEF I_ROBE_MAGE_HARDENING]
+DEFNAME=I_ROBE_MAGE_HARDENING
+DEFNAME2=i_tc_mr9
+ID=I_DEATHSHROUD_CRAFT
+NAME=Mage Robe of Hardening
+ARMOR=25
+VALUE=0
+WEIGHT=5.0
+DYE=0
+CATEGORY=Provisions - Cloth - Magic
+SUBSECTION=Deathshrouds
+DESCRIPTION=Mage Robe of Hardening
+RESDISPDNHUE=color_magic_hardening
+TEVENTS=t_equipitem
+SKILL=EVALUATINGINTEL
+
+ON=@Create
+COLOR=<SERV.ITEMDEF.<BASEID>.RESDISPDNHUE>
+ATTR=ATTR_MAGIC
+MOREY=morey_magic_armor_hardening
+HITPOINTS={100 250}
+
+ON=@Equip
+IF !(<SRC.ISGM>)	
+	IF ((<SRC.MAGERY> < 900) || (<SRC.EVALUATINGINTEL> < 900))
+			SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu eşyayı kullanabilecek yeteneğe sahip değilsiniz. (90.0 Magery - Evaluating Int)
+			fUnequip
+		RETURN 1
+	ENDIF
+ENDIF
+
+
+
+
+
+// +12
+[ITEMDEF I_ROBE_MAGE_FORTIFICATION]
+DEFNAME=I_ROBE_MAGE_FORTIFICATION
+DEFNAME2=i_tc_mr12
+ID=I_DEATHSHROUD_CRAFT
+NAME=Mage Robe of Fortification
+ARMOR=30
+VALUE=0
+WEIGHT=5.0
+DYE=0
+CATEGORY=Provisions - Cloth - Magic
+SUBSECTION=Deathshrouds
+DESCRIPTION=Mage Robe of Fortification
+RESDISPDNHUE=color_magic_fortification
+TEVENTS=t_equipitem
+
+ON=@Create
+COLOR=<SERV.ITEMDEF.<BASEID>.RESDISPDNHUE>
+ATTR=ATTR_MAGIC
+MOREY=morey_magic_armor_fortification
+HITPOINTS={100 250}
+
+ON=@Equip
+IF !(<SRC.ISGM>)	
+	IF ((<SRC.MAGERY> < 950) || (<SRC.EVALUATINGINTEL> < 95.0))
+			SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu eşyayı kullanabilecek yeteneğe sahip değilsiniz. (95.0 Magery - Evaluating Int)
+			fUnequip
+		RETURN 1
+	ENDIF
+ENDIF
+
+
+// +15
+[ITEMDEF I_ROBE_MAGE_INVULNERABILITY]
+DEFNAME=I_ROBE_MAGE_INVULNERABILITY
+DEFNAME2=i_tc_mr15
+ID=I_DEATHSHROUD_CRAFT
+NAME=Mage Robe of Invulnerability
+ARMOR=35
+WEIGHT=5.0
+VALUE=0
+DYE=0
+CATEGORY=Provisions - Cloth - Magic
+SUBSECTION=Deathshrouds
+DESCRIPTION=Mage Robe of Invulnerability
+RESDISPDNHUE=color_magic_invulnerability
+TEVENTS=t_equipitem
+
+ON=@Create
+COLOR=<SERV.ITEMDEF.<BASEID>.RESDISPDNHUE>
+ATTR=ATTR_MAGIC
+MOREY=morey_magic_armor_invulnerability
+HITPOINTS={100 250}
+
+
+ON=@Equip
+IF !(<SRC.ISGM>)	
+	IF ((<SRC.MAGERY> < 98.9) || (<SRC.MEDITATION> < 98.9) || (<SRC.EVALUATINGINTEL> < 98.9))
+			SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu eşyayı kullanabilecek yeteneğe sahip değilsiniz. (99.0 Magery - Evaluating Int )
+			fUnequip
+		RETURN 1
+	ENDIF
+ENDIF
+
+
+[EOF]

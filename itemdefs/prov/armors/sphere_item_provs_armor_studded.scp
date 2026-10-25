@@ -1,0 +1,146 @@
+
+[ITEMDEF i_deed_armor_studded]
+DEFNAME=i_deed_armor_studded
+ID=i_deed_2
+TYPE=T_SCRIPT
+NAME=Studded Armor Deed
+VALUE=10000
+WEIGHT=0
+RESDISPDNHUE=0
+CATEGORY=Zirhlar
+SUBSECTION=Warrior
+TAG0.PARTS=i_studded_gorget,i_studded_sleeves,i_studded_gloves,i_studded_tunic,i_studded_leggings
+TEVENTS=ei_deed_parts
+
+ON=@Create
+COLOR=<SERV.ITEMDEF.<BASEID>.RESDISPDNHUE>
+
+
+[ITEMDEF 013d6]
+DEFNAME=i_studded_gorget
+TYPE=t_armor_leather
+ARMOR=40
+VALUE=61
+WEIGHT=7.0
+RESOURCES=6 i_hides_cut,1 i_ingot_iron
+SKILLMAKE=Tailoring 77.2,t_sewing_kit
+CATEGORY=Studded Armor
+SUBSECTION=
+DESCRIPTION=Studded Gorget
+REQSTR=25
+TEVENTS=t_equipitem
+MageArmor=1
+
+ON=@Create
+HITPOINTS=100
+
+
+[ITEMDEF 013d4]
+DEFNAME=i_studded_sleeves
+TYPE=t_armor_leather
+FLIP=1
+ARMOR=50
+VALUE=118
+WEIGHT=13.0
+RESOURCES=10 i_hides_cut,3 i_ingot_iron
+SKILLMAKE=Tailoring 86.3,t_sewing_kit
+CATEGORY=Studded Armor
+SUBSECTION=
+DESCRIPTION=Studded Sleeves
+REQSTR=25
+TEVENTS=t_equipitem
+DUPELIST=013dc
+MageArmor=1
+
+ON=@Create
+HITPOINTS=100
+
+[ITEMDEF 013dc]
+//studded sleeves
+DUPEITEM=013d4
+
+
+
+
+
+
+[ITEMDEF 013d5]
+DEFNAME=i_studded_gloves
+TYPE=t_armor_leather
+FLIP=1
+ARMOR=35
+VALUE=79
+WEIGHT=9.0
+RESOURCES=8 i_hides_cut,1 i_ingot_iron
+SKILLMAKE=Tailoring 81.8,t_sewing_kit
+CATEGORY=Studded Armor
+SUBSECTION=
+DESCRIPTION=Studded Gloves
+REQSTR=25
+TEVENTS=t_equipitem
+DUPELIST=013dd
+MageArmor=1
+
+ON=@Create
+HITPOINTS=100
+
+[ITEMDEF 013dd]
+//studded gloves
+DUPEITEM=013d5
+
+
+
+[ITEMDEF 013db]
+DEFNAME=i_studded_tunic
+TYPE=t_armor_leather
+FLIP=1
+ARMOR=20
+VALUE=171
+WEIGHT=13.0
+RESOURCES=14 i_hides_cut,5 i_ingot_iron
+SKILLMAKE=Tailoring 95.4,t_sewing_kit
+CATEGORY=Studded Armor
+SUBSECTION=
+DESCRIPTION=Studded Tunic
+REQSTR=35
+TEVENTS=t_equipitem
+DUPELIST=013e2
+MageArmor=1
+
+ON=@Create
+HITPOINTS=100
+
+[ITEMDEF 013e2]
+//studded tunic
+DUPEITEM=013db
+
+
+
+
+
+[ITEMDEF 013da]
+DEFNAME=i_studded_leggings
+TYPE=t_armor_leather
+FLIP=1
+ARMOR=30
+VALUE=144
+WEIGHT=11.0
+RESOURCES=12 i_hides_cut,4 i_ingot_iron
+SKILLMAKE=Tailoring 90.9,t_sewing_kit
+CATEGORY=Studded Armor
+SUBSECTION=
+DESCRIPTION=Studded Leggings
+REQSTR=30
+TEVENTS=t_equipitem
+DUPELIST=013e1
+MageArmor=1
+
+ON=@Create
+HITPOINTS=100
+
+[ITEMDEF 013e1]
+//studded leggings
+DUPEITEM=013da
+
+
+[eof]

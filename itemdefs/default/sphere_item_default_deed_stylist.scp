@@ -1,0 +1,532 @@
+
+
+[DEFNAME HairStylistMenu]
+HairStylist.Menu.1		Saç,		5000,	d_hair_style
+HairStylist.Menu.2		Sakal,		2500,	d_beard_style
+HairStylist.Menu.3		Normal Saç & Sakal Boyası,	1000,	d_hair_dye, 1, 1
+HairStylist.Menu.4		Parlak Saç & Sakal Boyası,	150000,	d_hair_dye, 1, 1
+HairStylist.Menu.5		Sadece Saç boyası,		30000,	d_hair_dye, 1, 0
+HairStylist.Menu.6		Sadece Sakal Boyası,		30000,	d_hair_dye, 0, 1
+HairStylist.Menu.7		Sadece Parlak Saç Boyası,	100000,	d_hair_dye, 1, 0
+HairStylist.Menu.8		Sadece Parlak Sakal Boyası,	85000,	d_hair_dye, 0, 1
+HairStylist.Menu.9		Ten Rengi,	400000,	d_body_dye
+HairStylist.Menu.10		Cinsiyet,	400000,	d_sex_change
+
+
+[DEFNAME HairStyles]
+Hair.Style.Human.1.Male		i_hair_short,		0c60c,	-67,	-40
+Hair.Style.Human.1.Female	i_hair_short,		0ed1c,	-67,	-40
+Hair.Style.Human.2.Male		i_hair_pageboy,		0ed26,	-67,	-42
+Hair.Style.Human.2.Female	i_hair_pageboy,		0ed26,	-67,	-42
+Hair.Style.Human.3.Male		i_hair_mohawk,		0c60f,	-67,	-35
+Hair.Style.Human.3.Female	i_hair_mohawk,		0ed27,	-67,	-35
+Hair.Style.Human.4.Male		i_hair_long,		0c60d,	-67,	-50
+Hair.Style.Human.4.Female	i_hair_long,		0ed1d,	-67,	-50
+Hair.Style.Human.5.Male		i_hair_afro,		0c618,	-67,	-40
+Hair.Style.Human.5.Female	i_hair_afro,		0ed25,	-67,	-40
+Hair.Style.Human.6.Male		i_hair_topknot,		0ed29,	-63,	-40
+Hair.Style.Human.6.Female	i_hair_topknot,		0ed29,	-63,	-40
+Hair.Style.Human.7.Male		i_hair_ponytail,	0c60e,	-67,	-50
+Hair.Style.Human.7.Female	i_hair_ponytail,	0ed1e,	-67,	-50
+Hair.Style.Human.8.Male		i_hair_2_pigtails,	0c612,	-67,	-50
+Hair.Style.Human.8.Female	i_hair_2_pigtails,	0ede6,	-67,	-50
+Hair.Style.Human.9.Male		i_hair_receding,	0ede5,	-68,	-40
+Hair.Style.Human.9.Female	i_hair_buns,		0ed28,	-68,	-40
+
+Hair.Style.Human.10.Male		i_hair_long_feather,	0c6e5,	-67,	-42
+Hair.Style.Human.10.Female		i_hair_long_feather,	0edf5,	-65,	-42
+Hair.Style.Human.11.Male		i_hair_short1,		0c6e6,	-67,	-40
+Hair.Style.Human.11.Female		i_hair_short1,		0edf6,	-67,	-42
+Hair.Style.Human.12.Male		i_hair_elven_mullet_2,	0c6e7,	-67,	-42
+Hair.Style.Human.12.Female		i_hair_elven_mullet_2,	0edf7,	-67,	-45
+Hair.Style.Human.13.Male		i_hair_elven_topknot,	0c6cc,	-67,	-40
+Hair.Style.Human.13.Female		i_hair_elven_topknot,	0eddc,	-67,	-42
+Hair.Style.Human.14.Male		i_hair_elven_braid,	0c6cd,	-67,	-42
+Hair.Style.Human.14.Female		i_hair_elven_braid,	0eddd,	-67,	-45
+Hair.Style.Human.15.Male		i_hair_elven_spike,	0c6cf,	-67,	-40
+Hair.Style.Human.15.Female		i_hair_elven_spike,	0eddf,	-65,	-40
+Hair.Style.Human.16.Male		i_hair_elven_ml,	0c6e4,	-67,	-42
+Hair.Style.Human.16.Female		i_hair_elven_flower,	0edda,	-65,	-45
+Hair.Style.Human.17.Male		i_hair_elven_long,	0c6cb,	-67,	-45
+Hair.Style.Human.17.Female		i_hair_elven_buns,	0edde,	-65,	-45
+
+Hair.Style.Elf.1.Male		i_hair_long_feather,	0c6e5,	-67,	-42
+Hair.Style.Elf.1.Female		i_hair_long_feather,	0edf5,	-65,	-42
+Hair.Style.Elf.2.Male		i_hair_short1,		0c6e6,	-67,	-40
+Hair.Style.Elf.2.Female		i_hair_short1,		0edf6,	-67,	-42
+Hair.Style.Elf.3.Male		i_hair_elven_mullet_2,	0c6e7,	-67,	-42
+Hair.Style.Elf.3.Female		i_hair_elven_mullet_2,	0edf7,	-67,	-45
+Hair.Style.Elf.4.Male		i_hair_elven_topknot,	0c6cc,	-67,	-40
+Hair.Style.Elf.4.Female		i_hair_elven_topknot,	0eddc,	-67,	-42
+Hair.Style.Elf.5.Male		i_hair_elven_braid,	0c6cd,	-67,	-42
+Hair.Style.Elf.5.Female		i_hair_elven_braid,	0eddd,	-67,	-45
+Hair.Style.Elf.6.Male		i_hair_elven_spike,	0c6cf,	-67,	-40
+Hair.Style.Elf.6.Female		i_hair_elven_spike,	0eddf,	-65,	-40
+Hair.Style.Elf.7.Male		i_hair_elven_ml,	0c6e4,	-67,	-42
+Hair.Style.Elf.7.Female		i_hair_elven_flower,	0edda,	-65,	-45
+Hair.Style.Elf.8.Male		i_hair_elven_long,	0c6cb,	-67,	-45
+Hair.Style.Elf.8.Female		i_hair_elven_buns,	0edde,	-65,	-45
+
+
+
+
+
+[DEFNAME BeardStyles]
+Beard.Style.Human.1		i_beard_goatee,		0c670,	-67,	-50
+Beard.Style.Human.2		i_beard_short_med,	0c6d8,	-67,	-47
+Beard.Style.Human.3		i_beard_vandyke,	0c6da,	-67,	-50
+Beard.Style.Human.4		i_beard_long,		0c671,	-67,	-55
+Beard.Style.Human.5		i_beard_short,		0c672,	-67,	-47
+Beard.Style.Human.6		i_beard_long_med,	0c6d9,	-67,	-55
+Beard.Style.Human.7		i_beard_mustache,	0c678,	-67,	-48
+
+
+
+[DEFNAME HairDyes]
+Hair.Dye.Normal.1		1602, 1627	//Brown
+Hair.Dye.Normal.2		1628, 1654	//Chestnut
+Hair.Dye.Normal.3		1502, 1533	//Auburn
+Hair.Dye.Normal.4		1302, 1333	//Blue
+Hair.Dye.Normal.5		1402, 1433	//Green
+Hair.Dye.Normal.6		1202, 1225	//Red
+Hair.Dye.Normal.7		2402, 2430	//Light
+Hair.Dye.Normal.8		2213, 2218	//Blonde
+Hair.Dye.Normal.9		1102, 1109	//Black
+Hair.Dye.Normal.10		1110, 1117	//Beige
+Hair.Dye.Normal.11		1118, 1133	//Golden
+Hair.Dye.Normal.12		1134, 1149	//Dark Brown
+
+Hair.Dye.Parlak.1		12, 21		//Purple
+Hair.Dye.Parlak.2		32, 36		//Red
+Hair.Dye.Parlak.3		38, 45		//Orange
+Hair.Dye.Parlak.4		54, 56		//Yellow
+Hair.Dye.Parlak.5		62, 71		//Green
+Hair.Dye.Parlak.6		81, 82		//Light Green
+Hair.Dye.Parlak.7		89, 90		//Blue
+Hair.Dye.Parlak.8		1153, 1154	//White
+
+
+[ITEMDEF I_DEED_STYLE]
+DEFNAME=I_DEED_STYLE
+ID=I_DEED
+TYPE=t_script
+WEIGHT=1.0
+VALUE=45000
+RESDISPDNHUE=0901
+NAME=re-styling deed
+RESOURCES=
+SKILLMAKE=
+CATEGORY=Ekstra
+SUBSECTION=Belgeler
+
+ON=@Create
+COLOR=<SERV.ITEMDEF.<BASEID>.RESDISPDNHUE>
+//ATTR=ATTR_NEWBIE
+
+ON=@DCLICK
+COLOR=<SERV.ITEMDEF.<BASEID>.RESDISPDNHUE>
+IF !(<SRC.ISINPACK <UID>>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,600036,<NAME>
+	RETURN 1
+ENDIF
+DIALOGCLOSE D_DEED_STYLIST
+DIALOG D_DEED_STYLIST
+RETURN 1
+
+ON=@PICKUP_PACK
+SRC.DIALOGCLOSE D_HAIR_STYLE
+SRC.DIALOGCLOSE D_BEARD_STYLE
+SRC.DIALOGCLOSE D_HAIR_DYE
+SRC.DIALOGCLOSE D_BODY_DYE
+SRC.DIALOGCLOSE D_SEX_CHANGE
+SRC.DIALOGCLOSE D_DEED_STYLIST
+
+
+
+[DIALOG D_DEED_STYLIST]
+<DEF.DSP>
+ARGS=<QVAL ((<SRC.ISHUMAN>) && !(<SRC.IsBodyWoman>))? "1,2,3,4,5,6,7,8,9,10" : "1,3,4,9,10">
+LOCAL.Entries=<ARGS>
+RESIZE 0,0,450,<eval 70+(<ARGV>*25)>,Karakter Stili
+FOR <ARGV>
+	ARGS=<DEF.HairStylist.Menu.<dSTRARG <LOCAL.Entries>>>
+	BUTTON 30 <eval 52+((<LOCAL._FOR>-1)*25)> 0845 0846 1 0 <dSTRARG <LOCAL.Entries>>
+	DTEXT 50 <eval 50+((<LOCAL._FOR>-1)*25)> <def.tcolor_text> <ARGV[0]> (<BolukAyir <ARGV[1]>> gold coins)
+	LOCAL.Entries=<STREAT <LOCAL.Entries>>
+ENDFOR
+
+[DIALOG D_DEED_STYLIST BUTTON]
+ON=1 10
+IF !((<SRC.IsBodyMan>) && !(<SRC.IsBodyWoman>)) && !((<ARGN>==1) || (<ARGN>==3) || (<ARGN>==4) || (<ARGN>==9) || (<ARGN>==10))
+	RETURN 1
+ENDIF
+IF !(<SRC.ISINPACK <UID>>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,600036,<NAME>
+	RETURN 1
+ENDIF
+
+SRC.CTAG.Hairstylist.Dye.Palette=<QVAL ((<ARGN>==4) || (<ARGN>==7) || (<ARGN>==8))? "Parlak" : "Normal">
+ARGS=<DEF.HairStylist.Menu.<ARGN>>
+SRC.CTAG.Hairstylist.Price=<ARGV[1]>
+SRC.CTAG.Hairstylist.Dye.Hair=<ARGV[3]>
+SRC.CTAG.Hairstylist.Dye.Beard=<ARGV[4]>
+DIALOGCLOSE <ARGV[2]>
+DIALOG <ARGV[2]>
+
+
+
+[DIALOG D_HAIR_STYLE]
+<DEF.DSP>
+RESIZE 0,0,400,570,Saç Stili
+
+BUTTON 30 530 4006 4007 1 0 1
+DTEXT 65 530 <def.tcolor_green> Tamam
+
+LOCAL.Race=<QVAL (<SRC.ISELF>)? "Elf" : "Human">
+LOCAL.Gender=<QVAL (<SRC.ISFEMALE>)? "Female" : "Male">
+
+FOR 17
+LOCAL.X=<EVAL ((<LOCAL._FOR>-1)%3)*123>
+LOCAL.Y=<EVAL ((<LOCAL._FOR>-1)/3)*80>
+
+ARGS=<DEF.HAIR.STYLE.<LOCAL.RACE>.<DLOCAL._FOR>.<LOCAL.GENDER>>
+	IF !(<ISEMPTY <ARGS>>)
+	
+		RADIO <EVAL 40+<LOCAL.X>> <EVAL 65+<LOCAL.Y>> 208 209 0 <LOCAL._FOR>
+		RESIZEPIC <EVAL 65+<LOCAL.X>> <EVAL 50+<LOCAL.Y>> 2620 50 50
+		GUMPPIC <EVAL 65+<LOCAL.X>+<ARGV[2]>> <EVAL 50+<LOCAL.Y>+<ARGV[3]>> <ARGV[1]>
+		
+		DHTMLGUMP <EVAL 40+<LOCAL.X>> <EVAL 100+<LOCAL.Y>> 90 25 1 0 <SERV.ITEMDEF.<ARGV0>.NAME>
+	ENDIF
+ENDFOR
+
+RADIO 290 470 208 209 0 18
+RESIZEPIC 310 450 2620 50 50
+DHTMLGUMP 290 500 90 25 1 0 <DEF.BFONT_RED>Saçımı kes (Saçsız)
+
+
+
+
+[DIALOG D_HAIR_STYLE BUTTON]
+ON=0
+IF (<SRC.ISINPACK <UID>>)
+	DIALOGCLOSE D_DEED_STYLIST
+	DIALOG D_DEED_STYLIST
+ENDIF
+
+ON=1 18
+LOCAL.PRICE=<SRC.CTAG0.HAIRSTYLIST.PRICE>
+
+IF !(<SRC.ISINPACK <UID>>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,600036,<NAME>
+	RETURN 1
+ENDIF
+
+IF (<DLOCAL.PRICE>)
+	IF (<SRC.GOLD> < <DLOCAL.PRICE>)
+		SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, <SRC.NoGoldMsg <DLOCAL.PRICE>>
+		RETURN 1
+	ENDIF
+	SRC.GOLD -=<DLOCAL.PRICE>
+	SRC.SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, <BolukAyir <DLOCAL.PRICE>> gold coin karşılığında saç stilinizi değiştirdiniz.
+ENDIF
+
+LOCAL.Race=<QVAL (<SRC.ISELF>)? "Elf" : "Human">
+LOCAL.Gender=<QVAL (<SRC.ISFEMALE>)? "Female" : "Male">
+
+ARGS=<DEF.Hair.Style.<LOCAL.Race>.<ARGCHKID>.<LOCAL.Gender>>
+REF1=<SRC.FINDLAYER.LAYER_HAIR>
+
+IF (<REF1>)
+	LOCAL.Color=<REF1.COLOR>
+	// REF1.REMOVE
+ENDIF
+
+IF !(<ISEMPTY <ARGV[0]>>)
+	SERV.NEWITEM <ARGV[0]>
+	NEW.COLOR=<LOCAL.Color>
+	NEW.EQUIP <SRC>
+ENDIF
+
+
+
+
+
+[DIALOG D_BEARD_STYLE]
+<DEF.DSP>
+RESIZE 0,0,400,340,Sakal Stili
+
+BUTTON 30 300 4006 4007 1 0 1 
+DTEXT 65 300 <def.tcolor_green> Tamam
+
+FOR 7
+	LOCAL.X=<EVAL ((<LOCAL._FOR>-1)%3)*123>
+	LOCAL.Y=<EVAL ((<LOCAL._FOR>-1)/3)*80>
+	ARGS=<DEF.Beard.Style.Human.<dLOCAL._FOR>>
+	RADIO <eval 40+<LOCAL.X>> <eval 65+<LOCAL.Y>> 208 209 0 <LOCAL._FOR>
+	
+	IF !(<isempty <ARGS>>)
+		RESIZEPIC <eval 65+<LOCAL.X>> <eval 50+<LOCAL.Y>> 2620 50 50
+		GUMPPIC <eval 65+<LOCAL.X>+<ARGV[2]>> <eval 50+<LOCAL.Y>+<ARGV[3]>> <ARGV[1]>
+		DHTMLGUMP <EVAL 40+<LOCAL.X>> <EVAL 100+<LOCAL.Y>> 90 25 1 0 <SERV.ITEMDEF.<ARGV0>.NAME>
+	ENDIF
+	
+ENDFOR
+
+RADIO 290 270 208 209 0 8
+RESIZEPIC 310 250 2620 50 50
+DHTMLGUMP 290 300 90 25 1 0 <DEF.BFONT_RED>Sakalımı kes (Sakalsız)
+
+
+
+[DIALOG D_BEARD_STYLE BUTTON]
+ON=0
+IF (<SRC.ISINPACK <UID>>)
+	DIALOGCLOSE D_DEED_STYLIST
+	DIALOG D_DEED_STYLIST
+ENDIF
+
+ON=1 7
+LOCAL.PRICE=<SRC.CTAG0.HAIRSTYLIST.PRICE>
+
+IF !(<SRC.ISINPACK <UID>>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,600036,<NAME>
+	RETURN 1
+ELSEIF (<SRC.ISFEMALE>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Kadın karakterlerde sakal olmaz.
+	RETURN 1
+ENDIF
+
+IF (<DLOCAL.PRICE>)
+	IF (<SRC.GOLD> < <DLOCAL.PRICE>)
+		SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, <SRC.NoGoldMsg <DLOCAL.PRICE>>
+		RETURN 1
+	ENDIF
+	SRC.GOLD -=<DLOCAL.PRICE>
+	SRC.SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, <BolukAyir <DLOCAL.PRICE>> gold coin karşılığında sakal stilinizi değiştirdiniz.
+ENDIF
+
+ARGS=<DEF.Beard.Style.Human.<ARGCHKID>>
+REF1=<SRC.FINDLAYER.LAYER_BEARD>
+IF (<REF1>)
+	LOCAL.Color=<REF1.COLOR>
+	// REF1.REMOVE
+ENDIF
+
+IF !(<ISEMPTY <ARGV[0]>>)
+	SERV.NEWITEM <ARGV[0]>
+	NEW.COLOR=<LOCAL.Color>
+	NEW.EQUIP <SRC>
+ENDIF
+
+
+
+[DIALOG D_HAIR_DYE]
+<DEF.DSP>
+PAGE 0
+RESIZE 0,0,350,400,Saç Rengi
+
+BUTTON 30 338 4006 4007 1 0 1
+DTEXT 60 339 <def.tcolor_green> Tamam
+
+RADIO 150 338 210 211 0 99999
+DTEXT 170 338 0455 İlk saç rengim
+
+RADIO 150 358 210 211 0 99998
+DTEXT 170 358 1153 Renksiz
+
+FOR 1 12
+ARGS=<DEF.Hair.Dye.<SRC.CTAG0.Hairstylist.Dye.Palette>.<DLOCAL._FOR>>
+	IF !(<ISEMPTY <ARGS>>)
+		DTEXT 50 <EVAL (<DLOCAL._FOR>*22)+45> <EVAL <ARGV0>-1> **** // <EVAL <ARGV0>-1> <EVAL <LOCAL._WHILE>+1> <ARGS>
+		TILEPICHUE 30 <EVAL (<DLOCAL._FOR>*22)+45> 0e03 <EVAL <ARGV0>-1> 
+		BUTTON 100 <EVAL (<DLOCAL._FOR>*22)+45> 5224 5225 0 <DLOCAL._FOR> 0
+	ENDIF
+ENDFOR
+
+FOR 1 12
+	ARGS=<DEF.Hair.Dye.<SRC.CTAG0.Hairstylist.Dye.Palette>.<DLOCAL._FOR>>
+	// DTEXT 50 <EVAL 59+(<LOCAL._WHILE>*22)> <EVAL <ARGV0>-1> **** // <EVAL <ARGV0>-1> <EVAL <LOCAL._WHILE>+1> <ARGS>
+	page <LOCAL._FOR>
+	LOCAL.N=0
+	FOR <ARGV0> <ARGV1>
+		dtext <eval 170+((<LOCAL.N>/16)*90)> <eval 52+((<LOCAL.N>%16)*17)> <eval <LOCAL._FOR>-1> *****
+		radio <eval 150+((<LOCAL.N>/16)*90)> <eval 52+((<LOCAL.N>%16)*17)> 210 211 0 <DLOCAL._FOR>
+		LOCAL.N ++
+	ENDFOR
+ENDFOR
+
+[DIALOG D_HAIR_DYE BUTTON]
+ON=0
+IF (<SRC.ISINPACK <UID>>)
+	DIALOGCLOSE D_DEED_STYLIST
+	DIALOG D_DEED_STYLIST
+ENDIF
+
+ON=1
+LOCAL.PRICE = <SRC.DCTAG0.HAIRSTYLIST.PRICE>
+IF !(<SRC.ISINPACK <UID>>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,600036,<NAME>
+	RETURN 1
+ENDIF
+
+IF (<DLOCAL.PRICE>)
+	IF (<SRC.GOLD> < <DLOCAL.PRICE>)
+		SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, <SRC.NoGoldMsg <DLOCAL.PRICE>>
+		RETURN 1
+	ENDIF
+	SRC.GOLD -=<DLOCAL.PRICE>
+	SRC.SYSMESSAGELOC <def.tcolor_green>, <def.empty_cliloc2>, <BOLUKAYIR <DLOCAL.PRICE>> gold coin karşılığında saç & sakalınızı boyadınız.
+ENDIF
+
+IF (<ARGCHKID> == 99999)
+	SRC.FINDLAYER(LAYER_BEARD).COLOR=<SRC.TAG0.BEARD_DEFAULT_COLOR>
+	SRC.FINDLAYER(LAYER_HAIR).COLOR=<SRC.TAG0.HAIR_DEFAULT_COLOR>
+
+ELSEIF (<ARGCHKID> == 99998)
+	SRC.FINDLAYER(LAYER_BEARD).COLOR=0
+	SRC.FINDLAYER(LAYER_HAIR).COLOR=0
+
+ELSE
+
+	IF (<SRC.CTAG0.Hairstylist.Dye.Hair>)
+		IF (<SRC.FINDLAYER.layer_hair>)
+			SRC.FINDLAYER.layer_hair.COLOR=<ARGCHKID>
+		ENDIF
+	ENDIF
+
+	IF (<SRC.CTAG0.Hairstylist.Dye.Beard>)
+		IF (<SRC.FINDLAYER.layer_beard>)
+			SRC.FINDLAYER.layer_beard.COLOR=<ARGCHKID>
+		ENDIF
+	ENDIF
+
+ENDIF
+
+
+
+
+[DIALOG D_SEX_CHANGE]
+<DEF.DSP>
+RESIZE 0,0,160,240,Cinsiyet Değişimi
+
+DORIGIN 20 50
+
+RADIO +0 +0 208 209 0 1
+TILEPICHUE +80 +0 <SERV.ITEMDEF.I_PET_MAN.ID> 0
+DTEXT +30 +0 084a Man
+
+RADIO +0 +80 208 209 0 2
+TILEPICHUE +80 +80 <SERV.ITEMDEF.I_PET_WOMAN.ID> 0
+DTEXT +30 +80 33 Woman
+
+
+BUTTON +0 200 4006 4007 1 0 1 
+DTEXT +30 200 <def.tcolor_green> Tamam
+
+
+[DIALOG D_SEX_CHANGE BUTTON]
+ON=0
+IF (<SRC.ISINPACK <UID>>)
+	DIALOGCLOSE D_DEED_STYLIST
+	DIALOG D_DEED_STYLIST
+ENDIF
+
+ON=1
+LOCAL.PRICE=<SRC.CTAG0.Hairstylist.Price>
+IF !(<SRC.ISINPACK <UID>>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,600036,<NAME>
+	RETURN 1
+ENDIF
+
+IF (<DLOCAL.PRICE>)
+	IF (<SRC.GOLD> < <SRC.DCTAG0.HAIRSTYLIST.PRICE>)
+		SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, <SRC.NoGoldMsg <SRC.DCTAG0.HAIRSTYLIST.PRICE>>
+		RETURN 1
+	ENDIF
+	SRC.GOLD -=<DLOCAL.PRICE>
+	SRC.SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, <BolukAyir <DLOCAL.PRICE>> gold coin karşılığında cinsiyetinizi değiştirdiniz.
+ENDIF
+
+IF !(<ARGCHK>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bir seçim yapmadınız.
+	RETURN 1
+ELSEIF (<ARGCHKID> == 1)
+	SRC.BODY C_MAN
+	SRC.OBODY C_MAN
+	SRC.SYSMESSAGELOC <def.tcolor_text>, <def.empty_cliloc2>, Cinsiyetiniz değişti.
+ELSEIF (<ARGCHKID> == 2)
+	SRC.BODY C_WOMAN
+	SRC.OBODY C_WOMAN
+	SRC.SYSMESSAGELOC <def.tcolor_text>, <def.empty_cliloc2>, Cinsiyetiniz değişti.
+ENDIF
+SRC.FINDLAYER(LAYER_BEARD).REMOVE
+SRC.FINDLAYER(LAYER_HAIR).REMOVE
+SRC.UPDATE
+SRC.UPDATEX
+
+
+
+
+
+[DIALOG D_BODY_DYE]
+<DEF.DSP>
+RESIZE 0,0,410,280,Ten Rengi
+
+BUTTON 20 240 4006 4007 1 0 1
+DTEXT 50 240 <def.tcolor_green> Tamam
+
+LOCAL.A 20
+LOCAL.B 50
+
+FOR 2 57
+	RADIO <DLOCAL.A> <EVAL <DLOCAL.B>> 208 209 0 <DLOCAL._FOR>
+	DTEXT <EVAL <DLOCAL.A>+20> <EVAL <DLOCAL.B>> <EVAL <LOCAL._FOR>+1000> Ten
+	LOCAL.B +=20
+	IF (<DLOCAL.B> > 220)
+		LOCAL.A +=50
+		LOCAL.B = 50
+	ENDIF
+ENDFOR
+
+RADIO 260 240 208 209 0 9999
+DTEXT 280 240 1153 İlk ten rengim
+
+[DIALOG D_BODY_DYE BUTTON]
+ON=0
+IF (<SRC.ISINPACK <UID>>)
+	DIALOGCLOSE D_DEED_STYLIST
+	DIALOG D_DEED_STYLIST
+ENDIF
+
+ON=1
+LOCAL.PRICE=<SRC.DCTAG0.HAIRSTYLIST.PRICE>
+
+IF !(<SRC.ISINPACK <UID>>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,600036,<NAME>
+	RETURN 1
+ENDIF
+
+IF (<LOCAL.PRICE>)
+	IF (<SRC.GOLD> < <DLOCAL.PRICE>)
+		SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, <SRC.NoGoldMsg <DLOCAL.PRICE>>
+		RETURN 1
+	ENDIF
+	SRC.GOLD -=<DLOCAL.PRICE>
+	SRC.SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, <BolukAyir <DLOCAL.PRICE>> gold coin karşılığında ten renginizi değiştirdiniz.
+ENDIF
+
+IF !(<ARGCHK>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bir seçim yapmadınız.
+	RETURN 1
+ELSEIF (<ARGCHKID> == 9999)
+	SRC.COLOR <SRC.TAG.BODY_DEFAULT_COLOR>
+	SRC.OSKIN <SRC.TAG.BODY_DEFAULT_COLOR>
+ELSE
+	SRC.COLOR <EVAL <ARGCHKID>+1000>
+	SRC.OSKIN <EVAL <ARGCHKID>+1000>
+ENDIF
+SRC.UPDATE
+SRC.UPDATEX
+
+[EOF]

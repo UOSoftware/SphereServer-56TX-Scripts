@@ -1,0 +1,326 @@
+
+
+[ITEMDEF I_DEED_SHRINK]
+DEFNAME=I_DEED_SHRINK
+DEFNAME2=I_DEED_ANIMAL
+NAME=pet trading contract
+ID=I_DEED
+WEIGHT=20.0
+TYPE=T_SCRIPT
+VALUE=50
+RESDISPDNHUE=08AC
+CATEGORY=Ekstra
+SUBSECTION=Belgeler
+DESCRIPTION=
+
+ON=@Create
+ATTR=ATTR_DECAY
+COLOR=<SERV.ITEMDEF.<BASEID>.RESDISPDNHUE>
+
+ON=@CLICK
+IF (<MORE2>)
+	IF !(STRMATCH('<TAG0.NAME>','<SERV.CHARDEF.<TAG0.ID>.NAME>'))
+		MESSAGE @946,,1,1 (<SERV.CHARDEF.<TAG0.ID>.NAME>)
+	ELSE	
+		MESSAGE @946,,1,1 (<TAG0.NAME>)
+	ENDIF
+	// MESSAGE (Str=<DTAG0.STR>, Dex=<DTAG0.DEX>)
+ENDIF
+MESSAGE <name>
+RETURN 1
+
+ON=@PICKUP_PACK
+SRC.TARGETCLOSE
+
+ON=@DClick
+// DEED ITEM KONTROLLERI
+IF !(<SRC.ISINPACK <UID>>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,600036,<NAME>	// Bunu (~1_val~) kullanabilmek için çantanızda veya üzerinizde olmalıdır.
+	RETURN 1
+ELSEIF (<IsInHouse>)
+	// SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu eşya ev içindeyken kullanamazsın.
+	// RETURN 1
+// ELSEIF (<IsInShip>)
+	// SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu eşya ev içindeyken kullanamazsın.
+	// RETURN 1
+ELSEIF (<ATTR>&ATTR_MOVE_NEVER|ATTR_LOCKEDDOWN|ATTR_SECURE)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu eşya sabit.
+	RETURN 1
+ENDIF
+
+// PLAYER KONTROLLERI
+// IF (<SRC.FLAGS>&STATF_STONE)
+	// SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bulunduğunuz durum da kullanamazsınız.
+	// RETURN 1
+	
+// ELSEIF (<SRC.FLAGS>&STATF_FREEZE)
+	// SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bulunduğunuz durum da kullanamazsınız.
+	// RETURN 1	
+	
+// ELSEIF (<SRC.FLAGS>&STATF_DEAD)
+	// SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bulunduğunuz durum da kullanamazsınız.
+	// RETURN 1
+	
+// ELSEIF (<ISNEARTYPE T_WALL 0>) || (<ISNEARTYPE t_tree 0>) || (<ISNEARTYPE t_window 0>) || (<ISNEARTYPE t_lava 0>)
+	// SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bunu burada çıkartamazsınız.
+	// RETURN 1
+
+// ELSEIF (<SRC.ISUSESKILL MAGERY>)
+	// SRC.SYSMESSAGELOC <def.tcolor_red>,600122 // "Büyü yaparken bu işlemi yapamazsınız."
+	// RETURN 1
+// ENDIF
+
+IF (<MORE2>) // DOLUYSA
+
+	IF (<SRC.ISHIDE>)
+		SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Gizlenmiş durumdayken bunu kullanamazsınız.
+		RETURN 1
+	ELSEIF (<SRC.ISUSESKILL HIDING>)
+		SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu eşyayı gizleniyorken kullanamazsın.
+		RETURN 1
+	ENDIF
+	// IF (<SRC.IsInShip>)
+		// SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu eşyayı gemi içindeyken kullanamazsın.
+		// RETURN 1
+
+	// ELSEIF (<SRC.IsInHouse>)
+		// SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu eşyayı ev içindeyken kullanamazsın.
+		// RETURN 1
+	// ENDIF
+	
+	// FORCHARS 18
+		// IF (<OWNER>==<SRC>)
+			// LOCAL.MYPET_COUNT ++
+		// ENDIF
+	// ENDFOR
+	// IF (<DLOCAL.MYPET_COUNT> >= 5)
+		// SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Etrafınızda en fazla <DLOCAL.MYPET_COUNT>/5 adet sahibi olduğunuz varlık olabilir.
+		// RETURN 1
+	// ENDIF
+	
+	SERV.NEWNPC <TAG0.ID>
+	NEW.P <SRC.P>
+	NEW.STR=<TAG0.STR>
+
+	NEW.DEX=<TAG0.DEX>
+	NEW.INT=<TAG0.INT>
+	NEW.OSTR=<TAG0.STR>
+	NEW.ODEX=<TAG0.DEX>
+	NEW.OINT=<TAG0.INT>
+	NEW.HITS=<TAG0.STR>
+	NEW.STAM=<TAG0.DEX>
+	NEW.MANA=<TAG0.INT>
+	NEW.MAXHITS <TAG0.STR>
+	NEW.MAXSTAM <TAG0.DEX>
+	NEW.MAXMANA <TAG0.INT>
+	NEW.COLOR <TAG0.COLOR>
+	IF (<NEW.COLOR> == 0835)
+		NEW.COLOR 0481
+	ENDIF
+	NEW.OSKIN <TAG0.COLOR>
+	NEW.KARMA <TAG0.KARMA>
+	NEW.FAME <TAG0.FAME>		
+	NEW.MODAR <TAG0.MODAR>	
+	NEW.DIR <TAG0.DIR>
+	// NEW.AGE <TAG0.AGE>
+	// NEW.ACTPRV <TAG0.ACTPRV>
+	NEW.MODMAXWEIGHT <TAG0.MODMAXWEIGHT>		
+	NEW.FOOD=<QVAL (<TAG0.FOOD>)?<TAG0.FOOD>:<SERV.CHARDEF.<LOCAL.ID>.MAXFOOD>>
+	
+	IF (<NEW.REGENFOOD> < 86400)
+		NEW.REGENFOOD=86400
+	ENDIF
+	
+	NEW.UPDATE
+	// NEW.ANIM 9
+
+	// Deed taglarını bineğe ver.
+	IF (<TAGCOUNT> > 0)
+		FOR 0 <EVAL <TAGCOUNT>-1>
+			NEW.TAG.<TAGAT.<DLOCAL._FOR>.KEY> = <TAGAT.<DLOCAL._FOR>.VALUE>
+		ENDFOR
+	ENDIF
+
+	// Deedde tag olarak kayitli olan eventlerini npcye geri ver.
+	IF (<DTAG0.EVENTS>)
+		FOR 0 <EVAL <DTAG0.EVENTS>-1>
+			LOCAL.EVENT <TAG0.EVENTS.<DLOCAL._FOR>>
+			IF !(<NEW.ISEVENT.<LOCAL.EVENT>>)
+				NEW.EVENTS +<DLOCAL.EVENT>
+			ENDIF
+		ENDFOR
+	ENDIF
+
+	// Deedde tag olarak kaytli olan skilleri npcye geri ver
+	FOR 0 57
+		LOCAL.SKILL <SERV.SKILL.<DLOCAL._FOR>.KEY>
+		IF (<dTAG.<LOCAL.SKILL>> > 0)
+			NEW.<LOCAL.SKILL> <TAG0.<LOCAL.SKILL>>
+		ENDIF
+	ENDFOR
+	
+	NEW.ANIM <R5,6>
+	NEW.BARK <R1,2> // buna gerek var mi? npc olustugunda ses cikartiyor zaten.
+	SRC.LOGGER <new.name>[<new.uid>] shrinkten cikartildi. [Str: <new.str> - Dex: <new.dex> - Food: <new.food>]
+	
+	NEW.MAKEMYPET <SRC>
+	CONSUME
+
+ELSE // BOŞSA
+	TARGET
+	SRC.SYSMESSAGELOC <def.tcolor_grey>,<def.empty_cliloc2>, Küçültmek istediğiniz hayvanı seçiniz.
+ENDIF
+RETURN 1
+
+
+
+
+ON=@TARGON_CHAR
+IF (<MORE2>) // DOLUYSA
+	SRC.SYSMESSAGELOC <def.tcolor_red>,600022 // Bir hata oluştu!
+	
+ELSE // BOŞSA
+
+	IF !(<SRC.TARG.IsPetableNpc>)
+		SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Sadece evcil hayvanları - binek hayvanları ve golemleri küçültebilirsiniz.
+		RETURN 1
+		
+	ELSEIF ((<SRC.TARG.BODY> == C_MAN) || (<SRC.TARG.BODY> == C_WOMAN))
+		SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Sadece binekler hayvanları küçültebilirsiniz.
+		RETURN 1
+		
+	ELSEIF !(<SRC.TARG.ISMYPET>)
+		SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu hayvan size ait değil.
+		RETURN 1
+		
+	ELSEIF (<SRC.TARG.MEMORYFINDTYPE.MEMORY_FIGHT> || <SRC.TARG.FLAGS>&statf_war)
+		SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu hayvan şu anda çok kızgın.
+		RETURN 1
+		
+	ELSEIF (<SRC.TARG.IsSummonNpc>)
+		SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Büyü ile yaratılmış hayvanları küçültemezsiniz.
+		RETURN 1
+		
+	ELSEIF (<SRC.TARG.FINDID.I_RUNE_STRENGTH> || <SRC.TARG.FINDID.I_RUNE_AGILITY> || <SRC.TARG.FINDID.I_RUNE_BLESS> || <SRC.TARG.FINDID.I_RUNE_PROTECTION> || <SRC.TARG.FINDID.I_RUNE_REACTIVE_ARMOR>)
+		SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu hayvanın statları büyü veya iksir etkisinde.
+		RETURN 1
+		
+	ELSEIF (<SRC.TARG.FINDLAYER.LAYER_SPELL_STATS>) || (<SRC.TARG.FINDLAYER.LAYER_FLAG_POTION>)
+		SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu hayvanın stat değerlerini etkileyen büyü/iksir etkisindeyken küçültülemez.
+		RETURN 1
+
+	ELSEIF !(<SRC.TARG.HITS> >= <SRC.TARG.STR>)
+		SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu hayvan yaralanmış.
+		RETURN 1
+		
+	ELSEIF (<SRC.TARG.MAXFOOD> > 0) && (<SRC.TARG.FOOD> <= 1)
+		SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu hayvan çok aç. (<SRC.TARG.FOOD>/<SRC.TARG.MAXFOOD>)
+		RETURN 1
+		
+	ELSEIF (<SRC.TARG.FLAGS>&STATF_FREEZE)
+		SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu hayvan bulunduğu durum da küçültülemez.
+		RETURN 1
+		
+	ELSEIF (<SRC.TARG.FLAGS>&STATF_STONE)
+		SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu hayvan bulunduğu durum da küçültülemez.
+		RETURN 1
+
+	ELSEIF (<SRC.TARG.ISPOISONED>)
+		SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu hayvan zehirli.
+		RETURN 1
+		
+	ELSEIF (<SRC.ISDIFF <SRC.TARG.UID>>)
+		SRC.SYSMESSAGELOC <def.tcolor_red>,600018,<SRC.TARG.NAME>
+		RETURN 1
+	ENDIF
+
+	NAME=filled pet trading contract
+	ATTR=0
+	MORE2=1
+	COLOR=<SRC.TARG.COLOR>
+	IF (<COLOR> == 0481)
+		COLOR 0835
+	ENDIF
+
+	// Statlarını kaydet
+	TAG0.BASEID=<SRC.TARG.BASEID>
+	TAG0.DISPID=<SRC.TARG.DISPID>
+	TAG0.JOB <SRC.TARG.JOB>
+	TAG0.ID=<SRC.TARG.ID>
+	TAG0.NAME=<SRC.TARG.NAME>
+	TAG0.STR=<SRC.TARG.STR>
+	TAG0.DEX=<DSRC.TARG.DEX>
+	TAG0.INT=<SRC.TARG.INT>
+	TAG0.KARMA=<SRC.TARG.KARMA>
+	TAG0.FAME=<SRC.TARG.FAME>
+	TAG0.COLOR=<SRC.TARG.COLOR>
+	TAG0.STATTOTAL=<SRC.TARG.STATTOTAL>
+	TAG0.MODMAXWEIGHT=<SRC.TARG.MODMAXWEIGHT>
+	TAG0.MODAR=<SRC.TARG.MODAR>
+	TAG0.DIR=<SRC.TARG.DIR>
+	TAG0.ACTPRV=<SRC.TARG.ACTPRV>
+	TAG0.AGE=<SRC.TARG.AGE>
+	TAG0.FOOD=<QVAL (<SRC.TARG.FOOD> > 0)?<SRC.TARG.FOOD>:<SRC.TARG.MAXFOOD>>
+
+	// Varlığın tüm evetlerini deede tag olarak kaydet
+	f_Split_EventsToTag <SRC.TARG.EVENTS>
+
+	// Varlığın tüm skillerini deede tag olarak kaydet
+	FOR 0 57
+		LOCAL.SKILL <SERV.SKILL.<DLOCAL._FOR>.KEY>
+		IF (<SRC.TARG.<LOCAL.SKILL>> > 0)
+			TAG0.<LOCAL.SKILL> = <SRC.TARG.<LOCAL.SKILL>>
+		ENDIF
+	ENDFOR
+
+	// Varlığın tüm taglarını deede kaydet
+	IF (<SRC.TARG.TAGCOUNT> > 0)
+		FOR 0 <EVAL <SRC.TARG.TAGCOUNT>-1>
+			TAG.<SRC.TARG.TAGAT.<DLOCAL._FOR>.KEY> = <SRC.TARG.TAGAT.<DLOCAL._FOR>.value>
+		ENDFOR
+	ENDIF
+	
+	SRC.SOUND <SRC.TARG.SOUND>
+	SRC.LOGGER <src.targ.name>[<src.targ.uid>] shrink yapildi. [Str: <src.targ.str> - Dex: <src.targ.dex> - Food: <src.targ.food>]
+	SRC.TARG.REMOVE
+
+ENDIF
+RETURN 1
+
+
+// ON=@DROPON_GROUND
+// IF (<TAG0.ID>)
+	// DISPID <SERV.CHARDEF.<TAG.ID>.ICON>
+// ENDIF
+
+// ON=@DROPON_CHAR
+// IF (<TAG0.ID>)
+	// DISPID <SERV.CHARDEF.<TAG.ID>.ICON>
+// ENDIF
+
+// ON=@DROPON_ITEM
+// IF (<TAG0.ID>)
+	// DISPID <SERV.CHARDEF.<TAG.ID>.ICON>
+// ENDIF
+
+
+ON=@TARGON_ITEM
+RETURN 1
+
+ON=@TARGON_GROUND
+RETURN 1
+
+
+
+[FUNCTION f_Split_EventsToTag]
+IF (<ARGV>)
+	TAG0.EVENTS = <ARGV>
+	FOR 0 <EVAL <ARGV>-1>
+	   TAG0.EVENTS.<DLOCAL._FOR> = <ARGV[<DLOCAL._FOR>]>   
+	ENDFOR
+ENDIF
+
+
+
+
+[eof]

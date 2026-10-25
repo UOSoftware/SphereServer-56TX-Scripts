@@ -1,0 +1,197 @@
+
+[SPEECH spk_generic_npc_animals]
+ON=STOCK
+SRC.SYSMESSAGELOC <def.tcolor_red>,600095 // "Bu komut kapalı/kaldırılmıştır."
+RETURN 1
+
+ON=SAMPLES
+SRC.SYSMESSAGELOC <def.tcolor_red>,600095 // "Bu komut kapalı/kaldırılmıştır."
+RETURN 1
+
+ON=PRICE
+SRC.SYSMESSAGELOC <def.tcolor_red>,600095 // "Bu komut kapalı/kaldırılmıştır."
+RETURN 1
+
+ON=EQUIP
+SRC.SYSMESSAGELOC <def.tcolor_red>,600095 // "Bu komut kapalı/kaldırılmıştır."
+RETURN 1
+
+ON=CASH
+SRC.SYSMESSAGELOC <def.tcolor_red>,600095 // "Bu komut kapalı/kaldırılmıştır."
+RETURN 1
+
+ON=BOUGHT
+SRC.SYSMESSAGELOC <def.tcolor_red>,600095 // "Bu komut kapalı/kaldırılmıştır."
+RETURN 1
+
+ON=FRIEND
+SRC.SYSMESSAGELOC <def.tcolor_red>,600095 // "Bu komut kapalı/kaldırılmıştır."
+RETURN 1
+
+ON=UNFRIEND
+SRC.SYSMESSAGELOC <def.tcolor_red>,600095 // "Bu komut kapalı/kaldırılmıştır."
+RETURN 1
+
+ON=DROP ALL
+SRC.SYSMESSAGELOC <def.tcolor_red>,600095 // "Bu komut kapalı/kaldırılmıştır."
+RETURN 1
+
+ON=SPEAK
+SRC.SYSMESSAGELOC <def.tcolor_red>,600095 // "Bu komut kapalı/kaldırılmıştır."
+RETURN 1
+
+ON=TRANSFER
+SRC.SYSMESSAGELOC <def.tcolor_red>,600095 // "Bu komut kapalı/kaldırılmıştır."
+RETURN 1
+
+ON=RELEASE
+SRC.SYSMESSAGELOC <def.tcolor_red>,600095 // "Bu komut kapalı/kaldırılmıştır."
+RETURN 1
+
+ON=DROP
+SRC.SYSMESSAGELOC <def.tcolor_red>,600095 // "Bu komut kapalı/kaldırılmıştır."
+RETURN 1
+
+ON=GO
+IF (<SRC.FLAGS>&STATF_DEAD)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,600027 // Ölü durumdayken bu işlemi yapamazsınız.
+	RETURN 1
+ENDIF
+IF (<SRC.REGION.FLAGS>&REGION_FLAG_SAFE)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu alanda bu komutu kullanamazsiniz.
+	RETURN 1
+ENDIF
+IF (<ISEVENT.e_house_events_vendor>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu komutu vendorlar üzerinde kullanamazsınız.
+	RETURN 1
+ENDIF
+
+FORCHARS 18
+	IF (<OWNER>==<SRC>)
+		LOCAL.MYPET_COUNT ++
+	ENDIF
+ENDFOR
+IF (<DLOCAL.MYPET_COUNT> >= <DDEF.CHAR_NEAR_MAX>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Etrafınızda en fazla <DLOCAL.MYPET_COUNT>/<DDEF.CHAR_NEAR_MAX> adet sahibi oldugunuz varlık varken bu komutu kullanamazsınız.
+	RETURN 1
+ENDIF
+
+
+
+
+ON=KILL
+ON=ATTACK
+IF (<SRC.FLAGS>&STATF_DEAD)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,600027 // Ölü durumdayken bu işlemi yapamazsınız.
+	RETURN 1
+ENDIF
+IF (<SRC.REGION.FLAGS>&REGION_FLAG_SAFE)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu alanda bu komutu kullanamazsiniz.
+	RETURN 1
+ENDIF
+IF (<ISEVENT.e_house_events_vendor>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu komutu vendorlar üzerinde kullanamazsınız.
+	RETURN 1
+ENDIF
+FORCHARS 18
+	IF (<OWNER>==<SRC>)
+		LOCAL.MYPET_COUNT ++
+	ENDIF
+ENDFOR
+IF (<DLOCAL.MYPET_COUNT> >= <DDEF.CHAR_NEAR_MAX>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Etrafınızda en fazla <DLOCAL.MYPET_COUNT>/<DDEF.CHAR_NEAR_MAX> adet sahibi oldugunuz varlık varken bu komutu kullanamazsınız.
+	RETURN 1
+ENDIF
+
+
+ON=COME
+IF (<SRC.FLAGS>&STATF_DEAD)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,600027 // Ölü durumdayken bu işlemi yapamazsınız.
+	RETURN 1
+ENDIF
+IF (<ACTION> == 100 && <ACT> == <SRC>)
+	SRC.SYSMESSAGELOC <def.tcolor_grey>,<def.empty_cliloc2>,<NAME> zaten sizi takip ediyor.
+	RETURN 1
+ENDIF
+IF (<ISEVENT.e_house_events_vendor>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu komutu vendorlar üzerinde kullanamazsınız.
+	RETURN 1
+ENDIF
+
+FORCHARS 18
+	IF (<OWNER>==<SRC>)
+		LOCAL.MYPET_COUNT ++
+	ENDIF
+ENDFOR
+IF (<DLOCAL.MYPET_COUNT> >= <DDEF.CHAR_NEAR_MAX>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Etrafınızda en fazla <DLOCAL.MYPET_COUNT>/<DDEF.CHAR_NEAR_MAX> adet sahibi oldugunuz varlık varken bu komutu kullanamazsınız.
+	RETURN 1
+ENDIF
+
+
+ON=FOLLOW
+ON=FOLLOW ME
+IF (<SRC.FLAGS>&STATF_DEAD)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,600027 // Ölü durumdayken bu işlemi yapamazsınız.
+	RETURN 1
+ENDIF
+IF (<ISEVENT.e_house_events_vendor>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu komutu vendorlar üzerinde kullanamazsınız.
+	RETURN 1
+ENDIF
+FORCHARS 18
+	IF (<OWNER>==<SRC>)
+		LOCAL.MYPET_COUNT ++
+	ENDIF
+ENDFOR
+IF (<DLOCAL.MYPET_COUNT> >= <DDEF.CHAR_NEAR_MAX>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Etrafınızda en fazla <DLOCAL.MYPET_COUNT>/<DDEF.CHAR_NEAR_MAX> adet sahibi oldugunuz varlık varken bu komutu kullanamazsınız.
+	RETURN 1
+ENDIF
+
+
+
+ON=GUARD
+ON=GUARD ME
+ON=STAY
+ON=STAY HERE
+ON=STOP
+REF1=<UID>
+FORITEMS 100
+	REF2=<UID>
+	IF ((<REF2.TYPE> == T_DEED_UYARI_UNCLOSE) || (<REF2.TYPE> == T_DEED_UYARI_UNCLOSE_BLOCK) || (<REF2.TYPE> == T_DEED_UYARI_UNCLOSE_FIELD)) && (<REF2.TAG0.KARE>)
+		IF (<REF2.DISTANCE <REF1>> <= <REF2.DTAG0.KARE>)
+			SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, <ref1.NAME>: <ref2.DTAG0.KARE> kare içerisinde varlık bekletemezsiniz.
+		RETURN 1
+		ENDIF
+	ENDIF
+ENDFOR
+IF (<SRC.FLAGS>&STATF_DEAD)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,600027 // Ölü durumdayken bu işlemi yapamazsınız.
+	RETURN 1
+ENDIF
+IF (<ISEVENT.e_house_events_vendor>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu komutu vendorlar üzerinde kullanamazsınız.
+	RETURN 1
+ENDIF
+FORCHARS 18
+	IF (<OWNER>==<SRC>)
+		LOCAL.MYPET_COUNT ++
+	ENDIF
+ENDFOR
+IF (<DLOCAL.MYPET_COUNT> >= <DDEF.CHAR_NEAR_MAX>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Etrafınızda en fazla <DLOCAL.MYPET_COUNT>/<DDEF.CHAR_NEAR_MAX> adet sahibi oldugunuz varlık varken bu komutu kullanamazsınız.
+	RETURN 1
+ENDIF
+FORITEMS 18
+IF (<BASEID> == I_DEED_UYARI_UNCLOSE) || (<TYPE> == T_MOONGATE_CUSTOM)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu alanda bu komutu kullanamazsınız.
+	RETURN 1
+ENDIF
+ENDFOR
+
+
+
+
+
+[EOF]

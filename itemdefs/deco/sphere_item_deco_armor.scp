@@ -1,0 +1,159 @@
+
+
+[ITEMDEF 013e0]
+//studded tunic
+DUPEITEM=013d9
+
+
+[ITEMDEF 013de]
+//studded sleeves
+DUPEITEM=013d7
+
+[ITEMDEF 013d1]
+//leather tunic
+DUPEITEM=013ca
+
+[ITEMDEF 013d0]
+//leather leggings
+DUPEITEM=013c9
+
+[ITEMDEF 013cf]
+//leather sleeves decoration
+DUPEITEM=013c8
+
+[ITEMDEF 013df]
+// decoration studded leggings
+DUPEITEM=013d8
+
+[ITEMDEF 013e6]
+// decoration ringmail leggings
+DUPEITEM=013e5
+
+[ITEMDEF 013e8]
+// decoration ringmail armor
+DUPEITEM=013e7
+
+[ITEMDEF 013ea]
+// decoration ringmail sleeves
+DUPEITEM=013e9
+
+[ITEMDEF 013c2]
+//chainmail tunic
+DUPEITEM=013bd
+
+
+[ITEMDEF 013c1]
+//chainmail leggings
+DUPEITEM=013bc
+
+
+
+[ITEMDEF 013bc]
+DEFNAME=i_chainmail_leggings_decoration
+NAME=decorative chainmail leggings
+FLIP=1
+CATEGORY=Provisions - Armor
+SUBSECTION=Chainmail Armor
+DESCRIPTION=Chainmail Leggings (decorative)
+DUPELIST=013c1
+
+[ITEMDEF 013bd]
+DEFNAME=i_chainmail_tunic_decoration
+NAME=decorative chainmail tunic
+FLIP=1
+CATEGORY=Provisions - Armor
+SUBSECTION=Chainmail Armor
+DESCRIPTION=Chainmail Tunic (decorative)
+DUPELIST=013c2
+
+[ITEMDEF 013c8]
+DEFNAME=i_leather_sleeves_decoration
+NAME=decorative leather sleeves
+FLIP=1
+CATEGORY=Provisions - Armor
+SUBSECTION=Leather Armor
+DESCRIPTION=Leather Sleeves (decorative)
+DUPELIST=013cf
+
+[ITEMDEF 013c9]
+DEFNAME=i_leather_leggings_decoration
+NAME=decorative leather leggings
+FLIP=1
+CATEGORY=Provisions - Armor
+SUBSECTION=Leather Armor
+DESCRIPTION=Leather Leggings (decorative)
+DUPELIST=013d0
+
+
+[ITEMDEF 013ca]
+DEFNAME=i_leather_tunic_decoration
+NAME=decorative leather tunic
+FLIP=1
+CATEGORY=Provisions - Armor
+SUBSECTION=Leather Armor
+DESCRIPTION=Leather Tunic (decorative)
+DUPELIST=013d1
+
+
+
+
+
+
+[ITEMDEF 013d7]
+DEFNAME=i_studded_sleeves_decoration
+NAME=decorative studded sleeves
+FLIP=1
+SKILLMAKE=Tailoring 87.1,t_sewing_kit
+CATEGORY=Provisions - Armor
+SUBSECTION=Studded Armor
+DESCRIPTION=Studded Sleeves (decorative)
+DUPELIST=013de
+
+[ITEMDEF 013d8]
+DEFNAME=i_studded_leggings_decoration
+NAME=decorative studded leggings
+FLIP=1
+CATEGORY=Provisions - Armor
+SUBSECTION=Studded Armor
+DESCRIPTION=Studded Leggings (decorative)
+DUPELIST=013df
+
+[ITEMDEF 013d9]
+DEFNAME=i_studded_tunic_decoration
+NAME=decorative studded tunic
+FLIP=1
+CATEGORY=Provisions - Armor
+SUBSECTION=Studded Armor
+DESCRIPTION=Studded Tunic (decorative)
+DUPELIST=013e0
+
+
+[ITEMDEF 013e5]
+DEFNAME=i_ringmail_leggings_decoration
+NAME=decorative ringmail leggings
+FLIP=1
+CATEGORY=Provisions - Armor
+SUBSECTION=Ringmail Armor
+DESCRIPTION=Ringmail Leggings (decorative)
+DUPELIST=013e6
+
+[ITEMDEF 013e7]
+DEFNAME=i_ringmail_tunic_decoration
+NAME=decorative ringmail tunic
+FLIP=1
+SKILLMAKE=Blacksmithing 21.9
+CATEGORY=Provisions - Armor
+SUBSECTION=Ringmail Armor
+DESCRIPTION=Ringmail Tunic (decorative)
+DUPELIST=013e8
+
+[ITEMDEF 013e9]
+DEFNAME=i_ringmail_sleeves_decoration
+NAME=decorative ringmail sleeves
+FLIP=1
+CATEGORY=Provisions - Armor
+SUBSECTION=Ringmail Armor
+DESCRIPTION=Ringmail Sleeves (decorative)
+DUPELIST=013ea
+
+[eof]

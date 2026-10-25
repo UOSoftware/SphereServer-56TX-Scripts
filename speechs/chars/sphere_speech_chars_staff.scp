@@ -1,0 +1,11 @@
+
+
+[SPEECH spk_generic_chars_staff]
+ON=*
+IF (<SRC.FLAGS>&STATF_INSUBSTANTIAL)
+	SERV.ALLCLIENTS Func_Staff_To_Staff_Chat [Yetkili] <SRC.NAME> : <ARGS>
+	RETURN 1
+ENDIF
+// src.TextToSpeech <name> diyor ki <args>
+
+[EOF]

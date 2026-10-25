@@ -1,0 +1,27 @@
+
+[SPEECH spk_generic_npc_vendor_teachers]
+ON=*train*
+ON=*teach*
+IF (<SRC.ISDIFF 2,<UID>>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,600018,<JOB> <NAME>
+	RETURN 1
+ENDIF
+
+//IF (<NPC> >= brain_human) && (<NPC> <= brain_animal_trainer) && (<NPC> != brain_guard)
+	//TRAIN <STRSUB <eval <STRPOS 0 train <ARGS>>+6> 0 <ARGS>>
+	//return 1
+//ENDIF
+// IF (<NPC> >= BRAIN_HUMAN) && (<NPC> <= BRAIN_THIEF)
+	LOCAL.SKILLKEY=<STRSUB <EVAL <STRPOS 0 TRAIN <ARGS>>+7> 0 <ARGS>>
+	IF (STRMATCH('teach','<LOCAL.SKILLKEY>') || STRMATCH('train','<LOCAL.SKILLKEY>'))
+		DIALOGCLOSE D_TEACH_INFO
+		DIALOG D_TEACH_INFO
+	ELSE
+		SRC.SYSMESSAGELOC <def.tcolor_grey>,<def.empty_cliloc2>, Hangi beceriyi nasil teach yapacaginizi görmek için sadece 'teach' yaziniz.
+		TRAIN <LOCAL.SKILLKEY>
+	ENDIF
+// ENDIF
+RETURN 0 // PROCESS MORE.
+
+
+[EOF]

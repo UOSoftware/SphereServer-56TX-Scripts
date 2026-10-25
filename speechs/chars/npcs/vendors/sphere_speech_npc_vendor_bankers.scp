@@ -1,0 +1,20 @@
+
+[SPEECH spk_generic_npc_vendor_bankers]
+ON=*bank*
+SRC.OPENBANK
+
+ON=*balance*
+IF (<SERV.FeatureTOL>&02)
+	SAY Thy current bank balance is <bolukayir <SRC.VIRTUALGOLD>> virtual gold.
+ELSE
+	SAY Thy current bank balance is <bolukayir <SRC.BANKBALANCE>> gold pieces.
+ENDIF
+
+
+ON=*check*
+DIALOGCLOSE D_BANKER_CHECK
+DIALOG D_BANKER_CHECK
+
+
+
+[EOF]

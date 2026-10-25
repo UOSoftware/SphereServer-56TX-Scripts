@@ -1,0 +1,1234 @@
+
+
+[ITEMDEF I_KEG_POTION]
+DEFNAME=I_KEG_POTION
+NAME=empty potion keg
+ID=i_keg_wood
+TYPE=t_script
+WEIGHT=20
+SKILLMAKE=TINKERING 80.0
+RESOURCES=10 i_ingot_iron, 1 i_barrel_open, 1 i_barrel_lid
+VALUE=650
+CATEGORY=Unique Items
+SUBSECTION=Tinker
+DESCRIPTION=empty potion Keg
+
+ON=@Create
+MORE1=0
+MORE2=0
+// TIMER=-1
+	
+ON=@DClick
+TARGET Lutfen bir iksir sisesi seciniz.
+return 1
+
+ON=@Targon_Char
+TARGET Lutfen bir iksir sisesi seciniz.
+RETURN 1
+	
+ON=@Targon_Ground
+TARGET Lutfen bir iksir sisesi seciniz.
+RETURN 1
+
+ON=@TARGON_ITEM
+IF (<SRC.TARG.TOPOBJ.UID> != <SRC.UID>)
+	SRC.SYSMESSAGE Sadece ustunuzdeki esyalari kullanabilirsiniz.
+ENDIF
+
+IF (<SRC.TARG.BASEID> == i_bottle_empty)
+
+	IF (<MOREX> = 0)
+		SRC.SYSMESSAGE Ficidaki iksiri siseye doldurmaya calistiniz ama ficida iksir yok.
+		TARGET Ficiyi doldurmak icin lutfen dolu bir iksir sisesi seciniz.
+		RETURN 1
+	ENDIF
+	
+	SRC.SYSMESSAGE Ficidaki iksirin bir kismini bos bir siseye bosalttiniz.
+	
+	SRC.SOUND snd_Z_END_LIQUID
+	SERV.NEWITEM <MORE1>,1,<SRC>,1
+	NEW.MORE2=<MORE2>
+	
+	MOREX -=1
+	IF (<MOREX> == 0)
+		NAME=
+		MORE1=0
+		MORE2=0
+	ELSE
+		NAME = <SERV.ITEMDEF.<MORE1>.NAME> keg [<MOREX>]
+	ENDIF
+	
+	SRC.TARG.CONSUME 1
+	TARGET
+	RETURN 1
+	
+ELSEIF (<SRC.TARG.TYPE> != T_POTION)
+	SRC.SYSMESSAGE Bu bir iksir degil!
+	TARGET
+	RETURN 1
+ELSEIF (<MORE1>) && (<SRC.TARG.BASEID> != <MORE1>)
+	SRC.SYSMESSAGE Ficiya sadece bir cesit iksir koyabilirsiniz!
+	TARGET
+	RETURN 1
+	
+ELSEIF (<MOREX> = 250)
+	SRC.SYSMESSAGE Fici agzina kadar dolmus.
+	SRC.SYSMESSAGE Icindekileri bosaltmak icin bos sise seciniz.
+	TARGET
+	RETURN 1
+	
+ELSEIF (<MOREX>==0)
+	MORE1=<SRC.TARG.BASEID>
+ENDIF
+
+MORE2=<SRC.TARG.MORE2>
+MOREX +=<SRC.TARG.AMOUNT>
+NAME=a <SRC.TARG.NAME> keg (<MOREX>)
+SRC.SOUND=snd_Z_END_LIQUID
+SRC.SYSMESSAGE Ficiyi <SRC.TARG.AMOUNT> adet <SRC.TARG.NAME> ile doldurdunuz.
+SRC.TARG.REMOVE
+
+SERV.NEWITEM i_bottle_empty,<SRC.TARG.AMOUNT>,<SRC>,1
+
+TARGET
+RETURN 1
+
+
+
+[ITEMDEF 0f06]
+DEFNAME=i_bottle_black
+TYPE=t_potion
+TDATA1=i_bottle_empty
+WEIGHT=1.0
+RESOURCES=1 i_bottle_empty
+CATEGORY=Magic
+SUBSECTION=Potions (basic)
+DESCRIPTION=Potion (Black)(Nightsite)
+
+ON=@Create
+MORE1=s_night_sight
+MORE2={30.0 90.0}
+
+[ITEMDEF 0f07]
+DEFNAME=i_bottle_orange
+TYPE=t_potion
+TDATA1=i_bottle_empty
+WEIGHT=1.0
+RESOURCES=1 i_bottle_empty
+CATEGORY=Magic
+SUBSECTION=Potions (basic)
+DESCRIPTION=Potion (Orange)(Cure)
+
+ON=@Create
+MORE1=s_cure
+MORE2={30.0 90.0}
+
+[ITEMDEF 0f08]
+DEFNAME=i_bottle_blue
+TYPE=t_potion
+TDATA1=i_bottle_empty
+WEIGHT=1.0
+RESOURCES=1 i_bottle_empty
+CATEGORY=Magic
+SUBSECTION=Potions (basic)
+DESCRIPTION=Potion (Blue)(Agility)
+
+ON=@Create
+MORE1=s_agility
+MORE2={30.0 90.0}
+
+[ITEMDEF 0f09]
+DEFNAME=i_bottle_white
+TYPE=t_potion
+TDATA1=i_bottle_empty
+WEIGHT=1.0
+RESOURCES=1 i_bottle_empty
+CATEGORY=Magic
+SUBSECTION=Potions (basic)
+DESCRIPTION=Potion (White)(Strength)
+
+ON=@Create
+MORE1=s_strength
+MORE2={30.0 90.0}
+
+[ITEMDEF 0f0a]
+DEFNAME=i_bottle_green
+TYPE=t_potion
+TDATA1=i_bottle_empty
+WEIGHT=1.0
+RESOURCES=1 i_bottle_empty
+CATEGORY=Magic
+SUBSECTION=Potions (basic)
+DESCRIPTION=Potion (Green)(Poison)
+
+ON=@Create
+MORE1=s_poison
+MORE2={30.0 90.0}
+
+[ITEMDEF 0f0b]
+DEFNAME=i_bottle_red
+TYPE=t_potion
+TDATA1=i_bottle_empty
+WEIGHT=1.0
+RESOURCES=1 i_bottle_empty
+CATEGORY=Magic
+SUBSECTION=Potions (basic)
+DESCRIPTION=Potion (Red)(Refresh)
+
+ON=@Create
+MORE1=s_refresh
+MORE2={30.0 90.0}
+
+[ITEMDEF 0f0c]
+DEFNAME=i_bottle_yellow
+TYPE=t_potion
+TDATA1=i_bottle_empty
+RESOURCES=1 i_bottle_empty
+WEIGHT=1.0
+CATEGORY=Magic
+SUBSECTION=Potions (basic)
+DESCRIPTION=Potion (Yellow)(Heal)
+
+ON=@Create
+MORE1=s_heal
+MORE2={30.0 90.0}
+
+[ITEMDEF 0f0d]
+DEFNAME=i_bottle_purple
+TYPE=t_potion
+TDATA1=0
+WEIGHT=1.0
+RESOURCES=1 i_bottle_empty
+CATEGORY=Magic
+SUBSECTION=Potions (basic)
+DESCRIPTION=Potion (Purple)(Explosion)
+
+ON=@Create
+MORE1=s_explosion
+MORE2={30.0 90.0}
+
+
+//////////////////
+// Custom Items //
+//////////////////
+
+[ITEMDEF I_POTION_BLEED]
+DEFNAME=I_POTION_BLEED
+ID=I_BOTTLE_ORANGE
+TYPE=T_POTION
+NAME=bleed potion%s
+WEIGHT=0
+VALUE=350
+RESDISPDNHUE=060
+
+ON=@CREATE
+COLOR=060
+MORE1=S_HEAL
+MORE2=35.0
+
+ON=@CLICK
+IF (<AMOUNT> = 0)
+	REMOVE
+	RETURN 1
+ENDIF
+MESSAGE @0481,,1 <AMOUNT> adet <NAME>
+RETURN 1
+
+ON=@DCLICK
+IF (<AMOUNT> = 0)
+	REMOVE
+	RETURN 1
+ENDIF
+IF !(<SRC.FINDID.i_bonus_bleed_equiped_mem>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Yaranız kanamıyor.
+	RETURN 1
+ENDIF
+MORE1=0
+// IF (<SRC.FINDLAYER(layer_flag_potionused)>)
+IF (<SRC.FINDID.i_potion_bleed_cooldown>)
+	SRC.sysmessageloc <def.tcolor_red>, <def.empty_cliloc2>, You can't drink another potion yet
+	RETURN 1
+ENDIF
+
+// IF (<SRC.FINDID.i_bonus_bleed_equiped_mem>)
+	SRC.FINDID.i_bonus_bleed_equiped_mem.REMOVE
+	// LOCAL.YARAVAR=1
+// ENDIF
+// IF (<LOCAL.YARAVAR>)
+	SRC.FUNC_BANDAGE_SUCCESS_MSG yarasını tedavi eder
+// ENDIF
+SRC.EFFECT 3,0376a,2,10,1
+SERV.NEWITEM i_potion_bleed_cooldown,1,<SRC>,1
+SRC.ANIM 34
+SRC.SOUND {0030 1 0 031 1}
+RETURN 1
+
+[ITEMDEF i_potion_bleed_cooldown]
+DEFNAME=i_potion_bleed_cooldown
+NAME=Potion Cooldown (Bleed) Memory
+ID=i_memory
+TYPE T_EQ_SCRIPT
+WEIGHT 0
+LAYER=LAYER_SPECIAL
+
+ON=@CREATE
+ATTR ATTR_INVIS|ATTR_NEWBIE
+TIMER 15
+
+ON=@EQUIP
+TIMER 15
+
+ON=@TIMER
+REMOVE
+RETURN 1
+
+[ITEMDEF i_potion_Agility]
+ID=i_bottle_blue
+NAME=agility potion%s
+TYPE=t_potion
+TDATA1=i_bottle_empty
+RESOURCES=1 i_reag_blood_moss,1 i_bottle_empty
+SKILLMAKE=ALCHEMY 15.1, t_mortar
+TEVENTS=ei_potions_agility
+WEIGHT=1.0
+VALUE=21
+CATEGORY=Agility
+SUBSECTION=Normal
+DESCRIPTION=Normal Agility
+
+ON=@Create
+MORE1=s_Agility
+MORE2=50.0
+
+[ITEMDEF i_potion_AgilityGreat]
+ID=i_bottle_blue
+TYPE=t_potion
+NAME=greater agility potion%s
+TDATA1=i_bottle_empty
+RESOURCES=3 i_reag_blood_moss,1 i_bottle_empty
+SKILLMAKE=ALCHEMY 35.1, t_mortar
+TEVENTS=ei_potions_agility
+WEIGHT=1.0
+VALUE=39
+CATEGORY=Agility
+SUBSECTION=Greater
+DESCRIPTION=Greater Agility
+
+ON=@Create
+MORE1=s_Agility
+MORE2=80.0
+
+[typedef ei_potions_agility]
+// Bunu eklersek sikinti cikartabilir, potu icmedigi zaman da bunlari siler.
+// ON=@DCLICK
+// IF (<SRC.FINDID.i_rune_bless>)
+	// SRC.FINDID.i_rune_bless.REMOVE
+// ENDIF
+// IF (<SRC.FINDID.i_rune_agility>)
+	// SRC.FINDID.i_rune_agility.REMOVE
+// ENDIF
+// IF (<SRC.FINDID.i_rune_cunning>)
+	// SRC.FINDID.i_rune_cunning.REMOVE
+// ENDIF
+// IF (<SRC.FINDID.i_rune_strength>)
+	// SRC.FINDID.i_rune_strength.REMOVE
+// ENDIF
+
+
+
+
+[ITEMDEF i_potion_CureLess]
+ID=i_bottle_orange
+TYPE=t_potion
+NAME=lesser cure potion%s
+TDATA1=i_bottle_empty
+RESOURCES=1 i_reag_garlic,1 i_bottle_empty
+SKILLMAKE=ALCHEMY 0.1, t_mortar
+TEVENTS=ei_potions_cure
+WEIGHT=1.0
+VALUE={16 19}
+CATEGORY=Cure
+SUBSECTION=Lesser
+DESCRIPTION=Lesser Cure
+
+ON=@Create
+MORE1=s_Cure
+MORE2=40.1
+
+[ITEMDEF i_potion_Cure]
+NAME=cure potion%s
+ID=i_bottle_orange
+TYPE=t_potion
+TDATA1=i_bottle_empty
+RESOURCES=3 i_reag_garlic,1 i_bottle_empty
+SKILLMAKE=ALCHEMY 25.1, t_mortar
+TEVENTS=ei_potions_cure
+WEIGHT=1.0
+VALUE=35
+CATEGORY=Cure
+SUBSECTION=Normal
+DESCRIPTION=Normal Cure
+
+ON=@Create
+MORE1=s_Cure
+MORE2=60.1
+
+[ITEMDEF i_potion_CureGreat]
+NAME=greater cure potion%s
+ID=i_bottle_orange
+TYPE=t_potion
+TDATA1=i_bottle_empty
+RESOURCES=6 i_reag_garlic,1 i_bottle_empty
+SKILLMAKE=ALCHEMY 65.1, t_mortar
+TEVENTS=ei_potions_cure
+WEIGHT=1.0
+VALUE=84
+CATEGORY=Cure
+SUBSECTION=Greater
+DESCRIPTION=Greater Cure
+
+ON=@Create
+MORE1=s_archcure
+MORE2=151.0
+
+[typedef ei_potions_cure]
+ON=@DClick
+IF (<SRC.FINDID.I_RUNE_POISON>)
+	IF (<SRC.FINDID.I_RUNE_POISON.MOREY> > <MORE2>)
+		SRC.EFFECT SND_SPELL_POISON
+		SRC.SYSMESSAGELOC <def.tcolor_grey>,<def.empty_cliloc2>, Bu iksir uzerinizdeki zehir etkisini gecirecek kadar etkili olmadi.
+		// REMOVE
+		CONSUME 
+		RETURN 1
+	ENDIF
+ENDIF
+
+IF (<SRC.FINDID.I_RUNE_POISON_FIELD>)
+	IF (<SRC.FINDID.I_RUNE_POISON_FIELD.MOREY> > <MORE2>)
+		SRC.EFFECT SND_SPELL_POISON
+		SRC.SYSMESSAGELOC <def.tcolor_grey>,<def.empty_cliloc2>, Bu iksir uzerinizdeki zehir etkisini gecirecek kadar etkili olmadi.
+		// REMOVE
+		CONSUME
+		RETURN 1
+	ENDIF
+ENDIF
+
+
+
+[ITEMDEF i_potion_ExplosionLess]
+NAME=lesser explosion potion%s
+ID=i_bottle_purple
+TYPE=t_potion
+TDATA1=0
+RESOURCES=3 i_reag_sulfur_ash,1 i_bottle_empty
+SKILLMAKE=ALCHEMY 5.1, t_mortar
+TEVENTS=ei_potions_explosion
+WEIGHT=1.0
+VALUE={24 26}
+CATEGORY=Explosion
+SUBSECTION=Lesser
+DESCRIPTION=Lesser Explosion
+
+ON=@Create
+MORE1=s_explosion
+MORE2=12.0
+
+[ITEMDEF i_potion_Explosion]
+NAME=explosion potion%s
+ID=i_bottle_purple
+TYPE=t_potion
+TDATA1=0
+RESOURCES=5 i_reag_sulfur_ash,1 i_bottle_empty
+SKILLMAKE=ALCHEMY 35.1, t_mortar
+TEVENTS=ei_potions_explosion
+WEIGHT=1.0
+VALUE=44
+CATEGORY=Explosion
+SUBSECTION=Normal
+DESCRIPTION=Explosion
+
+ON=@Create
+MORE1=s_explosion
+MORE2=30.0
+
+[ITEMDEF i_potion_ExplosionGreat]
+NAME=greater explosion potion%s
+ID=i_bottle_purple
+TYPE=t_potion
+TDATA1=0
+RESOURCES=10 i_reag_sulfur_ash,1 i_bottle_empty
+SKILLMAKE=ALCHEMY 65.1, t_mortar
+TEVENTS=ei_potions_explosion
+WEIGHT=1.0
+VALUE=94
+CATEGORY=Explosion
+SUBSECTION=Greater
+DESCRIPTION=Greater Explosion
+
+ON=@Create
+MORE1=s_explosion
+MORE2=50.0
+
+
+[typedef ei_potions_explosion]
+ON=@DClick
+SRC.SYSMESSAGELOC <def.tcolor_grey>,<def.empty_cliloc2>, Gecici olarak kullanimi kapalidir.
+RETURN 1
+
+ON=@DROPON_GROUND
+REMOVE
+SRC.SYSMESSAGELOC <def.tcolor_grey>,<def.empty_cliloc2>, Gecici olarak kullanimi kapalidir.
+
+
+[ITEMDEF i_potion_HealLess]
+NAME=lesser heal potion%s
+ID=i_bottle_yellow
+RESOURCES=1 i_reag_ginseng,1 i_bottle_empty
+SKILLMAKE=ALCHEMY 0.1, t_mortar
+TYPE=t_potion
+TDATA1=i_bottle_empty
+TEVENTS=ei_potions_heal
+WEIGHT=1.0
+VALUE={15 18}
+CATEGORY=Heal
+SUBSECTION=Lesser
+DESCRIPTION=Lesser Heal
+
+ON=@Create
+MORE1=s_heal
+MORE2=35.0
+
+[ITEMDEF i_potion_Heal]
+NAME=heal potion%s
+ID=i_bottle_yellow
+RESOURCES=3 i_reag_ginseng,1 i_bottle_empty
+SKILLMAKE=ALCHEMY 15.1, t_mortar
+TYPE=t_potion
+TDATA1=i_bottle_empty
+TEVENTS=ei_potions_heal
+WEIGHT=1.0
+VALUE=29
+CATEGORY=Heal
+SUBSECTION=Normal
+DESCRIPTION=Normal Heal
+
+
+ON=@Create
+MORE1=s_greater_heal
+MORE2=55.0
+
+[ITEMDEF i_potion_HealGreat]
+NAME=greater heal potion%s
+ID=i_bottle_yellow
+TYPE=t_potion
+TDATA1=i_bottle_empty
+RESOURCES=7 i_reag_ginseng,1 i_bottle_empty
+SKILLMAKE=ALCHEMY 55.1, t_mortar
+TEVENTS=ei_potions_heal
+WEIGHT=1.0
+VALUE=66
+CATEGORY=Heal
+SUBSECTION=Greater
+DESCRIPTION=Greater Heal
+
+ON=@Create
+MORE1=s_greater_heal
+MORE2=80.0
+
+
+[typedef ei_potions_heal]
+
+ON=@DClick
+IF (<SRC.FLAGS>&STATF_POISONED)
+	SRC.SYSMESSAGELOC <def.tcolor_grey>,<def.empty_cliloc2>, Uzerinizde bulunan zehir, bu iksiri kullanmanizi engelliyor.
+	RETURN 1
+ELSEIF (<SRC.FINDID.i_bonus_bleed_equiped_mem>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Kanamanız varken içemezsiniz.
+	RETURN 1
+ENDIF
+
+[ITEMDEF i_potion_Nightsight]
+NAME=nightsight potion%s
+ID=i_bottle_black
+TYPE=t_potion
+TDATA1=i_bottle_empty
+RESOURCES=1 i_reag_spider_silk,1 i_bottle_empty
+SKILLMAKE=ALCHEMY 0.1, t_mortar
+WEIGHT=1.0
+VALUE={16 19}
+CATEGORY=Nightsight
+SUBSECTION=Normal
+DESCRIPTION=Normal Nightsight
+
+ON=@Create
+MORE1=s_night_sight
+MORE2=100.0
+
+
+
+[ITEMDEF i_potion_PoisonLess]
+NAME=lesser poison potion%s
+ID=i_bottle_green
+TYPE=t_potion
+TDATA1=i_bottle_empty
+RESOURCES=1 i_reag_nightshade,1 i_bottle_empty
+SKILLMAKE=ALCHEMY 0.0, t_mortar
+TEVENTS=ei_potions_poison
+WEIGHT=1.0
+VALUE={18 21}
+CATEGORY=Poison
+SUBSECTION=Lesser
+DESCRIPTION=Lesser Poison
+
+ON=@Create
+MORE1=s_poison
+MORE2=40.0
+
+[ITEMDEF i_potion_Poison]
+NAME=poison potion%s
+ID=i_bottle_green
+TYPE=t_potion
+TDATA1=i_bottle_empty
+RESOURCES=2 i_reag_nightshade,1 i_bottle_empty
+SKILLMAKE=ALCHEMY 15.1, t_mortar
+WEIGHT=1.0
+VALUE=30
+TEVENTS=ei_potions_poison
+CATEGORY=Poison
+SUBSECTION=Normal
+DESCRIPTION=Normal Poison
+
+ON=@Create
+MORE1=s_poison
+MORE2=50.0
+
+[ITEMDEF i_potion_PoisonGreat]
+NAME=greater poison potion%s
+ID=i_bottle_green
+TYPE=t_potion
+TDATA1=i_bottle_empty
+RESOURCES=4 i_reag_nightshade,1 i_bottle_empty
+SKILLMAKE=ALCHEMY 55.1, t_mortar
+TEVENTS=ei_potions_poison
+WEIGHT=1.0
+VALUE=66
+CATEGORY=Poison
+SUBSECTION=Greater
+DESCRIPTION=Greater Poison
+
+ON=@Create
+MORE1=s_poison
+MORE2=90.0
+
+[ITEMDEF i_potion_PoisonDeadly]
+NAME=deadly poison potion%s
+ID=i_bottle_green
+TYPE=t_potion
+TDATA1=i_bottle_empty
+RESOURCES=8 i_reag_nightshade,1 i_bottle_empty
+SKILLMAKE=ALCHEMY 90.1, t_mortar
+TEVENTS=ei_potions_poison
+WEIGHT=1.0
+VALUE=150
+CATEGORY=Poison
+SUBSECTION=Deadly
+DESCRIPTION=Deadly Poison
+
+ON=@Create
+MORE1=s_poison
+MORE2=105.0
+
+[typedef ei_potions_poison]
+
+ON=@DCLICK
+IF !(<SRC.ISINPACK <UID>>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, <NAME>: <DEF.UNPACKMSG>
+	RETURN 1
+ELSEIF (<SRC.ACTION> == Poisoning)
+	SRC.SYSMESSAGE <DEFMSG.skillwait_3>
+	RETURN 1
+ELSEIF (<SRC.FLAGS>&STATF_WAR)
+	SRC.SYSMESSAGE <DEFMSG.skillwait_2>
+	RETURN 1
+ENDIF
+// TARGET
+// SRC.SYSMESSAGE Zehir surmek istediginiz silahi seciniz.
+SRC.SYSMESSAGE Zehir surmek icin Poisoning becerisini kullaniniz.
+RETURN 1
+
+ON=@TARGON_CHAR
+IF (<SRC.TARG.UID> != <SRC>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, <def.msg_invalid_target_tr> Sadece kendinizi seçebilirsiniz.
+ELSE
+	REF1=<SRC.WEAPON>
+	IF (<REF1>)
+		SRC.ACT = <UID> // potion
+		SRC.ACTP = <SRC.P>
+		SRC.ACTPRV = <ref1> // weapon
+		SRC.ACTARG1 = 30
+		SRC.ACTARG2 = 0
+		SRC.ACTARG3 = 0
+		SRC.ACTION = 30
+		SRC.SYSMESSAGELOC <def.tcolor_blue>,<def.empty_cliloc2>, <REF1.NAME> silahını zehirlemeye başladın!
+	ELSE
+		SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Elinizde silah yok.
+	ENDIF
+ENDIF
+RETURN 1
+
+ON=@TARGON_GROUND
+SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Hatalı seçim
+TARGET
+SRC.SYSMESSAGE Zehir surmek istediginiz silahi seciniz.
+RETURN 1
+
+ON=@TARGON_ITEM
+IF (<SRC.TARG.UID> == <UID>)
+	REF1=<SRC.WEAPON>
+	IF (<REF1>)
+		SRC.ACT = <UID> // potion
+		SRC.ACTP = <SRC.P>
+		SRC.ACTPRV = <ref1> // weapon
+		SRC.ACTARG1 = 30
+		SRC.ACTARG2 = 0
+		SRC.ACTARG3 = 0
+		SRC.ACTION = 30
+		SRC.SYSMESSAGELOC <def.tcolor_blue>,<def.empty_cliloc2>, <REF1.NAME> silahını zehirlemeye başladın!
+	ELSE
+		SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Elinizde silah yok.
+	ENDIF
+	
+ELSE
+
+	IF !(<SRC.TARG.ISWEAPON>)
+		SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu bir silah değil.
+		RETURN 1
+		
+	ELSEIF ((<SRC.TARG.BASEID> == I_STAFF_MAGE) || (<SRC.TARG.TYPE> == T_WEAPON_XBOW) || (<SRC.TARG.TYPE> == T_WEAPON_BOW) || (<SRC.TARG.TYPE> == T_WEAPON_AXE) || (<SRC.TARG.TYPE> == T_WEAPON_MACE_SMITH) || (<SRC.TARG.TYPE> == T_WEAPON_MACE_STAFF))
+		IF !(<SRC.TARG.BASEID> == I_BOW_ELVEN)
+			SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu zehirlenebilir bir silah türü değil.
+			RETURN 1
+		ENDIF
+	ELSEIF (<SRC.TARG.TOPOBJ> != <SRC>)
+		SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, <SRC.TARG.NAME>: <DEF.UNPACKMSG>
+		RETURN 1
+	ELSEIF (<SRC.ACTION> == Poisoning)
+		SRC.SYSMESSAGE <DEFMSG.skillwait_3>
+		RETURN 1
+	ENDIF
+	SRC.ACT = <UID> // potion
+	SRC.ACTP = <SRC.P>
+	SRC.ACTPRV = <SRC.TARG.UID> // weapon
+	SRC.ACTARG1 = 30
+	SRC.ACTARG2 = 0
+	SRC.ACTARG3 = 0
+	SRC.ACTION = 30
+	SRC.SYSMESSAGE @50 <SRC.TARG.NAME>: Zehri surmeye basladin!
+ENDIF
+RETURN 1
+
+
+
+
+[ITEMDEF i_potion_Refresh]
+NAME=refresh potion%s
+ID=i_bottle_red
+TYPE=t_potion
+TDATA1=i_bottle_empty
+RESOURCES=1 i_reag_black_pearl,1 i_bottle_empty
+SKILLMAKE=ALCHEMY 0.0, t_mortar
+TEVENTS=ei_potions_refresh
+WEIGHT=1.0
+VALUE={16 19}
+CATEGORY=Refresh
+SUBSECTION=Normal
+DESCRIPTION=Normal Refresh
+
+ON=@Create
+MORE1=s_Refresh
+MORE2=25.0
+
+[ITEMDEF i_potion_RefreshTotal]
+ID=i_bottle_red
+NAME=total refresh potion%s
+TYPE=t_potion
+TDATA1=i_bottle_empty
+RESOURCES=5 i_reag_black_pearl,1 i_bottle_empty
+SKILLMAKE=ALCHEMY 25.1, t_mortar
+TEVENTS=ei_potions_refresh
+WEIGHT=1.0
+VALUE=45
+CATEGORY=Refresh
+SUBSECTION=Total
+DESCRIPTION=Total Refresh
+
+ON=@Create
+MORE1=s_Refresh
+MORE2=50.0
+
+
+
+[typedef ei_potions_refresh]
+
+
+
+
+[ITEMDEF i_potion_Strength]
+ID=i_bottle_white
+NAME=strength potion%s
+TYPE=t_potion
+TDATA1=i_bottle_empty
+RESOURCES=2 i_reag_mandrake_root,1 i_bottle_empty
+SKILLMAKE=ALCHEMY 25.1, t_mortar
+WEIGHT=1.0
+VALUE=30
+CATEGORY=Strength
+SUBSECTION=Greater
+DESCRIPTION=Normal Strength
+
+ON=@Create
+MORE1=s_strength
+MORE2=60.0
+
+[ITEMDEF i_potion_StrengthGreat]
+NAME=greater strength potion%s
+ID=i_bottle_white
+TYPE=t_potion
+TDATA1=i_bottle_empty
+RESOURCES=5 i_reag_mandrake_root,1 i_bottle_empty
+SKILLMAKE=ALCHEMY 45.1, t_mortar
+TEVENTS=ei_potions_str
+WEIGHT=1.0
+VALUE=53
+CATEGORY=Strength
+SUBSECTION=Greater
+DESCRIPTION=Greater Strength
+
+ON=@Create
+MORE1=s_strength
+MORE2=100.0
+
+[typedef ei_potions_str]
+
+ON=@DCLICK
+// Bunu eklersek sikinti cikartabilir, potu icmedigi zaman da bunlari siler.
+// IF (<SRC.FINDID.i_rune_bless>)
+	// SRC.FINDID.i_rune_bless.REMOVE
+// ENDIF
+// IF (<SRC.FINDID.i_rune_agility>)
+	// SRC.FINDID.i_rune_agility.REMOVE
+// ENDIF
+// IF (<SRC.FINDID.i_rune_cunning>)
+	// SRC.FINDID.i_rune_cunning.REMOVE
+// ENDIF
+// IF (<SRC.FINDID.i_rune_strength>)
+	// SRC.FINDID.i_rune_strength.REMOVE
+// ENDIF
+
+
+////////////////////////////////////
+// These are custom potions
+////////////////////////////////////
+
+[ITEMDEF i_potion_Mana]
+ID=i_bottle_white
+NAME=mana refresh potion%s
+TYPE=t_potion
+TDATA1=i_bottle_empty
+RESOURCES=3 i_reag_eye_of_newt,1 i_bottle_empty
+SKILLMAKE=ALCHEMY 65.1, t_mortar
+TEVENTS=ei_potions_mana
+WEIGHT=0
+
+ON=@Create
+MORE1=s_mana
+MORE2=50.0
+COLOR=color_gray_lt
+
+[ITEMDEF i_potion_ManaTotal]
+ID=i_bottle_white
+NAME=total mana refresh potion%s
+TYPE=t_potion
+TDATA1=i_bottle_empty
+RESOURCES=6 i_reag_eye_of_newt,1 i_bottle_empty
+SKILLMAKE=ALCHEMY 95.1, t_mortar
+TEVENTS=ei_potions_mana
+WEIGHT=0
+
+ON=@Create
+MORE1=s_mana
+MORE2=100.0
+COLOR=color_gray_lt
+
+[typedef ei_potions_mana]
+
+on=@DClick
+src.sysmessageloc <def.tcolor_red>, <def.empty_cliloc2>, Bu esya kullanilmamaktadir.
+RETURN 1
+
+
+[ITEMDEF i_potion_Shrink]
+ID=i_bottle_WHITE
+NAME=shrink
+TYPE=T_POTION
+TDATA1=i_bottle_empty
+RESOURCES=i_reag_batwing 2, i_bottle_EMPTY
+SKILLMAKE=ALCHEMY 100.0
+RESDISPDNHUE=color_gray_lt
+
+ON=@Create
+MORE1=s_shrink
+MORE2=100.0
+COLOR=<SERV.ITEMDEF.<BASEID>.RESDISPDNHUE>
+
+
+[ITEMDEF i_potion_Invisibility]
+ID=i_bottle_white
+NAME=invisibility potion%s
+TYPE=t_potion
+TDATA1=i_bottle_empty
+RESOURCES=4 i_reag_wyrm_heart,1 i_bottle_empty
+SKILLMAKE=ALCHEMY 65.1, t_mortar
+
+ON=@Create
+MORE1=s_invisibility
+MORE2=100.0
+COLOR=COLOR_SPECTRAL
+
+
+
+
+////////////////////////////////////
+// Extended potions.
+////////////////////////////////////
+
+
+[ITEMDEF i_potion_Beastform]
+// This potion polymorphs you into an animal for a while.
+// The animal it turns you into is determined when you make the potion (you can use taste id to determine which animal it does).
+ID=i_bottle_white
+NAME=Beastform
+TYPE=t_potion
+TDATA1=i_bottle_empty
+RESOURCES=1 i_reag_blood_moss,1 i_reag_ginseng,1 i_bottle_empty
+SKILLMAKE=ALCHEMY 95.1, t_mortar
+
+ON=@Create
+MORE1=s_BeastForm
+MORE2=60.0
+
+[ITEMDEF i_potion_Chameleon]
+// This potion makes your skin match the colors of whatever is behind you.
+ID=i_bottle_white
+NAME=Chameleon skin
+TYPE=t_potion
+TDATA1=i_bottle_empty
+RESOURCES=1 i_reag_garlic,1 i_reag_spider_silk,1 i_bottle_empty
+SKILLMAKE=ALCHEMY 95.1, t_mortar
+
+ON=@Create
+MORE1=s_Chameleon
+MORE2=60.0
+
+[ITEMDEF i_potion_Clever]
+// This potion gives a temporary boost to intelligence.
+ID=i_bottle_white
+NAME=Cleverness
+TYPE=t_potion
+TDATA1=i_bottle_empty
+RESOURCES=1 i_reag_fertile_dirt,1 i_bottle_empty
+SKILLMAKE=ALCHEMY 95.1, t_mortar
+
+ON=@Create
+MORE1=s_Cunning
+MORE2=70.0
+
+[ITEMDEF i_potion_Clever_Great]
+// This potion gives a temporary boost to intelligence.
+ID=i_bottle_white
+NAME=Great Cleverness
+TYPE=t_potion
+TDATA1=i_bottle_empty
+RESOURCES=2 i_reag_fertile_dirt,1 i_bottle_empty
+SKILLMAKE=ALCHEMY 95.1, t_mortar
+
+ON=@Create
+MORE1=s_Cunning
+MORE2=100.0
+
+[ITEMDEF i_potion_Clumsiness]
+// This potion lowers your dexterity temporarily.
+ID=i_bottle_white
+NAME=Clumsiness
+TYPE=t_potion
+TDATA1=i_bottle_empty
+RESOURCES=1 i_reag_blood_moss,1 i_reag_blackmoor,1 i_bottle_empty
+SKILLMAKE=ALCHEMY 95.1, t_mortar
+
+ON=@Create
+MORE1=s_Clumsy
+MORE2=70.0
+
+[ITEMDEF i_potion_Confusion]
+// This potion lowers your intelligence temporarily.
+ID=i_bottle_white
+NAME=Confusion
+TYPE=t_potion
+TDATA1=i_bottle_empty
+RESOURCES=1 i_reag_nightshade,1 i_reag_fertile_dirt,1 i_bottle_empty
+SKILLMAKE=ALCHEMY 95.1, t_mortar
+
+ON=@Create
+MORE1=s_feeblemind
+MORE2=50.0
+
+[ITEMDEF i_potion_Forget_Less]
+ID=i_bottle_white
+NAME=Lesser Forgetfulness
+TYPE=t_potion
+TDATA1=i_bottle_empty
+RESOURCES=1 i_reag_blackmoor,1 i_bottle_empty
+SKILLMAKE=ALCHEMY 15.1, t_mortar
+
+ON=@Create
+MORE1=s_forget
+MORE2=40.0
+
+[ITEMDEF i_potion_Forget]
+ID=i_bottle_white
+NAME=Forgetfulness
+TYPE=t_potion
+TDATA1=i_bottle_empty
+RESOURCES=1 i_reag_blackmoor,1 i_reag_blackmoor,1 i_bottle_empty
+SKILLMAKE=ALCHEMY 30.1, t_mortar
+
+ON=@Create
+MORE1=s_forget
+MORE2=60.0
+
+[ITEMDEF i_potion_Forget_Great]
+// This potion permanently lowers one skill.
+// You can tell which skill the potion lowers by tasting it.
+ID=i_bottle_white
+NAME=Geeater Forgetfulness
+TYPE=t_potion
+TDATA1=i_bottle_empty
+RESOURCES=1 i_reag_blackmoor,2 i_reag_blackmoor,1 i_bottle_empty
+SKILLMAKE=ALCHEMY 70.1, t_mortar
+
+ON=@Create
+MORE1=s_forget
+MORE2=100.0
+
+[ITEMDEF i_potion_Gender]
+// This potion permanently changes your gender.
+ID=i_bottle_white
+NAME=Gender swap
+TYPE=t_potion
+TDATA1=i_bottle_empty
+RESOURCES=1 i_reag_blood_moss,1 i_reag_ginseng,1 i_reag_mandrake_root,1 i_reag_blackmoor,1 i_bottle_empty
+SKILLMAKE=ALCHEMY 15.1, t_mortar
+
+ON=@Create
+MORE1=s_Gender_Swap
+MORE2=100.0
+
+[ITEMDEF i_potion_Trance]
+// This potion temporarily increases your meditation skill.
+ID=i_bottle_white
+NAME=Trance
+TYPE=t_potion
+TDATA1=i_bottle_empty
+RESOURCES=1 i_reag_black_pearl,2 i_reag_blackmoor,1 i_bottle_empty
+SKILLMAKE=ALCHEMY 15.1, t_mortar
+
+ON=@Create
+MORE1=s_Trance
+MORE2=50.0
+
+[ITEMDEF i_potion_Trance_Great]
+// This potion temporarily increases your meditation skill.
+ID=i_bottle_white
+NAME=Greater Trance
+TYPE=t_potion
+TDATA1=i_bottle_empty
+RESOURCES=1 i_reag_black_pearl,1 i_reag_mandrake_root,2 i_reag_blackmoor,1 i_bottle_empty
+SKILLMAKE=ALCHEMY 15.1, t_mortar
+
+ON=@Create
+MORE1=s_Trance
+MORE2=100.0
+
+[ITEMDEF i_potion_Restore]
+// This potion increases both your hit points and your stamina.
+RESOURCES=1 i_reag_black_pearl,1 i_reag_mandrake_root,1 i_bottle_empty
+ID=i_bottle_white
+NAME=Restoration
+TYPE=t_potion
+TDATA1=i_bottle_empty
+SKILLMAKE=ALCHEMY 15.1, t_mortar
+
+ON=@Create
+MORE1=s_Restore
+MORE2=50.0
+
+[ITEMDEF i_potion_Restore_Great]
+// This potion increases both your hit points and your stamina.
+RESOURCES=1 i_reag_black_pearl,2 i_reag_mandrake_root,1 i_bottle_empty
+ID=i_bottle_white
+NAME=Restoration
+TYPE=t_potion
+TDATA1=i_bottle_empty
+SKILLMAKE=ALCHEMY 15.1, t_mortar
+
+ON=@Create
+MORE1=s_Restore
+MORE2=100.0
+
+[ITEMDEF i_potion_Sustenance]
+// This potion serves to fill you up. (Remember, healing rate depends on how well fed you are!)
+// It comes in multiple strengths:
+// Greater: RESOURCES=2 i_reag_ginseng,2 i_reag_mandrake_root,1 i_bottle_EMPTY
+NAME=Sustenance
+ID=i_bottle_white
+TYPE=t_potion
+TDATA1=i_bottle_empty
+RESOURCES=1 i_reag_ginseng,1 i_reag_mandrake_root,1 i_bottle_empty
+SKILLMAKE=ALCHEMY 15.1, t_mortar
+
+ON=@Create
+MORE1=s_Sustenance
+MORE2=60.0
+
+[ITEMDEF i_potion_Monster]
+// This potion polymorphs you into a monster for a while.
+// The monster it turns you into is determined when you make the potion (you can use taste id to determine which animal it does).
+NAME=Monster form
+ID=i_bottle_white
+TYPE=t_potion
+TDATA1=i_bottle_empty
+RESOURCES=1 i_reag_blood_moss,1 i_reag_mandrake_root,1 i_bottle_empty
+SKILLMAKE=ALCHEMY 15.1, t_mortar
+
+ON=@Create
+MORE1=s_Monster_Form
+MORE2=100.0
+
+[ITEMDEF i_potion_Particle]
+// This potion turns you into an immobile, but untargetable particle system for a while.
+NAME=Particle form
+ID=i_bottle_white
+TYPE=t_potion
+TDATA1=i_bottle_empty
+RESOURCES=1 i_reag_black_pearl,1 i_reag_blood_moss,1 i_bottle_empty
+SKILLMAKE=ALCHEMY 15.1, t_mortar
+
+ON=@Create
+MORE1=s_Particle_Form
+MORE2=60.0
+
+[ITEMDEF i_potion_Shield]
+// This potion erects a temporary force field around you. Nobody approaching will be able to get within 1 tile of you, though you can move close to them if you wish.
+NAME=Shield
+ID=i_bottle_white
+TYPE=t_potion
+TDATA1=i_bottle_empty
+RESOURCES=1 i_reag_garlic,1 i_reag_sulfur_ash,1 i_bottle_empty
+SKILLMAKE=ALCHEMY 15.1, t_mortar
+
+ON=@Create
+MORE1=s_Shield
+MORE2=100.0
+
+[ITEMDEF i_potion_Steelskin]
+// This potion turns your skin into steel, giving a boost to your AR.
+NAME=Steelskin
+ID=i_bottle_white
+TYPE=t_potion
+TDATA1=i_bottle_empty
+RESOURCES=1 i_reag_garlic,1 i_reag_ginseng,2 i_reag_mandrake_root,1 i_bottle_empty
+SKILLMAKE=ALCHEMY 15.1, t_mortar
+
+ON=@Create
+MORE1=s_Steelskin
+MORE2=100.0
+
+[ITEMDEF i_potion_Stoneskin]
+// This potion turns your skin into stone, giving a boost to your AR.
+NAME=Stoneskin
+ID=i_bottle_white
+TYPE=t_potion
+TDATA1=i_bottle_empty
+RESOURCES=1 i_reag_garlic,1 i_reag_ginseng,1 i_reag_mandrake_root,1 i_bottle_empty
+SKILLMAKE=ALCHEMY 15.1, t_mortar
+
+ON=@Create
+MORE1=s_Stoneskin
+MORE2=100.0
+
+[ITEMDEF i_potion_Weakness]
+// This potion temporarily lowers your strength.
+NAME=Weakness
+ID=i_bottle_white
+TYPE=t_potion
+TDATA1=i_bottle_empty
+RESOURCES=1 i_reag_mandrake_root,1 i_reag_blackmoor,1 i_bottle_empty
+SKILLMAKE=ALCHEMY 15.1, t_mortar
+
+ON=@Create
+MORE1=s_weaken
+MORE2=100.0
+
+[COMMENT ITEMDEF i_potion_FloatLess]
+ID=i_bottle_white
+NAME=Lesser Float
+TYPE=t_potion
+TDATA1=i_bottle_empty
+RESOURCES=1 i_reag_pumice,1 i_bottle_empty
+SKILLMAKE=ALCHEMY 15.1, t_mortar
+
+ON=@Create
+MORE1=s_Float
+MORE2=30.0
+COLOR=COLOR_CYAN
+
+[COMMENT ITEMDEF i_potion_Float]
+ID=i_bottle_white
+NAME=Float
+TYPE=t_potion
+TDATA1=i_bottle_empty
+RESOURCES=3 i_reag_pumice,1 i_bottle_empty
+SKILLMAKE=ALCHEMY 35.1, t_mortar
+
+ON=@Create
+MORE1=s_Float
+MORE2=50.0
+COLOR=COLOR_CYAN
+
+[COMMENT ITEMDEF i_potion_FloatGreat]
+ID=i_bottle_white
+NAME=Greater Float
+TYPE=t_potion
+TDATA1=i_bottle_empty
+RESOURCES=6 i_reag_pumice,1 i_bottle_empty
+SKILLMAKE=ALCHEMY 65.1, t_mortar
+
+ON=@Create
+MORE1=s_Float
+MORE2=100.0
+COLOR=COLOR_CYAN
+
+[COMMENT ITEMDEF i_potion_Lava]
+ID=i_bottle_red
+NAME=Lava Bomb
+TYPE=t_potion
+TDATA1=0
+RESOURCES=6 i_reag_grave_dust,1 i_bottle_empty
+SKILLMAKE=ALCHEMY 95.1, t_mortar
+
+ON=@Create
+MORE1=s_lava
+MORE2=50.0
+COLOR=color_violet_lt
+
+[EOF]

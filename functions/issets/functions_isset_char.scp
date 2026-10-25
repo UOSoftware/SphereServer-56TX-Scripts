@@ -1,0 +1,556 @@
+
+
+
+
+[FUNCTION Food_GetLevelPercent]
+LOCAL.MAX = <MAXFOOD>
+IF (<DLOCAL.MAX> == 0)
+	RETURN 100
+ENDIF
+return <MulDiv <food>, 100, <dLOCAL.MAX>>
+
+
+
+
+
+[FUNCTION JobKey]
+IF (STRMATCH('Animal Trainer','<JOB>'))
+	LOCAL.Job Animal_Trainer
+	
+ELSEIF (STRMATCH('High Mage','<JOB>'))
+	LOCAL.Job High_Mage
+	
+ELSEIF (STRMATCH('Fur Trader','<JOB>'))
+	LOCAL.Job Fur_Trader	
+	
+ELSEIF (STRMATCH('Weaponsmith Blade','<JOB>'))
+	LOCAL.Job Weaponsmith_Blade	
+	
+ELSEIF (STRMATCH('Weaponsmith Blunt','<JOB>'))
+	LOCAL.Job Weaponsmith_Blunt
+	
+ELSE
+	LOCAL.Job <JOB>
+ENDIF
+RETURN <LOCAL.JOB>
+
+
+
+
+
+[FUNCTION IsCastUseSpell]
+// 45 = Mark
+// 32 = Recall
+// 52 = Gate
+
+//IF (<MANA> < <SERV.SPELL.<ARGS>.MANAUSE>)
+	//SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, <DEFMSG.spell_try_nomana> (<SERV.SPELL.<ARGS>.NAME> için Gereken mana: <SERV.SPELL.<ARGS>.MANAUSE>)
+	//RETURN 0
+
+IF (<TAG0.TAMETEKRAR> > 0)
+	SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Binek evcilleştirirken recall / gate / mark işlemi yapamazsınız.
+	RETURN 0
+	
+ELIF (<TAG0.NOMOVETILL>) 
+	SYSMESSAGELOC <def.tcolor_red>,600029 // "Freeze durumdayken bu işlemi yapamazsınız."
+	RETURN 0
+
+ELIF (<FLAGS>&STATF_DEAD)
+	SYSMESSAGELOC <def.tcolor_red>,600027 // "Ölü durumdayken bu işlemi yapamazsınız."
+	RETURN 0
+
+ELIF (<FLAGS>&STATF_STONE)
+	SYSMESSAGELOC <def.tcolor_red>,600028 // "Stone durumdayken bu işlemi yapamazsınız."
+	RETURN 0
+
+ELIF (<FLAGS>&STATF_FREEZE)
+	SYSMESSAGELOC <def.tcolor_red>,600029 // "Freeze durumdayken bu işlemi yapamazsınız."
+	RETURN 0
+	
+ELIF (<REGION.FLAGS>&REGION_FLAG_SAFE)
+	SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu bölgede bunu kullanamazsınız.
+	RETURN 0
+
+ELIF (<REGION.FLAGS>&REGION_ANTIMAGIC_RECALL_OUT)
+	SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu bölgeden ulaşımlar kapatılmıştır. (Anti-magic recall out)
+	RETURN 0
+
+ELIF (<REGION.FLAGS>&REGION_ANTIMAGIC_GATE)
+	SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu bölgeden ulaşımlar kapatılmıştır. (Anti-magic gate)
+	RETURN 0
+	
+ELIF (<REGION.FLAGS>&REGION_ANTIMAGIC_ALL)
+	SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu bölgeden ulaşımlar kapatılmıştır. (Anti-magic all)
+	RETURN 0
+	
+ELIF (<IsInHouse>)
+	SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu bölgede recall / gate / mark işlemi yapamazsınız.
+	RETURN 0
+
+ELIF (<IsInShip>) || (<IsOnSea>)
+	SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu bölgede recall / gate / mark işlemi yapamazsınız.
+	RETURN 0
+
+ELIF (strmatch('Logout','<REGION.NAME>')) || (strmatch(*Immortal City*,'<REGION.NAME>')) || (strmatch('Star','<REGION.NAME>')) || (strmatch(*Green Acres*,'<REGION.NAME>')) || (strmatch(*Jail*,'<REGION.NAME>'))
+	SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu bölgede recall / gate / mark işlemi yapamazsınız.
+	RETURN 0
+	
+ELIF (<ACCOUNT.PRIV>&PRIV_JAILED)
+	SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Hapis cezanız bitmedi bu yüzden recall / gate / mark işlemi yapamazsınız.
+	RETURN 0
+
+ELIF (<ISHELPSTUCK>)
+	SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Stuck halinde recall / gate / mark işlemi yapamazsınız.
+	RETURN 0
+ENDIF
+
+RETURN 1
+
+
+
+
+
+
+[FUNCTION IsCanMoveFullDir]
+IF (<CANMOVE S> || <CANMOVE SW> || <CANMOVE SW> || <CANMOVE W> || <CANMOVE NW> || <CANMOVE N> || <CANMOVE NE> || <CANMOVE E> || <CANMOVE SE> || <CANMOVE S>)
+	RETURN 1
+ENDIF
+RETURN 0
+
+
+
+[FUNCTION REWARDCOINS]
+RETURN <dTAG0.REWARDCOINS>
+
+
+[FUNCTION KILLSPLAYER]
+RETURN <dTAG0.KILLS.PLAYER>
+
+[FUNCTION KILLSNPC]
+RETURN <DTAG0.KILLS.NPC>
+
+[FUNCTION DEATHSPLAYER]
+RETURN <DTAG0.DEATHS.PLAYER>
+
+
+[FUNCTION DEATHSNPC]
+RETURN <DTAG0.DEATHS.NPC>
+
+
+
+[FUNCTION IsVipMember]
+RETURN <IsPreMember>
+
+[FUNCTION IsPreMember]
+RETURN <ACCOUNT.TAG0.PREMIUM>
+
+
+
+
+
+
+[FUNCTION IsNearGate]
+LOCAL.Radius = <args>
+IF (<LOCAL.Radius> > 7168)
+	LOCAL.Radius = 100
+ENDIF
+IF (<LOCAL.Radius> < 0)
+	LOCAL.Radius = 1
+ENDIF
+FORITEMS <DLOCAL.Radius>
+	IF (<IsTeleportItem>)
+		LOCAL.X ++
+	ENDIF
+ENDFOR
+RETURN <DLOCAL.X>
+
+
+
+
+
+[FUNCTION NoGoldMsg]
+RETURN Bu işlem için <BolukAyir <DARGS>> gpye ihtiyacınız var. (Gerekli gold: <BolukAyir <EVAL <DARGS>-<GOLD>>>)
+
+
+[FUNCTION IsNomove]
+IF (<FLAGS>&STATF_STONE|STATF_FREEZE)
+RETURN 1
+ENDIF
+RETURN 0
+
+
+[FUNCTION IsInvis]
+IF (<FLAGS>&STATF_INVISIBLE|STATF_INSUBSTANTIAL) 
+	RETURN 1
+ENDIF
+RETURN 0
+
+[FUNCTION IsHide]
+IF (<FLAGS>&STATF_HIDDEN|STATF_INSUBSTANTIAL)
+	RETURN 1
+ENDIF
+RETURN 0
+
+[FUNCTION IsDeath]
+IF (<FLAGS>&STATF_DEAD) 
+	RETURN 1
+ELSEIF (<HITS> <= 0)
+	RETURN 1
+ENDIF
+RETURN 0
+
+
+// Stat
+
+[FUNCTION oStatTotal]
+RETURN <EVAL <OSTR>+<ODEX>+<OINT>>
+
+[FUNCTION StatTotal]
+RETURN <EVAL <STR>+<DEX>+<INT>>
+
+
+
+// Class
+
+
+/// Mage Kontrol
+[FUNCTION IsMage]
+IF ((<MAGERY> > 98.0) && (<MEDITATION> > 98.0) && (<EVALUATINGINTEL> > 98.0)) && ((<OSTR> >= 80) || (<ODEX> <= 25)) && !((<TACTICS>) || (<FENCING>) || (<MACEFIGHTING>) || (<SWORDSMANSHIP>) || (<ARCHERY>) || (<WRESTLING>))
+	RETURN 1
+ENDIF
+RETURN 0
+
+// Warrior Kontrol
+[FUNCTION ISWARRIOR]
+IF (<TACTICS> > 98.0) && ((<OSTR> >= 100) || (<ODEX> >= 100)) && ((<FENCING> > 98.0) || (<MACEFIGHTING> > 98.0) || (<SWORDSMANSHIP> > 98.0) || (<ARCHERY> > 98.0) || (<WRESTLING> > 98.0)) && !((<MAGERY>) || (<MEDITATION>) || (<EVALUATINGINTEL>))
+	RETURN 1
+ENDIF
+RETURN 0
+
+// Warlock Kontrol
+[FUNCTION ISWARLOCK]
+IF ((<MAGERY> > 98.0) && (<TACTICS> > 98.0)) && ((<FENCING> > 98.0) || (<MACEFIGHTING> > 98.0) || (<SWORDSMANSHIP> > 98.0) || (<ARCHERY> > 98.0) || (<WRESTLING> > 98.0))
+	RETURN 1
+ENDIF
+RETURN 0
+
+
+
+[FUNCTION ISCLASSNAME]
+IF (<ISWARRIOR>)
+	RETURN Warrior
+	
+ELSEIF (<ISMAGE>)
+	RETURN Mage
+	
+ELSEIF (<ISWARLOCK>)
+	RETURN Warlock
+	
+ENDIF
+Return Belirsiz
+
+
+
+
+
+
+[FUNCTION IsCharType]
+IF (<NPC>)
+	LOCAL.CHARTYPE = <NPC>
+ELSEIF (<SRC.ISPLAYER>)
+	LOCAL.CHARTYPE = -1
+ENDIF
+RETURN <DLOCAL.CHARTYPE>
+
+
+
+[FUNCTION IsGenderName]
+return <IsSexName>
+
+
+[FUNCTION IsSexName]
+IF (<OBODY>==c_man)
+	RETURN Male
+ELSEIF (<OBODY> == c_woman)
+	RETURN Female
+ELSEIF (<OBODY> == c_man_gm)
+	RETURN GM
+ELSE
+	RETURN -
+ENDIF
+
+
+
+
+
+[FUNCTION IsPoisoned]
+IF (<FLAGS>&STATF_POISONED) 
+	RETURN 1
+ELSEIF (<FINDID.I_RUNE_POISON>)
+	RETURN 1
+ENDIF
+RETURN 0
+
+
+[FUNCTION IsNoFullHp]
+IF !(<ISDEATH>) && (<hits> < <str>)
+RETURN 1
+ENDIF
+RETURN 0
+
+
+// hits
+// stam
+// mana
+[FUNCTION IsNoFullStatVal]
+local.key = <argv0>
+IF (strmatch(*hits*,'<local.key>))
+local.stat str
+ELSEIF (strmatch(*stam*,'<local.key>))
+local.stat dex
+ELSEIF (strmatch(*mana*,'<local.key>))
+local.stat int
+ENDIF
+IF !(<ISDEATH>) && (<i.<local.key>> < <i.<local.stat>>)
+	RETURN 1
+ENDIF
+RETURN 0
+
+
+[FUNCTION IsNoFullMp]
+IF !(<ISDEATH>) && (<mana> < <int>)
+RETURN 1
+ENDIF
+RETURN 0
+
+
+[FUNCTION IsNoFullSp]
+IF !(<ISDEATH>) && (<stam> < <dex>)
+RETURN 1
+ENDIF
+RETURN 0
+
+
+
+[FUNCTION IsMonsters]
+IF (<ISCHAR>)
+	IF (<NPC> == brain_monster || <NPC> == brain_berserk  || <NPC> == brain_dragon) 
+		RETURN 1
+	ENDIF
+ENDIF
+RETURN 0
+
+[FUNCTION IsVendors]
+IF (<NPC> == brain_healer || <NPC> == brain_banker || <NPC> == brain_vendor || <NPC> == brain_animal_trainer) 
+	RETURN 1
+ENDIF
+RETURN 0
+
+
+
+[FUNCTION IsSummonNpc]
+IF (<ISCHAR> && <NPC>)
+	IF (<FINDID.I_RUNE_SUMMON_CREATURE>)
+		RETURN 1
+	ENDIF
+ENDIF
+RETURN 0
+
+
+[FUNCTION IsAnimalNpc]
+IF (<ISCHAR> && <NPC>) 
+	IF (<NPC> == brain_animal) 
+		RETURN 1
+	ENDIF
+ENDIF
+RETURN 0
+
+[FUNCTION IsMountableNpc]
+IF (<ISCHAR> && <NPC>) 
+	LOCAL.ID 0x<STRSUB 1 99 <SERV.CHARDEF.<BASEID>.ID>>
+	LOCAL.MT <def.mount_<LOCAL.ID>>
+	IF !(<ISEMPTY <LOCAL.MT>>) && (<RESOURCETYPE <LOCAL.MT>> == RES_ITEMDEF)
+		RETURN 1
+	ENDIF
+ENDIF
+RETURN 0
+
+
+[FUNCTION IsGolemNpc]
+IF (<BASEID> == C_GOLEM_TINKER) || (<BASEID> == C_GOLEM_TINKER_ENERGY) || (<BASEID> == C_GOLEM_TINKER_EARTH)
+	RETURN 1
+ENDIF
+RETURN 0
+
+
+[FUNCTION IsPetableNpc]
+IF (<IsMountableNpc>)
+	RETURN 1
+ELSEIF (<IsGolemNpc>) 
+	RETURN 1
+ENDIF
+RETURN 0
+
+
+[FUNCTION IsHealableChar]
+IF (<ISCHAR>)
+
+	IF (<ISPLAYER>)
+		RETURN 1
+		
+	ELSEIF (<NPC> == brain_animal || <NPC> == brain_none)
+		RETURN 1	
+		
+	ENDIF
+ENDIF
+RETURN 0
+
+
+[FUNCTION ISCRIMINAL]
+IF (<ISCHAR>)
+	IF (<ISPLAYER>)
+		IF ((<FLAGS>&STATF_CRIMINAL) || (<FINDLAYER.layer_flag_criminal>)) || (<KARMA> <= -2000)
+			RETURN 1
+		ENDIF	
+	ELSE
+		IF ((<FLAGS>&STATF_CRIMINAL) || (<KARMA> <= 0)) && (<NPC> != BRAIN_HUMAN)
+			RETURN 1
+		ENDIF
+	ENDIF
+ENDIF
+RETURN 0
+
+
+
+
+[FUNCTION ISPK]
+IF (<ISCHAR>)
+	IF !(<NPC>)
+	LOCAL.MURDERKILL=<EVAL <SERV.MURDERMINCOUNT>+1>
+		IF (<KILLS> >= <LOCAL.MURDERKILL>) || (<KARMA> <= -2001)
+			RETURN 1
+		ENDIF
+	ELSE
+		IF (<KARMA> <= -800)
+			RETURN 1
+		ENDIF
+	ENDIF
+ENDIF
+RETURN 0
+
+
+
+[FUNCTION ISHELPSTUCK]
+IF (<FINDID.I_MEMORY_HELPPAGE_STUCK>)
+	IF (<FINDID.I_MEMORY_HELPPAGE_STUCK.MORE1>)
+		RETURN 1
+	ENDIF
+ENDIF
+RETURN 0
+
+
+[FUNCTION IsUseSkill]
+IF ((<ACTION> == ID(SKILL_<ARGV[0]>)) || (<ACTION> == SKILL_<ARGV[0]>))
+	RETURN 1
+ENDIF
+RETURN 0
+
+
+[FUNCTION IsOnRide]
+IF (<FINDLAYER.LAYER_HORSE>)
+	RETURN 1
+ELSEIF (<FLAGS>&STATF_ONHORSE)
+	RETURN 1
+ENDIF
+RETURN 0
+
+[FUNCTION ISOFFLINE]
+IF !(<ISONLINE>)
+	RETURN 1
+ENDIF
+RETURN 0
+
+
+
+
+[FUNCTION f_isHuman]
+IF ( (<OBODY>==c_man) || (<OBODY>==c_woman) )
+   RETURN 1
+ENDIF
+RETURN 0
+
+[FUNCTION IsHuman]
+RETURN <f_isHuman>
+
+[FUNCTION f_isElf]
+IF ( (<OBODY>==c_elf_male) || (<OBODY>==c_elf_female) )
+   RETURN 1
+ENDIF
+RETURN 0
+
+[FUNCTION IsElf]
+RETURN <f_isElf>
+
+
+[FUNCTION f_isGarg]
+IF ((<OBODY>==c_gargoyle_male) || (<OBODY>==c_gargoyle_female))
+   RETURN 1
+ENDIF
+RETURN 0
+
+
+[FUNCTION IsGarg]
+RETURN <f_isGarg>
+
+
+[FUNCTION f_isFemale]
+IF (<SERV.CHARDEF.<OBODY>.CAN>&MT_FEMALE) 
+	RETURN 1
+ELSEIF (<IsBodyWoman>)
+	RETURN 1
+ENDIF
+RETURN 0
+
+[FUNCTION IsFemale]
+RETURN <f_isFemale>
+
+[FUNCTION f_isCursed]
+FORCHARLAYER 32
+   IF (<BASEID>==i_rune_curse)
+      RETURN 1
+   ENDIF
+ENDFOR
+RETURN 0
+
+[FUNCTION IsBodyMan]
+IF ((<BODY> == C_MAN) || (<ID> == C_MAN) || (<OBODY> == C_MAN))
+RETURN 1
+ENDIF
+RETURN 0
+
+[FUNCTION IsBodyWoman]
+IF ((<BODY> == C_WOMAN) || (<ID> == C_WOMAN) || (<OBODY> == C_WOMAN))
+RETURN 1
+ENDIF
+RETURN 0
+
+
+
+[FUNCTION IsJail]
+// IF (<ISEVENT.E_JAIL>) 
+	// RETURN 1
+// ELSEIF (<FINDID.I_JAIL>)
+// RETURN 1
+// ENDIF
+RETURN 0
+
+
+[FUNCTION IsInJail]
+IF (STRMATCH(*Jail*,'<REGION.NAME>'))
+	RETURN 1
+ENDIF
+RETURN 0
+
+
+
+[eof]

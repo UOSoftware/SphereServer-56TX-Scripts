@@ -1,0 +1,1650 @@
+
+[COMMENT]
+
+
+[TYPEDEF t_light_lit]
+ON=@click
+MESSAGE (acik)
+
+
+
+[TYPEDEF t_light_out]
+ON=@click
+MESSAGE (kapali)
+
+
+
+[TYPEDEF ei_container_static]
+on=@click
+MESSAGE @<qval (<TYPE> == T_CONTAINER_LOCKED)?38,,1 (Kilitli):044,,1 (Açık)>
+
+IF (<TIMER> > 0)
+	IF (<TYPE> == T_CONTAINER)
+		SRC.SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, <KalanSure <timer>> saniye kilitlenecek.
+	ENDIF
+ENDIF
+
+MESSAGE <NAME>
+RETURN 1
+
+ON=@TIMER
+SAYU * kilitlendi *
+COLOR=<def.tcolor_blue>
+TIMER=-1
+TYPE=T_CONTAINER_LOCKED
+ATTR=ATTR_MOVE_NEVER|ATTR_STATIC
+RETURN 1
+
+
+
+
+
+[TYPEDEF t_anim_active]
+ON=@CLICK
+if ( (strmatch(*training*,'<baseid>')) || (strmatch(*training*,'<name>')) || (strmatch(*training*,'<more1>')) )
+	local.skill <src.Fight_GetWeaponSkill>
+	message (<serv.skill.<local.skill>.name>)
+endif
+
+
+
+
+
+
+[TYPEDEF t_train_dummy]
+ON=@CLICK
+local.skill <src.Fight_GetWeaponSkill>
+message (<serv.skill.<local.skill>.name>)
+
+
+
+// hardcodenin yanisira ayni algoritma ile scriptlede stat verelim dedik ama bence gerek yok.
+// ON=@DCLICK
+// local.skill <SRC.Fight_GetWeaponSkillID>
+// SRC.f_StatGain <dlocal.skill>
+
+
+
+// ============================================================
+// [ADVANCE] bloğundaki değerleri buraya yansıt
+// Örnek: STR=10000,3500,250
+// ============================================================
+[DEFNAME statadv_values]
+STATADV_STR_0   10000
+STATADV_STR_1   3500
+STATADV_STR_2   250
+
+STATADV_DEX_0   10000
+STATADV_DEX_1   3500
+STATADV_DEX_2   250
+
+STATADV_INT_0   10000
+STATADV_INT_1   3500
+STATADV_INT_2   250
+
+
+// ============================================================
+// Stat Gain — C++ CChar::Skill_Experience karşılığı
+// Kullanım: f_StatGain(<skillnum>)
+// ============================================================
+[FUNCTION f_StatGain]
+LOCAL.skill   = <ARGV0>
+LOCAL.statcap = <SKILLCLASS.STATSUM>
+LOCAL.statsum = <eval <STR> + <DEX> + <INT>>
+
+FOR i 0 2
+
+    // Can't gain STR(0) or DEX(1) if morphed
+    IF (<FLAGS>&STATF_POLYMORPH && (<dLOCAL.i> != 2))
+        CONTINUE
+    ENDIF
+
+    // Stata özel değerleri ata
+    IF (<dLOCAL.i> == 0)
+        LOCAL.statval   = <STR>
+		local.statname	= STR
+        LOCAL.statmax   = 100
+        LOCAL.lock      = <STATLOCK[0]>     // STR = index 0
+        LOCAL.stattarg  = <SERV.SKILL.<dLOCAL.skill>.STAT_STR>
+        LOCAL.statbonus = <SERV.SKILL.<dLOCAL.skill>.BONUS_STR>
+        LOCAL.adv0      = <def.STATADV_STR_0>
+        LOCAL.adv1      = <def.STATADV_STR_1>
+        LOCAL.adv2      = <def.STATADV_STR_2>
+	
+    ELSEIF (<dLOCAL.i> == 1)
+        LOCAL.statval   = <DEX>
+		local.statname	= DEX
+        LOCAL.statmax   = 100
+        LOCAL.lock      = <STATLOCK[1]>     // DEX = index 1
+        LOCAL.stattarg  = <SERV.SKILL.<dLOCAL.skill>.STAT_DEX>
+        LOCAL.statbonus = <SERV.SKILL.<dLOCAL.skill>.BONUS_DEX>
+        LOCAL.adv0      = <def.STATADV_DEX_0>
+        LOCAL.adv1      = <def.STATADV_DEX_1>
+        LOCAL.adv2      = <def.STATADV_DEX_2>
+
+    ELSE
+        LOCAL.statval   = <INT>
+		local.statname	= INT
+        LOCAL.statmax   = 100
+        LOCAL.lock      = <STATLOCK[2]>     // INT = index 2
+        LOCAL.stattarg  = <SERV.SKILL.<dLOCAL.skill>.STAT_INT>
+        LOCAL.statbonus = <SERV.SKILL.<dLOCAL.skill>.BONUS_INT>
+        LOCAL.adv0      = <def.STATADV_INT_0>
+        LOCAL.adv1      = <def.STATADV_INT_1>
+        LOCAL.adv2      = <def.STATADV_INT_2>
+    ENDIF
+	// serv.log <local.statname>;
+	
+    // SKILLLOCK_UP = 0 → artabilir; diğerleri atla
+    IF (<dLOCAL.lock> != 0)
+		// serv.log Skill lock.
+        CONTINUE
+    ENDIF
+
+    // Beklenmedik durum
+    IF (<dLOCAL.statval> <= 0)
+		// serv.log Beklenmedik durum.
+        CONTINUE
+    ENDIF
+
+    // stat cap aşılmış → döngüyü kır
+    IF (<dLOCAL.statsum> > <dLOCAL.statcap>)
+		// serv.log statcap asmis.
+        BREAK
+    ENDIF
+
+    // Stat kendi limitine ulaşmış
+    IF (<dLOCAL.statval> >= <dLOCAL.statmax>)
+		// serv.log Stat kendi limitine ulasmis.
+        CONTINUE
+    ENDIF
+
+    // Skill bu stat için hedef tanımlamamış
+    IF (<dLOCAL.stattarg> <= 0)
+		// serv.log Skill bu stat icin skillde hedef tanimlamamis. 
+        CONTINUE
+    ENDIF
+
+    // Mevcut stat hedefi zaten geçmiş
+    IF (<dLOCAL.statval> >= <dLOCAL.stattarg>)
+		// serv.log Mevcut stat hedefi zaten gecmis.
+        CONTINUE
+    ENDIF
+
+    // iDifficulty = IMulDiv( uiStatVal, 1000, bStatTarg )
+    LOCAL.iDifficulty = <MULDIV <dLOCAL.statval>, 1000, <dLOCAL.stattarg>>
+
+    // iChance = g_Cfg.m_StatAdv[i].GetChancePercent(iDifficulty)
+    LOCAL.iChance = <CValueCurveDefGetChancePercent <dLOCAL.iDifficulty>,<dLOCAL.adv0>,<dLOCAL.adv1>,<dLOCAL.adv2>>
+	// serv.log <dLOCAL.iDifficulty>,<dLOCAL.adv0>,<dLOCAL.adv1>,<dLOCAL.adv2>
+
+    // if (m_StatPercent) iChance = (iChance * m_StatBonus[i] * m_StatPercent) / 10000
+    LOCAL.iStatPercent = <SERV.SKILL.<dLOCAL.skill>.BONUS_STATS>
+	
+    IF (<dLOCAL.iStatPercent>)
+        LOCAL.iChance = <eval (<dLOCAL.iChance> * <dLOCAL.statbonus> * <dLOCAL.iStatPercent>) / 10000>
+    ENDIF
+	
+	// local.iChance *=5 // kolay gain
+	
+	// serv.log Chance = <dLOCAL.iChance>
+
+    IF (<dLOCAL.iChance> <= 0)
+        CONTINUE
+    ENDIF
+
+    // Stat_Decrease — cap doluysa başka bir statı düşür
+    LOCAL.fDecrease = 1
+
+    IF (<dLOCAL.statsum> >= <dLOCAL.statcap>)
+        LOCAL.fDecrease = 0
+
+        IF (<dLOCAL.i> != 0 && <STATLOCK[0]> == 0 && <STR> > 0)
+            STR -= 1
+            LOCAL.statsum --
+            LOCAL.fDecrease = 1
+			
+        ELSEIF (<dLOCAL.i> != 1 && <STATLOCK[1]> == 0 && <DEX> > 0)
+            DEX -= 1
+            LOCAL.statsum --
+            LOCAL.fDecrease = 1
+			
+        ELSEIF (<dLOCAL.i> != 2 && <STATLOCK[2]> == 0 && <INT> > 0)
+            INT -= 1
+            LOCAL.statsum --
+            LOCAL.fDecrease = 1
+        ENDIF
+		
+    ENDIF
+	
+
+    // if ( iChance > g_Rand.GetVal(1000) && fDecrease )
+    IF (<R1000> < <dLOCAL.iChance> && <dLOCAL.fDecrease>)
+        IF (<dLOCAL.i> == 0)
+            STR += 1
+        ELSEIF (<dLOCAL.i> == 1)
+            DEX += 1
+        ELSE
+            INT += 1
+        ENDIF
+		
+        LOCAL.statsum = <eval <STR> + <DEX> + <INT>>
+		
+        BREAK
+    ENDIF
+
+ENDFOR
+
+
+// ============================================================
+// CValueCurveDef::GetLinear
+// ARGV0           = iSkillPercent (0-1000)
+// ARGV1..ARGV<N>  = m_aiValues (curve değerleri)
+// RETURN          = raw chance value
+// ============================================================
+[FUNCTION CValueCurveDefGetLinear]
+LOCAL.iSkillPercent = <ARGV0>
+LOCAL.iQty          = <eval <ARGV> - 1>    // ARGV0 iSkillPercent, geri kalanı değerler
+LOCAL.iLoIdx        = 0
+LOCAL.iSegSize      = 0
+
+IF (<dLOCAL.iQty> == 0)
+    RETURN 0
+ENDIF
+
+IF (<dLOCAL.iQty> == 1)
+    RETURN <ARGV1>
+ENDIF
+
+IF (<dLOCAL.iQty> == 2)
+    LOCAL.iLoIdx   = 0
+    LOCAL.iSegSize = 1000
+
+ELSEIF (<dLOCAL.iQty> == 3)
+    // En hızlı yol — iki segment: [0,500) ve [500,1000]
+    IF (<dLOCAL.iSkillPercent> >= 500)
+        LOCAL.iLoIdx        = 1
+        LOCAL.iSkillPercent = <eval <dLOCAL.iSkillPercent> - 500>
+    ELSE
+        LOCAL.iLoIdx = 0
+    ENDIF
+    LOCAL.iSegSize = 500
+
+ELSE
+    // default: iQty > 3
+    LOCAL.iLoIdx = <MULDIV <dLOCAL.iSkillPercent>, <dLOCAL.iQty>, 1000>
+    LOCAL.iQty --
+    IF (<dLOCAL.iLoIdx> < 0)
+        LOCAL.iLoIdx = 0
+    ENDIF
+    IF (<dLOCAL.iLoIdx> >= <dLOCAL.iQty>)
+        LOCAL.iLoIdx = <eval <LOCAL.iQty> - 1>
+    ENDIF
+    LOCAL.iSegSize      = <eval 1000 / <dLOCAL.iQty>>
+    LOCAL.iSkillPercent = <eval <dLOCAL.iSkillPercent> - (<dLOCAL.iLoIdx> * <dLOCAL.iSegSize>)>
+ENDIF
+
+// Değerler ARGV1'den başlar → ARGV[iLoIdx+1] ve ARGV[iLoIdx+2]
+LOCAL.iLoVal  = <ARGV<eval <dLOCAL.iLoIdx> + 1>>
+LOCAL.iHiVal  = <ARGV<eval <dLOCAL.iLoIdx> + 2>>
+LOCAL.iDiff   = <eval <dLOCAL.iHiVal> - <dLOCAL.iLoVal>>
+LOCAL.iChance = <eval <dLOCAL.iLoVal> + <MULDIV <dLOCAL.iDiff>, <dLOCAL.iSkillPercent>, <dLOCAL.iSegSize>>>
+
+IF (<dLOCAL.iChance> <= 0)
+    RETURN 0
+ENDIF
+
+RETURN <dLOCAL.iChance>
+
+
+
+// ============================================================
+// CValueCurveDef::GetChancePercent
+// ARGV0           = iSkillPercent (0-1000)
+// ARGV1..ARGV3    = curve değerleri (m_aiValues)
+// RETURN          = percent chance * 10 (0-1000)
+// ============================================================
+[FUNCTION CValueCurveDefGetChancePercent]
+LOCAL.iChance = <CValueCurveDefGetLinear <ARGV0>,<ARGV1>,<ARGV2>,<ARGV3>>
+IF (<dLOCAL.iChance> <= 0)
+    RETURN 0
+ENDIF
+// return( 100000 / iChance )
+RETURN <eval 100000 / <LOCAL.iChance>>
+
+
+
+
+
+[TYPEDEF t_musical]
+ON=@DCLICK
+IF (<SRC.FINDLAYER.layer_hand1> || <SRC.FINDLAYER.layer_hand2>)
+	src.sysmessage Ellerin doluyken muzik aleti nasil kullanacaksin?
+	return 1
+ENDIF
+// STATLOCK[1] 2 // int
+// STATLOCK[2] 2 // dex
+// STATLOCK[0] 2 // str
+
+// STR
+IF (<SRC.STATLOCK[0]> != 0 ) // up & locked
+SRC.SYSMESSAGE @38,,1,1 STR kilitli veya düşüşte olduğu için STR geliştiremiyorsunuz.
+ENDIF
+
+// INT
+IF (<SRC.STATLOCK[1]> != 0) // up & locked
+SRC.SYSMESSAGE @38,,1,1 INT kilitli veya düşüşte olduğu için INT geliştiremiyorsunuz.
+ENDIF
+
+// DEX
+IF (<SRC.STATLOCK[2]> != 0) // up & locked
+SRC.SYSMESSAGE @38,,1,1 DEX kilitli veya düşüşte olduğu için DEX geliştiremiyorsunuz.
+ENDIF
+
+
+
+
+
+
+
+
+
+[TYPEDEF t_cooking]
+ON=@DCLICK
+IF !(<SRC.ISNEARTYPE T_CAMPFIRE 1>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Ates olmadan nasil baliklari pisireceksin?
+	RETURN 1
+ELSEIF !(<SRC.COOKING> >= 85.0)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu tavanin nasil kullanildigini bilmiyorsunuz. (85.0 Cooking)
+	RETURN 1
+ENDIF
+TARGET 
+SRC.SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, Pisirmek istediginiz baligi secin.
+RETURN 1
+
+
+ON=@TARGON_ITEM
+IF (<SRC.TARG.BASEID> != i_fish_cut_raw)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Sadece pismemis baliklari pisirebilirsin.
+	RETURN 1
+ELSEIF !(<SRC.ISINPACK <SRC.TARG.UID>>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,600036,<SRC.TARG.NAME>	// Bunu (~1_val~) kullanabilmek için çantanızda veya üzerinizde olmalıdır.
+	RETURN 1
+ELSEIF !(<SRC.RESTEST 10 I_FISH_CUT_RAW>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, 10 tane pişmemiş balık bulunmuyor.
+	RETURN 1
+ENDIF
+SRC.TARG.CONSUME 10
+IF (RAND(100) <= <EVAL (<SRC.COOKING> / 10)>)
+	USESCUR ++
+	SERV.NEWITEM I_FISH_CUT_COOKED,10,<SRC.FINDLAYER.21>,1
+	SRC.SYSMESSAGELOC <def.tcolor_green>,<def.empty_cliloc2>, 10 adet balık pişirdin!
+ELSE
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Yandi guzelim baliklar.
+ENDIF
+RETURN 1
+
+
+ON=@TARGON_CHAR
+RETURN 1
+
+ON=@TARGON_GROUND
+RETURN 1
+
+
+
+[TYPEDEF t_sewing_kit]
+ON=@DCLICK
+src.F_Craftmenu 34 , 0 
+RETURN 1
+
+
+
+[TYPEDEF t_ingot]
+ON=@DCLICK
+IF (<SRC.FINDID.I_HAMMER_SMITH>)
+	SRC.FINDID.I_HAMMER_SMITH.EQUIP
+ENDIF
+F_Craftmenu_Blacksmithing
+RETURN 1
+
+
+
+
+
+
+// Bowcraft
+[TYPEDEF t_shaft]
+ON=@dclick
+src.F_Craftmenu 8 , 0 
+RETURN 1
+
+
+// Alchemy
+[TYPEDEF t_mortar]
+ON=@dclick
+src.F_Craftmenu 0 , 0 
+RETURN 1
+
+
+// Inscription
+[TYPEDEF t_scroll_blank]
+ON=@dclick
+src.F_Craftmenu 23 , 0 
+RETURN 1
+
+
+// Cartography
+[TYPEDEF t_map_blank]
+ON=@dclick
+// src.sysmessage incomplated
+src.F_Craftmenu 12 , 0 
+RETURN 1
+
+
+// Tinkering
+[TYPEDEF t_tinker_tools]
+ON=@dclick
+src.F_Craftmenu 37 , 0 
+RETURN 1
+
+
+// Alchemy
+[TYPEDEF t_potion_empty]
+ON=@dclick
+src.F_Craftmenu 0 , 0 
+RETURN 1
+
+
+// Carpentry (Saw)
+[TYPEDEF t_carpentry]
+ON=@dclick
+src.F_Craftmenu 11 , 0 
+RETURN 1
+
+// Alchemy
+[TYPEDEF t_Reagent]
+ON=@dclick
+F_Craftmenu_Alchemy
+RETURN 1
+
+
+[TYPEDEF T_SCROLL]
+ON=@DCLICK
+LOCAL.SKILL = <RESOURCEINDEX <STREAT <SERV.SPELL.<MOREX>.SKILLREQ>>>
+IF !(<LOCAL.SKILL>)
+    LOCAL.SKILL = 25
+ENDIF
+LOCAL.SKILLVAL <STRARG <SERV.SPELL.<MOREX>.SKILLREQ>>
+IF (<SRC.<SERV.SKILL.<DLOCAL.SKILL>.NAME>> < <DLOCAL.SKILLVAL>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu büyüyü yapacak yeteneğe sahip değilsin. (<FVAL <DLOCAL.SKILLVAL>> <SERV.SKILL.<DLOCAL.SKILL>.NAME>)
+	RETURN 1
+ENDIF
+
+
+
+
+
+[TYPEDEF t_gold]
+ON=@click
+MESSAGE @0 <bolukayir <amount>> <name>
+return 1
+
+// on=@DCLICK
+// return 1
+
+
+
+[TYPEDEF t_bboard]
+on=@click
+// message (<rescount> mesaj)
+
+ref1 <findcont.0>
+if (<ref1.isvalid>)
+message (ilk msj: <ref1.link.name>)
+ENDIF
+ref2 <findcont.<eval <rescount>-1>>
+if (<ref2.isvalid>)
+message (son msj: <ref2.link.name>)
+ENDIF
+
+if (<rescount>)
+message a <name> (<rescount> mesaj)
+ELSE
+message a <name>
+ENDIF
+return 1
+
+
+
+
+
+
+[TYPEDEF t_archery_butte]
+ON=@DCLICK
+IF (<SRC.CTAG0.ArcheryButte.Delay> > <SERV.TIME>)
+	SRC.SYSMESSAGELOC <def.tcolor_grey>,<def.empty_cliloc2>, <defmsg.skillwait_3>
+	RETURN 1
+ENDIF
+SRC.CTAG0.ArcheryButte.Delay = <serv.time> + <R8,12>
+local.timeDiff <EVAL (<SERV.TIMEHIRES> - <SRC.LASTEVENTWALK>)/100>
+IF (<Dlocal.timeDiff> > <QVAL (<SRC.FINDLAYER.25>)?2:1>)
+	SRC.FACE <UID>
+ENDIF
+
+
+
+
+
+
+// Lockpick sisteminde world uzerinde attr_move_never ve ayni zamanda attr_static olan tum kutu ve kasalarin
+// kilidi acilip kilitlenebilmeli ve bu sayede skill gain edilmeli.
+
+
+[TYPEDEF t_lockpick]
+ON=@TARGON_SELF
+IF (<SRC.TARG.DISTANCE> > 2)
+	SRC.SYSMESSAGE Kasadan cok uzaktasiniz.
+	RETURN 1
+ENDIF
+IF !(<SRC.TARG.IsContainer>)
+	SRC.SYSMESSAGE Bu bir kasa degil.
+	RETURN 1
+ENDIF
+
+
+
+
+
+
+
+[TYPEDEF T_ORE]
+ON=@Smelt
+SRC.SKILLGAIN 45 // Ore Smelt Mining Gain
+// serv.b argn1=<dargn1>
+// serv.b argn2=<dargn2>
+// serv.b argn3=<dargn3>
+// serv.b resource 0 id = <local.resource.0.id>
+// serv.b resource 0 amount = <dlocal.resource.0.amount>
+
+
+//ON=@DCLICK
+//IF (<SRC.ISDIFF 3,<UID>>)
+//	SRC.SYSMESSAGELOC <def.tcolor_red>,600018,<NAME>
+//	RETURN 1
+//ENDIF
+//TARGET
+//RETURN 1
+
+ON=@TARGON_CHAR
+SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Hatalı seçim.
+RETURN 1
+
+ON=@TARGON_ITEM
+IF !(<TOPOBJ> == <SRC>)
+	SRC.SYSMESSAGE Oreler yaninizda olmalidir.
+	RETURN 1
+ENDIF
+IF (<SRC.TARG.UID> == <UID>)
+    SMELT
+ELSE
+    SRC.SYSMESSAGE Baska bisi secti.
+ENDIF
+RETURN 1
+
+
+
+[TYPEDEF t_forge]
+ON=@DCLICK
+IF (<SRC.ISDIFF 3,<UID>>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,600018,<NAME>
+	RETURN 1
+ENDIF
+
+ON=@TARGON_CHAR
+SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Hatalı seçim.
+RETURN 1
+
+ON=@TARGON_ITEM
+IF !(<SRC.TARG.TYPE> == T_ORE)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Sadece Ore eritebilirsiniz.
+	RETURN 1
+ELSEIF !(<SRC.TARG.TOPOBJ> == <SRC>)
+	SRC.SYSMESSAGE Oreler yaninizda olmalidir.
+	RETURN 1
+ENDIF
+
+//IF (<SRC.TARG.AMOUNT> > 1)
+//	SRC.DIALOGCLOSE d_forge_smelt
+//	SRC.TARG.DIALOG d_forge_smelt
+//	RETURN 1
+//ELSE
+//	RETURN 0
+//ENDIF
+
+
+
+[DIALOG d_forge_smelt]
+<def.dsp>
+
+RESIZEPIC 0 0 5170 340 200
+DHTMLGUMP 0 3 300 25 0 0 <DEF.CENTER>Ore Smelt
+
+DORIGIN 50 40 
+TILEPICHUE +30 +0 <DISPIDDEC> <EVAL <COLOR> &~ 08000|04000>
+DHTMLGUMP +0 +45 100 25 0 0 <DEF.CENTER><AMOUNT> <NAME>
+
+GUMPPIC +100 +15 4502
+
+DORIGIN 190 20 
+TILEPICHUE +30 +30 <SERV.ITEMDEF.I_FORGE.ID> 0
+TILEPICHUE +30 +20 <SERV.ITEMDEF.I_FIRE.ID> 0
+
+DORIGIN 80 130 
+BUTTON +0 +2 5601 5601 1 0 1
+DHTMLGUMP +20 +0 100 25 0 0 Tümünü erit
+
+DORIGIN 200 130 
+BUTTON +0 +2 5601 5601 1 0 2
+DHTMLGUMP +20 +0 100 25 0 0 Ayır
+
+
+DORIGIN 30 130 
+GUMPPIC +0 +0 05C
+GUMPPICTILED +50 +0 200 40 05d
+GUMPPIC +250 +0 05e
+
+[DIALOG d_forge_smelt prebutton]
+IF !(<TOPOBJ> == <SRC>)
+	SRC.SYSMESSAGE Oreler yaninizda olmalidir.
+	RETURN 1
+ENDIF
+
+
+[DIALOG d_forge_smelt button]
+// tumunu erit
+ON=1
+SMELT
+
+// tek tek ayir
+ON=2
+IF (<AMOUNT> > 1)
+	LOCAL.BaseAmount <AMOUNT>
+	AMOUNT=1
+	UPDATE
+	DUPE <EVAL <DLOCAL.BaseAmount>-1>
+ENDIF
+
+
+
+
+
+
+
+
+
+
+
+[TYPEDEF t_container]
+ON=@CLICK
+IF !((<TYPE> == T_CORPSE) || (<BASEID> == I_MULTI_FINDER) || (<BASEID> == I_TRASHCAN) || (<BASEID> == I_RUNEBOOK))
+	IF (<RESCOUNT>)
+		MESSAGE @,,1,1 (Eşya: <RESCOUNT>, Ağırlık: <FVAL <WEIGHT>>)
+	ENDIF
+ENDIF
+
+
+ON=@DCLICK
+IF !((<BASEID> == I_BACKPACK) || (<BASEID> == I_MULTI_FINDER) || (<BASEID> == I_RUNEBOOK))
+	LOCAL.MaxItems = <EVAL <SERV.CONTAINERMAXITEMS>-5>
+	IF (<RESCOUNT>) && (<RESCOUNT> >= <LOCAL.MaxItems>)
+		SRC.Notice Dikkat! Maksimum eşya limitini aştığı için (<RESCOUNT><dLOCAL.MaxItems> Items) içindeki bazı eşyaları göremiyor olabilirsiniz. İçindeki eşyaların tamamını görebilmek için kasanın içindeki eşya adetini <dLOCAL.MaxItems> altında tutunuz.
+	ENDIF
+ENDIF
+
+
+ON=@DROPON_SELF
+IF !((<BASEID> == I_BACKPACK) || (<BASEID> == I_MULTI_FINDER) || (<BASEID> == I_RUNEBOOK))
+	LOCAL.MaxItems = <EVAL <SERV.CONTAINERMAXITEMS>-5>
+	IF (<RESCOUNT>) && (<RESCOUNT> >= <LOCAL.MaxItems>)
+		SRC.Notice Dikkat! Bu kasa maksimum eşya limitini aştığı için (<RESCOUNT>/<dLOCAL.MaxItems> Items) içindeki bazı eşyaları göremiyor olabilirsiniz. İçindeki eşyaların tamamını görebilmek için kasanın içindeki eşya adetini <dLOCAL.MaxItems> altında tutunuz.
+	ENDIF
+	IF (<ATTR>&ATTR_NEWBIE) 
+		SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu Newbified, eşya koyulamaz.
+		// ATTR=<ATTR>&~ATTR_NEWBIE
+		RETURN 1
+	ENDIF
+	IF (<ARGO.ATTR>&ATTR_NEWBIE) 
+		SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, <ARGO.NAME>: Newbified eşyaları buna koyamazsınız.
+		RETURN 1
+	ENDIF
+ENDIF
+
+
+
+
+
+
+
+
+[TYPEDEF t_telepad]
+ON=@CLICK
+ATTR=ATTR_MOVE_NEVER
+IF (<MOREX> > 0)
+	// CALL Func_Map_Colors <MOREP>
+	MESSAGE [<MOREP>]
+	MESSAGE @0 [<SERV.MAP(<MOREX>,<MOREY>,<MOREZ>,<MOREM>).REGION.NAME>]
+ELSE
+	MESSAGE @38,,1,1 (Karşılıksız)
+ENDIF
+// MESSAGE @,,1,1 <name>
+// RETURN 1
+
+
+
+
+
+
+
+[TYPEDEF ei_deed_parts]
+
+ON=@DCLICK
+LOCAL.PARTS = <SERV.ITEMDEF.<BASEID>.TAG0.PARTS>
+IF !(<ISEMPTY <LOCAL.PARTS>>)
+	FOR 1 <ARRAYCOUNT <LOCAL.PARTS>>
+		LOCAL.PART = <ARRAY <LOCAL.PARTS>,<DLOCAL._FOR>>
+		SERV.NEWITEM <LOCAL.PART>,1,<SRC>,1
+	ENDFOR
+	REMOVE
+ENDIF
+RETURN 1
+
+
+
+
+
+
+[TYPEDEF ei_food]
+
+ON=@DClick
+IF (<ATTR>&ATTR_MOVE_NEVER)
+	RETURN 1
+ELSEIF (<ATTR>&ATTR_STATIC)
+	RETURN 1
+ENDIF
+IF (<SRC.FOOD> >= <SRC.MAXFOOD>)
+	SRC.FOOD=<SRC.MAXFOOD>
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Toksunuz. (Food/MaxFood: <SRC.Food>/<SRC.MAXFOOD>)
+ELSE
+	//SRC.FOOD +=1
+	Local.FoodGain <qval (<morem>)?<morem>:1>
+	SRC.FOOD +=<dlocal.foodgain>
+	SRC.ANIM 6
+	SRC.SOUND {03a 1 03b 1 03c 1}
+	IF !(<SRC.IsUseSkill Magery>)
+		SRC.EMOTE eat some <NAME>
+	ENDIF
+	SRC.TRIGGER @EAT
+	CONSUME 1
+ENDIF
+RETURN 1
+
+
+
+
+[TYPEDEF t_scissors]
+ON=@TARGON_CHAR
+IF (<SRC.TARG.UID> == <src>)
+	DIALOGCLOSE D_SCISSORS_PLAYER_MYSELF
+	DIALOG D_SCISSORS_PLAYER_MYSELF
+ELSE
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu eşyayı bu şekilde kullanamazsın.
+ENDIF
+RETURN 1
+
+
+// ON=@TARGON_ITEM
+// IF !(<SRC.ISINPACK <SRC.TARG.UID>>) 
+	// SRC.SYSMESSAGELOC <def.tcolor_red>,600036,<SRC.TARG.NAME>	// Bunu (~1_val~) kullanabilmek için çantanızda veya üzerinizde olmalıdır.
+	// RETURN 1
+// ENDIF
+// IF (<SRC.TARG.BASEID>==I_CLOTH_BOLT)
+	// LOCAL.HESAP <FVAL <SRC.WEIGHT>+<FVAL <SRC.TARG.WEIGHT>*2>>
+	// IF (<EVAL <DLOCAL.HESAP>-<SRC.TARG.WEIGHT>> > <SRC.MAXWEIGHT>)
+		// SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Kumaş topları sizin taşıyamayacağınız kadar çok görünüyor. (<FVAL <DLOCAL.HESAP>-<SRC.TARG.WEIGHT>> / <FVAL <SRC.MAXWEIGHT>> kgs.)
+		// RETURN 1
+	// ENDIF
+// ENDIF
+
+[DIALOG D_SCISSORS_PLAYER_MYSELF]
+<DEF.DSP>
+RESIZE 0,0,210,200,<StrTitle <NAME>>
+
+
+DORIGIN 20 50
+RESIZEPIC +0 +0 2620 75 75
+IF (<SRC.FINDLAYER.LAYER_HAIR>)
+	REF1=<SRC.FINDLAYER.LAYER_HAIR>
+	IF (<REF1.ISVALIDE>) && (<REF1.TYPE> == T_HAIR)
+		LOCAL.HairAnim = <SERV.TILEDATA.ITEM(<REF1.DISPIDDEC>).ANIM>
+		LOCAL.HairGump = <EVAL <LOCAL.HairAnim> + 50000>		
+		DHTMLGUMP +5 +45 70 25 0 0 <DEF.CENTER><DEF.BFONT_White><StrLimit 8,<REF1.NAME>>
+		DHTMLGUMP +0 +80 75 25 1 0 <DEF.CENTER><DEF.BFONT_Black>Saçı kes
+		GUMPPIC -50 5 <LOCAL.HairGump> <EVAL (<REF1.COLOR> - 1) &~ 08000|04000>
+	ENDIF
+	
+	DORIGIN 20 50
+	BUTTON +30 +65 0845 0846 1 0 1
+ELSE
+	DHTMLGUMP +5 +25 70 50 0 0 <DEF.CENTER><DEF.BFONT_LRED>Saç yok
+ENDIF
+
+
+DORIGIN 110 50
+RESIZEPIC +0 +0 2620 75 75
+IF (<SRC.FINDLAYER.LAYER_BEARD>)
+	REF2=<SRC.FINDLAYER.LAYER_BEARD>
+	IF (<REF2.ISVALIDE>) && (<REF2.TYPE> == T_BEARD)
+
+		LOCAL.BeardAnim = <SERV.TILEDATA.ITEM(<REF2.DISPIDDEC>).ANIM>
+		LOCAL.BeardGump = <EVAL <LOCAL.BeardAnim> + 50000>
+
+		DHTMLGUMP +5 +45 70 25 0 0 <DEF.CENTER><DEF.BFONT_White><StrLimit 8, <REF2.NAME>>
+		DHTMLGUMP +0 +80 75 25 1 0 <DEF.CENTER><DEF.BFONT_Black>Sakalı kes
+		GUMPPIC -50 5 <LOCAL.BeardGump> <EVAL (<REF2.COLOR> - 1) &~ 08000|04000>
+		
+	ENDIF
+	BUTTON +30 +65 0845 0846 1 0 2
+ELSE
+	DHTMLGUMP +5 +25 70 50 0 0 <DEF.CENTER><DEF.BFONT_LRED>Sakal yok
+ENDIF
+
+DORIGIN 20 160
+IF (<SRC.FINDLAYER.LAYER_BEARD> && <SRC.FINDLAYER.LAYER_HAIR>)
+	DHTMLGUMP +20 +0 145 25 1 0 <DEF.BFONT_Black>Saç & Sakal Kes
+	BUTTON +0 +5 0845 0846 1 0 3
+ENDIF
+
+// GUMPPIC +10 +20 12 <DCOLOR>
+// GUMPPICTILED 0 0 20 20 12 <EVAL (<SRC.COLOR> - 1) &~ 08000|04000>
+// LOCAL.MyAnim = <SERV.TILEDATA.ITEM(8454).ANIM>
+// LOCAL.MyGump = <EVAL <LOCAL.MyAnim> + 50000>
+// SERV.B MyAnim = <LOCAL.MyAnim>
+// SERV.B MyGump = <LOCAL.MyGump>
+// FACE
+// GUMPPICTILED 0 0 20 20 <local.MyGump>
+			
+			
+[DIALOG D_SCISSORS_PLAYER_MYSELF PREBUTTON]
+IF !(<SRC.ISINPACK <UID>>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,600036,<NAME>	// Bunu (~1_val~) kullanabilmek için çantanızda veya üzerinizde olmalıdır.
+	RETURN 1
+ENDIF
+
+[DIALOG D_SCISSORS_PLAYER_MYSELF BUTTON]
+ON=1
+IF (<SRC.FINDLAYER.LAYER_HAIR>)
+	REF1=<SRC.FINDLAYER.LAYER_HAIR>
+	IF (<REF1.ISVALIDE>) && (<REF1.TYPE> == T_HAIR)
+		REF1.REMOVE
+		SRC.SYSMESSAGELOC <def.tcolor_grey>,<def.empty_cliloc2>, Saçınızı kestiniz!
+	ENDIF
+ELSE
+	DIALOGCLOSE D_SCISSORS_PLAYER_MYSELF
+	DIALOG D_SCISSORS_PLAYER_MYSELF
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Saçınız yok.
+ENDIF
+
+
+ON=2
+IF (<SRC.FINDLAYER.LAYER_BEARD>)
+	REF1=<SRC.FINDLAYER.LAYER_BEARD>
+	IF (<REF1.ISVALIDE>) && (<REF1.TYPE> == T_BEARD)
+		REF1.REMOVE
+		SRC.SYSMESSAGELOC <def.tcolor_grey>,<def.empty_cliloc2>, Sakalınızı kestiniz!
+	ENDIF
+ELSE
+	DIALOGCLOSE D_SCISSORS_PLAYER_MYSELF
+	DIALOG D_SCISSORS_PLAYER_MYSELF
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Sakalınız yok.
+ENDIF
+
+
+
+
+ON=3
+IF (<SRC.FINDLAYER.LAYER_HAIR>)
+	REF1=<SRC.FINDLAYER.LAYER_HAIR>
+	IF (<REF1.ISVALIDE>) && (<REF1.TYPE> == T_HAIR)
+		REF1.REMOVE
+		SRC.SYSMESSAGELOC <def.tcolor_grey>,<def.empty_cliloc2>, Saçınızı kestiniz!
+	ENDIF
+ELSE
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Saçınız yok.
+ENDIF
+
+IF (<SRC.FINDLAYER.LAYER_BEARD>)
+	REF2=<SRC.FINDLAYER.LAYER_BEARD>
+	IF (<REF2.ISVALIDE>) && (<REF2.TYPE> == T_BEARD)
+		REF2.REMOVE
+		SRC.SYSMESSAGELOC <def.tcolor_grey>,<def.empty_cliloc2>, Sakalınızı kestiniz!
+	ENDIF
+ELSE
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Sakalınız yok.
+ENDIF
+
+
+
+
+
+[typedef t_sign_gump]
+on=@click
+IF ( (<LINK> == <DEF.LINK_INVALID>) || (<MORE1> <= 0) )
+	MESSAGE @,,1,1 <NAME>
+	RETURN 1
+ENDIF
+
+
+ON=@PICKUP_GROUND
+RETURN 1
+
+
+
+
+
+[TYPEDEF t_dye_vat]
+ON=@TARGON_GROUND
+SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bunu boyayamazsiniz.
+RETURN 1
+
+ON=@TARGON_CHAR
+SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bunu boyayamazsiniz.
+RETURN 1
+
+
+
+
+
+
+
+[TYPEDEF t_shrine]
+
+
+
+
+
+
+
+[TYPEDEF t_book]
+ON=@CLICK
+// MESSAGE @,,1 (Başlık: <TITLE>)
+MESSAGE @,,1 (<TITLE>)
+// IF !(<ISBLANK <TAG0.AUTHOR>>)
+	// MESSAGE @,,1 (Yazar: <TAG0.AUTHOR>)
+// ENDIF
+MESSAGE <SERV.ITEMDEF.<ID>.NAME>
+RETURN 1
+
+ON=@DCLICK
+// IF (<ISBLANK <TAG0.AUTHOR>>)
+	// TAG0.AUTHOR=<SRC.NAME>
+// ENDIF
+DIALOGCLOSE D_BOOK
+DIALOG D_BOOK
+RETURN 1
+
+
+[DIALOG D_BOOK]
+<DEF.DSP>
+
+
+GUMPPIC 0 0 01fe
+
+DORIGIN 40 50
+dhtmlgump +0 +0 200 25 0 0 Başlık:
+IF !(<ISBLANK <TITLE>>)
+	DTEXTENTRYLIMITED +50 +0 120 25 0 0 25 <TITLE>
+ELSE
+	DTEXTENTRYLIMITED +50 +0 120 25 0 0 25 
+ENDIF
+
+
+DORIGIN 40 80
+IF (<ISBLANK <TAG0.AUTHOR>>)
+	dhtmlgump +0 +0 200 25 0 0 Yazar: <SRC.NAME>
+ELSE
+	dhtmlgump +0 +0 200 25 0 0 Yazar: <TAG0.AUTHOR>
+ENDIF
+
+DORIGIN 40 110
+IF !(<ISBLANK <TAG0.WRITED_AT>>)
+	dhtmlgump +0 +0 150 60 0 0 Yazılma Tarihi: <DEF.BR><TAG0.WRITED_AT>
+ENDIF
+
+DORIGIN 40 160
+IF !(<ISBLANK <TAG0.UPDATED_AT>>)
+	dhtmlgump +0 +0 150 60 0 0 Güncellenme Tarihi: <DEF.BR><TAG0.UPDATED_AT>
+ENDIF
+
+DORIGIN 220 10
+dhtmlgump +0 +0 175 240 0 1 
+IF !(<ISBLANK <TAG0.BODY>>)
+	dtextentrylimited +10 +0 175 240 0 1 125 <TAG0.BODY>
+ELSE
+	dtextentrylimited +10 +0 175 240 0 1 125 
+ENDIF
+
+[DIALOG D_BOOK BUTTON]
+ON=0
+IF (<ISBLANK <TAG0.AUTHOR>>)
+	TAG0.AUTHOR=<SRC.NAME>
+ENDIF
+TITLE=<ARGTXT[0]>
+TAG0.BODY=<ARGTXT[1]>
+IF (<ISBLANK <TAG0.WRITED_AT>>)
+	TAG0.WRITED_AT=<SERV.RTIME>
+ENDIF
+TAG0.UPDATED_AT=<SERV.RTIME>
+
+
+
+
+
+
+
+
+[TYPEDEF t_key]
+
+ON=@Click
+IF (<LINK.ISITEM>)
+	IF (STRMATCH(*t_multi*,'<LINK.TYPE>')) || (STRMATCH(*t_ship*,'<LINK.TYPE>'))
+		MESSAGE <LINK.NAME>
+		MESSAGE [<LINK.P>]
+	ENDIF
+ENDIF
+MESSAGE <name>
+RETURN 1
+
+ON=@DCLICK
+IF !(<SRC.ISINPACK <UID>>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,600036,<NAME>	// Bunu (~1_val~) kullanabilmek için çantanızda veya üzerinizde olmalıdır.
+	RETURN 1
+ENDIF
+
+
+
+
+
+
+
+
+
+
+[TYPEDEF t_corpse]
+
+on=@Create
+TAG0.BLOOD=0 // CARVED CREATE BLOOD
+// MORE1=0 // İS CARVED 
+// MOREZ=6 // DİRECTION FACE
+// UPDATE
+
+
+On=@CarveCorpse //Ceset kesildi mi?
+//MORE1=1 //  emülatör zaten bunu yapıyor.
+IF (<LINK.ISVALIDE> && <LINK.ISPLAYER>)
+	FORCONT <UID> 1 //Cesetteki sadece en üstteki eşyaları al
+		IF !(<ATTR> & ATTR_NEWBIE|ATTR_MOVE_NEVER)
+			DROP //Itemleri drop ettir.
+		ENDIF
+		IF !(<CAN>&can_i_pile) 
+			TAG0.CarveCorpseItems=1 // iteme tag ver cesetten kesilerek mi gelmiş
+		ENDIF
+	ENDFOR
+	REMOVE //Ceset sil
+ENDIF
+
+
+
+
+ON=@CLICK
+IF (<SRC.ISGM>)
+MESSAGE (<KalanSure <TIMER>>) GM Only
+ENDIF
+
+IF !(<LINK.ISVALIDE>)
+	IF (<FINDTYPE.T_HAIR>)
+		FINDTYPE.T_HAIR.REMOVE
+	ENDIF
+	IF (<FINDTYPE.T_BEARD>)
+		FINDTYPE.T_BEARD.REMOVE
+	ENDIF
+ELSE
+	IF (<LINK.MEMORYFINDTYPE.MEMORY_GUILD>) && (<LINK.MEMORYFINDTYPE.MEMORY_TOWN>)
+		MESSAGE [<LINK.MEMORYFINDTYPE.MEMORY_GUILD.LINK.NAME>] [<LINK.MEMORYFINDTYPE.MEMORY_TOWN.LINK.NAME>]
+	ELSEIF (<LINK.MEMORYFINDTYPE.MEMORY_GUILD>)
+		MESSAGE [<LINK.MEMORYFINDTYPE.MEMORY_GUILD.LINK.NAME>]
+	ELSEIF (<LINK.MEMORYFINDTYPE.MEMORY_TOWN>)
+		MESSAGE [<LINK.MEMORYFINDTYPE.MEMORY_TOWN.LINK.NAME>]
+	ENDIF
+ENDIF
+
+
+
+ON=@DROPON_ITEM
+IF (<EVAL <ARGO.WEIGHT>+<WEIGHT>> > <SRC.MAXWEIGHT>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu ceset daha fazla eşya taşıyamaz.
+	RETURN 1
+ENDIF
+IF (<RESCOUNT> >= 100)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu ceset daha fazla eşya alamaz.
+	RETURN 1
+ENDIF
+
+
+ON=@DROPON_Self
+IF (<EVAL <ARGO.WEIGHT>+<WEIGHT>> > <SRC.MAXWEIGHT>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu ceset daha fazla eşya taşıyamaz.
+	RETURN 1
+ENDIF
+IF (<RESCOUNT> >= 100)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu ceset daha fazla eşya alamaz.
+	RETURN 1
+ENDIF
+
+
+on=@dclick
+IF !(<LINK.ISVALIDE>)
+	IF (<FINDTYPE.T_HAIR>)
+		FINDTYPE.T_HAIR.REMOVE
+	ENDIF
+	IF (<FINDTYPE.T_BEARD>)
+		FINDTYPE.T_BEARD.REMOVE
+	ENDIF
+	IF !(STRMATCH('<NAME>','corpse'))
+		NAME a corpse
+	ENDIF
+ELSE
+	IF (<SRC> == <LINK>)
+		SRC.SYSMESSAGELOC <def.tcolor_green>,<def.empty_cliloc2>, Bu ceset size ait.
+	ENDIF
+ENDIF
+
+
+
+
+[TYPEDEF t_door_locked]
+ON=@Click
+// MESSAGE @,,1,1 (Kilitli-<QVAL (<TIMER> == -1)?Kapalı:Açık>)
+MESSAGE @1,1 (Kilitli-<QVAL (<TIMER> == -1)?Kapali:Acik>)
+
+ON=@DCLICK
+IF (<SRC.ISPLAYER>)
+	IF (<SRC.ISDIFF 2,<UID>>)
+		SRC.SYSMESSAGELOC <def.tcolor_red>,600018,<NAME>
+		RETURN 1
+	ELSEIF (<eval (<src.z> - <z>)> > 5)
+		SRC.SYSMESSAGELOC <def.tcolor_red>,600018,<NAME>
+		RETURN 1
+	ENDIF
+ENDIF
+
+
+
+
+[TYPEDEF t_door]
+ON=@Click
+// MESSAGE @,,1,1 (Kilitsiz-<QVAL (<TIMER> == -1)?Kapalı:Açık>)
+MESSAGE @1,1 (Kilitsiz-<QVAL (<TIMER> == -1)?Kapali:Acik>)
+
+
+ON=@DCLICK
+IF (<SRC.ISPLAYER>)
+	IF (<SRC.ISDIFF 2,<UID>>)
+		SRC.SYSMESSAGELOC <def.tcolor_red>,600018,<NAME>
+		RETURN 1
+	ELSEIF (<eval (<src.z> - <z>)> > 5)
+		SRC.SYSMESSAGELOC <def.tcolor_red>,600018,<NAME>
+		RETURN 1
+	ENDIF
+ENDIF
+
+
+
+
+
+
+
+[TYPEDEF t_door_open]
+ON=@Click
+// MESSAGE @,,1,1 (Kilitsiz-<QVAL (<TIMER> == -1)?Kapalı:Açık>)
+MESSAGE @1,1 (Kilitsiz-<QVAL (<TIMER> == -1)?Kapali:Acik>)
+
+
+ON=@DCLICK
+IF (<SRC.ISPLAYER>)
+	IF (<SRC.ISDIFF 2,<UID>>)
+		SRC.SYSMESSAGELOC <def.tcolor_red>,600018,<NAME>
+		RETURN 1
+	ELSEIF (<EVAL (<SRC.Z> - <Z>)> > 5)
+		SRC.SYSMESSAGELOC <def.tcolor_red>,600018,<NAME>
+		RETURN 1
+	ENDIF
+ENDIF
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+[TYPEDEF t_wall]
+
+ON=@Click
+IF (<SRC.ISGM>)
+MESSAGE <KalanSure <TIMER>>
+ENDIF
+
+ON=@DCLICK
+IF (<SRC.ISGM>)
+	IF (<LINK.ISCHAR>) && (<LINK.ISPLAYER>)
+		SRC.MOVETO <LINK.P>
+	ENDIF
+ENDIF
+
+
+
+
+
+
+
+[TYPEDEF t_spell]
+
+ON=@Click
+IF (<SRC.ISGM>)
+	MESSAGE @0 (<KalanSure <TIMER>>)
+ENDIF
+
+ON=@DCLICK
+IF (<SRC.ISGM>)
+	IF (<LINK.ISVALIDE> && <LINK.ISPLAYER>)
+		SRC.GO <LINK.P>
+		RETURN 1
+	ENDIF
+ENDIF
+
+// ON=@TIMER
+// REMOVE
+// RETURN 1
+
+
+
+
+
+[TYPEDEF t_web]
+
+on=@create
+IF (RAND(5) == 1)
+	TIMERD=1
+ELSE
+	TIMER=<R30,60>
+ENDIF
+
+ON=@TIMER
+REMOVE
+RETURN 1
+
+
+
+
+
+
+
+[TYPEDEF t_rune]
+
+ON=@CLICK
+IF (<MOREX> > 0)
+   MESSAGE (<MOREX>,<MOREY>,<MOREZ>,<MOREM>)
+ENDIF
+IF (<COLOR>)
+	IF !(STRMATCH('<SERV.MAP(<MOREX>,<MOREY>,<MOREZ>,<MOREM>).REGION.NAME>','<NAME>'))
+		MESSAGE @<COLOR>,,1 [<SERV.MAP(<MOREX>,<MOREY>,<MOREZ>,<MOREM>).REGION.NAME>]
+	ENDIF
+	MESSAGE @<COLOR>,,1 <NAME>
+	RETURN 1
+ELSE
+   RETURN 0
+ENDIF
+
+ON=@DCLICK
+IF !(<MOREX> > 0)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Boş rune boş.
+	RETURN 1
+ENDIF
+TARGET
+SRC.SYSMESSAGELOC <def.tcolor_grey>,<def.empty_cliloc2>, Eklemek istediğiniz Runebooku seçiniz veya rune işlemleri için tekrar runeyi seçiniz.
+RETURN 1
+
+
+ON=@TARGON_ITEM
+IF (<SRC.TARG.UID> == <UID>)
+	IF !(<MOREX> > 0)
+		SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Boş runeye isim veremezsiniz.
+		RETURN 1
+	ENDIF
+	DIALOGCLOSE D_RUNE_RENAME
+	DIALOG D_RUNE_RENAME
+
+ELSEIF (<SRC.TARG.BASEID> == I_RUNEBOOK)
+	SRC.TARG.Func_Runebook_Add_Rune <UID>
+ELSE
+SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>,  Bu eşya üzerinde kullanamazsınız. Runebooku veya markın kendisini seçiniz.
+ENDIF
+RETURN 1
+
+
+[DIALOG D_RUNE_RENAME]
+<DEF.DSP>
+RESIZE 0,0,280,185,Rune İşlemleri
+
+DORIGIN 20 50
+RESIZEPIC +0 +0 3000 240 25
+DTEXTENTRYLIMITED +5 +5 215 25 <COLOR> 0 16 <NAME>
+
+BUTTON +0 +30 4006 4007 1 0 1 
+DTEXT +30 +30 <def.tcolor_green> Tamam
+
+BUTTON +125 +30 4006 4007 1 0 2
+DTEXT +155 +30 <def.tcolor_text> Varsayılan
+
+CALL Func_Map_Colors <MOREX>,<MOREY>,<MOREZ>,<MOREM>
+
+DHTMLGUMP +0 +60 240 25 1 0 <LOCAL.REGIONCOLOR_HTML><SERV.MAP(<MOREX>,<MOREY>,<MOREZ>,<MOREM>).REGION.NAME>
+DHTMLGUMP +0 +90 240 25 1 0 <MOREX>,<MOREY>,<MOREZ>,<MOREM>
+
+[DIALOG D_RUNE_RENAME BUTTON]
+ON=1
+IF (<ISBADCHAR <ARGTXT[0]>>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Hatalı karakter kullanimi
+	RETURN 1
+ELSEIF (<ISBLANK <ARGTXT[0]>>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Boş giriş yapamazsınız.
+	RETURN 1
+ELSEIF !(STRREGEX(^[a-zA-Z0-9 ]+$,<ARGTXT[0]>))
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Sadece alfabetik karakter ve numara girebilirsiniz.
+	RETURN 1
+ELSEIF (<EVAL STRLEN(<ARGTXT[0]>)> < 3) || (<EVAL STRLEN(<ARGTXT[0]>)> > 25)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Rune adı en az 3 en fazla 25 karakterden oluşabilir.
+	RETURN 1
+ENDIF
+NAME=rn: <ARGTXT[0]>
+SRC.SYSMESSAGELOC <def.tcolor_grey>,<def.empty_cliloc2>, Rune adı başarıyla değişti: (<ARGTXT[0]>)
+
+ON=2
+NAME=<SERV.MAP(<MOREX>,<MOREY>,<MOREZ>,<MOREM>).REGION.NAME>
+SRC.SYSMESSAGELOC <def.tcolor_grey>,<def.empty_cliloc2>, Rune adı başarıyla varsayılan haline getirildi: (<NAME>)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+[TYPEDEF t_figurine]
+
+On=@Click
+REF1=<MORE2>
+IF (<REF1.ISVALIDE>)
+	MESSAGE @,,1,1 [<REF1.NAME>]
+	MESSAGE @044,,1,1 [<SERV.CHARDEF.<REF1.BASEID>.NAME>]
+ELSEIF (<SERV.CHARDEF.<TDATA3>>)
+	MESSAGE @,,1,1 [<SERV.CHARDEF.<TDATA3>.NAME>]
+ENDIF
+
+
+
+
+
+
+
+
+
+[TYPEDEF t_spawn_item]
+ON=@SPAWN
+REF1=<UID>
+
+FORITEMS <EVAL <MAXDIST>+5>
+	REF2=<UID>
+	IF (<REF1> != <REF2>)
+		IF (STRMATCH(*I_DUNGEON_CHEST_LEVEL_*,'<BASEID>'))
+			REMOVE
+		ENDIF
+		IF (STRMATCH(*I_Lagan_CHEST_LEVEL_*,'<BASEID>'))
+			REMOVE
+		ENDIF
+	ENDIF
+ENDFOR
+
+ON=@CLICK
+IF (<SRC.ACCOUNT.PLEVEL> >= 7)
+	IF (<TIMER> > 0)
+		MESSAGE @946,,1,1 (<KalanSure <TIMER>>)
+	ELSE
+		MESSAGE @946,,1,1 (Spawned)
+	ENDIF
+ENDIF
+IF (<SRC.ACCOUNT.PLEVEL> > 1)
+MESSAGE <NAME> <QVAL (<ATTR>&ATTR_INVIS)?(Invis):>
+	IF (STRMATCH('i_','<STRSUB 0 2 <MORE1>>')) && (<SERV.ITEMDEF.<MORE1>>)
+		SRC.SYSMESSAGELOC <def.tcolor_grey>,<def.empty_cliloc2>, Item: <MORE1> (<SERV.ITEMDEF.<MORE1>.NAME>)
+	ELSEIF (STRMATCH('spawn_','<STRSUB 0 6 <MORE1>>'))
+		SRC.SYSMESSAGELOC <def.tcolor_grey>,<def.empty_cliloc2>,Spawns: <MORE1>
+	ELSE
+		SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Invalid Spawn ID.
+	ENDIF
+RETURN 1
+ENDIF
+
+ON=@DCLICK
+IF (<SRC.ACCOUNT.PLEVEL> < 5)
+	SRC.Logger (Typedef:T_SPAWN_ITEM, Trigger:Dclick) (Name:<NAME> UID:<UID> Location:<REGION.NAME> [<P>])
+	RETURN 1
+ELSE
+	SRC.CTAG0.SPAWN_ITEM.MORE1=<MORE1>
+	DIALOGCLOSE D_ITEMPROP1
+	DIALOG D_ITEMPROP1 9
+ENDIF
+RESET
+RETURN 1
+
+
+
+
+
+
+
+
+[TYPEDEF t_spawn_char]
+
+ON=@CLICK
+IF (<SRC.ACCOUNT.PLEVEL> >= 7)
+	IF (<TIMER> > 0)
+		MESSAGE @946,,1,1 (<KalanSure <TIMER>>)
+	ELSE
+		MESSAGE @946,,1,1 (Spawned)
+	ENDIF
+ENDIF
+IF (<SRC.ACCOUNT.PLEVEL> > 1)
+MESSAGE <NAME> <QVAL (<ATTR>&ATTR_INVIS)?(Invis):>
+	IF (STRMATCH('c_','<STRSUB 0 2 <MORE1>>')) && (<SERV.CHARDEF.<MORE1>>)
+		SRC.SYSMESSAGELOC <def.tcolor_grey>,<def.empty_cliloc2>, Char: <MORE1> (<SERV.CHARDEF.<MORE1>.NAME>)
+	ELSEIF (STRMATCH('spawn_','<STRSUB 0 6 <MORE1>>'))
+		SRC.SYSMESSAGELOC <def.tcolor_grey>,<def.empty_cliloc2>,Spawns: <MORE1>
+	ELSE
+		SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Invalid Spawn ID.
+	ENDIF
+RETURN 1
+ENDIF
+
+// ON=@DelObj
+// SERV.B DelObj
+
+// ON=@AddObj
+// SERV.B AddObj
+
+ON=@Spawn
+TAG0.MORE1=<MORE1>
+
+ON=@DCLICK
+IF (<SRC.ACCOUNT.PLEVEL> < 5)
+	SRC.Logger (Typedef:T_SPAWN_CHAR, Trigger:Dclick) (Name:<NAME> UID:<UID> Location:<REGION.NAME> [<P>])
+	RETURN 1
+ELSE
+	SRC.CTAG0.SPAWN_CHAR.MORE1=<MORE1>
+	DIALOGCLOSE D_ITEMPROP1
+	DIALOG D_ITEMPROP1 9
+ENDIF
+RESET
+RETURN 1
+
+
+
+
+
+// ÇİĞ ETLERİ PİŞİRMEK İÇİN GEREKLİ EKLENTİ.
+[TYPEDEF t_meat_raw] 
+ON=@DCLICK
+IF !(<SRC.ISINPACK <UID>>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,600036,<SRC.TARG.NAME>	// Bunu (~1_val~) kullanabilmek için çantanızda veya üzerinizde olmalıdır.
+ELSE
+	TARGET
+	SRC.SYSMESSAGELOC <def.tcolor_grey>,<def.empty_cliloc2>, Pişirme yapacağınız ateşi seçiniz.
+ENDIF
+RETURN 1
+
+ON=@TARGON_ITEM
+IF (<SRC.FLAGS>&STATF_STONE|STATF_FREEZE|STATF_DEAD)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bulunduğunuz durumda kullanamazsınız.
+	RETURN 1
+ELSEIF (<SRC.ISDIFF 2,<SRC.TARG.UID>>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Ateşe uzaksınız veya görüş alanınızda değil.
+	RETURN 1
+ELSEIF (<SRC.TARG.TYPE>!=T_CAMPFIRE)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Sadece kamp ateşinde pişirme yapabilirsiniz.
+	RETURN 1
+ELSEIF (<SRC.TARG.BASEID> == I_EMBER_LIT)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu ateş sönmüş.
+	RETURN 1
+ELSEIF !(<TDATA1>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu pişebilen bir şey değil.
+	RETURN 1
+ELSEIF (<RESOURCETYPE <TDATA1>> != RES_ITEMDEF)	
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu pişebilen bir şey değil.
+	RETURN 1
+ELSEIF !(<SRC.CANMAKESKILL <TDATA1>>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Yeterli beceriye sahip değilsin. (Gereken beceri: <SERV.ITEMDEF.<TDATA1>.SKILLMAKE>)
+	RETURN 1
+ELSEIF !(<SRC.CANMAKE <TDATA1>>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Yeterli malzemeye sahip değilsin. (Gereken eşyalar: <SERV.ITEMDEF.<TDATA1>.RESMAKE>)
+	RETURN 1
+ENDIF
+SRC.MAKEITEM <TDATA1>,<R1,10>
+// SRC.FACE <SRC.TARG>
+// SRC.BOW
+RETURN 1
+
+
+
+
+
+
+
+[TYPEDEF T_CLOCK]
+ON=@click
+MESSAGE @0 <SERV.RTIME.FORMAT %H:%M:%S>
+
+
+[TYPEDEF t_campfire]
+// ON=@step
+// IF (RAND(15) == 1)
+	// SRC.FUNC_EMOTE_HARMFUL ayakları yanar
+	// SRC.DAMAGE 1,<DEF.dam_god>,<SRC>
+// ENDIF
+
+ON=@CLICK
+IF (<LINK.ISVALIDE>)
+	IF (<LINK> == <SRC>)
+		IF !(<TIMER> <= 0)
+			MESSAGE @,,1,1 (<KalanSure <TIMER>> sonra sönecek)
+		ENDIF
+	ENDIF
+	MESSAGE (Camper <LINK.NAME>)
+ENDIF
+
+ON=@DCLICK
+IF (<BASEID> == I_EMBER_LIT)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu ateş sönmüş.
+ELSE
+	TARGET 
+	SRC.SYSMESSAGELOC <def.tcolor_grey>,<def.empty_cliloc2>, Burada ne pisireceksiniz?
+ENDIF
+RETURN 1
+
+ON=@TARGON_ITEM
+IF (<SRC.FLAGS>&STATF_STONE|STATF_FREEZE|STATF_DEAD)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bulunduğunuz durumda kullanamazsınız.
+	RETURN 1
+ELSEIF (<SRC.ISDIFF 2,<UID>>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Ateşe uzaksınız veya görüş alanınızda değil.
+	RETURN 1
+ELSEIF (<BASEID> == I_EMBER_LIT)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu ateş sönmüş.
+	RETURN 1
+ELSEIF !(<SRC.TARG.TYPE> == T_MEAT_RAW)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Burada bunu pişiremezsiniz.
+	RETURN 1
+ELSEIF !(<SRC.TARG.TDATA1>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu pişebilen bir şey değil.
+	RETURN 1
+ELSEIF (<RESOURCETYPE <SRC.TARG.TDATA1>> != RES_ITEMDEF)	
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu pişebilen bir şey değil.
+	RETURN 1
+ELSEIF !(<SRC.CANMAKESKILL <SRC.TARG.TDATA1>>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Yeterli beceriye sahip değilsin. (Gereken beceri: <SERV.ITEMDEF.<SRC.TARG.TDATA1>.SKILLMAKE>)
+	RETURN 1
+ELSEIF !(<SRC.CANMAKE <SRC.TARG.TDATA1>>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Yeterli malzemeye sahip değilsin. (Gereken eşyalar: <SERV.ITEMDEF.<SRC.TARG.TDATA1>.RESMAKE>)
+	RETURN 1
+ENDIF
+SRC.MAKEITEM <SRC.TARG.TDATA1>,<R1,10>
+RETURN 1
+
+
+ON=@TARGON_CHAR
+RETURN 1
+
+ON=@TARGON_GROUND
+RETURN 1
+
+
+
+
+[EOF]

@@ -1,0 +1,578 @@
+
+[COMMENT]
+
+In order to actually mine ore, a REGIONRESOURCE needs to exist for it, and a
+REGIONTYPE needs a REGION= entry to that REGIONRESOURCE... also that same
+REGIONTYPE must be associated to the t_rock Terrain TYPEDEF.
+
+Formore information on how ore is mined, check the COMMENT section of the
+sphere_region.scp file.
+
+[DEFNAME COLOR_ORE]
+color_o_iron			0    //option: 0763
+
+color_o_copper			0641 //option: 060c
+color_o_dullcopper		060a
+color_o_dull_copper		060a
+
+color_o_bronze			06d6
+color_o_silver			03e9 // 0231
+
+color_o_gold			045e //option: 084d
+color_o_golden			045e //option: 084d
+
+color_o_shadow			0770
+color_o_agapite			0400
+
+
+color_o_verite			07d1
+color_o_mytheril		052d //or 0528
+color_o_valorite		0527 // 0515
+
+color_o_bloodrock		04c2
+color_o_blackrock		0455
+
+
+//////////
+// Ores //
+//////////
+
+[ITEMDEF 019b7]
+DEFNAME=i_ore_iron
+NAME=iron ore%s
+TYPE=t_ore
+SKILLMAKE=Mining 20.0
+TDATA1=i_ingot_iron
+WEIGHT=3.0
+// VALUE=4 // SPHERE ZATEN KENDI AYARLIYOR
+DUPELIST=019b8,019b9,019ba
+CATEGORY=Items by Professions
+SUBSECTION=Blacksmiths
+DESCRIPTION=Ore (Small Pile)
+RESDISPDNHUE=0
+
+ON=@Create
+COLOR=<SERV.ITEMDEF.<BASEID>.RESDISPDNHUE>
+
+[ITEMDEF i_ore_dull_copper]
+ID=i_ore_iron
+NAME=dullcopper ore%s
+SKILLMAKE=Mining 60.0
+TDATA1=i_ingot_dull_copper
+WEIGHT=3.0
+// VALUE=24 // SPHERE ZATEN KENDI AYARLIYOR
+RESDISPDNHUE=color_o_dullcopper
+
+ON=@Create
+COLOR=<SERV.ITEMDEF.<BASEID>.RESDISPDNHUE>
+
+
+[ITEMDEF i_ore_shadow]
+ID=i_ore_iron
+NAME=shadow ore%s
+SKILLMAKE=mining 70.0
+TDATA1=i_ingot_shadow
+WEIGHT=3.0
+RESDISPDNHUE=color_o_shadow
+
+ON=@Create
+COLOR=<SERV.ITEMDEF.<BASEID>.RESDISPDNHUE>
+
+
+
+[ITEMDEF i_ore_copper]
+ID=i_ore_iron
+NAME=copper ore%s
+SKILLMAKE=Mining 50.0
+TDATA1=i_ingot_copper
+WEIGHT=3.0
+RESDISPDNHUE=color_o_copper
+
+ON=@Create
+COLOR=<SERV.ITEMDEF.<BASEID>.RESDISPDNHUE>
+
+
+
+
+[ITEMDEF i_ore_bronze]
+ID=i_ore_iron
+NAME=bronze ore%s
+SKILLMAKE=mining 80.0
+TDATA1=i_ingot_bronze
+WEIGHT=3.0
+RESDISPDNHUE=color_o_bronze
+
+ON=@Create
+COLOR=<SERV.ITEMDEF.<BASEID>.RESDISPDNHUE>
+
+
+
+[ITEMDEF i_ore_gold]
+DEFNAME=i_ore_gold
+DEFNAME2=i_ore_golden
+ID=i_ore_iron
+NAME=golden ore%s
+SKILLMAKE=Mining 85.0
+TDATA1=i_ingot_gold
+WEIGHT=3.0
+RESDISPDNHUE=color_o_gold
+
+ON=@Create
+COLOR=<SERV.ITEMDEF.<BASEID>.RESDISPDNHUE>
+
+
+[ITEMDEF i_ore_agapite]
+ID=i_ore_iron
+NAME=agapite ore%s
+SKILLMAKE=mining 90.0
+TDATA1=i_ingot_agapite
+WEIGHT=3.0
+RESDISPDNHUE=color_o_agapite
+
+ON=@Create
+COLOR=<SERV.ITEMDEF.<BASEID>.RESDISPDNHUE>
+
+
+
+
+
+[ITEMDEF i_ore_silver]
+ID=i_ore_iron
+NAME=silver ore%s
+SKILLMAKE=mining 95.0
+TDATA1=i_ingot_silver
+WEIGHT=3.0
+RESDISPDNHUE=color_o_silver
+
+ON=@Create
+COLOR=<SERV.ITEMDEF.<BASEID>.RESDISPDNHUE>
+
+
+
+
+
+[ITEMDEF i_ore_verite]
+ID=i_ore_iron
+NAME=verite ore%s
+SKILLMAKE=mining 95.0
+TDATA1=i_ingot_verite
+WEIGHT=3.0
+RESDISPDNHUE=color_o_verite
+
+ON=@Create
+COLOR=<SERV.ITEMDEF.<BASEID>.RESDISPDNHUE>
+
+
+
+
+
+[ITEMDEF i_ore_valorite]
+ID=i_ore_iron
+NAME=valorite ore%s
+SKILLMAKE=mining 99.0
+TDATA1=i_ingot_valorite
+WEIGHT=3.0
+RESDISPDNHUE=color_o_valorite
+
+ON=@Create
+COLOR=<SERV.ITEMDEF.<BASEID>.RESDISPDNHUE>
+
+
+
+[ITEMDEF i_ore_mytheril]
+ID=i_ore_iron
+NAME=mytheril ore%s
+SKILLMAKE=mining 99.5
+TDATA1=i_ingot_mytheril
+WEIGHT=3.0
+RESDISPDNHUE=color_o_mytheril
+
+ON=@Create
+COLOR=<SERV.ITEMDEF.<BASEID>.RESDISPDNHUE>
+
+
+
+[ITEMDEF i_ore_blackrock]
+ID=i_ore_iron
+NAME=blackrock ore%s
+SKILLMAKE=mining 100.0
+TDATA1=i_ingot_blackrock
+VALUE=18
+RESDISPDNHUE=color_o_blackrock
+
+ON=@Create
+COLOR=<SERV.ITEMDEF.<BASEID>.RESDISPDNHUE>
+
+
+
+[ITEMDEF i_ore_bloodrock]
+ID=i_ore_iron
+NAME=bloodrock ore%s
+SKILLMAKE=mining 93.0
+TDATA1=i_ingot_bloodrock
+VALUE=15
+RESDISPDNHUE=color_o_bloodrock
+
+ON=@Create
+COLOR=<SERV.ITEMDEF.<BASEID>.RESDISPDNHUE>
+
+
+
+
+
+
+////////////
+// Ingots //
+////////////
+
+[ITEMDEF 01bef]
+DEFNAME=i_ingot_iron
+TYPE=t_ingot
+RESOURCES=i_ore_iron
+NAME=iron ingot%s
+SKILLMAKE=Mining 20.0
+TDATA1=20.0
+TDATA2=50.0
+WEIGHT=0.2
+DUPELIST=01bf0,01bf1,01bf2,01bf3,01bf4
+CATEGORY=Items by Professions
+SUBSECTION=Blacksmiths
+DESCRIPTION=Iron Ingot
+RESDISPDNHUE=0
+
+ON=@Create
+COLOR=<SERV.ITEMDEF.<BASEID>.RESDISPDNHUE>
+
+
+
+[ITEMDEF i_ingot_copper]
+DEFNAME=i_ingot_copper
+ID=i_ingot_iron
+TYPE=t_ingot
+NAME=copper ingot%s
+RESOURCES=i_ore_copper
+SKILLMAKE=Mining 75.0
+TDATA1=70.0
+TDATA2=100.0
+WEIGHT=0.2
+DUPELIST=01be4,01be5,01be6,01be7,01be8
+CATEGORY=Items by Professions
+SUBSECTION=Blacksmiths
+DESCRIPTION=Copper Ingot
+RESDISPDNHUE=color_o_copper
+
+ON=@Create
+COLOR=<SERV.ITEMDEF.<BASEID>.RESDISPDNHUE>
+
+
+[ITEMDEF i_ingot_gold]
+DEFNAME=i_ingot_gold
+DEFNAME2=i_ingot_golden
+ID=i_ingot_iron
+NAME=golden ingot%s
+TYPE=t_ingot
+SKILLMAKE=Mining 85.0
+TDATA1=80.0
+TDATA2=100.0
+RESOURCES=i_ore_gold
+// WEIGHT=4
+VALUE=90
+DUPELIST=01bea,01beb,01bec,01bed,01bee
+CATEGORY=Items by Professions
+SUBSECTION=Blacksmiths
+DESCRIPTION=Gold Ingot
+RESDISPDNHUE=color_o_gold
+
+ON=@Create
+COLOR=<SERV.ITEMDEF.<BASEID>.RESDISPDNHUE>
+
+
+
+[ITEMDEF i_ingot_silver]
+DEFNAME=i_ingot_silver
+NAME=silver ingot%s
+ID=i_ingot_iron
+TYPE=t_ingot
+SKILLMAKE=Mining 95.0
+TDATA1=90.0
+TDATA2=100.0
+RESOURCES=i_ore_silver
+// WEIGHT=2
+VALUE=160
+DUPELIST=01bf6,01bf7,01bf8,01bf9,01bfa
+CATEGORY=Items by Professions
+SUBSECTION=Blacksmiths
+DESCRIPTION=Silver Ingot
+RESDISPDNHUE=color_o_silver
+
+ON=@Create
+COLOR=<SERV.ITEMDEF.<BASEID>.RESDISPDNHUE>
+
+
+
+[ITEMDEF i_ingot_shadow]
+NAME=shadow ingot%s
+ID=i_ingot_iron
+SKILLMAKE=Mining 70.0
+TDATA1=60.0
+TDATA2=100.0
+RESOURCES=i_ore_shadow
+WEIGHT=3.0
+CATEGORY=Items by Professions
+SUBSECTION=Blacksmiths
+DESCRIPTION=Shadow Ingot
+RESDISPDNHUE=color_o_shadow
+
+ON=@Create
+COLOR=<SERV.ITEMDEF.<BASEID>.RESDISPDNHUE>
+
+[ITEMDEF i_ingot_agapite]
+ID=i_ingot_iron
+NAME=agapite ingot%s
+SKILLMAKE=Mining 90.0
+TDATA1=80.0
+TDATA2=100.0
+RESOURCES=i_ore_agapite
+VALUE=95
+CATEGORY=Items by Professions
+SUBSECTION=Blacksmiths
+DESCRIPTION=Agapite Ingot
+RESDISPDNHUE=color_o_agapite
+
+ON=@Create
+COLOR=<SERV.ITEMDEF.<BASEID>.RESDISPDNHUE>
+
+[ITEMDEF i_ingot_verite]
+NAME=verite ingot%s
+ID=i_ingot_iron
+RESOURCES=i_ore_verite
+SKILLMAKE=Mining 95.0
+TDATA1=90.0
+TDATA2=120.0
+VALUE=150
+CATEGORY=Items by Professions
+SUBSECTION=Blacksmiths
+DESCRIPTION=Verite Ingot
+RESDISPDNHUE=color_o_verite
+
+ON=@Create
+COLOR=<SERV.ITEMDEF.<BASEID>.RESDISPDNHUE>
+
+
+[ITEMDEF i_ingot_mytheril]
+ID=i_ingot_iron
+NAME=mytheril ingot%s
+RESOURCES=i_ore_mytheril
+SKILLMAKE=mining 99.5
+TDATA1=90.0
+TDATA2=120.0
+VALUE=230
+CATEGORY=Items by Professions
+SUBSECTION=Blacksmiths
+DESCRIPTION=Mytheril Ingot
+RESDISPDNHUE=color_o_mytheril
+
+ON=@Create
+COLOR=<SERV.ITEMDEF.<BASEID>.RESDISPDNHUE>
+
+[ITEMDEF i_ingot_blackrock]
+ID=i_ingot_iron
+NAME=blackrock ingot%s
+RESOURCES=i_ore_blackrock
+SKILLMAKE=mining 100.0
+TDATA1=90.0
+TDATA2=120.0
+VALUE=270
+CATEGORY=Items by Professions
+SUBSECTION=Blacksmiths
+DESCRIPTION=Black Rock Ingot
+RESDISPDNHUE=color_o_blackrock
+
+ON=@Create
+COLOR=<SERV.ITEMDEF.<BASEID>.RESDISPDNHUE>
+
+[ITEMDEF i_ingot_bloodrock]
+ID=i_ingot_iron
+NAME=bloodrock ingot%s
+RESOURCES=i_ore_bloodrock
+SKILLMAKE=mining 93.0
+TDATA1=90.0
+TDATA2=120.0
+VALUE=170
+CATEGORY=Items by Professions
+SUBSECTION=Blacksmiths
+DESCRIPTION=Blood Rock Ingot
+RESDISPDNHUE=color_o_bloodrock
+
+ON=@Create
+COLOR=<SERV.ITEMDEF.<BASEID>.RESDISPDNHUE>
+
+[ITEMDEF i_ingot_valorite]
+NAME=valorite ingot%s
+ID=i_ingot_iron
+RESOURCES=i_ore_valorite
+SKILLMAKE=mining 99.0
+TDATA1=90.0
+TDATA2=120.0
+VALUE=200
+CATEGORY=Items by Professions
+SUBSECTION=Blacksmiths
+DESCRIPTION=Valorite Ingot
+RESDISPDNHUE=color_o_valorite
+
+ON=@Create
+COLOR=<SERV.ITEMDEF.<BASEID>.RESDISPDNHUE>
+
+[ITEMDEF i_ingot_bronze]
+NAME=bronze ingot%s
+ID=i_ingot_iron
+RESOURCES=i_ore_bronze
+SKILLMAKE=mining 80.0
+TDATA1=70.0
+TDATA2=100.0
+VALUE=70
+CATEGORY=Items by Professions
+SUBSECTION=Blacksmiths
+DESCRIPTION=Bronze Ingot
+RESDISPDNHUE=color_o_bronze
+
+ON=@Create
+COLOR=<SERV.ITEMDEF.<BASEID>.RESDISPDNHUE>
+
+
+[ITEMDEF i_ingot_dull_copper]
+ID=i_ingot_iron
+NAME=dullcopper ingot%s
+RESOURCES=i_ore_dull_copper
+SKILLMAKE=Mining 65.0
+TDATA1=40.0
+TDATA2=80.0
+VALUE=45
+CATEGORY=Items by Professions
+SUBSECTION=Blacksmiths
+DESCRIPTION=Dull Copper Ingot
+RESDISPDNHUE=color_o_dullcopper
+
+ON=@Create
+COLOR=<SERV.ITEMDEF.<BASEID>.RESDISPDNHUE>
+
+
+
+
+// Ores
+
+[ITEMDEF 019b8]
+//iron ore medium pile
+DUPEITEM=019B7
+CATEGORY=Items by Professions
+SUBSECTION=Blacksmiths
+DESCRIPTION=Ore (Medium Pile)
+
+[ITEMDEF 019b9]
+//iron ore large pile
+DUPEITEM=019B7
+CATEGORY=Items by Professions
+SUBSECTION=Blacksmiths
+DESCRIPTION=Ore (Large Pile)
+
+[ITEMDEF 019ba]
+//iron ore pile leftovers
+DUPEITEM=019B7
+CATEGORY=Items by Professions
+SUBSECTION=Blacksmiths
+DESCRIPTION=Ore
+
+// Ingots
+
+[ITEMDEF 01be9]
+// GOLD INGOT FOR ART
+
+[ITEMDEF 01bf5]
+// SİLVER INGOT FOR ART
+
+[ITEMDEF 01be3]
+// COPPER INGOT FOR ART
+
+[ITEMDEF 01bf0]
+//Pile of 3 iron ingots facing SE
+DUPEITEM=01bef
+
+[ITEMDEF 01bf1]
+//Pile of 5 iron ingots facing SE
+DUPEITEM=01bef
+
+[ITEMDEF 01bf2]
+//Iron ingot facing SW
+DUPEITEM=01bef
+
+[ITEMDEF 01bf3]
+//Pile of 3 iron ingots facing SW
+DUPEITEM=01bef
+
+[ITEMDEF 01bf4]
+//Pile of 5 iron ingots facing SW
+DUPEITEM=01bef
+
+[ITEMDEF 01be4]
+//Pile of 3 copper ingots facing SE
+DUPEITEM=01be3
+
+[ITEMDEF 01be5]
+//Pile of 5 copper ingots facing SE
+DUPEITEM=01be3
+
+[ITEMDEF 01be6]
+//copper ingot facing SE
+DUPEITEM=01be3
+
+[ITEMDEF 01be7]
+//Pile of 3 copper ingots facing SW
+DUPEITEM=01be3
+
+[ITEMDEF 01be8]
+//Pile of 5 copper ingots facing SW
+DUPEITEM=01be3
+
+[ITEMDEF 01bea]
+//Pile of 3 gold ingots facing SE
+DUPEITEM=01be9
+
+[ITEMDEF 01beb]
+//Pile of 5 gold ingots facing SE
+DUPEITEM=01be9
+
+[ITEMDEF 01bec]
+//gold ingot facing SW
+DUPEITEM=01be9
+
+[ITEMDEF 01bed]
+//Pile of 3 gold ingots facing SW
+DUPEITEM=01be9
+
+[ITEMDEF 01bee]
+//Pile of 5 gold ingots facing SW
+DUPEITEM=01be9
+
+[ITEMDEF 01bf6]
+//Pile of 3 silver ingots facing SE
+DUPEITEM=01bf5
+
+[ITEMDEF 01bf7]
+//Pile of 5 silver ingots facing SE
+DUPEITEM=01bf5
+
+[ITEMDEF 01bf8]
+//silver ingot facing SW
+DUPEITEM=01bf5
+
+[ITEMDEF 01bf9]
+//Pile of 3 silver ingots facing SW
+DUPEITEM=01bf5
+
+[ITEMDEF 01bfa]
+//Pile of 5 silver ingots facing SW
+DUPEITEM=01bf5
+
+
+
+[EOF]

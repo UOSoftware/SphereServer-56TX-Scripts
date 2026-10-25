@@ -1,0 +1,797 @@
+
+
+
+[ITEMDEF 0278f]
+DEFNAME=i_hood_ninja
+NAME=cloth ninja hood
+TYPE=t_clothing
+DYE=1
+FLIP=1
+// ARMOR=10
+ARMOR=0
+VALUE=61
+WEIGHT=10.1
+RESOURCES=10 i_cloth
+SKILLMAKE=Tailoring 90.0,t_sewing_kit
+// CanUse=can_u_human|can_u_elf
+ReqStr=10
+DUPELIST=027da
+CATEGORY=Clothes
+SUBSECTION=Cloth Armor
+DESCRIPTION=Cloth Ninja Hood
+
+ON=@Create
+HITPOINTS={36 48}
+
+[ITEMDEF 027da]
+//cloth ninja hood
+DUPEITEM=0278f
+
+
+[ITEMDEF 02651]
+//appears like cyclone on paperdoll
+DEFNAME=i_pants_ninja_3d
+TYPE=t_clothing
+DYE=1
+FLIP=1
+// ARMOR=3
+ARMOR=0
+VALUE=33
+WEIGHT=8.1
+RESOURCES=8 i_cloth
+SKILLMAKE=Tailoring 27.2,t_sewing_kit
+// CanUse=can_u_none
+ReqStr=10
+DUPELIST=02652
+CATEGORY=Clothes
+SUBSECTION=Pants & Skirts
+DESCRIPTION=Ninja Pants (3d client only)
+
+ON=@Create
+HITPOINTS={36 48}
+
+[ITEMDEF 02652]
+//ninja pants
+DUPEITEM=02651
+
+
+
+
+[ITEMDEF 02667]
+//appears like a glass sword on paperdoll
+DEFNAME=i_shirt_ninja_3d
+TYPE=t_clothing
+DYE=1
+FLIP=1
+// ARMOR=3
+ARMOR=0
+VALUE=32
+WEIGHT=8.1
+RESOURCES=8 i_cloth
+SKILLMAKE=Tailoring 22.7,t_sewing_kit
+// CanUse=can_u_none
+ReqStr=10
+DUPELIST=02668
+CATEGORY=Clothes
+SUBSECTION=Shirts & Robes
+DESCRIPTION=Ninja (3d client only)
+
+ON=@Create
+HITPOINTS={36 48}
+
+[ITEMDEF 02668]
+//ninja shirt
+DUPEITEM=02667
+
+
+
+[ITEMDEF 02fbd]
+//FIXME: Bad tile graphic
+//FIXME: Looks good on paperdoll
+DEFNAME=i_elven_male_shirt3
+NAME=elven shirt
+TYPE=t_clothing
+DYE=1
+FLIP=1
+// ARMOR=4
+ARMOR=0
+VALUE=34
+WEIGHT=8.1
+RESOURCES=8 i_cloth
+SKILLMAKE=Tailoring 27.2,t_sewing_kit
+// CanUse=can_u_elf
+ReqStr=10
+DUPELIST=02fbe
+CATEGORY=Clothes
+SUBSECTION=Shirts & Robes
+DESCRIPTION=Elven Male Shirt (bad tile)
+
+ON=@Create
+HITPOINTS={36 48}
+
+[ITEMDEF 02fbe]
+//i_elven_male_shirt3
+DUPEITEM=02fbd
+
+
+
+
+
+[ITEMDEF 03176]
+DEFNAME=i_elven_shirt
+TYPE=t_clothing
+NAME=elven shirt
+DYE=1
+FLIP=1
+// ARMOR=4
+ARMOR=0
+VALUE=33
+WEIGHT=8.1
+RESOURCES=8 i_cloth
+SKILLMAKE=Tailoring 27.2,t_sewing_kit
+// CanUse=can_u_elf
+ReqStr=10
+TEVENTS=t_equipitem
+DUPELIST=03177
+CATEGORY=Clothes
+SUBSECTION=Shirts & Robes
+DESCRIPTION=Elven Shirt
+
+ON=@Create
+HITPOINTS={36 48}
+ATTR=ATTR_NEWBIE
+
+[ITEMDEF 03177]
+//Elven shirt
+DUPEITEM=03176
+
+
+
+
+[ITEMDEF 03179]
+DEFNAME=i_elven_pants
+NAME=elven pants
+TYPE=t_clothing
+DYE=1
+FLIP=1
+// ARMOR=3
+ARMOR=0
+VALUE=33
+WEIGHT=8.1
+RESOURCES=8 i_cloth
+SKILLMAKE=Tailoring 27.2,t_sewing_kit
+// CanUse=can_u_elf
+ReqStr=10
+TEVENTS=t_equipitem
+DUPELIST=02fc3
+CATEGORY=Clothes
+SUBSECTION=Pants & Skirts
+DESCRIPTION=Elven Pants
+
+ON=@Create
+HITPOINTS={36 48}
+ATTR=ATTR_NEWBIE
+
+[ITEMDEF 02fc3]
+//elven pants
+DUPEITEM=03179
+
+
+
+
+[ITEMDEF 027a1]
+DEFNAME=i_jinbaori
+NAME=jin-baori
+TYPE=t_clothing
+DYE=1
+FLIP=1
+// ARMOR=3
+ARMOR=0
+VALUE=22
+WEIGHT=6.1
+RESOURCES=6 i_cloth
+SKILLMAKE=Tailoring 6.8,t_sewing_kit
+// CanUse=can_u_human|can_u_elf
+ReqStr=10
+DUPELIST=027ec
+CATEGORY=Clothes
+SUBSECTION=Shirts & Robes
+DESCRIPTION=Jin-Baori
+
+ON=@Create
+HITPOINTS={36 48}
+
+[ITEMDEF 027ec]
+// jin-baori
+DUPEITEM=027a1
+
+
+
+[ITEMDEF 027a0]
+DEFNAME=i_obi
+NAME=obi
+TYPE=t_clothing
+DYE=1
+FLIP=1
+// ARMOR=3
+ARMOR=0
+VALUE=22
+WEIGHT=6.1
+RESOURCES=6 i_cloth
+SKILLMAKE=Tailoring 6.8,t_sewing_kit
+// CanUse=can_u_human|can_u_elf
+ReqStr=10
+DUPELIST=027eb
+CATEGORY=Clothes
+SUBSECTION=Pants & Skirts
+DESCRIPTION=Obi
+
+ON=@Create
+HITPOINTS={36 48}
+
+[ITEMDEF 027eb]
+// obi
+DUPEITEM=027a0
+
+
+
+
+
+[ITEMDEF 0279c]
+DEFNAME=i_hakama_shita
+NAME=hakama-shita
+TYPE=t_clothing
+DYE=1
+FLIP=1
+// ARMOR=7
+ARMOR=0
+VALUE=80
+WEIGHT=24.1
+RESOURCES=24 i_cloth
+SKILLMAKE=Tailoring 9.0,t_sewing_kit
+// CanUse=can_u_human|can_u_elf
+ReqStr=10
+DUPELIST=027e7
+CATEGORY=Clothes
+SUBSECTION=Shirts & Robes
+DESCRIPTION=Hakama-Shita
+
+ON=@Create
+HITPOINTS={36 48}
+
+[ITEMDEF 027e7]
+//hakama-shita
+DUPEITEM=0279c
+
+
+
+
+[ITEMDEF 0317a]
+DEFNAME=i_elven_boots
+TYPE=t_clothing
+NAME=elven boots
+DYE=1
+FLIP=1
+// ARMOR=7
+ARMOR=0
+VALUE=57
+WEIGHT=8.1
+RESOURCES=8 i_hides_cut
+SKILLMAKE=Tailoring 36.3,t_sewing_kit
+// CanUse=can_u_elf
+ReqStr=10
+TEVENTS=t_equipitem
+DUPELIST=02fc4
+CATEGORY=Clothes
+SUBSECTION=Footwear
+DESCRIPTION=Elven Boots
+
+ON=@Create
+HITPOINTS={36 48}
+ATTR=ATTR_NEWBIE
+
+[ITEMDEF 02fc4]
+//elven boots
+DUPEITEM=0317a
+
+
+
+
+
+[ITEMDEF 03175]
+DEFNAME=i_elven_shirt_female
+TYPE=t_clothing
+NAME=female elven shirt
+DYE=1
+FLIP=1
+// ARMOR=4
+ARMOR=0
+VALUE=33
+WEIGHT=8.1
+RESOURCES=8 i_cloth
+SKILLMAKE=Tailoring 27.2,t_sewing_kit
+// CanUse=can_u_elf|can_u_female
+ReqStr=10
+TEVENTS=t_equipitem
+DUPELIST=03178
+CATEGORY=Clothes
+SUBSECTION=Shirts & Robes
+DESCRIPTION=Elven Female Shirt
+
+ON=@Create
+HITPOINTS={36 48}
+
+[ITEMDEF 03178]
+//Elven female shirt
+DUPEITEM=03175
+
+
+
+
+
+
+
+[ITEMDEF 02fba]
+DEFNAME=i_elven_male_robe2
+NAME=elven robe
+TYPE=t_clothing
+DYE=1
+FLIP=1
+// ARMOR=12
+ARMOR=0
+VALUE=80
+WEIGHT=16.1
+RESOURCES=16 i_cloth
+SKILLMAKE=Tailoring 59.0,t_sewing_kit
+// CanUse=can_u_elf
+ReqStr=10
+TEVENTS=t_equipitem
+DUPELIST=03174
+CATEGORY=Clothes
+SUBSECTION=Shirts & Robes
+DESCRIPTION=Elven Male Robe 2
+
+ON=@Create
+HITPOINTS={36 48}
+
+[ITEMDEF 03174]
+//elven female robe
+DUPEITEM=02fba
+
+
+
+
+[ITEMDEF 02799]
+DEFNAME=i_kamishimo
+NAME=kamishimo
+TYPE=t_clothing
+DYE=1
+FLIP=1
+// ARMOR=10
+ARMOR=0
+VALUE=144
+WEIGHT=24.2
+RESOURCES=24 i_cloth
+SKILLMAKE=Tailoring 89.0,t_sewing_kit
+// CanUse=can_u_human|can_u_elf
+ReqStr=10
+DUPELIST=027e4
+CATEGORY=Clothes
+SUBSECTION=Shirts & Robes
+DESCRIPTION=Kamishimo
+
+ON=@Create
+HITPOINTS={36 48}
+
+[ITEMDEF 027e4]
+//kamishimo
+DUPEITEM=02799
+
+
+[ITEMDEF 026a3]
+//appears like nothing on paperdoll
+DEFNAME=i_hood_ninja_2
+NAME=ninja hood
+TYPE=t_clothing
+FLIP=1
+// ARMOR=7
+ARMOR=0
+VALUE=83
+WEIGHT=14.1
+RESOURCES=14 i_cloth
+SKILLMAKE=Tailoring 90.0,t_sewing_kit
+// CanUse=can_u_human|can_u_elf|can_u_none
+ReqStr=10
+DUPELIST=026a4
+CATEGORY=Clothes
+SUBSECTION=Masks
+DESCRIPTION=Ninja Hood (unwearable)
+
+ON=@Create
+HITPOINTS={36 48}
+
+[ITEMDEF 026a4]
+//ninja hood
+DUPEITEM=026a3
+
+[ITEMDEF 02797]
+DEFNAME=i_boots_tabi
+NAME=ninja tabi
+TYPE=t_clothing
+FLIP=1
+// ARMOR=13
+ARMOR=0
+VALUE=63
+WEIGHT=10.1
+RESOURCES=10 i_hides_cut
+SKILLMAKE=Tailoring 25.0,t_sewing_kit
+// CanUse=can_u_human|can_u_elf
+ReqStr=10
+DUPELIST=027e2
+CATEGORY=Clothes
+SUBSECTION=Footwear
+DESCRIPTION=Ninja Tabi
+
+ON=@Create
+HITPOINTS={36 48}
+
+[ITEMDEF 027e2]
+//ninja tabi
+DUPEITEM=02797
+
+
+
+
+
+[ITEMDEF 02798]
+DEFNAME=i_hat_kasa
+NAME=kasa
+TYPE=t_clothing
+FLIP=1
+// ARMOR=3
+ARMOR=0
+VALUE=10
+WEIGHT=3.0
+RESOURCES=12 i_cloth
+SKILLMAKE=Tailoring 60.0,t_sewing_kit
+// CanUse=can_u_human|can_u_elf
+ReqStr=10
+DUPELIST=027e3
+CATEGORY=Clothes
+SUBSECTION=Hats
+DESCRIPTION=Kasa
+
+ON=@Create
+HITPOINTS={36 48}
+
+[ITEMDEF 027e3]
+//kasa
+DUPEITEM=02798
+
+
+
+[ITEMDEF 0279b]
+DEFNAME=i_hakama_tattsuke
+NAME=tattsuke-hakama
+TYPE=t_clothing
+DYE=1
+FLIP=1
+// ARMOR=5
+ARMOR=0
+VALUE=84
+WEIGHT=20.1
+RESOURCES=20 i_cloth
+SKILLMAKE=Tailoring 36.3,t_sewing_kit
+// CanUse=can_u_human|can_u_elf
+ReqStr=10
+DUPELIST=027e6
+CATEGORY=Clothes
+SUBSECTION=Shirts & Robes
+DESCRIPTION=Tattsuke Hakama
+
+ON=@Create
+HITPOINTS={36 48}
+
+[ITEMDEF 027e6]
+//tattsuke hakama
+DUPEITEM=0279b
+
+
+
+
+
+[ITEMDEF 0279a]
+DEFNAME=i_hakama
+NAME=hakama
+TYPE=t_clothing
+DYE=1
+FLIP=1
+// ARMOR=5
+ARMOR=0
+VALUE=84
+WEIGHT=20.1
+RESOURCES=20 i_cloth
+SKILLMAKE=Tailoring 36.3,t_sewing_kit
+// CanUse=can_u_human|can_u_elf
+ReqStr=10
+DUPELIST=027e5
+CATEGORY=Clothes
+SUBSECTION=Pants & Skirts
+DESCRIPTION=Hakama
+
+ON=@Create
+HITPOINTS={36 48}
+
+[ITEMDEF 027e5]
+//hakama
+DUPEITEM=0279a
+
+
+
+
+
+[ITEMDEF 02794]
+DEFNAME=i_jacket_ninja
+NAME=cloth ninja jacket
+TYPE=t_clothing
+DYE=1
+FLIP=1
+// ARMOR=10
+ARMOR=0
+VALUE=59
+WEIGHT=10.1
+RESOURCES=10 i_cloth
+SKILLMAKE=Tailoring 85.0,t_sewing_kit
+// CanUse=can_u_human|can_u_elf
+ReqStr=10
+DUPELIST=027df
+CATEGORY=Clothes
+SUBSECTION=Cloth Armor
+DESCRIPTION=Cloth Ninja Jacket
+
+ON=@Create
+HITPOINTS={36 48}
+
+[ITEMDEF 027df]
+//cloth ninja jacket
+DUPEITEM=02794
+
+
+
+
+
+
+[ITEMDEF 02796]
+DEFNAME=i_shoes_tabi
+NAME=waraji and tabi
+TYPE=t_clothing
+DYE=1
+FLIP=1
+// ARMOR=6
+ARMOR=0
+VALUE=35
+WEIGHT=6.1
+RESOURCES=6 i_hides_cut
+SKILLMAKE=Tailoring 18.1,t_sewing_kit,Armslore 38.0
+// CanUse=can_u_human|can_u_elf
+ReqStr=10
+DUPELIST=027e1
+CATEGORY=Footwear
+SUBSECTION=
+DESCRIPTION=Boots
+
+ON=@Create
+HITPOINTS={36 48}
+
+[ITEMDEF 027e1]
+//tabi
+DUPEITEM=02796
+
+
+
+
+
+[ITEMDEF 02681]
+//appears like gargish talwar on paperdoll
+DEFNAME=i_kimono_female1
+NAME=female kimono
+TYPE=t_clothing
+DYE=1
+FLIP=1
+// ARMOR=5
+ARMOR=0
+VALUE=45
+WEIGHT=12.1
+RESOURCES=12 i_cloth
+SKILLMAKE=Tailoring 13.6,t_sewing_kit
+// CanUse=can_u_human|can_u_elf|can_u_female|can_u_none
+ReqStr=10
+DUPELIST=02682
+CATEGORY=Clothes
+SUBSECTION=Shirts & Robes
+DESCRIPTION=Female Kimono 1 (unwearable)
+
+ON=@Create
+HITPOINTS={36 48}
+
+[ITEMDEF 02682]
+//Female Kimono 1 (unwearable)
+DUPEITEM=02681
+
+
+
+
+
+[ITEMDEF 02673]
+//appears like nothing on paperdoll
+DEFNAME=i_haramakido_3d
+TYPE=t_clothing
+DYE=1
+FLIP=1
+// ARMOR=3
+ARMOR=0
+VALUE=32
+WEIGHT=8.1
+RESOURCES=8 i_cloth
+SKILLMAKE=Tailoring 22.7,t_sewing_kit
+// CanUse=can_u_none
+ReqStr=10
+DUPELIST=02674
+CATEGORY=Clothes
+SUBSECTION=Shirts & Robes
+DESCRIPTION=Haramaki-do (3d client only)
+
+ON=@Create
+HITPOINTS={36 48}
+
+[ITEMDEF 02674]
+//haramaki-do
+DUPEITEM=02673
+
+
+
+
+
+
+[ITEMDEF 02671]
+//appears like dual pointed spear on paperdoll
+DEFNAME=i_domaru_3d
+TYPE=t_clothing
+DYE=1
+FLIP=1
+// ARMOR=3
+ARMOR=0
+VALUE=32
+WEIGHT=8.1
+RESOURCES=8 i_cloth
+SKILLMAKE=Tailoring 22.7,t_sewing_kit
+// CanUse=can_u_none
+ReqStr=10
+DUPELIST=02672
+CATEGORY=Clothes
+SUBSECTION=Shirts & Robes
+DESCRIPTION=Do-maru (3d client only)
+
+ON=@Create
+HITPOINTS={36 48}
+
+[ITEMDEF 02672]
+//do-maru
+DUPEITEM=02671
+
+
+
+[ITEMDEF 0264f]
+//not visible on paperdoll
+DEFNAME=i_kobakama_3d
+TYPE=t_clothing
+DYE=1
+FLIP=1
+// ARMOR=3
+ARMOR=0
+VALUE=33
+WEIGHT=8.1
+RESOURCES=8 i_cloth
+SKILLMAKE=Tailoring 27.2,t_sewing_kit
+// CanUse=can_u_none
+ReqStr=10
+DUPELIST=02650
+CATEGORY=Clothes
+SUBSECTION=Pants & Skirts
+DESCRIPTION=Kobakama (3d client only)
+
+ON=@Create
+HITPOINTS={36 48}
+
+[ITEMDEF 02650]
+//kobakama
+DUPEITEM=0264f
+
+
+
+
+[ITEMDEF 0264d]
+//appears as sword on paperdoll
+DEFNAME=i_haidate_3d
+TYPE=t_clothing
+DYE=1
+FLIP=1
+// ARMOR=3
+ARMOR=0
+VALUE=33
+WEIGHT=8.1
+RESOURCES=8 i_cloth
+SKILLMAKE=Tailoring 27.2,t_sewing_kit
+// CanUse=can_u_none
+ReqStr=10
+DUPELIST=0264e
+CATEGORY=Clothes
+SUBSECTION=Pants & Skirts
+DESCRIPTION=Haidate (3d client only)
+
+ON=@Create
+HITPOINTS={36 48}
+
+[ITEMDEF 0264e]
+//haidate
+DUPEITEM=0264d
+
+
+
+
+[ITEMDEF 02782]
+DEFNAME=i_kimono_male
+NAME=kimono
+TYPE=t_clothing
+DYE=1
+FLIP=1
+// ARMOR=5
+ARMOR=0
+VALUE=46
+WEIGHT=12.2
+RESOURCES=12 i_cloth
+SKILLMAKE=Tailoring 13.6,t_sewing_kit
+ReqStr=10
+DUPELIST=027cd
+CATEGORY=Clothes
+SUBSECTION=Shirts & Robes
+DESCRIPTION=Male Kimono
+
+ON=@Create
+HITPOINTS={36 48}
+
+[ITEMDEF 027cd]
+//kimono
+DUPEITEM=02782
+
+
+
+
+
+[ITEMDEF 02783]
+DEFNAME=i_kimono_female2
+NAME=female kimono
+TYPE=t_clothing
+DYE=1
+FLIP=1
+// ARMOR=5
+ARMOR=0
+VALUE=46
+WEIGHT=12.2
+RESOURCES=12 i_cloth
+SKILLMAKE=Tailoring 13.6,t_sewing_kit
+// CanUse=can_u_female
+ReqStr=10
+DUPELIST=027ce
+CATEGORY=Clothes
+SUBSECTION=Shirts & Robes
+DESCRIPTION=Female Kimono 2
+
+ON=@Create
+HITPOINTS={36 48}
+
+[ITEMDEF 027ce]
+// female kimono
+DUPEITEM=02783
+
+[eof]
