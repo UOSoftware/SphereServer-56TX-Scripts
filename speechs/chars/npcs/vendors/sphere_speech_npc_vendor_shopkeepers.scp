@@ -83,8 +83,8 @@ ENDIF
 // Usage: NEWGOLD amount, pile(1: the new gold is stacked on the existing pile in the pack; 0: stacked in a new pile)
 
 SRC.NEWGOLD <DLOCAL.ESYADEGER>,1
-SRC.SYSMESSAGELOC <def.tcolor_green>,<def.empty_cliloc2>, Satış bedeli: <Bolukayir <DLOCAL.ESYADEGER>> gp
-SRC.Logger <ARGO.NAME> isimli esyayi <Bolukayir <DLOCAL.ESYADEGER>> gpe satti. 
+SRC.SYSMESSAGELOC <def.tcolor_green>,<def.empty_cliloc2>, Satış bedeli: <NumberFormat <DLOCAL.ESYADEGER>> gp
+SRC.Logger <ARGO.NAME> isimli esyayi <NumberFormat <DLOCAL.ESYADEGER>> gpe satti. 
 TARGETF Func_Generic_Npc_Vendor_Shopkeeper_Sell <REF1>
 SOUND 032
 ARGO.REMOVE
@@ -128,7 +128,7 @@ IF (<LDB.CONNECTED>)
 		
 			TILEPICHUE +30 <EVAL (<DLOCAL.Y>)> <SERV.ITEMDEF.<LOCAL.Item>.ID> <SERV.ITEMDEF.<LOCAL.Item>.RESDISPDNHUE>
 			DCROPPEDTEXT +70 <EVAL (<DLOCAL.Y>)> 80 25 <def.tcolor_grey> <SERV.ITEMDEF.<LOCAL.Item>.NAME>
-			DCROPPEDTEXT +200 <EVAL (<DLOCAL.Y>)> 150 25 <def.tcolor_grey> <BOLUKAYIR <SERV.ITEMDEF.<LOCAL.Item>.VALUE>> gp
+			DCROPPEDTEXT +200 <EVAL (<DLOCAL.Y>)> 150 25 <def.tcolor_grey> <NumberFormat <SERV.ITEMDEF.<LOCAL.Item>.VALUE>> gp
 			LOCAL.Y += 25
 		ENDFOR
 	ENDIF

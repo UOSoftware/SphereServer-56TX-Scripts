@@ -99,6 +99,23 @@ ON=@Click
 message a greater reagent crystal
 return 1
 
+[ITEMDEF i_magic_reg120]
+ID=i_crystal_green_big 
+Value=8000
+WEIGHT=4.0
+NAME=reg crystal (120)
+TYPE=T_REAGENT_CRYSTAL
+
+ON=@Create
+TAG0.REAGENT_AMOUNT 120
+TAG0.REAGENT_TYPE=MAGERY
+COLOR=0
+ATTR=ATTR_NEWBIE
+
+ON=@Click
+message a greater reagent crystal
+return 1
+
 
 
 [TYPEDEF T_REAGENT_CRYSTAL]
@@ -123,7 +140,8 @@ ATTR=ATTR_NEWBIE
 LOCAL.AMOUNT = <DTAG0.REAGENT_AMOUNT>
 LOCAL.REAGENTS <DEF.RESOURCE_<TAG0.REAGENT_TYPE>_REAGENTS>
 
-IF !(<SRC.ISINPACK <UID>>)
+// IF !(<SRC.ISINPACK <UID>>)
+IF !(1 == 1)
 	SRC.SYSMESSAGELOC <def.tcolor_red>,600036,<NAME>	// Bunu (~1_val~) kullanabilmek için çantanızda veya üzerinizde olmalıdır.
 	RETURN 1
 

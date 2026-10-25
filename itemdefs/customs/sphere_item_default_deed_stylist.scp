@@ -151,7 +151,7 @@ RESIZE 0,0,450,<eval 70+(<ARGV>*25)>,Karakter Stili
 FOR <ARGV>
 	ARGS=<DEF.HairStylist.Menu.<dSTRARG <LOCAL.Entries>>>
 	BUTTON 30 <eval 52+((<LOCAL._FOR>-1)*25)> 0845 0846 1 0 <dSTRARG <LOCAL.Entries>>
-	DTEXT 50 <eval 50+((<LOCAL._FOR>-1)*25)> <def.tcolor_text> <ARGV[0]> (<BolukAyir <ARGV[1]>> gold coins)
+	DTEXT 50 <eval 50+((<LOCAL._FOR>-1)*25)> <def.tcolor_text> <ARGV[0]> (<NumberFormat <ARGV[1]>> gold coins)
 	LOCAL.Entries=<STREAT <LOCAL.Entries>>
 ENDFOR
 

@@ -14,7 +14,7 @@ PAGE 0
 RESIZE 0,0,490,390,Guild Stone Color
 
 DORIGIN 20 50
-DCROPPEDTEXT +0 +0 250 25 <def.tcolor_text> Guild puanınız: <BolukAyir <SRC.dTAG0.POINTS.GUILD>>
+DCROPPEDTEXT +0 +0 250 25 <def.tcolor_text> Guild puanınız: <NumberFormat <SRC.dTAG0.POINTS.GUILD>>
 
 
 // pastel rares

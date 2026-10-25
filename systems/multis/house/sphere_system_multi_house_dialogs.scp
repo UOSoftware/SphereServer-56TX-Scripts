@@ -72,7 +72,7 @@ DHTMLGUMP +0 +40 220 20 0 0 <QVAL (<tag0.demolition>)?<def.bfont_lred>Bu ev düz
 DHTMLGUMP +0 +60 320 20 0 0 <def.bfont_lred>Evin çürümesine <KalanSure <LINK.TIMER>> kaldı.
 
 IF (<TAG0.PRICE>)
-    DHTMLGUMP +0 +80 220 20 0 0 <def.bfont_lgreen>Bu ev satışta: <def.bfont_yellow><def.bfont_hs_text2><bolukayir <dtag0.price>> gp
+    DHTMLGUMP +0 +80 220 20 0 0 <def.bfont_lgreen>Bu ev satışta: <def.bfont_yellow><def.bfont_hs_text2><NumberFormat <dtag0.price>> gp
 ENDIF
 
 DHTMLGUMP +0 +100 360 40 0 0 <def.bfont_lgreen>Sahibi, ortağı veya dostu eve girdiğinde, kapıları açtığında, tabelaya tıkladığında ev otomatik olarak yenilenir.
@@ -82,7 +82,7 @@ IF !(<isblank <TAG0.LASTTRANSFER>>)
 ENDIF
 
 DHTMLGUMP +0 +160 220 20 0 0 <def.bfont_white>Kurulum tarihi: <tag0.created_at>
-DHTMLGUMP +0 +180 220 20 0 0 <def.bfont_white>Fiyatı: <bolukayir <value>> gp
+DHTMLGUMP +0 +180 220 20 0 0 <def.bfont_white>Fiyatı: <NumberFormat <value>> gp
 DHTMLGUMP +0 +200 220 20 0 0 <def.bfont_white>Ziyaretçi sayısı: <eval <link.tag0.VISITS> + <tag0.VISITS>>
 
 

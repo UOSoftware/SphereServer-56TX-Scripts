@@ -49,9 +49,9 @@ IF (<MORE> == 2)
 		SRC.TAG0.REWARDCOINS +=<SRC.TARG.AMOUNT>
 		SRC.TARG.REMOVE
 		
-		SRC.SAYUA 0481,0,0,0 * <BolukAyir <SRC.TARG.AMOUNT>> bilet stoklar *
+		SRC.SAYUA 0481,0,0,0 * <NumberFormat <SRC.TARG.AMOUNT>> bilet stoklar *
 		
-		SRC.SYSMESSAGELOC <def.tcolor_green>,<def.empty_cliloc2>, Stok : +<BolukAyir <SRC.TARG.AMOUNT>>
+		SRC.SYSMESSAGELOC <def.tcolor_green>,<def.empty_cliloc2>, Stok : +<NumberFormat <SRC.TARG.AMOUNT>>
 		MORE 2
 		TARGET
 		SRC.SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, Lutfen stoklamak istediğiniz biletleri seçin.
@@ -155,8 +155,8 @@ IF (<MORE> == 1)
 		RETURN 1
 	ELSE
 		SRC.TAG.REWARDCOINS +=<DLOCAL.REWARDGAIN>
-		SRC.SAYUA 0520,0,0,0 * <SRC.TARG.NAME> kullanarak <BolukAyir <DLOCAL.REWARDGAIN>> bilet alir * 
-		SRC.LOGGER <src.targ.amount> <SRC.TARG.NAME> [<src.targ.uid>] isimli esya <BolukAyir <DLOCAL.REWARD>> reward coin kazandirdi.
+		SRC.SAYUA 0520,0,0,0 * <SRC.TARG.NAME> kullanarak <NumberFormat <DLOCAL.REWARDGAIN>> bilet alir * 
+		SRC.LOGGER <src.targ.amount> <SRC.TARG.NAME> [<src.targ.uid>] isimli esya <NumberFormat <DLOCAL.REWARD>> reward coin kazandirdi.
 		SRC.TARG.REMOVE
 		
 		IF (<DISTANCE> < 4)

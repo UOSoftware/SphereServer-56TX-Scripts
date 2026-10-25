@@ -104,7 +104,7 @@ ENDIF
 On=@Click
 // ATTR=ATTR_DECAY
 REF1=<MORE2>
-MESSAGE cek karsiligi: <QVAL <DMORE1>?(<Bolukayir <dmore1>> gp):yok>
+MESSAGE cek karsiligi: <QVAL <DMORE1>?(<NumberFormat <dmore1>> gp):yok>
 IF (<REF1.ISVALIDE>)
 	MESSAGE [<REF1.NAME>]
 ENDIF
@@ -185,8 +185,8 @@ IF (<SRC.TARG.NPC> == 5)
 	
 	REF1=<MORE2> // YAZAN
 	IF (<MORE1> > 0)
-		SRC.SYSMESSAGELOC <def.tcolor_grey>,<def.empty_cliloc2>, Çek miktarı (<BolukAyir <DMORE1>> gp) bankanıza aktarılmıştır.
-		SRC.Logger CEK AKTARDI: <UID> [<BolukAyir <dMORE1>> gp] <QVAL (<REF1.ISVALIDE>)?YAZAN:<REF1.NAME> [<REF1>]:> SAHIBI:<TOPOBJ.NAME> (<TOPOBJ>)
+		SRC.SYSMESSAGELOC <def.tcolor_grey>,<def.empty_cliloc2>, Çek miktarı (<NumberFormat <DMORE1>> gp) bankanıza aktarılmıştır.
+		SRC.Logger CEK AKTARDI: <UID> [<NumberFormat <dMORE1>> gp] <QVAL (<REF1.ISVALIDE>)?YAZAN:<REF1.NAME> [<REF1>]:> SAHIBI:<TOPOBJ.NAME> (<TOPOBJ>)
 		
 		IF (<SERV.FeatureTOL>&02)
 			SRC.VIRTUALGOLD +=<DMORE1>

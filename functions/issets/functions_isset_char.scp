@@ -169,7 +169,7 @@ RETURN <DLOCAL.X>
 
 
 [FUNCTION NoGoldMsg]
-RETURN Bu işlem için <BolukAyir <DARGS>> gpye ihtiyacınız var. (Gerekli gold: <BolukAyir <EVAL <DARGS>-<GOLD>>>)
+RETURN Bu işlem için <NumberFormat <DARGS>> gpye ihtiyacınız var. (Gerekli gold: <NumberFormat <EVAL <DARGS>-<GOLD>>>)
 
 
 [FUNCTION IsNomove]

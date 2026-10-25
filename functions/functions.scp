@@ -2170,7 +2170,7 @@ FORCONT <FINDLAYER.29> 9999
 	LOCAL.BANKWEIGHT +=<WEIGHT>
 ENDFOR
 SYSMESSAGELOC <def.tcolor_grey>,<def.empty_cliloc2>, Banka ağırlığı : <FVAL <DLOCAL.BANKWEIGHT>>/<QVAL (<SERV.BANKMAXWEIGHT> == -1)?Sinirsiz:<SERV.BANKMAXWEIGHT>>
-SYSMESSAGELOC <def.tcolor_grey>,<def.empty_cliloc2>, Eşya sayısı : <BolukAyir <DLOCAL.BANKITEMS>>/<QVAL (<SERV.BankMaxItems> == -1)?Sinirsiz:<SERV.BankMaxItems>>
+SYSMESSAGELOC <def.tcolor_grey>,<def.empty_cliloc2>, Eşya sayısı : <NumberFormat <DLOCAL.BANKITEMS>>/<QVAL (<SERV.BankMaxItems> == -1)?Sinirsiz:<SERV.BankMaxItems>>
 // SYSMESSAGELOC <def.tcolor_yellow>,<def.empty_cliloc2>, Banka hesabınıza ulaşmak için 'hesap' yazınız.
 
 BANKSELF

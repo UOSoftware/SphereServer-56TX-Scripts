@@ -73,7 +73,7 @@ IF !(<TAG0.GUILD_PAY>)
 ELSE
 	BUTTON 210 +177 0D2 0D3 1 0 5
 ENDIF
-DTEXT 230 +177 <def.tcolor_text> <BolukAyir <DLOCAL.CREATEGOLD>> gp 
+DTEXT 230 +177 <def.tcolor_text> <NumberFormat <DLOCAL.CREATEGOLD>> gp 
 
 
 DTEXT +0 +210 <def.tcolor_white> Evleriniz;

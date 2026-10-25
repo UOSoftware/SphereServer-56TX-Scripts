@@ -44,7 +44,7 @@ ON=@Create
 ATTR=attr_identified
 
 ON=@click
-MESSAGE @0 <bolukayir <amount>> <name>
+MESSAGE @0 <NumberFormat <amount>> <name>
 return 1
 
 ON=@DCLICK

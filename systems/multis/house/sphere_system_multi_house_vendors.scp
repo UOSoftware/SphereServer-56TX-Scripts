@@ -350,7 +350,7 @@ ELSEIF (<EVAL STRLEN(<DLOCAL.PRICE>)> > 9)
 ENDIF
 FACE=<SRC>
 SRC.TARGETF func_player_vendor_item_sell_target <uid>,<DLOCAL.PRICE>
-SRC.SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, Hangi eşyayı <Bolukayir <DLOCAL.PRICE>> gp karşılığında satılığa çıkartmak istiyorsun?
+SRC.SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, Hangi eşyayı <NumberFormat <DLOCAL.PRICE>> gp karşılığında satılığa çıkartmak istiyorsun?
 RETURN 1
 
 
@@ -476,12 +476,12 @@ NEW.CONT=<REF2.FINDLAYER.29>
 
 // SATIN ALAN == SRC
 SRC.GOLD -=<DLOCAL.PRICE>
-SERV.LOG VendorBuy: [Item: <UID>/<NAME>] [Vendor: <REF1>/<REF1.NAME>] [Tutar: <BolukAyir <DLOCAL.PRICE>> gp] [Sahibi: <REF2>/<REF2.NAME>]
-SRC.SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, <NAME> isimli eşyayı <BolukAyir <DLOCAL.PRICE>> gp karşılığında satın aldınız.
+SERV.LOG VendorBuy: [Item: <UID>/<NAME>] [Vendor: <REF1>/<REF1.NAME>] [Tutar: <NumberFormat <DLOCAL.PRICE>> gp] [Sahibi: <REF2>/<REF2.NAME>]
+SRC.SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, <NAME> isimli eşyayı <NumberFormat <DLOCAL.PRICE>> gp karşılığında satın aldınız.
 
 // SATAN == REF2
-REF2.Notice <REF1.NAME> vendorunuzdan <NAME> eşyasını satın aldı. Ucreti (<BolukAyir <dNEW.MORE1>> gp) bankanıza çek olarak gönderildi.
-SERV.LOG VendorSell: [Item: <UID>/<NAME>] [Vendor: <REF1>/<REF1.NAME>] [Tutar: <BolukAyir <dNEW.MORE1>> gp]
+REF2.Notice <REF1.NAME> vendorunuzdan <NAME> eşyasını satın aldı. Ucreti (<NumberFormat <dNEW.MORE1>> gp) bankanıza çek olarak gönderildi.
+SERV.LOG VendorSell: [Item: <UID>/<NAME>] [Vendor: <REF1>/<REF1.NAME>] [Tutar: <NumberFormat <dNEW.MORE1>> gp]
 
 // ITEM
 IF (<ISCONT> && <RESCOUNT>)

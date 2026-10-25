@@ -33,8 +33,8 @@ IF (<SRC.FLAGS>&STATF_CRIMINAL)
 ENDIF
 SRC.SYSMESSAGELOC <def.tcolor_grey>,<def.empty_cliloc2>, Kills: <src.kills>
 SRC.SYSMESSAGELOC <def.tcolor_grey>,<def.empty_cliloc2>, Deaths: <src.Deaths>
-SRC.SYSMESSAGELOC <def.tcolor_grey>,<def.empty_cliloc2>, Fame: <bolukayir <src.fame>>
-SRC.SYSMESSAGELOC <def.tcolor_grey>,<def.empty_cliloc2>, Karma: <bolukayir <src.karma>>
+SRC.SYSMESSAGELOC <def.tcolor_grey>,<def.empty_cliloc2>, Fame: <NumberFormat <src.fame>>
+SRC.SYSMESSAGELOC <def.tcolor_grey>,<def.empty_cliloc2>, Karma: <NumberFormat <src.karma>>
 
 CONSUME
 
