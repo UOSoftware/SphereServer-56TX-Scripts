@@ -1,0 +1,70 @@
+
+[PLEVEL 1]
+GROSTER     
+GC
+
+[FUNCTION GROSTER]
+IF (!<DEF0.GUILDCONFIG_USEGUILDBUTTON>)
+    RETURN 1
+ENDIF
+IF (!<GUILD>)
+    RETURN 1
+ENDIF
+IF ((<GUILD.MEMBERFROMUID.<UID>.PRIV>==<DEF0.STONEPRIV_MEMBER>)||(<GUILD.MASTERUID>==<UID>))
+    TRYSRC <UID> GUILD.SDIALOG D_GUILD_MAIN,0
+ENDIF
+
+
+[FUNCTION GC]
+IF !(<GUILD>)
+	SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Herhangi bir guild mensubu değilsin.
+	RETURN 1
+ELSEIF (STRMATCH('','<ARGS>'))
+	SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Boş mesaj gönderemezsin.
+	RETURN 1
+ELSEIF (STRMATCH('<TAG0.GUILD_CHAT>','<ARGS>'))
+	SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Yazı tekrarı yapamazsın.
+	RETURN 1
+ENDIF
+REF1=<GUILD>
+
+IF (<REF1>)
+TAG0.GUILD_CHAT <ARGS>
+	REF1.ALLMEMBERS -1,SYSMESSAGE @0481,1,1 Guild:[<REF1.NAME>-<NAME>] <ARGS>
+ENDIF
+
+
+
+[PLEVEL 1]
+GC
+GON
+GONLINE
+GUILDONLINE
+
+[FUNCTION GON]
+FUNC_GUILD_ONLINE
+
+[FUNCTION GONLINE]
+FUNC_GUILD_ONLINE
+
+[FUNCTION GUILDONLINE]
+FUNC_GUILD_ONLINE
+
+[FUNCTION FUNC_GUILD_ONLINE]
+IF !(<GUILD>)
+	SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bir guild üyesi değilsiniz.
+ELSE
+	REF1=<GUILD>
+	CLEARCTAGS GuildOnlineList
+	DIALOGCLOSE D_GUILD_ONLINE_LISTS
+	CTAG.Dialog.GuildOnlineList.Page=1
+	CTAG.Dialog.GuildOnlineList.MaxPage=<eval (((<CTAG0.Dialog.GuildOnlineList.Clients>-1)/15)+1)>
+	FOR 0 <EVAL <REF1.MEMBER.COUNT>-1>
+		REF99=<REF1.MEMBER.<DLOCAL._FOR>.UID>
+		CTAG0.Dialog.GuildOnlineList.Clients ++
+		CTAG0.Dialog.GuildOnlineList.C<dSRC.CTAG0.Dialog.GuildOnlineList.Clients>=<REF99>
+	ENDFOR
+	REF1.DIALOG D_GUILD_ONLINE_LISTS
+ENDIF
+
+[EOF]

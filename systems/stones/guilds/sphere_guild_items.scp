@@ -1,0 +1,135 @@
+VERSION=0.56T
+
+
+[ITEMDEF I_CLOAK_GUILD]
+DEFNAME=I_CLOAK_GUILD
+ID=i_cape
+ARMOR=5
+NAME=Guild cloak
+VALUE=220
+WEIGHT=1.0
+RESOURCES=
+SKILLMAKE=
+TEVENTS=t_equipitem
+RESDISPDNHUE=0455
+//TAG0.GuildPoint=1000
+TAG0.GuildPoint=0
+TAG0.GuildAlign=
+
+ON=@Create
+COLOR=<SERV.ITEMDEF.<BASEID>.RESDISPDNHUE>
+ATTR=attr_magic
+HITPOINTS={128 154}
+
+ON=@EquipTest
+IF !(<SRC.ISGM>)
+	IF !(<SRC.GUILD>)
+		SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu eşyayı sadece guild üyeleri kullanabilir.
+		fUnequip
+		RETURN 1
+	ENDIF
+ENDIF
+
+
+[ITEMDEF I_GUILD_RESIGN_MEMORY]
+DEFNAME=I_GUILD_RESIGN_MEMORY
+ID=I_MEMORY
+TYPE=T_EQ_SCRIPT
+VALUE=0
+WEIGHT=0
+LAYER=30
+NAME=Guild Resign Timer Memory
+
+ON=@CREATE
+ATTR ATTR_INVIS|ATTR_NEWBIE|ATTR_DECAY
+TIMER=1
+MORE1={60 120}
+
+On=@Equip
+SRC.NOTICE 1-2 dakika içinde guildden tamamen ilişkiniz kesilecektir. DİKKAT: Bu süre içinde Guardzoneye girerseniz ayrılma süreci iptal olacaktır.
+SRC.GC 1-2 dakika içinde guild üyeliğinden ayrılmış olacağım.
+SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, 1-2 dakika içinde guildden tamamen ilişkiniz kesilecektir. DİKKAT: Bu süre içinde Guardzoneye girerseniz ayrılma süreci iptal olacaktır.
+SRC.SAYUA 38,6,0,0 Guildden ayrılıyor...
+MORE1={60 120}
+TIMER 1
+SRC.DIALOGCLOSEALL
+
+ON=@UNEQUIP
+
+SRC.DIALOGCLOSEALL
+
+ON=@TIMER
+IF (<TOPOBJ.ISONLINE>)
+	IF (<TOPOBJ.REGION.GUARDED>)
+		TOPOBJ.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Guildden ayrılma sürecinde Guardzone içine girdiğiniz için ayrılma süreci iptal edildi.
+		//REMOVE
+		//RETURN 1
+	ENDIF
+ENDIF
+
+IF !(<MORE1>)
+	REF1=<TOPOBJ.GUILD> 
+	IF (<REF1>)
+		TOPOBJ.f_guildsys_resigncharfromguild <REF1>,<TOPOBJ>
+	ENDIF
+	REMOVE
+ELSEIF (<MORE1> < 11)
+	TOPOBJ.SAYU *<DMORE1>. sn sonra guildden ayrılıyor*
+ENDIF
+
+MORE1 --
+TIMER 1
+RETURN 1
+
+
+
+
+[ITEMDEF i_deed_guildstone]
+DEFNAME=i_deed_guildstone
+ID=i_deed
+NAME=Deed to Guildstone
+VALUE=5000000
+TYPE=T_SCRIPT
+CATEGORY=Provisions - Deeds
+SUBSECTION=Guild and Town Stones
+DESCRIPTION=Guildstone
+
+ON=@Create
+// MORE=i_guildstone
+ATTR=ATTR_NEWBIE
+COLOR=055
+
+ON=@DCLICK
+
+IF (<SERV.GUILDS> >= <DEF.SERVER_MAX_GUILDS>)
+	SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Şu an için sunucuda en fazla <DEF.SERVER_MAX_GUILDS> guild kurulumuna izin verilmektedir. (Kurulu guild: <SERV.GUILDS>/<DEF.SERVER_MAX_GUILDS>)
+	RETURN 1
+	
+ELSEIF (<SRC.GUILD>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Sizin zaten bir guildiniz var.
+	RETURN 1
+	
+ELSEIF (<SRC.HOUSES> <= 0)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bir eviniz yok.
+	RETURN 1
+ENDIF
+IF (<SRC.HOUSES> > 0)
+	FOR 0 <EVAL <SRC.HOUSES>-1>
+		REF1=<SRC.HOUSE.<DLOCAL._FOR>>
+		IF (<REF1.ISVALIDE>)
+			IF ((<REF1.BASEID> == M_TOWER) || (<REF1.BASEID> == M_CASTLE) || (<REF1.BASEID> == M_SMALL_STONE_KEEP))
+				IF (<REF1.OWNER> != <SRC>)
+					SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Evlerinizden herhangi birinin sahibi değilsiniz.
+					RETURN 1
+				ENDIF	
+			ENDIF
+		ENDIF
+	ENDFOR
+ENDIF
+DIALOGCLOSE D_GUILD_CREATE
+DIALOG D_GUILD_CREATE
+
+
+
+
+[EOF]

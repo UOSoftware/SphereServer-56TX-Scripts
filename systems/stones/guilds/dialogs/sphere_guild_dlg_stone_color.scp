@@ -1,0 +1,91 @@
+VERSION=0.56T
+
+
+[dialog d_Guild_StoneColor]
+<DEF.dsp>
+IF (<TYPE>!=T_STONE_GUILD)
+	RETURN 1
+ELIF (<MASTERUID>!=<SRC.UID>)&&(!<SRC.ISGM>)
+	RETURN 1
+ENDIF
+
+PAGE 0
+
+RESIZE 0,0,490,390,Guild Stone Color
+
+DORIGIN 20 50
+DCROPPEDTEXT +0 +0 250 25 <def.tcolor_text> Guild puanınız: <BolukAyir <SRC.dTAG0.POINTS.GUILD>>
+
+
+// pastel rares
+LOCAL.Colors 0 0, 50 0455, 50 096c , 50 080f , 50 04c2 , 50 084b ,50 084f ,50 052d ,50 05a5 ,50 0450 ,50 0543 , 50 066d, 50 0845,50 0493, 50 07d4, 50 0846,  50 084a , 50 06af 1 04dc , 50 0840, 50 0901 , 50 04c3 , 50 05e3 , 50 051e , 50 08ad, 50 0961 , 50 075f, 50 059e, 50 08a1, 50 04df
+
+FOR 1 <ARRAYCOUNT <LOCAL.Colors>>
+	LOCAL.X=<EVAL ((<LOCAL._FOR>-1)%8)*55>
+	LOCAL.Y=<EVAL ((<LOCAL._FOR>-1)/8)*65>
+	
+	LOCAL.ID <STREAT <ARRAY <LOCAL.Colors>,<DLOCAL._FOR>>>
+	LOCAL.Point <STRARG <ARRAY <LOCAL.Colors>,<DLOCAL._FOR>>>
+	
+	RESIZEPIC <EVAL 30+<LOCAL.X>> <EVAL 70+<LOCAL.Y>> 9200 50 50 
+	
+	TILEPICHUE <EVAL 27+<LOCAL.X>> <EVAL 80+<LOCAL.Y>> <SERV.ITEMDEF.i_dye_tub.ID> <dLOCAL.ID>
+	
+	DHTMLGUMP <EVAL 35+<LOCAL.X>> <EVAL 70+<LOCAL.Y>> 100 25 0 0 <DLOCAL.Point>
+	BUTTON <EVAL 47+<LOCAL.X>> <EVAL 110+<LOCAL.Y>> 0845 0846 1 0 <dlocal._for>
+ENDFOR
+
+BUTTON +0 +300 0faf 0fb0 1 0 0
+DHTMLGUMP +30 +300 120 25 0 0 <def.bfont_black>Ana menüye dön
+
+[dialog d_Guild_StoneColor Button]
+ON=0
+SDIALOG D_GUILD_MASTER
+
+ON=1,99
+// pastel rares
+LOCAL.Colors 0 0, 50 0455, 50 096c , 50 080f , 50 04c2 , 50 084b ,50 084f ,50 052d ,50 05a5 ,50 0450 ,50 0543 , 50 066d, 50 0845,50 0493, 50 07d4, 50 0846,  50 084a , 50 06af 1 04dc , 50 0840, 50 0901 , 50 04c3 , 50 05e3 , 50 051e , 50 08ad, 50 0961 , 50 075f, 50 059e, 50 08a1, 50 04df
+
+LOCAL.ID <STREAT <ARRAY <LOCAL.Colors>,<argn>>>
+LOCAL.Point <STRARG <ARRAY <LOCAL.Colors>,<argn>>>
+
+REF1=<UID>
+
+// Baska guild bu rengi kullaniyor mu kontrolunu yap
+FORINSTANCES I_GUILDSTONE
+	IF (<REF1> != <UID> && <DCOLOR> == <DLOCAL.ID>)
+		SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu renk başka bir guild tarafından kullanılıyor. (<name> guildi)
+		RETURN 1
+	ENDIF
+ENDFOR
+
+IF (<DLOCAL.POINT>)
+	IF (<SRC.dTAG0.POINTS.GUILD> < <dLOCAL.Point>)
+		SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bunu kullanabilmek için en az <DLOCAL.POINT> Guild puanına ihtiyacınız var.
+		RETURN 1
+	ENDIF
+ENDIF
+
+IF (<DLOCAL.POINT>)
+	SRC.TAG0.POINTS.GUILD -=<DLOCAL.POINT>
+ENDIF
+
+// Guild cloaklari boya
+FORINSTANCES I_CLOAK_GUILD
+	IF (<REF1> == <ownedby>)
+		COLOR=<LOCAL.ID>
+	ENDIF
+ENDFOR
+
+COLOR = <LOCAL.ID>
+UPDATE
+SRC.SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, Guildstone rengi değişti.
+
+DIALOGCLOSE d_Guild_StoneColor
+DIALOG d_Guild_StoneColor,0
+
+
+[EOF]
+
+
+  

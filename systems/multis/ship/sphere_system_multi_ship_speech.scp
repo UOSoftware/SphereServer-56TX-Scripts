@@ -1,0 +1,292 @@
+
+
+// gemiye giren oyuncu speechi
+[SPEECH spk_ship_cmds_player]
+
+
+
+// geminin kendi speechi
+[SPEECH spk_ship_cmds]
+ON=Stop
+IF !((<MORE1> == <SRC>) || (<SRC.ISGM>))
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu gemiyi kontrol edecek yetkiye sahip degilsin.
+	RETURN 1
+ENDIF
+SHIPSTOP
+
+
+
+ON=Turn Left
+IF (<SRC.FLAGS>&STATF_DEAD)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,600027 // "Ölü durumdayken bu işlemi yapamazsınız."
+	RETURN 1
+ELSEIF !((<MORE1> == <SRC>) || (<SRC.ISGM>))
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu gemiyi kontrol edecek yetkiye sahip degilsin.
+	RETURN 1
+ENDIF
+LOCAL.HITS = <EVAL (30*<SRC.STR>)/100> 
+IF (<SRC.HITS> < <DLOCAL.HITS>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Gemiyi kontrol etmek için Hitsiniz %30 dolu olması gerekiyor.
+	RETURN 1
+ENDIF
+SHIPTURNLEFT
+
+
+
+ON=Turn Right
+IF (<SRC.FLAGS>&STATF_DEAD)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,600027 // "Ölü durumdayken bu işlemi yapamazsınız."
+	RETURN 1
+ELSEIF !((<MORE1> == <SRC>) || (<SRC.ISGM>))
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu gemiyi kontrol edecek yetkiye sahip degilsin.
+	RETURN 1
+ENDIF
+LOCAL.HITS = <EVAL (30*<SRC.STR>)/100> 
+IF (<SRC.HITS> < <DLOCAL.HITS>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Gemiyi kontrol etmek için Hitsiniz %30 dolu olması gerekiyor.
+	RETURN 1
+ENDIF
+SHIPTURNRIGHT
+
+
+
+ON=Left
+IF (<SRC.FLAGS>&STATF_DEAD)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,600027 // "Ölü durumdayken bu işlemi yapamazsınız."
+	RETURN 1
+ELSEIF !((<MORE1> == <SRC>) || (<SRC.ISGM>))
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu gemiyi kontrol edecek yetkiye sahip degilsin.
+	RETURN 1
+ENDIF
+LOCAL.HITS = <EVAL (30*<SRC.STR>)/100> 
+IF (<SRC.HITS> < <DLOCAL.HITS>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Gemiyi kontrol etmek için Hitsiniz %30 dolu olması gerekiyor.
+	RETURN 1
+ENDIF
+SHIPDRIFTLEFT
+
+
+
+ON=Right
+IF (<SRC.FLAGS>&STATF_DEAD)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,600027 // "Ölü durumdayken bu işlemi yapamazsınız."
+	RETURN 1
+ELSEIF !((<MORE1> == <SRC>) || (<SRC.ISGM>))
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu gemiyi kontrol edecek yetkiye sahip degilsin.
+	RETURN 1
+ENDIF
+LOCAL.HITS = <EVAL (30*<SRC.STR>)/100> 
+IF (<SRC.HITS> < <DLOCAL.HITS>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Gemiyi kontrol etmek için Hitsiniz %30 dolu olması gerekiyor.
+	RETURN 1
+ENDIF
+SHIPDRIFTRIGHT
+
+
+
+ON=Back
+ON=Backward
+IF (<SRC.FLAGS>&STATF_DEAD)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,600027 // "Ölü durumdayken bu işlemi yapamazsınız."
+	RETURN 1
+ELSEIF !((<MORE1> == <SRC>) || (<SRC.ISGM>))
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu gemiyi kontrol edecek yetkiye sahip degilsin.
+	RETURN 1
+ENDIF
+LOCAL.HITS = <EVAL (30*<SRC.STR>)/100> 
+IF (<SRC.HITS> < <DLOCAL.HITS>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Gemiyi kontrol etmek için Hitsiniz %30 dolu olması gerekiyor.
+	RETURN 1
+ENDIF
+SHIPBACK
+
+
+
+ON=Forward
+IF (<SRC.FLAGS>&STATF_DEAD)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,600027 // "Ölü durumdayken bu işlemi yapamazsınız."
+	RETURN 1
+ELSEIF !((<MORE1> == <SRC>) || (<SRC.ISGM>))
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu gemiyi kontrol edecek yetkiye sahip degilsin.
+	RETURN 1
+ENDIF
+LOCAL.HITS = <EVAL (30*<SRC.STR>)/100> 
+IF (<SRC.HITS> < <DLOCAL.HITS>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Gemiyi kontrol etmek için Hitsiniz %30 dolu olması gerekiyor.
+	RETURN 1
+ENDIF
+SHIPFORE
+
+
+
+ON=Forward left
+IF (<SRC.FLAGS>&STATF_DEAD)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,600027 // "Ölü durumdayken bu işlemi yapamazsınız."
+	RETURN 1
+ELSEIF !((<MORE1> == <SRC>) || (<SRC.ISGM>))
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu gemiyi kontrol edecek yetkiye sahip degilsin.
+	RETURN 1
+ENDIF
+LOCAL.HITS = <EVAL (30*<SRC.STR>)/100> 
+IF (<SRC.HITS> < <DLOCAL.HITS>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Gemiyi kontrol etmek için Hitsiniz %30 dolu olması gerekiyor.
+	RETURN 1
+ENDIF
+SHIPFORELEFT
+
+
+
+ON=forward right
+IF (<SRC.FLAGS>&STATF_DEAD)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,600027 // "Ölü durumdayken bu işlemi yapamazsınız."
+	RETURN 1
+ELSEIF !((<MORE1> == <SRC>) || (<SRC.ISGM>))
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu gemiyi kontrol edecek yetkiye sahip degilsin.
+	RETURN 1
+ENDIF
+LOCAL.HITS = <EVAL (30*<SRC.STR>)/100> 
+IF (<SRC.HITS> < <DLOCAL.HITS>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Gemiyi kontrol etmek için Hitsiniz %30 dolu olması gerekiyor.
+	RETURN 1
+ENDIF
+SHIPFORERIGHT
+
+
+
+ON=backward left
+ON=back left
+IF (<SRC.FLAGS>&STATF_DEAD)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,600027 // "Ölü durumdayken bu işlemi yapamazsınız."
+	RETURN 1
+ELSEIF !((<MORE1> == <SRC>) || (<SRC.ISGM>))
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu gemiyi kontrol edecek yetkiye sahip degilsin.
+	RETURN 1
+ENDIF
+LOCAL.HITS = <EVAL (30*<SRC.STR>)/100> 
+IF (<SRC.HITS> < <DLOCAL.HITS>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Gemiyi kontrol etmek için Hitsiniz %30 dolu olması gerekiyor.
+	RETURN 1
+ENDIF
+SHIPBACKLEFT
+
+
+
+ON=backward right
+ON=back right
+IF (<SRC.FLAGS>&STATF_DEAD)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,600027 // "Ölü durumdayken bu işlemi yapamazsınız."
+	RETURN 1
+ELSEIF !((<MORE1> == <SRC>) || (<SRC.ISGM>))
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu gemiyi kontrol edecek yetkiye sahip degilsin.
+	RETURN 1
+ENDIF
+LOCAL.HITS = <EVAL (30*<SRC.STR>)/100> 
+IF (<SRC.HITS> < <DLOCAL.HITS>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Gemiyi kontrol etmek için Hitsiniz %30 dolu olması gerekiyor.
+	RETURN 1
+ENDIF
+SHIPBACKRIGHT
+
+
+
+ON=Raise Anchor
+IF (<SRC.FLAGS>&STATF_DEAD)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,600027 // "Ölü durumdayken bu işlemi yapamazsınız."
+	RETURN 1
+ELSEIF !((<MORE1> == <SRC>) || (<SRC.ISGM>))
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu gemiyi kontrol edecek yetkiye sahip degilsin.
+	RETURN 1
+ENDIF
+LOCAL.HITS = <EVAL (30*<SRC.STR>)/100> 
+IF (<SRC.HITS> < <DLOCAL.HITS>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Gemiyi kontrol etmek için Hitsiniz %30 dolu olması gerekiyor.
+	RETURN 1
+ENDIF
+SHIPANCHORRAISE
+
+
+
+ON=Drop Anchor
+IF (<SRC.FLAGS>&STATF_DEAD)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,600027 // "Ölü durumdayken bu işlemi yapamazsınız."
+	RETURN 1
+ELSEIF !((<MORE1> == <SRC>) || (<SRC.ISGM>))
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu gemiyi kontrol edecek yetkiye sahip degilsin.
+	RETURN 1
+ENDIF
+LOCAL.HITS = <EVAL (30*<SRC.STR>)/100> 
+IF (<SRC.HITS> < <DLOCAL.HITS>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Gemiyi kontrol etmek için Hitsiniz %30 dolu olması gerekiyor.
+	RETURN 1
+ENDIF
+SHIPANCHORDROP
+
+
+
+ON=Turn around
+IF (<SRC.FLAGS>&STATF_DEAD)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,600027 // "Ölü durumdayken bu işlemi yapamazsınız."
+	RETURN 1
+ELSEIF !((<MORE1> == <SRC>) || (<SRC.ISGM>))
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu gemiyi kontrol edecek yetkiye sahip degilsin.
+	RETURN 1
+ENDIF
+LOCAL.HITS = <EVAL (30*<SRC.STR>)/100> 
+IF (<SRC.HITS> < <DLOCAL.HITS>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Gemiyi kontrol etmek için Hitsiniz %30 dolu olması gerekiyor.
+	RETURN 1
+ENDIF
+SHIPTURN
+
+
+
+ON=Up
+IF (<SRC.FLAGS>&STATF_DEAD)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,600027 // "Ölü durumdayken bu işlemi yapamazsınız."
+	RETURN 1
+ELSEIF !((<MORE1> == <SRC>) || (<SRC.ISGM>))
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu gemiyi kontrol edecek yetkiye sahip degilsin.
+	RETURN 1
+ENDIF
+LOCAL.HITS = <EVAL (30*<SRC.STR>)/100> 
+IF (<SRC.HITS> < <DLOCAL.HITS>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Gemiyi kontrol etmek için Hitsiniz %30 dolu olması gerekiyor.
+	RETURN 1
+ENDIF
+SHIPUP
+
+
+
+ON=Down
+IF (<SRC.FLAGS>&STATF_DEAD)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,600027 // "Ölü durumdayken bu işlemi yapamazsınız."
+	RETURN 1
+ELSEIF !((<MORE1> == <SRC>) || (<SRC.ISGM>))
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu gemiyi kontrol edecek yetkiye sahip degilsin.
+	RETURN 1
+ENDIF
+LOCAL.HITS = <EVAL (30*<SRC.STR>)/100> 
+IF (<SRC.HITS> < <DLOCAL.HITS>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Gemiyi kontrol etmek için Hitsiniz %30 dolu olması gerekiyor.
+	RETURN 1
+ENDIF
+SHIPDOWN
+
+
+
+ON=Land
+IF (<SRC.FLAGS>&STATF_DEAD)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,600027 // "Ölü durumdayken bu işlemi yapamazsınız."
+	RETURN 1
+ELSEIF !((<MORE1> == <SRC>) || (<SRC.ISGM>))
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu gemiyi kontrol edecek yetkiye sahip degilsin.
+	RETURN 1
+ENDIF
+LOCAL.HITS = <EVAL (30*<SRC.STR>)/100> 
+IF (<SRC.HITS> < <DLOCAL.HITS>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Gemiyi kontrol etmek için Hitsiniz %30 dolu olması gerekiyor.
+	RETURN 1
+ENDIF
+SHIPLAND
+	
+[eof]

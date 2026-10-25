@@ -1,0 +1,27 @@
+
+[DIALOG D_TOWN_REGISGN]
+<DEF.DSP>
+IF (<TYPE> != T_STONE_TOWN)
+	RETURN 1
+ENDIF
+RESIZE 0,0,190,150,<NAME>
+DORIGIN 20 50
+
+DHTMLGUMP +0 +0 150 25 1 0 Adı: <name>
+DHTMLGUMP +0 +27 150 25 1 0 Üye sayısı: <member.count>
+
+BUTTON +0 +60 4006 4005 1 0 1
+DTEXT +30 +60 <def.tcolor_text> Katıl
+
+[DIALOG D_TOWN_REGISGN BUTTON]
+ON=1
+IF (<SRC.MEMORYFINDTYPE.MEMORY_GUILD>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Guild üyesiyken factiona giremezsiniz.
+	RETURN 1
+ENDIF
+F_TOWNSYS_ADDCHARTOTOWN <UID>,<SRC.UID>,1
+
+
+
+[eof]
+  

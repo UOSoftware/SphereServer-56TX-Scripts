@@ -1,0 +1,158 @@
+	
+[dialog d_Town_Main]
+<def.dsp>
+IF (<TYPE>!=T_STONE_TOWN)
+	RETURN 1
+ELIF (<MEMBERFROMUID.<SRC.UID>.UID>!=<SRC.UID>)&&(!<SRC.ISGM>)
+	RETURN 1
+ENDIF
+	LOCAL.CHARPRIV=<QVAL <SRC.ISGM> ? <DEF0.STONEPRIV_MASTER>:<MEMBERFROMUID.<SRC.UID>.PRIV>>
+IF (<LOCAL.CHARPRIV>!=<DEF0.STONEPRIV_MEMBER>)&&(<LOCAL.CHARPRIV>!=<DEF0.STONEPRIV_MASTER>)
+	RETURN 1
+ENDIF
+
+RESIZE 0,0,240,300,<NAME>
+
+DORIGIN 20 50
+
+DHTMLGUMP +0 +0 200 25 1 0 Adı: <name>
+DHTMLGUMP +0 +27 200 25 1 0 Üye sayısı: <member.count>
+IF (<SERV.AREA(<TAG0.CITYDEF>)>)
+	DHTMLGUMP +0 +53 200 25 1 0 Şehir: <SERV.AREA(<TAG0.CITYDEF>).NAME>
+ENDIF
+REF1=<MASTER>
+IF (<REF1.ISVALID>)
+	DHTMLGUMP +0 +80 200 25 1 0 Master: <REF1.NAME>
+ELSE
+	DHTMLGUMP +0 +80 200 25 1 0 Master: Yok
+ENDIF
+
+DORIGIN 20 160
+IF (<DEF0.TOWNSCONFIG_ALLOW_CHANGEABBR>)
+	DHTMLGUMP 275 50 470 20 0 0 Display Town Abbreviation: <ABBREV>
+	DHTMLGUMP 275 70 90 20 0 0 Currently: <AbbreviationToggle>
+	BUTTON 240 50 4005 4007 1 0 2
+ENDIF
+
+BUTTON +0 +0 0FA9 0FA8 1 0 3
+DTEXT +31 +0 1000 Üye listesi
+
+BUTTON +0 +20 0FAC 0FAB 1 0 6
+DTEXT +31 +20 1000 Faction tüzüğü
+
+BUTTON +0 +40 0FAC 0FAB 1 0 8
+DTEXT +31 +40 1000 Savaş durumu
+
+// BUTTON +0 +60 0FAC 0FAB 1 0 9
+// LOCAL.SHIELD_ID = <DEF.TOWNSCONFIG_ALIGNSHIELD_<ALIGN>>
+// DTEXT +31 +60 1000 <SERV.ITEMDEF.<LOCAL.SHIELD_ID>.NAME>
+// TILEPICHUE +100 +60 <SERV.ITEMDEF.<LOCAL.SHIELD_ID>.ID> <SERV.ITEMDEF.<LOCAL.SHIELD_ID>.RESDISPDNHUE>
+
+BUTTON +0 +100 0FA3 0FA2 1 0 7
+DTEXT +31 +100 <QVAL (<SRC.CTAG0.Faction.IsResign>)?<def.tcolor_red> Eminmisiniz?:<def.tcolor_text> Factiondan ayrıl>
+
+// IF (<SRC.ISGM>)||(<MASTERUID>==<SRC.UID>)
+  // BUTTON 20 310 4005 4007 1 0 9
+  // DHTMLGUMP 55 310 240 30 0 0 Access townmaster functions.
+// ELSE
+  // BUTTON 20 310 4020 4020 0 0 0
+  // DHTMLGUMP 55 310 240 30 0 0 Reserved for townmaster.
+// ENDIF
+
+[dialog d_Town_Main Button]
+ON=0
+SRC.CTAG.Faction.IsResign=
+
+// Uye listesi
+ON=3
+SDIALOG D_TOWN_CHARLIST,0,<DEF0.TOWNSDLG_LISTTYPE_ROSTER>
+
+// faction tüzüğü
+ON=6
+SDIALOG d_Town_ViewCharter,0,<uid>
+
+
+// factiondan ayrıl
+ON=7
+IF !(<SRC.CTAG0.Faction.IsResign>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Faction ayrılmak istediğinizden emin misiniz?
+	SRC.CTAG.Faction.IsResign=1
+	dialogclose d_Town_Main
+	dialog d_Town_Main,0,<uid>
+	RETURN 1
+ELSE
+	SRC.CTAG.Faction.IsResign=
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Faction ayrıldınız.
+	RESIGN
+	SAYU * Ayrılan üye: <src.name> *
+ENDIF
+	
+
+
+// Savaş durumu
+ON=8
+SDIALOG D_TOWN_WARFARESTATUS,3,<UID>
+
+
+ON=9
+REF1=<SRC.TAG0.FACTION_SHIELD>
+
+IF (<REF1>) && (<REF1.TYPE> == T_SHIELD)
+	REF1.REMOVE
+	SRC.CLEARTAGS FACTION_SHIELD
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Kalkanı factiona geri verdiniz. Factiondan kalkan alma hakkınız açılmıştır.
+
+ELSE
+
+	LOCAL.SHIELD_ID = <DEF.TOWNSCONFIG_ALIGNSHIELD_<ALIGN>>
+	LOCAL.ALIGN_ID = <DEF.TOWNSCONFIG_ALIGN_<ALIGN>>
+	IF !(<SRC.TAG0.FACTION_SHIELD.<LOCAL.ALIGN_ID>>)
+		SERV.NEWITEM <LOCAL.SHIELD_ID>,1,<SRC.UID>,1
+		NEW.LINK=<SRC>
+		
+		SRC.TAG0.FACTION_SHIELD <NEW.UID>
+		SRC.TAG0.FACTION_SHIELD.<LOCAL.ALIGN_ID> <NEW.UID>
+		
+		SRC.SYSMESSAGELOC <def.tcolor_green>,<def.empty_cliloc2>, <NEW.NAME> aldınız.
+	ELSE
+		SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Kalkanı sadece 1 defa alabilirsiniz.
+	ENDIF
+
+ENDIF
+
+
+
+
+// ON=0 9
+// If (<argn1>==0) // Exit Gump
+  // return 1
+// endif
+
+// If (<argn1>==1 )	// Declare LoyalTo Dialog
+  // sdialog d_Town_CharList,0,<def0.TOWNSDLG_LISTTYPE_LOYALITY>
+// elif (<argn1>==2)
+	// if (<def0.TOWNSCONFIG_ALLOW_CHANGEABBR>)
+	  // toggleabbreviation <src.uid>
+  	// sdialog d_Town_Main,0,<uid>
+	// endif
+// elif (<argn1>==3)	// Roster List
+  // sdialog d_Town_CharList,0,<def0.TOWNSDLG_LISTTYPE_ROSTER>
+// elif (<argn1>==4)	// Recruit New Member
+  // src.targetf f_townsys_recruitguy <uid>
+  // src.sysmessage Select a character to recruit
+// elif (<argn1>==5)	// Candidates list
+  // sdialog  d_Town_CharList,0,<def0.TOWNSDLG_LISTTYPE_CANDIDATES>
+// elif (<argn1>==6)	// Town charter
+  // sdialog d_Town_ViewCharter,0,<uid>
+// elif (<argn1>==7)	// Resign
+  // resign
+// elif (<argn1>==8)	// Enemies
+  // sdialog d_Town_WarfareStatus,0,<uid>
+// elif (<argn1>==9)	// Townmaster Menu
+  // If (<src.isgm>)||(<masteruid>==<src.uid>)
+    // sdialog d_Town_Master,0
+  // endif
+// endif
+// return 1
+	
+[EOF]

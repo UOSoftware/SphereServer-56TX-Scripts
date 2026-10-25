@@ -1,0 +1,67 @@
+VERSION=0.56T
+
+[ITEMDEF i_stone_mover]
+ID=i_virtstone_1
+WEIGHT=1
+VALUE=0
+NAME=stone teleporter
+CAN=0
+
+ON=@Click
+if (<link.isitem>)
+    if (<link.type> == T_STONE_GUILD )
+    		message "guildstone teleporter"
+        message <link.name> <qval (<eval strlen(<link.abbrev>)>) ? [<link.abbrev>]:>
+        return 1
+    elif (<link.type> == T_STONE_TOWN )
+    	  message "townstone teleporter"
+        message <link.name>
+        return 1
+    endif
+endif
+
+message "stone teleporter"
+return 1
+
+ON=@Dclick
+if (!<link.isitem>)
+    src.SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, This teleporting object can not determine what stone to teleport.
+    remove
+    return 1
+endif
+
+if ((<link.type> != T_STONE_GUILD ) && (<link.type> != T_STONE_TOWN ))
+    src.SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, This teleporting object can not determine what stone to teleport.
+    remove
+    return 1
+endif
+
+if (<cont.uid> != <src.findlayer(layer_pack).uid> )
+    src.SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, That must be in your pack for you to use it.
+    return 1
+endif
+
+if ( !<src.isgm> && ( <link.masteruid> != <src.uid> ))
+    src.SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, You must be the master of the guild to use it.
+    return 1
+endif
+
+if ( <link.tag0.stonesys_moveruid> != <uid> )
+    src.SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, This teleporting object can not determine what stone to teleport.
+    return 1
+endif
+
+link.removefromview
+link.p = <src.p>
+link.update
+remove
+return 1
+
+ON=@Destroy
+if (<link.isitem>)
+    if ((<link.type> == T_STONE_GUILD ) || (<link.type> == T_STONE_TOWN ))
+        link.tag.stonesys_moveruid =
+    endif
+endif
+
+[EOF]

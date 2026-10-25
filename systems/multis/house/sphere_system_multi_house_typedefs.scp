@@ -1,0 +1,377 @@
+//****************************************************************************
+// SphereServer by: SphereServer development team and Menasoft.
+// www.sphereserver.net
+//****************************************************************************
+VERSION=X1
+
+[TYPEDEF ei_house_key]
+
+ON=@Click
+IF (<LINK.ISVALIDE> && <LINK.ISMULTI>)
+	ATTR=ATTR_NEWBIE
+	MESSAGE (<LINK.NAME>)
+ENDIF
+
+ON=@CREATE
+IF (<LINK.ISVALIDE> && <LINK.ISMULTI>)
+ATTR=ATTR_NEWBIE
+ENDIF
+
+ON=@DCLICK
+IF (<LINK.ISVALIDE> && <LINK.ISMULTI>)
+	ATTR=ATTR_NEWBIE
+ENDIF
+
+
+ON=@TARGON_ITEM
+IF (<LINK.ISVALIDE> && <LINK.ISMULTI>)
+	REF1=<SRC.TARG.LINK> // ev
+	
+	IF (<REF1.ISVALIDE>) && (<REF1.ISMULTI>)
+	
+		IF (<SRC.TARG.IsDoor>)
+			IF (<LINK> != <REF1>)
+				SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu anahtar bu eve ait değil.
+				RETURN 1
+			ELSEIF (<LINK> != <SRC.TARG.LINK>)
+				SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu kapı bu eve ait değil.
+				RETURN 1
+			ENDIF
+			IF (<SRC.TARG.TYPE> == T_DOOR)
+				IF (<REF1.F_HOUSE_VENDOR_COUNT>)
+					SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Vendor kurulmuş evlerin kapıları kilitlenemez.
+					SRC.TARG.TYPE=T_DOOR
+					RETURN 1
+				ENDIF
+				SRC.TARG.TYPE T_DOOR_LOCKED
+				SRC.SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, Kapı kilitlendi.
+				SRC.TARG.TIMER=1
+				// SRC.TARG.MORE1=<SRC.TARG.LINK>
+				// SRC.TARG.MORE2=
+				// SRC.TARG.USEDOOR
+			ELSE
+				SRC.TARG.TYPE T_DOOR
+				SRC.SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, Kapı kilidi açıldı.
+				SRC.TARG.TIMER=1
+				// SRC.TARG.USEDOOR
+				// SRC.TARG.MORE1=<SRC.TARG.LINK>
+				// SRC.TARG.MORE2=
+			ENDIF
+			SRC.SOUND 049
+		ENDIF
+		RETURN 1
+	ENDIF
+ENDIF
+
+
+
+
+// HOUSE OVERRIDE
+[TYPEDEF ei_house]
+
+ON=@DESTROY
+F_HOUSE_REMOVE_ALLITEMS <UID>
+
+
+
+// Event for locked down items.
+[TYPEDEF ei_house_lockdown]
+
+ON=@PICKUP_GROUND   // DO NOT ALLOW TO MOVE THIS ITEM
+IF (!<SRC.ISGM>)
+	RETURN 1
+ENDIF
+
+ON=@PICKUP_SELF // FOR CONTAINERS ONLY, DO NOT ALLOW TO PICK UP ITEMS
+IF (!<SRC.ISGM>)
+	RETURN 1
+ENDIF
+
+ON=@CLICK
+MESSAGE @38,,1,1 (sabit)
+
+ON=@TIMER
+IF (<BASEID> != I_TRASHCAN)
+	RETURN 1
+ENDIF
+
+// When entering customize mode, all locked down items and containers are being moved to the Moving Crate
+// but they are still Locked Down items, counting as so and having their properties
+// so they can't be moved from ground nor items can be dragged from them
+// but they can still be picked up from the moving crate and dropped on the ground or other containers
+// that's why some checks must be done to prevent malintentionated/unintended placements outside the multi.
+
+ON=@DROPON_GROUND
+IF (<REGION.UID> != <LINK.REGION.UID>)
+	RETURN 1
+ENDIF
+
+ON=@DROPON_ITEM
+IF (<ARGO.REGION.UID> != <LINK.REGION.UID>)
+	RETURN 1
+ENDIF
+
+
+
+
+
+
+// DOORS EVENT
+[TYPEDEF ei_house_door]
+
+ON=@CLICK
+REF1=<REGION.UID>
+IF (<LINK.ISVALIDE>) && (<LINK.ISMULTI>)
+	IF (<LINK.ISOWNER> == <SRC> || <SRC.ISGM>)
+		DIALOGCLOSE D_HOUSE_ACCESS
+		SDIALOG D_HOUSE_ACCESS
+	ENDIF
+ENDIF
+IF (<dTAG0.ACCESS>)
+	MESSAGE @,,1 [Sınırlı Erişim]
+ENDIF
+
+// IF (<TAG0.ACCESS>==house_access_none)
+	// MESSAGE @,,1 [İzin: Kimse]
+
+// ELIF (<TAG0.ACCESS>==HOUSE_ACCESS_OWNER)
+	// MESSAGE @,,1 [İzin: Sahibi]
+	
+// ELIF (<TAG0.ACCESS>==HOUSE_ACCESS_COOWNER)
+	// MESSAGE @,,1 [İzin: Ortaklar]
+	
+// ELIF (<TAG0.ACCESS>==HOUSE_ACCESS_FRIEND)
+	// MESSAGE @,,1 [İzin: Dostlar]
+	
+// ELIF (<TAG0.ACCESS>==HOUSE_ACCESS_GUILD)
+	// MESSAGE @,,1 [İzin: Guild]
+	
+// ELIF (<TAG0.ACCESS>==house_access_family)
+	// MESSAGE @,,1 [İzin: Aile]
+		
+// ELIF (<TAG0.ACCESS>==house_access_account)
+	// MESSAGE @,,1 [İzin: Hesap]
+	
+// ELIF (<TAG0.ACCESS>==house_access_all)
+	// MESSAGE @,,1 [İzin: Herkes]
+// ELSE
+	// MESSAGE @,,1 [İzin: Belirtilmemiş]
+// ENDIF
+MESSAGE @,,1 <NAME>
+RETURN 1
+
+
+ON=@DCLICK
+REF1=<REGION.UID>
+IF (<LINK.ISOWNER <SRC>>) || (<LINK.GETCOOWNERPOS <SRC>> >= 0) || (<LINK.GETFRIENDPOS <SRC>> >= 0) || (<SRC.ISGM>)
+	LINK.F_HOUSE_REFRESH_TIMER 1
+ENDIF
+
+// Eğer kapı kilitli ise verilmiş izinler geçerli olmasın.
+// Verilen izinlerin geçerli olması için kapı kilidini açılması gerekir.
+IF (<TYPE> != T_DOOR_LOCKED)
+	IF (<F_HOUSE_CAN_ACCESS>)
+		USEDOOR
+		RETURN 1
+	ENDIF
+ENDIF
+
+
+
+
+
+
+// House container created from COMPONENTs from [MULTIDEF ] (this also have 'ei_house_component').
+[TYPEDEF ei_house_container]
+
+ON=@CLICK
+MESSAGE @38,,1,1 (container)
+
+
+
+
+
+
+// House Component created from [MULTIDEF ].
+[TYPEDEF ei_house_component]
+
+ON=@CLICK
+MESSAGE @38,,1,1 (component)
+
+
+
+
+
+
+
+// SECURED CONTAINERS.
+// Only allowed players can manage their storage (Refer to f_house_can_access to see the allowance).
+[TYPEDEF ei_house_secure]
+
+ON=@PICKUP_GROUND
+IF (!<SRC.ISGM>)
+	RETURN 1
+ENDIF
+
+ON=@DCLICK
+IF (<F_HOUSE_CAN_ACCESS>)
+	RETURN 0
+ENDIF
+RETURN 1
+
+ON=@PICKUP_SELF
+IF (<F_HOUSE_CAN_ACCESS>)
+	RETURN 0
+ENDIF
+RETURN 1
+
+ON=@Click
+IF (<LINK.ISVALIDE>)
+	REF1=<LINK>
+ELSE
+	REF1=<REGION.UID>
+ENDIF
+IF (<REF1.ISVALIDE>)
+	IF ((<REF1.OWNER> == <SRC>) || (<REF1.MORE1> == <SRC>)) || (<SRC.ISGM>)
+		DIALOGCLOSE d_house_access
+		DIALOG d_house_access
+	ENDIF
+ENDIF
+message @044,,1,1 (güvenli)
+
+
+
+
+
+// TELEPAD FOR MULTIS.
+[typedef ei_house_telepad]
+
+ON=@STEP
+RETURN 1
+
+
+ON=@CLICK
+MESSAGE @38,,1,1 (teleporter)
+
+
+
+
+// @OVERRIDE OF T_DEED TYPEDEF
+[TYPEDEF ei_house_deed]
+
+ON=@CLICK
+ATTR |=ATTR_NEWBIE
+IF (<ATTR>&ATTR_NEWBIE)
+	MESSAGE <defmsg.TOOLTIP_TAG_NEWBIE>
+ENDIF
+MESSAGE [<SERV.ITEMDEF.<MORE1>.NAME>]
+MESSAGE @,,1 Ev Kontratı
+RETURN 1
+
+
+ON=@DClick
+ATTR |=ATTR_NEWBIE
+LOCAL.HITS = <EVAL (50*<SRC.STR>)/100> 
+
+IF !(<SRC.ISINPACK <UID>>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,600036,<NAME>	// Bunu (~1_val~) kullanabilmek için çantanızda veya üzerinizde olmalıdır.
+	RETURN 1
+ELSEIF (<SRC.HITS> < <DLOCAL.HITS>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Hitsiniz %50 altinda olduğu için bunu kullanamazsınız.
+	RETURN 1
+ELSEIF (<SRC.ISPOISONED>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Zehirliyken bunu kullanamazsınız.
+	RETURN 1
+ELSEIF (<SRC.FLAGS>&STATF_WAR)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Savaş halindeyken bunu kullanamazsınız.
+	RETURN 1
+ELSEIF (<SRC.FLAGS>&STATF_INVISIBLE) || (<SRC.FLAGS>&STATF_INSUBSTANTIAL) || (<SRC.FLAGS>&STATF_HIDDEN)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Görünmezken bunu kullanamazsınız.
+	RETURN 1
+ELSEIF (<SRC.REGION.FLAGS>&REGION_FLAG_UNDERGROUND|REGION_FLAG_NOBUILDING|REGION_FLAG_SAFE|REGION_ANTIMAGIC_ALL|REGION_ANTIMAGIC_RECALL_IN|REGION_ANTIMAGIC_RECALL_OUT|REGION_ANTIMAGIC_GATE|REGION_ANTIMAGIC_TELEPORT|REGION_ANTIMAGIC_DAMAGE|REGION_FLAG_SHIP|REGION_FLAG_NO_PVP) 
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu bölgeye yapı kuramazsınız. (<SRC.REGION.NAME>)
+	RETURN 1
+ELSEIF (strmatch('Star','<SRC.REGION.NAME>')) || (strmatch(*Green Acres*,'<SRC.REGION.NAME>'))
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu bölgeye yapı kuramazsınız. (<SRC.REGION.NAME>)
+	RETURN 1
+ELSEIF (<SRC.HOUSES> >= 1)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu karakterin zaten evi var. (<SRC.HOUSES>/1)
+	RETURN 1
+ELSEIF (<SRC.ISNEARPLAYERS>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Etrafınızda oyuncu varken yapı kuramazsınız.
+	RETURN 1
+ENDIF
+
+
+
+ON=@TargOn_Ground
+FORITEMS 100
+	IF (<BASEID> == I_DEED_UYARI_MULTI) && (<TAG0.KARE>)
+		IF (<SRC.DISTANCE <UID>> <= <DTAG0.KARE>)
+			LOCAL.KARE <DTAG0.KARE>
+		ENDIF
+	ENDIF
+ENDFOR
+
+LOCAL.HITS = <EVAL (50*<SRC.STR>)/100> 
+
+// Player kontrol
+IF !(<SRC.ISINPACK <UID>>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,600036,<NAME>	// Bunu (~1_val~) kullanabilmek için çantanızda veya üzerinizde olmalıdır.
+	RETURN 1
+ELSEIF (<SRC.HITS> < <DLOCAL.HITS>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Hitsiniz %50 altinda olduğu için bunu kullanamazsınız.
+	RETURN 1
+ELSEIF (<SRC.ISPOISONED>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Zehirliyken bunu kullanamazsınız.
+	RETURN 1
+ELSEIF (<SRC.FLAGS>&STATF_WAR)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Savaş halindeyken bunu kullanamazsınız.
+	RETURN 1
+ELSEIF (<SRC.REGION.FLAGS>&region_flag_underground|region_flag_nobuilding|region_flag_safe|region_antimagic_all|region_antimagic_recall_in|region_antimagic_recall_out|region_antimagic_gate|region_antimagic_teleport|region_antimagic_damage|region_flag_ship|region_flag_no_pvp) 
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, 1. Bu bölgeye yapı kuramazsınız. (<SRC.REGION.NAME>)
+	RETURN 1
+ELSEIF (strmatch('Star','<SRC.REGION.NAME>')) || (strmatch(*Green Acres*,'<SRC.REGION.NAME>'))
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu bölgeye yapı kuramazsınız. Yasaklı bolge. (<SRC.REGION.NAME>)
+	RETURN 1
+ELSEIF (<SRC.HOUSES> >= 1)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu karakterin zaten evi var. (<SRC.HOUSES>/1)
+	RETURN 1
+ENDIF
+
+
+
+// Targp Kontrol
+IF (<SRC.TARGP>)
+	IF (<SRC.TARGP.REGION>)
+		IF (<SRC.TARGP.REGION.FLAGS>&region_flag_underground|region_flag_nobuilding|region_flag_safe|region_antimagic_all|region_antimagic_recall_in|region_antimagic_recall_out|region_antimagic_gate|region_antimagic_teleport|region_antimagic_damage|region_flag_ship|region_flag_no_pvp) 
+			SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, 2. Bu bölgeye kuramazsınız. (<SRC.TARGP.REGION.NAME>)
+			RETURN 1 
+		ELSEIF (strmatch('Star','<SRC.TARGP.REGION.NAME>')) || (strmatch(*Green Acres*,'<SRC.TARGP.REGION.NAME>'))
+			SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu bölgeye kuramazsınız. Yasaklı bolge. (<SRC.TARGP.REGION.NAME>)
+			RETURN 1
+		ENDIF
+	ENDIF
+	IF (<SRC.TARGP.ISNEARTYPE t_DEED_UYARI_MULTI <DLOCAL.KARE>>)
+		SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu alanda yapı kurulamaz uyarısı mevcut. (<DLOCAL.KARE> mt.)
+		RETURN 1
+	ENDIF
+ENDIF
+IF (<SRC.ISNEARPLAYERS>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Etrafınızda oyuncu varken yapı kuramazsınız.
+	RETURN 1
+ENDIF
+
+
+
+ON=@TARGON_CHAR
+SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Hatalı seçim.
+RETURN 1
+
+ON=@TARGON_ITEM
+SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Hatalı seçim.
+RETURN 1
+
+
+
+[EOF]

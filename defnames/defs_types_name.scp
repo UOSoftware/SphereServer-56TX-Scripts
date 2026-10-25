@@ -1,0 +1,209 @@
+
+[DEFNAME TYPEDEF_NAMES]
+TYPENAME_t_normal					Normal
+TYPENAME_t_container				Containers
+TYPENAME_t_container_locked			Locked Containerss
+TYPENAME_t_door						Doors
+TYPENAME_t_door_locked				Locked doors
+TYPENAME_t_key						Keys
+TYPENAME_t_light_lit				Lit lights
+TYPENAME_t_light_out				Out lights
+TYPENAME_t_food						Foods
+TYPENAME_t_food_raw					Raw foods
+TYPENAME_t_armor					Armors
+TYPENAME_t_weapon_mace_smith		Weapon Macesmiths
+TYPENAME_t_weapon_mace_sharp		Weapon Macesharps
+TYPENAME_t_weapon_sword				Weapon swords
+TYPENAME_t_weapon_fence				Weapon fences
+TYPENAME_t_weapon_bow				Weapon bows
+TYPENAME_t_wand						Wands
+TYPENAME_t_telepad					Telepads
+TYPENAME_t_switch					Switchs
+TYPENAME_t_book						Books
+TYPENAME_t_rune						Runes
+TYPENAME_t_booze					Boozes
+TYPENAME_t_potion					Potions
+TYPENAME_t_fire						Fires
+TYPENAME_t_clock					Clocks
+TYPENAME_t_trap 					Traps
+TYPENAME_t_trap_active				Active traps
+TYPENAME_t_musical					Musicals
+TYPENAME_t_spell					Spells
+TYPENAME_t_gem						Gems
+TYPENAME_t_water					Waters
+TYPENAME_t_clothing					Clothings
+TYPENAME_t_scroll					Scrolls		
+TYPENAME_t_carpentry				Saw // Carpentry
+TYPENAME_t_spawn_char				Spawn chars
+TYPENAME_t_game_piec				Game piec
+TYPENAME_t_portculis				Portculis
+TYPENAME_t_figurine					Figurines
+TYPENAME_t_shrine					Shrines
+TYPENAME_t_moongate					Moongates
+TYPENAME_t_forge					Forges
+TYPENAME_t_ore						Ores
+TYPENAME_t_log						Logs
+TYPENAME_t_tree						Trees
+TYPENAME_t_rock						Rocks
+TYPENAME_t_carpentry_chop			Carpentry chops
+TYPENAME_t_multi					Multi houses
+TYPENAME_t_reagent					Reagents
+TYPENAME_t_ship						Multi ships
+TYPENAME_t_ship_plank 				Ship planks
+TYPENAME_t_ship_side				Ship sides
+TYPENAME_t_ship_side_locked			Ship sides locked
+TYPENAME_t_ship_tiller 				Ship tillers
+TYPENAME_t_eq_trade_window			Trade windows
+TYPENAME_t_fish						Fishs
+TYPENAME_t_sign_gump				Signs
+TYPENAME_t_stone_guild				Guildstones
+TYPENAME_t_anim_active				Active anim
+TYPENAME_t_sand						Sands
+TYPENAME_t_cloth					Cloths
+TYPENAME_t_hair						Hairs
+TYPENAME_t_beard					Beards
+TYPENAME_t_ingot					Ingots
+TYPENAME_t_coin						Coins
+TYPENAME_t_crops					Crops
+TYPENAME_t_drink					Drinks
+TYPENAME_t_anvil					Anvils
+TYPENAME_t_port_locked				Locked ports
+TYPENAME_t_spawn_item				Spawn items
+TYPENAME_t_gold						Gold pieces
+TYPENAME_t_map						Maps
+TYPENAME_t_eq_memory_obj			Memories
+TYPENAME_t_weapon_mace_staff		Weapon staffs
+TYPENAME_t_eq_horse					Horse memories
+TYPENAME_t_comm_crystal           	Communication Crystals
+TYPENAME_t_game_board 				Game boards
+TYPENAME_t_trash_can				Trashcans
+TYPENAME_t_cannon_muzzle			Cannon muzzles
+TYPENAME_t_cannon					Cannons
+TYPENAME_t_cannon_ball				Cannon balls
+TYPENAME_t_armor_leather			Leathers armors
+TYPENAME_t_seed						Seeds
+TYPENAME_t_junk						Junks
+TYPENAME_t_crystal_ball				Crystal balls
+TYPENAME_t_swamp					Swamps
+TYPENAME_t_message					Messages
+TYPENAME_t_reagent_raw 				Reagent raws
+TYPENAME_t_eq_client_linge			Clientlinger memories
+TYPENAME_t_snow 					Snows
+
+TYPENAME_t_explosion				Explosions
+TYPENAME_t_eq_npc_script			Npc scripts
+TYPENAME_t_web						Spiderwebs
+TYPENAME_t_grass					Grasses
+TYPENAME_t_arock					aRocks
+TYPENAME_t_tracker					Trackers
+TYPENAME_t_sound					Sounds
+TYPENAME_t_stone_town				Town stones
+TYPENAME_t_weapon_mace_crook		Crooks
+TYPENAME_t_weapon_mace_pick			Weapon picks
+TYPENAME_t_leather					Leathers
+TYPENAME_t_ship_other				Ship others
+TYPENAME_t_bboard					Bullettinboards
+TYPENAME_t_spellbook				Spelbooks
+TYPENAME_t_corpse					Corpses
+
+TYPENAME_t_weapon_arrow          	Arrows
+TYPENAME_t_weapon_bolt           	Bolts
+TYPENAME_t_eq_vendor_box			Vendor boxes
+TYPENAME_t_eq_bank_box				Bank boxes
+TYPENAME_t_deed						Deeds
+TYPENAME_t_loom						Looms
+TYPENAME_t_bee_hive					Bee hives
+TYPENAME_t_archery_butte			Archery buttes
+TYPENAME_t_eq_murder_count			Murdercount memories
+TYPENAME_t_eq_stuck					Stuck memories
+TYPENAME_t_trap_inactive			Trap inactives
+
+TYPENAME_t_bandage					Bandages
+TYPENAME_t_campfire					Campfires
+TYPENAME_t_map_blank				Blank maps
+TYPENAME_t_spy_glass				Spyglasses
+TYPENAME_t_sextant					Sextants
+TYPENAME_t_scroll_blank				Blank scrolls
+TYPENAME_t_fruit					Fruits
+TYPENAME_t_water_wash 				Water washes
+TYPENAME_t_weapon_axe				Weapon axes
+TYPENAME_t_weapon_xbow				Weapon xbows
+TYPENAME_t_spellicon				Spellicons
+TYPENAME_t_door_open				Open doors
+TYPENAME_t_meat_raw					Meat raws
+
+TYPENAME_t_keyring					Keyrings
+
+TYPENAME_t_floor					Floors
+TYPENAME_t_roof						Roofs
+TYPENAME_t_feather               	Feathers   // a birds feather
+TYPENAME_t_wool						Whools
+TYPENAME_t_fur						Furs
+TYPENAME_t_blood					Bloods
+TYPENAME_t_foliage					Foliages
+TYPENAME_t_grain					Grains
+TYPENAME_t_scissors					Scissors
+TYPENAME_t_thread					Threads
+TYPENAME_t_yarn						Yarns
+TYPENAME_t_spinwheel				Shinningwheels
+TYPENAME_t_bandage_blood			Bandage bloogs
+TYPENAME_t_fish_pole				Fishing poles
+TYPENAME_t_shaft					Shafts
+TYPENAME_t_lockpick					Lockpicks
+TYPENAME_t_kindling					Kindlings
+TYPENAME_t_train_dummy				Training dummies
+TYPENAME_t_train_pickpocket			Training pickpockets
+TYPENAME_t_bedroll					Bedrools
+
+TYPENAME_t_hid						Hides
+TYPENAME_t_cloth_bolt 				Cloth bolts
+TYPENAME_t_board					Boards
+TYPENAME_t_pitcher					Pitchers
+TYPENAME_t_pitcher_empty			Empty pitchers
+TYPENAME_t_dye_vat					Dye vats
+TYPENAME_t_dye						Dyes
+TYPENAME_t_potion_empty				Empty bottles
+TYPENAME_t_mortar					Mortar & Pestle
+
+TYPENAME_t_sewing_kit				Sewing kits
+TYPENAME_t_tinker_tools				Tinker tools
+TYPENAME_t_wall						Walls
+TYPENAME_t_window					Windows
+TYPENAME_t_cotton					Cottons
+TYPENAME_t_bone						Bones
+TYPENAME_t_eq_script				Script memories
+TYPENAME_t_ship_hold				Ship holds
+TYPENAME_t_ship_hold_lock			Ship holds lock
+TYPENAME_t_lava						Lavas
+TYPENAME_t_shield					Shields
+TYPENAME_t_jewelry					Jeweleries
+TYPENAME_t_dirt						Dirts
+TYPENAME_t_script					Scripts
+TYPENAME_t_spellbook_necro			Spellbook necros
+TYPENAME_t_spellbook_pala			Spellbook paladins
+TYPENAME_t_spellbook_extra  		Spellbook extras
+TYPENAME_t_spellbook_bushido 		Spellbook bushidos
+TYPENAME_t_spellbook_ninjitsu		Spellbook ninjitsu
+TYPENAME_t_spellbook_arcanist		Spellbook arcanist
+TYPENAME_t_multi_custom				Multi customs
+TYPENAME_t_spellbook_mystic			Spellbook Mystics
+TYPENAME_t_hoverover				Hoverovers
+TYPENAME_t_spellbook_mastery		Spellbook Masteries
+TYPENAME_t_weapon_throwing			Weapons throwings
+TYPENAME_t_cartography				Cartography
+TYPENAME_t_cooking					Cookings
+TYPENAME_t_pilot					Pilot memories
+TYPENAME_t_rope						Ropes
+TYPENAME_t_weapon_whip				Weapon whips
+TYPENAME_t_weapon_wrest				Weapon Wrest
+
+TYPENAME_t_spawn_champion			Champion Spawns
+TYPENAME_t_multi_addon				Multi AddOns
+
+TYPENAME_t_forest					Forest Tiles
+TYPENAME_t_jungle					Jungle Tiles
+TYPENAME_t_furniture				Furnitures
+TYPENAME_t_soul_forge				Soul Forges
+
+
+[eof]

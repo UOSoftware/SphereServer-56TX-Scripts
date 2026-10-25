@@ -1,0 +1,18 @@
+//****************************************************************************
+// SphereServer by: SphereServer development team and Menasoft.
+// www.sphereserver.net
+//****************************************************************************
+VERSION=X1
+
+[DEFNAME ship_control]
+ss_can_resurrect 			1
+ss_can_resurrect_timer 		10
+ss_can_bank 				1
+ss_can_decay				30
+ss_default_player_event e_ship_events_player // gemiye giren tüm playerlara verilen event
+ss_default_player_speech spk_ship_cmds_player // gemiye giren tüm playerlara verilen speech
+ss_max_friends 			20
+ss_max_co_owners 		10 	
+
+
+[EOF]

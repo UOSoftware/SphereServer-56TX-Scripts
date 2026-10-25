@@ -1,0 +1,106 @@
+VERSION=0.56T
+
+
+[EVENTS e_GuildGenericEvent]
+// e_generic_chars eventi icinde.
+// ON=@UserGuildButton
+
+ON=@CLICK
+REF1=<GUILD>
+IF (<REF1.ISVALID>)
+	IF !(<FLAGS>&statf_polymorph)
+		IF (<ISEMPTY <guild.memberfromuid.<UID>.GUILDTITLE>>)
+			MESSAGE @944,,1 [<REF1.NAME><QVAL (<DTAG0.GuildPoints> > 0 )? , <DTAG0.GuildPoints>:>]
+		ELSE
+			MESSAGE @944,,1 [<GUILD.MEMBERFROMUID.<UID>.GUILDTITLE>, <REF1.ABBREV><QVAL (<DTAG0.GuildPoints> > 0 )? , <DTAG0.GuildPoints>:>]
+		ENDIF
+	ENDIF
+ELSE
+	EVENTS -<DEF.GUILDCONFIG_CHAREVENT_NAME>
+ENDIF
+
+
+ON=@ENVIRONCHANGE
+REF1=<GUILD>
+IF (<REF1.ISVALID>) && !(<REF1.ALIGN>)
+	IF (<FINDLAYER.2>)
+		// Eger guildi yoksa uzerindeki guild esyalarini indirsin.
+		IF (<FINDLAYER(2).BASEID> == I_SHIELD_CHAOS) || (<FINDLAYER(2).BASEID> == I_SHIELD_ORDER)
+			FINDLAYER(2).UNEQUIP
+		ENDIF
+	ENDIF
+ENDIF
+
+
+
+ON=@DESTROY
+REF1=<GUILD>
+IF (<REF1.ISVALID>)
+	IF (<REF1.MASTERUID>==<UID>)
+		IF (<REF1.MEMBER.COUNT> > 1)
+			// Eger guild master karakteri silinirse guildi baska bir uyeye devret.
+			REF1.ELECTMASTER
+			WHILE (<REF1.MASTERUID>==<UID>)
+				REF1.MASTERUID=<REF1.MEMBER.<R0,<EVAL <REF1.MEMBER.COUNT>-1>>.UID>
+			ENDWHILE
+		ENDIF
+	ENDIF
+ENDIF
+
+
+
+ON=@LOGIN
+f_guildsys_event_speech_fix
+IF (<GUILD>)
+	REF1=<GUILD>
+	IF (<REF1.ISVALID>)
+		REF1.TAG0.LASTACTIVE=<SERV.TIME>
+	ENDIF
+	// Guild üyelerinden biri oyuna girince gc olarak yazsın.
+	GC Oyuna bağlandı.
+ENDIF
+
+
+ON=@Logout
+f_guildsys_event_speech_fix
+IF (<GUILD>)
+	REF1=<GUILD>
+	IF (<REF1.ISVALID>)
+		REF1.TAG0.LASTACTIVE=<SERV.TIME>
+	ENDIF
+	// Guild üyelerinden biri oyundan çıkınca gc olarak yazsın.
+	GC Oyundan çıktı!
+ENDIF
+
+
+
+ON=@Death
+IF (<GUILD>)
+	// SRC = ÖLEN
+	// REF99 = ÖLDÜREN
+	REF99=<QVAL (<SRC.ATTACKER.LAST>)?<SRC.ATTACKER.LAST>:<SRC.ATTACKER.MAX>>
+	IF (<REF99.ISVALID>)
+		REF1=<GUILD>
+		
+		IF (<REF1.ISVALID>)
+			REF1.TAG0.LASTACTIVE=<SERV.TIME>
+		ENDIF
+
+		// IF (<REF99.ISPLAYER>) && (<SRC.RESKILLCONDITION <REF99>,GUILD,1000>)
+			// IF (<REF99.GUILD>) && !(<REF99.GUILD> == <SRC.GUILD>)
+				// REF99.F_GUILDSYS_POINT_GAIN
+				// SRC.F_GUILDSYS_POINT_LOST
+			// ENDIF			
+		// ENDIF
+	
+		// Guild üyelerinden biri ölünce gc olarak yazsın.
+		SRC.GC <REF99.NAME> tarafından <SRC.REGION.NAME> civarında öldürüldüm.
+	ENDIF
+ENDIF
+
+
+
+
+
+			
+[EOF]

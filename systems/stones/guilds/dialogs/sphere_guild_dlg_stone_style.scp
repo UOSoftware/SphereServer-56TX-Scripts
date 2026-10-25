@@ -1,0 +1,85 @@
+VERSION=0.56T
+
+
+[dialog d_Guild_StoneStyle]
+<DEF.dsp>
+IF (<TYPE>!=T_STONE_GUILD)
+	RETURN 1
+ELIF (<MASTERUID>!=<SRC.UID>)&&(!<SRC.ISGM>)
+	RETURN 1
+ENDIF
+
+PAGE 0
+
+RESIZE 0,0,470,260,Guild Stone Style
+
+DORIGIN 20 50
+DCROPPEDTEXT +0 +0 250 25 <def.tcolor_text> Guild puanınız: <BolukAyir <SRC.dTAG0.POINTS.GUILD>>
+
+LOCAL.Stones 0 0ED4, 50 00EDB, 50 00EDD, 50 01183
+
+FOR 1 <ARRAYCOUNT <LOCAL.Stones>>
+	LOCAL.X=<EVAL ((<LOCAL._FOR>-1)%5)*105>
+	LOCAL.Y=<EVAL ((<LOCAL._FOR>-1)/5)*65>
+	
+	LOCAL.ID <STREAT <ARRAY <LOCAL.Stones>,<DLOCAL._FOR>>>
+	LOCAL.Point <STRARG <ARRAY <LOCAL.Stones>,<DLOCAL._FOR>>>
+	
+	RESIZEPIC <EVAL 30+<LOCAL.X>> <EVAL 70+<LOCAL.Y>> 9200 100 120 
+	
+	TILEPICHUE <EVAL 60+<LOCAL.X>> <EVAL 85+<LOCAL.Y>> <SERV.ITEMDEF.<LOCAL.ID>.ID> <QVAL (<SRC.CTAG0.Guild_StoneStyle.Color>)?<DCOLOR>:0>
+	
+	DHTMLGUMP <EVAL 40+<LOCAL.X>> <EVAL 160+<LOCAL.Y>> 100 25 0 0 <DLOCAL.Point> Guild puanı
+	BUTTON <EVAL 73+<LOCAL.X>> <EVAL 180+<LOCAL.Y>> 0845 0846 1 0 <dlocal._for>
+ENDFOR
+
+BUTTON +0 +160 0faf 0fb0 1 0 0
+DHTMLGUMP +30 +160 120 25 0 0 <def.bfont_black>Ana menüye dön
+  
+  
+IF (<SRC.CTAG0.Guild_StoneStyle.Color>)
+	BUTTON +280 +160 210 211 1 0 999
+ELSE
+	BUTTON +280 +160 211 210 1 0 999
+ENDIF
+DTEXT +300 +160 <def.tcolor_text> Renksiz gösterim
+
+[dialog d_Guild_StoneStyle Button]
+ON=0
+SDIALOG D_GUILD_MASTER
+
+ON=999
+IF (<SRC.CTAG0.Guild_StoneStyle.Color>)
+	SRC.CTAG0.Guild_StoneStyle.Color=
+ELSE
+	SRC.CTAG0.Guild_StoneStyle.Color=1
+ENDIF
+DIALOGCLOSE D_GUILD_STONESTYLE
+DIALOG D_GUILD_STONESTYLE
+
+
+ON=1,99
+LOCAL.Stones 0 0ED4, 50 00EDB, 50 00EDD, 50 01183
+LOCAL.ID <STREAT <ARRAY <LOCAL.Stones>,<argn>>>
+LOCAL.Point <STRARG <ARRAY <LOCAL.Stones>,<argn>>>
+
+IF (<DLOCAL.POINT>)
+	IF (<SRC.dTAG0.POINTS.GUILD> < <dLOCAL.Point>)
+		SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bunu kullanabilmek için en az <DLOCAL.POINT> Guild puanına ihtiyacınız var.
+		RETURN 1
+	ENDIF
+ENDIF
+IF (<DLOCAL.POINT>)
+	SRC.TAG0.POINTS.GUILD -=<DLOCAL.POINT>
+ENDIF
+
+DISPID = <LOCAL.ID>
+UPDATE
+SRC.SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, Guildstone görünümü değişti.
+
+
+
+[EOF]
+
+
+  

@@ -11,6 +11,14 @@ firststartmoney_gold	10000
 startmoney_gold			1000
 char_near_max 5
 
+[DEFNAME quality_levels_short]
+quality_level_name_1 "Çok Kötü"
+quality_level_name_2 "Kötü"
+quality_level_name_3 "Düşük"
+quality_level_name_4 "İyi"
+quality_level_name_5 "Çok İyi"
+quality_level_name_6 "Mükemmel"
+
 [DEFNAME noto_type_hues]
 NOTO.1			063
 NOTO.2			044

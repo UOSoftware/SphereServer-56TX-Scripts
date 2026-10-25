@@ -1,0 +1,141 @@
+VERSION=0.56T
+
+
+[dialog d_Guild_ChangeAlign]
+<DEF.dsp>
+IF (<TYPE>!=T_STONE_GUILD)
+	RETURN 1
+ELIF (<MEMBERFROMUID.<SRC.UID>.UID>!=<SRC.UID>)&&(!<SRC.ISGM>)
+	RETURN 1
+ENDIF
+  
+PAGE 0
+RESIZE 0,0,210,225,Destek Yonunu Degistir
+
+DHTMLGUMP 60 190 150 100 0 0 <DEF.BFONT_DRED>Vazgeç
+BUTTON 30 190 0fb2 0fb3 1 0 0 // Cancel Button
+
+DORIGIN 20 20
+
+LOCAL.ALIGN=0
+IF (<ALIGN> <= 0)
+	LOCAL.BFONT_HUE = <DEF.BFONT_GRAY>
+ELSEIF (<ALIGN> == 1)
+	LOCAL.BFONT_HUE = <DEF.BFONT_ORANGE>
+ELSEIF (<ALIGN> == 2)
+	LOCAL.BFONT_HUE = <DEF.BFONT_LBLUE>
+ENDIF
+
+WHILE (!<ISEMPTY <DEF.GUILDCONFIG_ALIGN_<DLOCAL.ALIGN>>>)
+	IF (<ALIGN> == <LOCAL.ALIGN>)
+		DHTMLGUMP 100 *40 200 100 0 0 <def.bfont_black><DEF.GUILDCONFIG_ALIGN_<DLOCAL.ALIGN>> [Geçerli]
+		GUMPPIC 70 +0 4020
+	ELSE
+		DHTMLGUMP 100 *40 200 100 0 0 <def.bfont_black><DEF.GUILDCONFIG_ALIGN_<DLOCAL.ALIGN>>
+		BUTTON 70 +0 4006 4007 1 0 <EVAL <LOCAL.ALIGN>+1> // CHANGE ALIGNMENT
+	ENDIF
+	
+	IF (<DEF0.GUILDCONFIG_ALIGNSHIELD_<DLOCAL.ALIGN>>)
+		TILEPIC 30 -1 <DEF.GUILDCONFIG_ALIGNSHIELD_<DLOCAL.ALIGN>>
+	ENDIF
+	LOCAL.ALIGN += 1
+ENDWHILE
+
+
+[dialog d_Guild_ChangeAlign Button]
+ON=0 3
+IF (<MASTERUID>!=<SRC.UID>)&&(!<SRC.ISGM>)
+	RETURN 1
+ENDIF
+IF (<SERV.TIME> < <TAG0.CHANGEALIGN_TIME>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Guild destek yönünü değiştirmek için bir süre beklemelisiniz.
+	RETURN 1
+ENDIF	
+FORINSTANCES I_GUILDSTONE
+	IF (<ALIGN> == 1)
+		LOCAL.ORDER ++
+	ELSEIF (<ALIGN> == 2)
+		LOCAL.CHAOS ++
+	ELSEIF (<ALIGN> == 0)
+		LOCAL.NATURAL ++
+	ENDIF
+ENDFOR
+IF (<DLOCAL.TYPE> == 1) // ORDER
+	SRC.SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, Order : <dLOCAL.ORDER> - Chaos : <DLOCAL.CHAOS> - Natural : <DLOCAL.NATURAL>
+	IF (<DLOCAL.ORDER> > <DLOCAL.CHAOS>)
+		SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Ordera destek veren guild sayısı Chaosa destek verenden fazla olduğu için destek yönü değişemedi.
+		RETURN 1
+	ENDIF
+ELSEIF (<DLOCAL.TYPE> == 2) // CHAOS
+	SRC.SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, Order : <dLOCAL.ORDER> - Chaos : <DLOCAL.CHAOS> - Natural : <DLOCAL.NATURAL>
+	IF (<DLOCAL.CHAOS> > <DLOCAL.ORDER>)
+		SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Chaosa destek veren guild sayısı Ordera destek verenden fazla olduğu için destek yönü değişemedi.
+		RETURN 1
+	ENDIF
+ENDIF
+IF (<ARGN1> > 0)
+	LOCAL.TYPE=<EVAL (<ARGN1>-1)>
+	IF (!<ISEMPTY <DEF.GUILDCONFIG_ALIGN_<DLOCAL.TYPE>>>)
+		REF99=<UID>
+		SERV.NEWITEM I_GUILD_CHANGEALIGN_TIMER_MEMORY,1,<SRC>,1
+		NEW.LINK=<UID>
+		NEW.MORE2=<LOCAL.TYPE>
+	ENDIF
+ENDIF
+  
+SDIALOG D_GUILD_MASTER,0
+RETURN 1
+
+
+[ITEMDEF I_GUILD_CHANGEALIGN_TIMER_MEMORY]
+DEFNAME=I_GUILD_CHANGEALIGN_TIMER_MEMORY
+ID=I_memory
+TYPE=T_EQ_SCRIPT
+VALUE=0
+WEIGHT=0
+NAME=Guild Align Delay Memory
+
+ON=@CREATE
+ATTR=ATTR_INVIS|ATTR_NEWBIE|ATTR_DECAY
+TIMER=1
+MORE1=10
+
+ON=@EQUIP
+TIMER=1
+MORE1=10
+
+On=@Timer
+REF1=<LINK>
+IF !(<MORE1>)
+	REF1.ALIGN=<dMORE2>
+	REF1.TAG.CHANGEALIGN_TIME=<eval (<serv.time> + <def0.GUILDCONFIG_MINTIME_ALIGN>)>			
+	
+	FOR 0 <EVAL <REF1.MEMBER.COUNT>-1>
+		REF100=<REF1.MEMBER.<Dlocal._FOR>.UID>
+		IF (<REF100>)
+			REF100.SAYUA 044,6,0,6 * guild destek yönü: <REF1.aligntype> *
+			REF100.NOTICE Guildinizin destek yönü [<REF1.aligntype>] olarak değişmiştir.
+		ENDIF
+	ENDFOR
+	
+	TOPOBJ.F_GUILDSYS_SENDSMSG <REF1>,Yeni destek yönü <REF1.aligntype> olarak ayarlanmıştır.
+	
+	sector.allclients notoupdate
+	topobj.CHARWORLDMEMORYDEL
+
+	REMOVE
+ELSE
+	FOR 0 <EVAL <REF1.MEMBER.COUNT>-1>
+		REF100=<REF1.MEMBER.<Dlocal._FOR>.UID>
+		IF (<REF100>)
+			REF100.SAYUA 38,6,0,6 * guild destek yönü <DMORE1> saniye sonra değişecek *
+		ENDIF
+	ENDFOR
+	MORE1 --
+ENDIF
+
+TIMER 1
+RETURN 1
+
+
+[EOF]

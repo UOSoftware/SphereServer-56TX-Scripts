@@ -1,0 +1,205 @@
+VERSION=0.56T
+
+// ------------------------------------------------------
+[FUNCTION TRANSFERSTONE]
+SRC.TARGETF F_STONESYS_TRANSFER <ARGS>
+SRC.SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, <f_stonesys_gettypename <args>> aktarmak istediginiz kisiyi seciniz.
+
+[FUNCTION F_STONESYS_TRANSFER]
+// ARGS = STONE UID
+// ARGO = FUTURE OWNER
+REF1 = <ARGS>
+LOCAL.TYPENAME = <F_STONESYS_GETTYPENAME <REF1.UID>>
+
+IF !(<ARGO>)
+  SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Hatali secim.
+
+ELSEIF (<ARGO.ISITEM>)
+  SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Hatali secim.
+
+ELIF (<ARGO.NPC>)
+  SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Hatali secim.
+
+elif (<argo> == <ref1.masteruid>)
+  SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, You are already the master of <ref1.name>.
+
+elif (<argo.memoryfindtype.memory_guild.link.uid> != <ref1.uid>) && (<argo.memoryfindtype.memory_town.link.uid> != <ref1.uid>)
+  SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, That player is not a member of the <local.typename>.
+
+elif (!<argo.npc>)
+  ref1.masteruid = <argo.uid>
+  serv.log <name> (<uid>) transferred <sex his/her> <local.typename> (<ref1.name>) to <argo.name> (<argo.uid>)
+  SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, You have transfered the <local.typename> to <argo.name>.
+  argo.SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, You are now the master of <ref1.name>.
+else
+  SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, You cannot transfer a <local.typename> to that.
+ENDIF
+RETURN 1
+
+
+// ------------------------------------------------------
+
+[FUNCTION F_STONESYS_ISNAMEUSED]
+LOCAL.STONEUID=<ARGV[0]>
+LOCAL.TYPEID=<QVAL (<UID.<LOCAL.STONEUID>.TYPE> == T_STONE_GUILD) ? 1 : 0>
+LOCAL.NAME=<STRSUB <EVAL (STRLEN(<LOCAL.STONEUID>) + 1)> <EVAL STRLEN(<ARGS>)> <ARGS>>
+LOCAL.INDEX=0
+LOCAL.RETURN=0
+LOCAL.TOTALSTONES=<QVAL (<LOCAL.TYPEID>) ? <SERV.GUILDSTONES.COUNT> : <SERV.TOWNSTONES.COUNT>>
+WHILE (<LOCAL.INDEX> < <LOCAL.TOTALSTONES>)
+  LOCAL.CURRENTSTONEUID=<QVAL (<LOCAL.TYPEID>) ? <SERV.GUILDSTONES.<LOCAL.INDEX>.UID> : <SERV.TOWNSTONES.<LOCAL.INDEX>.UID>>
+  IF (<LOCAL.CURRENTSTONEUID>)
+    IF (!STRCMPI(<UID.<LOCAL.CURRENTSTONEUID>.NAME>,<LOCAL.NAME>))
+      LOCAL.RETURN=1
+      LOCAL.INDEX=<LOCAL.TOTALSTONES> + 1
+    ENDIF
+  ENDIF
+  LOCAL.INDEX += 1
+ENDWHILE
+RETURN <LOCAL.RETURN>
+
+
+
+// ------------------------------------------------------
+[FUNCTION F_STONESYS_ISABBREVUSED]
+LOCAL.STONEUID=<ARGV[0]>
+LOCAL.TYPEID=<QVAL (<UID.<LOCAL.STONEUID>.TYPE> == T_STONE_GUILD) ? 1 : 0>
+LOCAL.ABBREV=<STRSUB <EVAL (STRLEN(<LOCAL.STONEUID>) + 1)> <EVAL STRLEN(<ARGS>)> <ARGS>>
+LOCAL.INDEX=0
+LOCAL.RETURN=0
+LOCAL.TOTALSTONES=<QVAL (<LOCAL.TYPEID>) ? <SERV.GUILDSTONES.COUNT> : <SERV.TOWNSTONES.COUNT>>
+WHILE (<LOCAL.INDEX> < <LOCAL.TOTALSTONES>)
+  LOCAL.CURRENTSTONEUID=<QVAL (<LOCAL.TYPEID>) ? <SERV.GUILDSTONES.<LOCAL.INDEX>.UID> : <SERV.TOWNSTONES.<LOCAL.INDEX>.UID>>
+  IF (<LOCAL.CURRENTSTONEUID>)
+    IF (!STRCMPI(<UID.<LOCAL.CURRENTSTONEUID>.ABBREV>,<LOCAL.ABBREV>))
+      LOCAL.RETURN=1
+      LOCAL.INDEX=<LOCAL.TOTALSTONES> + 1
+    ENDIF
+  ENDIF
+  LOCAL.INDEX += 1
+ENDWHILE
+RETURN <LOCAL.RETURN>
+
+
+
+// ------------------------------------------------------
+[FUNCTION F_STONESYS_SENDSMSG]
+REF1=<ARGV[0]>
+LOCAL.MESSAGE=<STREAT <ARGS>>
+IF ((<REF1.TYPE>!=T_STONE_GUILD) && (<REF1.TYPE>!=T_STONE_TOWN))
+  RETURN 0
+ENDIF
+IF (!STRLEN(<LOCAL.MESSAGE>))
+  RETURN 0
+ENDIF
+// REF1.ALLMEMBERS -1,SYSMESSAGE @68,0,0 <F_STONESYS_GETTYPENAME <REF1.UID>>: <LOCAL.MESSAGE>
+REF1.ALLMEMBERS -1,SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, <F_STONESYS_GETTYPENAME <REF1.UID>>: <LOCAL.MESSAGE>
+
+
+
+// ------------------------------------------------------
+
+[FUNCTION F_STONESYS_SPEECH_SENDSMSG]
+REF1=<ARGV[0]>
+LOCAL.MESSAGE=<STREAT <ARGS>>
+IF ((<REF1.TYPE>!=T_STONE_GUILD) && (<REF1.TYPE>!=T_STONE_TOWN))
+	RETURN 0
+ENDIF
+IF (!STRLEN(<LOCAL.MESSAGE>))
+	RETURN 0
+ENDIF
+
+REF1.ALLMEMBERS -1,SYSMESSAGE @68,0,0 <F_STONESYS_GETTYPENAME <REF1.UID>> [<NAME>]: <LOCAL.MESSAGE>
+
+
+
+// ------------------------------------------------------
+[FUNCTION f_stonesys_determine_timeleft]
+local.sec=<eval (<argn>-<serv.time>)/10>
+If (<eval <local.sec>/86400>)
+  local.timeleft=<eval <local.sec>/86400> gun,
+elif (<eval <local.sec>/3600>)
+  local.timeleft=<eval <local.sec>/3600> saat,
+elif (<eval <local.sec>/60>)
+  local.timeleft=<eval <local.sec>/60> dk,
+else
+  local.timeleft=<eval <local.sec>> sn.
+endif
+return <local.timeleft>
+
+
+
+
+// ------------------------------------------------------
+[FUNCTION F_STONESYS_GETTYPENAME]
+REF1 = <ARGV[0]> // THE STONE
+
+LOCAL.TYPENAME = <DEF.STONECONFIG_TYPENAME_UNK>
+IF ( !<REF1.ISITEM> )
+ELIF ( <REF1.TYPE> == T_STONE_GUILD )
+	LOCAL.TYPENAME = <DEF.STONECONFIG_TYPENAME_GUILD>
+ELIF ( <REF1.TYPE> == T_STONE_TOWN )
+	LOCAL.TYPENAME = <DEF.STONECONFIG_TYPENAME_TOWN>
+ENDIF
+
+RETURN <LOCAL.TYPENAME>
+
+
+
+// ------------------------------------------------------
+
+[FUNCTION F_STONESYS_UPDATENOTO]
+REF1 = <ARGV[0]> // THE STONE
+IF (<REF1.ISCHAR>)
+	RETURN 0
+ENDIF
+IF ((<REF1.TYPE>!=T_STONE_GUILD) && (<REF1.TYPE>!=T_STONE_TOWN))
+	RETURN 0
+ENDIF
+
+
+// ------------------------------------------------------
+// -------   HARDCODED FUNCTIONS CALLED BY SPHERE  -------
+// ------------------------------------------------------
+
+// CALLED TO CHECK IF A STONE IS AT WAR (IF COMMENTED SPHERE WILL USE ITS INTERNAL CHECK)
+// I -> STONE
+// ARGO -> STONE TO CHECK AGAINST
+// RETURN -> 0: NOT AN ENEMY
+// 1: AN ENEMY
+// 2: USE SPHERE INTERNAL CHECK
+[COMMENT FUNCTION F_STONESYS_INTERNAL_ISATWARWITH]
+IF ((<TYPE> == T_STONE_GUILD) && (<ARGO.TYPE> == T_STONE_GUILD))
+	IF (<ALIGN> && <ARGO.ALIGN>)
+	  RETURN (<ALIGN>!=<ARGO.ALIGN>)
+	ENDIF
+	IF (<GUILDFROMUID.<ARGO.UID>.ISENEMY> && <ARGO.GUILDFROMUID.<UID>.ISENEMY>)
+	  RETURN 1
+	ENDIF
+	RETURN 0
+ELSE IF ((<TYPE> == T_STONE_TOWN) && (<ARGO.TYPE> == T_STONE_TOWN))
+	IF (<GUILDFROMUID.<ARGO.UID>.ISENEMY> && <ARGO.GUILDFROMUID.<UID>.ISENEMY>)
+	  RETURN 1
+	ENDIF
+	RETURN 0
+ENDIF
+RETURN 2
+
+
+// CALLED TO CHECK IF A STONE IS ALLIED (IF COMMENTED SPHERE WILL USE ITS INTERNAL CHECK)
+// I -> STONE
+// ARGO -> STONE TO CHECK AGAINST
+// RETURN -> 0: NOT AN ALLY
+// 1: AN ALLY
+// 2: USE SPHERE INTERNAL CHECK
+[COMMENT FUNCTION F_STONESYS_INTERNAL_ISALLIEDWITH]
+IF ((<TYPE> == T_STONE_GUILD) && (<ARGO.TYPE> == T_STONE_GUILD))
+	IF (<GUILDFROMUID.<ARGO.UID>.ISALLY> && <ARGO.GUILDFROMUID.<UID>.ISALLY>)
+	  RETURN 1
+	ENDIF
+
+	RETURN 0
+ENDIF
+RETURN 2
+
+[EOF]

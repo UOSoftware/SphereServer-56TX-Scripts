@@ -1,0 +1,728 @@
+
+
+[TEMPLATE VENDOR_S_DEED_TEMPLATE]
+CATEGORY=Vendor Templates
+SUBSECTION=Sell Templates
+DESCRIPTION=Deed Vendor
+SELL=i_house_interior_decorator,{15 25}
+SELL=i_deed_stone_and_plaster_house,{2 6}
+SELL=i_deed_field_stone_house,{2 6}
+SELL=i_deed_small_brick_house,{2 6}
+SELL=i_deed_wooden_house,{2 6}
+SELL=i_deed_wood_and_plaster_house,{2 6}
+SELL=i_deed_thatched_roof_cottage,{2 6}
+SELL=i_deed_brick_house,{2 6}
+SELL=i_deed_two_story_wood_and_plaster_house,{2 6}
+SELL=i_deed_two_story_stone_and_plaster_house,{2 6}
+SELL=i_deed_tower,{2 6}
+SELL=i_deed_small_stone_keep,{2 6}
+SELL=i_deed_Castle,{2 6}
+SELL=i_deed_large_house_with_patio,{2 6}
+SELL=i_deed_marble_house_with_patio,{5 10}
+SELL=i_deed_small_stone_tower,{10 20}
+SELL=i_deed_two_story_log_cabin,{10 20}
+SELL=i_deed_sandstone_house_with_patio,{10 20}
+SELL=i_deed_two_story_villa,{10 20}
+SELL=i_deed_small_stone_workshop,{10 20}
+SELL=i_deed_small_marble_workshop,{10 20}
+SELL=i_deed_tower,{2 6}
+SELL=i_deed_Castle,{2 6}
+
+
+
+[TEMPLATE VENDOR_S_BAKER_TEMPLATE]
+CATEGORY=Vendor Templates
+SUBSECTION=Sell Templates
+DESCRIPTION=Baker
+SELL=i_dough,{30 105}
+
+
+
+[TEMPLATE VENDOR_S_BUTCHER_TEMPLATE]
+CATEGORY=Vendor Templates
+SUBSECTION=Sell Templates
+DESCRIPTION=Butcher
+SELL=i_knife_butcher,{4 20}
+SELL=i_cleaver_meat,{4 20}
+SELL=i_knife_skinning,{4 20}
+
+[TEMPLATE VENDOR_S_CARPENTER]
+CATEGORY=Vendor Templates
+SUBSECTION=Sell Templates
+DESCRIPTION=Carpenter
+SELL=i_log,(30 80}
+SELL=i_board,{30 80}
+SELL=i_sticks,{10 30}
+SELL=i_nails,{10 30}
+SELL=i_knife_draw,{10 30}
+SELL=i_froe,{10 30}
+SELL=i_inshave,{10 30}
+SELL=i_scorp,{10 30}
+SELL=i_saw_dovetail,{10 30}
+SELL=i_saw,{10 30}
+SELL=i_hammer,{10 30}
+SELL=i_plane_moulding,{10 30}
+SELL=i_plane_smoothing,{10 30}
+SELL=i_plane_jointing,{10 30}
+SELL=i_drum,{10 30}
+SELL=i_tambourine,{10 30}
+SELL=i_lyre,{10 30}
+SELL=i_lute,{10 30}
+
+[TEMPLATE VENDOR_S_COBBLER]
+CATEGORY=Vendor Templates
+SUBSECTION=Sell Templates
+DESCRIPTION=Cobbler
+SELL=i_sandals,{2 12}
+SELL=i_boots_thigh,{2 6}
+SELL=i_shoes_plain,{2 6}
+SELL=i_boots_calf,{2 6}
+
+
+
+
+[TEMPLATE VENDOR_S_FARMER]
+CATEGORY=Vendor Templates
+SUBSECTION=Sell Templates
+DESCRIPTION=Farmer
+SELL=i_EGGS_FRESH,{10 40}
+SELL=i_hay_sheaf,{10 40}
+
+[TEMPLATE VENDOR_S_FURTRADER]
+CATEGORY=Vendor Templates
+SUBSECTION=Sell Templates
+DESCRIPTION=Furtrader
+SELL=i_hide,{10 40}
+SELL=i_knife_skinning,{3 30}
+
+
+[TEMPLATE VENDOR_S_SHEPHERD]
+CATEGORY=Vendor Templates
+SUBSECTION=Buy Templates
+DESCRIPTION=Shepherd
+SELL=I_WOOL,{6 34}
+SELL=i_shepherds_crook,{6 34}
+
+
+[TEMPLATE VENDOR_S_TANNER]
+CATEGORY=Vendor Templates
+SUBSECTION=Sell Templates
+DESCRIPTION=Tanner
+SELL=VENDOR_S_ARMORER_LEATHER
+SELL=i_hides_cut_2,{5 55}
+SELL=i_knife_skinning,{5 55}
+SELL=i_bag,{5 55}
+SELL=i_pouch,{5 55}
+SELL=i_backpack,{5 55}
+
+
+[TEMPLATE VENDOR_S_VEGSELLER]
+CATEGORY=Vendor Templates
+SUBSECTION=Sell Templates
+DESCRIPTION=Vegetable Seller
+SELL=i_hay_sheaf,{6 26}
+
+[TEMPLATE VENDOR_S_VET]
+CATEGORY=Vendor Templates
+SUBSECTION=Sell Templates
+DESCRIPTION=Veterinarian
+SELL=i_bandage,{6 66}
+// SELL=i_pet_horse_tan,{5 10}
+// SELL=i_pet_horse_gray,{5 10}
+// SELL=i_pet_horse_brown_lt,{5 10}
+// SELL=i_pet_horse_brown_dk,{5 10}
+// SELL=i_pet_horse_pack,{5 10}
+// SELL=i_pet_llama_pack,{5 10}
+SELL=i_pet_dog,{2 13}
+SELL=i_pet_cat,{2 13}
+
+
+[TEMPLATE VENDOR_S_WAITER]
+CATEGORY=Vendor Templates
+SUBSECTION=Sell Templates
+DESCRIPTION=Waiter
+SELL=i_bottle_ale,{2 24}
+SELL=i_BOTTLE_WINE,{2 24}
+SELL=i_bottle_liquor,{2 24}
+
+
+[TEMPLATE VENDOR_S_ALCHEMIST]
+CATEGORY=Vendor Templates
+SUBSECTION=Sell Templates
+DESCRIPTION=Alchemist
+// SELL=i_keg_potion,{5 12}
+SELL=i_potion_refresh,{1 2}
+SELL=i_potion_agility,{1 2}
+SELL=i_potion_nightsight,{1 2}
+SELL=i_potion_strength,{3 18}
+SELL=i_potion_cure,{3 18}
+SELL=i_mortar_pestle,{3 18}
+SELL=i_reag_black_pearl,900
+SELL=i_reag_blood_moss,900
+SELL=i_reag_garlic,900
+SELL=i_reag_ginseng,900
+SELL=i_reag_mandrake_root,900
+SELL=i_reag_nightshade,900
+SELL=i_reag_sulfur_ash,900
+SELL=i_reag_spider_silk,900
+SELL=i_bottle_empty,900
+
+
+
+[TEMPLATE VENDOR_S_MAGE_SHOP]
+CATEGORY=Vendor Templates
+SUBSECTION=Sell Templates
+DESCRIPTION=Mage
+SELL=i_magic_reg30,900
+SELL=i_magic_reg60,900
+SELL=i_magic_reg90,900
+SELL=random_first_circle,{1 4}
+SELL=random_second_circle,{1 4}
+SELL=random_third_circle,{1 4}
+SELL=i_rune_marker,{4 12}
+SELL=i_scroll_blank,{6000 9000}
+SELL=i_reag_black_pearl,9000
+SELL=i_reag_blood_moss,9000
+SELL=i_reag_garlic,9000
+SELL=i_reag_ginseng,9000
+SELL=i_reag_mandrake_root,9000
+SELL=i_reag_nightshade,9000
+SELL=i_reag_sulfur_ash,9000
+SELL=i_reag_spider_silk,9000
+
+
+[TEMPLATE VENDOR_S_COOK]
+CATEGORY=Vendor Templates
+SUBSECTION=Sell Templates
+DESCRIPTION=Cook
+SELL=i_kindling,{4 24}
+SELL=i_EGGS_FRESH,{4 24}
+
+
+[TEMPLATE VENDOR_S_WEAVER]
+CATEGORY=Vendor Templates
+SUBSECTION=Sell Templates
+DESCRIPTION=Weaver
+SELL=i_DYES,{3 38}
+SELL=i_dye_tub,{3 38}
+SELL=i_cloth,{3 38}
+SELL=i_cloth_bolt,{3 38}
+SELL=i_yarn_ball,{3 38}
+SELL=i_scissors,{3 38}
+
+
+[TEMPLATE VENDOR_S_TAILOR]
+CATEGORY=Vendor Templates
+SUBSECTION=Sell Templates
+DESCRIPTION=Tailor
+// SELL=i_disguise,{10 40}
+SELL=i_sewing_kit,{2 24}
+SELL=i_scissors,{2 24}
+SELL=i_dye_tub,{2 24}
+SELL=i_DYES,{2 24}
+SELL=i_shirt_plain,{2 24}
+SELL=i_shirt_fancy,{2 24}
+SELL=i_pants_short,{2 24}
+SELL=i_pants_long,{2 24}
+SELL=i_dress_full,{2 24}
+SELL=i_dress_plain,{2 24}
+SELL=i_skirt_long,{2 24}
+SELL=i_skirt_short,{2 24}
+SELL=i_kilt,{2 24}
+SELL=i_apron_half,{2 24}
+SELL=i_robe,{2 24}
+SELL=i_cape,{2 24}
+SELL=i_doublet,{2 24}
+SELL=i_tunic,{2 24}
+SELL=i_jester_suit,{2 24}
+SELL=i_hat_jester,{2 24}
+SELL=i_hat_floppy,{2 24}
+COLOR=colors_all
+SELL=i_hat_wide_brim,{2 24}
+COLOR=colors_all
+SELL=i_cap,{2 24}
+COLOR=colors_all
+SELL=i_hat_straw_tall,{2 24}
+COLOR=colors_all
+SELL=i_hat_straw,{2 24}
+COLOR=colors_all
+SELL=i_hat_wizards,{2 24}
+COLOR=colors_all
+SELL=i_leather_cap,{2 24}
+COLOR=colors_all
+SELL=i_hat_feather,{2 24}
+COLOR=colors_all
+SELL=i_hat_tricorne,{2 24}
+COLOR=colors_all
+SELL=i_bandana,{2 24}
+COLOR=colors_all
+SELL=i_skull_cap,{2 24}
+COLOR=colors_all
+SELL=i_bolt_cloth,{2 24}
+COLOR=colors_all
+
+
+[TEMPLATE VENDOR_S_TINKER]
+CATEGORY=Vendor Templates
+SUBSECTION=Sell Templates
+DESCRIPTION=Tinker
+
+SELL=i_clock,{4 34}
+SELL=i_nails,{4 34}
+SELL=i_clock_parts,{4 34}
+SELL=i_axel_and_gears,{4 34}
+SELL=i_gears,{4 34}
+SELL=i_hinge,{4 34}
+SELL=i_sextant,{4 34}
+SELL=i_sextant_parts,{4 34}
+SELL=i_sticks,{4 34}
+SELL=i_springs,{4 34}
+SELL=i_key_copper,{4 34}
+SELL=i_key_gold,{4 34}
+SELL=i_key_iron,{4 34}
+SELL=i_key_rusty,{4 34}
+SELL=i_key_ring,{4 34}
+SELL=i_lockpick,{4 34}
+SELL=i_tinker_tools,{4 34}
+SELL=i_board,{4 34}
+SELL=i_ingot_iron,{4 34}
+SELL=i_sewing_kit,{4 34}
+SELL=i_knife_draw,{4 34}
+SELL=i_froe,{4 34}
+SELL=i_inshave,{4 34}
+SELL=i_scorp,{4 34}
+SELL=i_knife_butcher,{4 34}
+SELL=i_scissors,{4 34}
+SELL=i_tongs,{4 34}
+SELL=i_saw_dovetail,{4 34}
+SELL=i_saw,{4 34}
+SELL=i_hammer,{4 34}
+SELL=i_hammer_smith,{4 34}
+SELL=i_hammer_sledge,{4 34}
+SELL=i_plane_moulding,{4 34}
+SELL=i_plane_smoothing,{4 34}
+SELL=i_plane_jointing,{4 34}
+SELL=i_pickaxe,{4 34}
+SELL=i_drum,{4 34}
+SELL=i_tambourine,{4 34}
+SELL=i_lyre,{4 34}
+SELL=i_lute,{4 34}
+
+
+[TEMPLATE VENDOR_S_HEALER_SHOP]
+CATEGORY=Vendor Templates
+SUBSECTION=Sell Templates
+DESCRIPTION=Healer
+SELL=i_potion_heal,{2 5}
+SELL=i_reag_ginseng,900
+SELL=i_reag_garlic,900
+SELL=i_potion_refresh,{2 5}
+
+[TEMPLATE VENDOR_S_FISHER]
+CATEGORY=Vendor Templates
+SUBSECTION=Sell Templates
+DESCRIPTION=Fisherman
+SELL=i_fishing_pole,{4 24}
+SELL=i_fishing_net_green,{4 24}
+
+[TEMPLATE VENDOR_S_MAPMAKER]
+CATEGORY=Vendor Templates
+SUBSECTION=Sell Templates
+DESCRIPTION=Mapmaker
+SELL=i_map_blank,{10 60} 
+
+[TEMPLATE VENDOR_S_SHIP]
+CATEGORY=Vendor Templates
+SUBSECTION=Sell Templates
+DESCRIPTION=Shipwright
+SELL=i_deed_small_ship_n,{10 14}
+SELL=i_deed_medium_ship_n,{8 12}
+SELL=i_deed_large_ship_n,{3 5}
+SELL=i_deed_small_dragon_ship_n,{6 9}
+SELL=i_deed_medium_dragon_ship_n,{4 7}
+SELL=i_deed_large_dragon_ship_n,{1 3}
+
+[TEMPLATE VENDOR_S_INNKEEPER]
+CATEGORY=Vendor Templates
+SUBSECTION=Sell Templates
+DESCRIPTION=Innkeeper
+SELL=i_bottle_ale,{5 25}
+SELL=i_BOTTLE_WINE,{5 25}
+SELL=i_bottle_liquor,{5 25}
+SELL=i_chessboard,{5 25}
+SELL=i_checkerboard,{5 25}
+SELL=i_backgammon_game,{5 25}
+SELL=i_dice_cup,{5 25}
+
+
+[TEMPLATE VENDOR_S_PROVISIONER]
+CATEGORY=Vendor Templates
+SUBSECTION=Sell Templates
+DESCRIPTION=Provisioner
+// SELL=i_candle,{10 40}
+// SELL=i_lantern,{10 40}
+// SELL=I_TORCH,{10 40}
+SELL=I_DEED_AILE,{5 10}
+SELL=I_DEED_VENDOR,{5 10}
+SELL=I_DEED_STYLE,{5 38}
+SELL=I_DEED_GUILDSTONE,{5 40}
+
+SELL=i_arrow,{400 1000}
+SELL=i_xbolt,{400 1000}
+SELL=I_LOCKPICK,{20 80}
+SELL=I_BOOK_SM,{5 38}
+SELL=I_BOOK_LG,{5 38}
+// SELL=I_BOOK_GLASS,{150 300}
+// SELL=I_BOOK_STONE,{150 300}
+SELL=I_BOX_WOOD,{20 80}
+SELL=I_BAG,{20 80}
+SELL=I_BASKET_SQUARE,{20 80}
+
+SELL=I_BALL_REPUTATION,{100 150}
+SELL=I_KEY_COPPER,{5 38}
+SELL=I_BEDROLL,{5 38}
+SELL=I_KINDLING,{5 38}
+SELL=I_OIL_FLASK,{10 40}
+SELL=I_CHESSBOARD,{5 38}
+SELL=I_CHECKERBOARD,{5 38}
+SELL=I_BACKGAMMON_GAME,{5 38}
+SELL=I_DICE_CUP,{5 38}
+
+
+
+[TEMPLATE VENDOR_S_JEWELER]
+CATEGORY=Vendor Templates
+SUBSECTION=Sell Templates
+DESCRIPTION=Jeweler
+SELL=i_ring_gold,{3 13}
+SELL=i_necklace_silver_beads,{3 13}
+SELL=i_necklace_silver,{3 13}
+SELL=i_necklace_gold_beads,{3 13}
+SELL=i_necklace_gold,{3 13}
+SELL=i_necklace_metal_beads,{3 13}
+SELL=i_beads,{3 13}
+SELL=i_bracelet_gold,{3 13}
+SELL=i_earrings_gold,{3 13}
+
+SELL=i_crystal_of_com_t1,{3 13}
+SELL=i_crystal_of_com_t2,{3 13}
+SELL=i_crystal_of_com_t3,{3 13}
+SELL=i_gem_star_sapphire,{3 13}
+SELL=i_gem_emerald,{3 13}
+SELL=i_gem_sapphire,{3 13}
+SELL=i_gem_ruby,{3 13}
+SELL=i_gem_citrine,{3 13}
+SELL=i_gem_amethyst,{3 13}
+SELL=i_gem_tourmaline,{3 13}
+SELL=i_gem_amber,{3 13}
+SELL=i_gem_diamond,{3 13}
+
+
+[TEMPLATE VENDOR_S_TAVERNKEEPER]
+CATEGORY=Vendor Templates
+SUBSECTION=Sell Templates
+DESCRIPTION=Tavernkeeper
+SELL=i_ale_amber,{6 26}
+SELL=i_ale_honey,{6 26}
+SELL=i_ale_brown,{6 26}
+SELL=i_ale_spiced,{6 26}
+SELL=i_ale_smoked,{6 26}
+SELL=i_ale_stout,{6 26}
+SELL=i_ale_oktoberfest,{6 26}
+SELL=i_bottle_ale,{6 26}
+SELL=i_bottle_wine,{6 26}
+SELL=i_bottle_liquor,{6 26}
+SELL=i_JUG_CIDER,{6 26}
+SELL=i_pitcher_ale,{6 26}
+SELL=i_pitcher_cider,{6 26}
+SELL=i_pitcher_glass,{6 26}
+SELL=i_pitcher_liquor,{6 26}
+SELL=i_pitcher_wine,{6 26}
+SELL=i_pitcher_water,{6 26}
+SELL=i_chessboard,{6 26}
+SELL=i_checkerboard,{6 26}
+SELL=i_backgammon_game,{6 26}
+SELL=i_dice_cup,{6 26}
+
+
+[TEMPLATE VENDOR_S_BOWYER]
+CATEGORY=Vendor Templates
+SUBSECTION=Sell Templates
+DESCRIPTION=Bowyer
+SELL=i_crossbow,{4 12}
+SELL=i_crossbow_heavy,{4 12}
+SELL=i_bow,{4 12}
+SELL=i_arrow,{400 1000}
+SELL=i_xbolt,{400 1000}
+SELL=i_feather,{24 72}
+SELL=i_ARROW_SHAFT,{24 72}
+
+
+
+[TEMPLATE VENDOR_S_TRAINER]
+CATEGORY=Vendor Templates
+SUBSECTION=Sell Templates
+DESCRIPTION=Animal Trainer
+SELL=i_deed_animal,{60 85}
+SELL=i_staff_taming,{2 5}
+SELL=i_pet_horse_tan_2,{13 25}
+SELL=i_pet_horse_brown_dk,{13 25}
+SELL=i_pet_horse_brown_lt,{13 25}
+SELL=i_pet_horse_gray_2,{13 25}
+SELL=i_pet_horse_pack,{1 5}
+SELL=i_pet_llama_pack,{1 5}
+
+
+[TEMPLATE VENDOR_S_ARMORER_LEATHER]
+CATEGORY=Vendor Templates
+SUBSECTION=Sell Templates
+DESCRIPTION=Leather Armourer
+SELL=i_leather_cap,{10 15}
+SELL=i_leather_gorget,{10 15}
+SELL=i_leather_sleeves,{10 15}
+SELL=i_leather_gloves,{10 15}
+SELL=i_leather_tunic,{10 15}
+SELL=i_leather_leggings,{10 15}
+SELL=i_studded_gorget,{10 15}
+SELL=i_studded_sleeves,{10 15}
+SELL=i_studded_tunic,{10 15}
+SELL=i_studded_leggings,{10 15}
+SELL=i_studded_gloves,{10 15}
+SELL=i_armor_female_studded,{10 15}
+SELL=i_armor_female_leather,{10 15}
+SELL=i_armor_female_shorts,{10 15}
+SELL=i_armor_female_skirt,{10 15}
+SELL=i_armor_female_bustier,{10 15}
+SELL=i_armor_female_bustier_studded,{10 15}
+
+
+[TEMPLATE VENDOR_S_ARMORER_RING]
+CATEGORY=Vendor Templates
+SUBSECTION=Sell Templates
+DESCRIPTION=Ring Armourer
+SELL=i_ringmail_sleeves,{5 11}
+SELL=i_ringmail_gloves,{5 11}
+SELL=i_ringmail_tunic,{5 11}
+SELL=i_ringmail_leggings,{5 11}
+
+
+[TEMPLATE VENDOR_S_ARMORER_CHAIN]
+CATEGORY=Vendor Templates
+SUBSECTION=Sell Templates
+DESCRIPTION=Chain Armourer
+SELL=i_chainmail_coif,{8 15}
+SELL=i_chainmail_tunic,{8 15}
+SELL=i_chainmail_leggings,{8 15}
+
+
+[TEMPLATE VENDOR_S_ARMORER_PLATE]
+CATEGORY=Vendor Templates
+SUBSECTION=Sell Templates
+DESCRIPTION=Plate Armourer
+SELL=i_bascinet,{10 15}
+SELL=i_helm_nose,{10 15}
+SELL=i_helm_open,{10 15}
+SELL=i_helm_closed,{10 15}
+SELL=i_platemail_helm,{10 15}
+SELL=i_platemail_gorget,{10 15}
+SELL=i_platemail_arms,{10 15}
+SELL=i_platemail_gloves,{10 15}
+SELL=i_platemail_chest,{10 15}
+SELL=i_platemail_leggings,{10 15}
+
+
+[TEMPLATE VENDOR_S_ARMORER_SHIELDS]
+CATEGORY=Vendor Templates
+SUBSECTION=Sell Templates
+DESCRIPTION=Shield Armourer
+SELL=i_shield_wood,{15 20}
+SELL=i_shield_kite_wood,{12 16}
+SELL=i_shield_buckler,{10 12}
+SELL=i_shield_round_metal,{8 10}
+SELL=i_shield_round_bronze,{5 7}
+SELL=i_shield_kite_metal,{5 7}
+SELL=i_shield_heater,{3 6}
+
+
+[TEMPLATE VENDOR_S_WEAPONS_BLADED]
+CATEGORY=Vendor Templates
+SUBSECTION=Sell Templates
+DESCRIPTION=Bladed Weaponsmith
+SELL=i_cleaver_meat,{10 15}
+SELL=i_katana,{6 8}
+SELL=i_cutlass,{10 15}
+SELL=i_scimitar,{10 15}
+SELL=i_sword_broad,{10 18}
+SELL=i_sword_long,{10 18}
+SELL=i_sword_viking,{4 6}
+SELL=i_bardiche,{3 5}
+SELL=i_halberd,{3 5}
+SELL=i_axe_battle,{10 15}
+SELL=i_axe,{10 15}
+SELL=i_axe_exec,{10 15}
+SELL=i_axe_battle_large,{10 15}
+SELL=i_axe_double,{10 15}
+SELL=i_axe_two_hand,{10 15}
+SELL=i_axe_war,{10 15}
+SELL=i_dagger,{10 15}
+SELL=i_kryss,{10 15}
+SELL=i_spear_short,{10 15}
+SELL=i_spear,{10 15}
+SELL=i_pitchfork,{10 15}
+
+
+[TEMPLATE VENDOR_S_WEAPONS_BLUNT]
+CATEGORY=Vendor Templates
+SUBSECTION=Sell Templates
+DESCRIPTION=Blunt Weaponsmith
+SELL=i_club,{10 15}
+SELL=i_mace,{10 15}
+SELL=i_mace_war,{10 15}
+SELL=i_maul,{10 15}
+SELL=i_hammer_pick,{10 15}
+SELL=i_hammer_war,{10 15}
+SELL=i_staff_black,{10 15}
+
+
+[TEMPLATE VENDOR_S_MAGE_1ST]
+CATEGORY=Vendor Templates
+SUBSECTION=Sell Templates
+DESCRIPTION=1st Circle Mage
+SELL=i_spellbook,{10 15}
+SELL=i_scroll_blank,{5000 9000}
+SELL=i_hat_wizards,{10 15}
+SELL=i_rune_marker,{10 15}
+SELL=i_potion_refresh,{1 2}
+SELL=i_potion_agility,{1 2}
+SELL=i_potion_nightsight,{1 2}
+SELL=i_potion_strength,{1 2}
+SELL=i_potion_poison,{1 2}
+SELL=i_potion_cure,{1 2}
+SELL=i_reag_black_pearl,{1000 1500}
+SELL=i_reag_blood_moss,{1000 1500}
+SELL=i_reag_garlic,{1000 1500}
+SELL=i_reag_ginseng,{1000 1500}
+SELL=i_reag_mandrake_root,{1000 1500}
+SELL=i_reag_nightshade,{1000 1500}
+SELL=i_reag_sulfur_ash,{1000 1500}
+SELL=i_reag_spider_silk,{1000 1500}
+
+SELL=i_scroll_reactive_armor,{10 15}
+SELL=i_scroll_clumsy,{10 15}
+SELL=i_scroll_create_food,{10 15}
+SELL=i_scroll_feeblemind,{10 15}
+SELL=i_scroll_heal,{10 15}
+SELL=i_scroll_magic_arrow,{10 15}
+SELL=i_scroll_night_sight,{10 15}
+SELL=i_scroll_weaken,{10 15}
+
+[TEMPLATE VENDOR_S_MAGE_2ND]
+CATEGORY=Vendor Templates
+SUBSECTION=Sell Templates
+DESCRIPTION=2nd Circle Mage
+SELL=VENDOR_S_MAGE_1ST
+SELL=i_scroll_agility,{10 15 }
+SELL=i_scroll_cunning,{10 15 }
+SELL=i_scroll_cure,{10 15 }
+SELL=i_scroll_harm,{10 15 }
+SELL=i_scroll_magic_trap,{10 15 }
+SELL=i_scroll_magic_untrap,{10 15 }
+SELL=i_scroll_protection,{10 15 }
+SELL=i_scroll_strength,{10 15 }
+
+
+[TEMPLATE VENDOR_S_MAGE_3RD]
+CATEGORY=Vendor Templates
+SUBSECTION=Sell Templates
+DESCRIPTION=3rd Circle Mage
+SELL=VENDOR_S_MAGE_2ND
+SELL=i_scroll_bless,{10 15 }
+SELL=i_scroll_fireball,{10 15 }
+SELL=i_scroll_magic_lock,{10 15 }
+SELL=i_scroll_poison,{10 15 }
+SELL=i_scroll_telekinesis,{10 15 }
+SELL=i_scroll_teleport,{10 15}
+SELL=i_scroll_unlock,{10 15}
+SELL=i_scroll_wall_of_stone,{10 15}
+
+[TEMPLATE VENDOR_S_MAGE_4TH]
+CATEGORY=Vendor Templates
+SUBSECTION=Sell Templates
+DESCRIPTION=4th Circle Mage
+SELL=VENDOR_S_MAGE_3RD
+SELL=i_scroll_archcure,{10 15}
+SELL=i_scroll_archprotection,{10 15}
+SELL=i_scroll_curse,{10 15}
+SELL=i_scroll_fire_field,{10 15}
+SELL=i_scroll_greater_heal,{10 15}
+SELL=i_scroll_lightning,{10 15}
+SELL=i_scroll_mana_drain,{10 15}
+SELL=i_scroll_recall,1
+
+[TEMPLATE VENDOR_S_BLACKSMITH]
+CATEGORY=Vendor Templates
+SUBSECTION=Sell Templates
+DESCRIPTION=Blacksmith
+SELL=i_ingot_iron,{5 18}
+SELL=i_tongs,{2 3}
+SELL=i_hammer_smith,{4 7}
+
+[TEMPLATE VENDOR_S_COLOURED_ARMOR]
+CATEGORY=Vendor Templates
+SUBSECTION=Sell Templates
+DESCRIPTION=Coloured Armourer
+
+
+[TEMPLATE VENDOR_S_MAGIC_ARMOR]
+CATEGORY=Vendor Templates
+SUBSECTION=Sell Templates
+DESCRIPTION=Magic Armourer
+
+
+[TEMPLATE VENDOR_S_MAGIC_WEAPONS]
+CATEGORY=Vendor Templates
+SUBSECTION=Sell Templates
+DESCRIPTION=Magic Weaponsmith
+
+[TEMPLATE VENDOR_S_MAGIC_ITEMS]
+CATEGORY=Vendor Templates
+SUBSECTION=Sell Templates
+DESCRIPTION=Magic Item
+
+
+[TEMPLATE VENDOR_S_MAGE_HIGH]
+CATEGORY=Vendor Templates
+SUBSECTION=Buy Templates
+DESCRIPTION=High Circle Mage
+SELL=VENDOR_B_MAGE_1st
+SELL=VENDOR_B_MAGE_2nd
+SELL=VENDOR_B_MAGE_3rd
+SELL=VENDOR_B_MAGE_4th
+SELL=i_scroll_blade_spirits
+SELL=i_scroll_dispel_field
+SELL=i_scroll_incognito
+SELL=i_scroll_magic_reflection
+SELL=i_scroll_mind_blast
+SELL=i_scroll_paralyze
+SELL=i_scroll_poison_field
+SELL=i_scroll_summon_creature
+SELL=i_scroll_dispel
+SELL=i_scroll_energy_bolt
+SELL=i_scroll_explosion
+SELL=i_scroll_invisibility
+SELL=i_scroll_mark
+SELL=i_scroll_mass_curse
+SELL=i_scroll_paralyze_field
+SELL=i_scroll_reveal
+SELL=i_scroll_chain_lightning
+SELL=i_scroll_energy_field
+SELL=i_scroll_flamestrike
+SELL=i_scroll_gate_travel
+SELL=i_scroll_mana_vampire
+SELL=i_scroll_mass_dispel
+SELL=i_scroll_meteor_swarm
+SELL=i_scroll_polymorph
+SELL=i_scroll_earthquake
+SELL=i_scroll_resurrection
+
+[eof]

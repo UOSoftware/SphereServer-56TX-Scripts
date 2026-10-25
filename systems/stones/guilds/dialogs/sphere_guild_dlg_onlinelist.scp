@@ -1,0 +1,52 @@
+
+
+
+[DIALOG D_GUILD_ONLINE_LISTS]
+<DEF.dsp>
+RESIZE 0,0,510,430,Guild - Üye listesi
+DHTMLGUMP 30 50 160 25 1 0 <DEF.CENTER>ÜYE
+DHTMLGUMP 200 50 180 25 1 0 <DEF.CENTER>DURUM/YER
+DHTMLGUMP 390 50 100 25 1 0 <DEF.CENTER>STATÜ
+
+DHTMLGUMP 55 380 400 25 1 0 <DEF.CENTER>Sayfa <SRC.dCTAG0.Dialog.GuildOnlineList.Page> / <SRC.dCTAG0.Dialog.GuildOnlineList.MaxPage><DEF.CENTERE><DEF.BFONTE>
+IF (<SRC.CTAG0.Dialog.GuildOnlineList.Page> > 1)
+	BUTTON 20 380 4014 4015 1 0 1
+ENDIF
+IF (<SRC.CTAG0.Dialog.GuildOnlineList.Page> < <SRC.CTAG0.Dialog.GuildOnlineList.MaxPage>)
+	BUTTON 460 380 4005 4006 1 0 2
+ENDIF
+
+PAGE 1
+LOCAL.Page=1
+LOCAL.Y=75
+FOR <eval ((<SRC.CTAG0.Dialog.GuildOnlineList.Page> - 1) * 15) + 1> <eval (<SRC.CTAG0.Dialog.GuildOnlineList.Page> * 15)>
+	REF1=<SRC.CTAG0.Dialog.GuildOnlineList.C<dLOCAL._FOR>>
+	IF (<REF1>)
+		DTEXT 30 <LOCAL.Y> <DEF.NOTO.<REF1.NOTOGETFLAG>> <REF1.NAME>
+		GUMPPIC +200 <EVAL <LOCAL.Y> + 5> <QVAL (<REF1.ISONLINE>)?118:117>
+		IF (<REF1.ISONLINE>)
+			CALL Func_Map_Colors <REF1.P>
+			DTEXT 215 <LOCAL.Y> <DLOCAL.REGIONCOLOR_MARK> <REF1.REGION.NAME>
+		ELSE
+			DTEXT 215 <LOCAL.Y> 25 Çevrimdışı
+		ENDIF
+		DTEXT 395 <LOCAL.Y> <def.tcolor_text> <DEF.GUILDCONFIG_RANK_<MemberFromUID.<REF1>.PRIV>>
+		LOCAL.Y +=20
+	ENDIF
+ENDFOR
+
+[DIALOG D_GUILD_ONLINE_LISTS button]
+ON=1
+IF (<SRC.CTAG0.Dialog.GuildOnlineList.Page> > 1)
+SRC.CTAG0.Dialog.GuildOnlineList.Page --
+ENDIF
+DIALOG D_GUILD_ONLINE_LISTS
+
+ON=2
+IF (<SRC.CTAG0.Dialog.GuildOnlineList.Page> < <SRC.CTAG0.Dialog.GuildOnlineList.MaxPage>)
+SRC.CTAG0.Dialog.GuildOnlineList.Page ++
+ENDIF
+DIALOG D_GUILD_ONLINE_LISTS
+	
+	
+[eof]

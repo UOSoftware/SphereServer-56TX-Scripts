@@ -1,0 +1,101 @@
+VERSION=0.56T
+
+[dialog d_Town_WarfareStatus]
+5,25
+If (<type>!=t_stone_town)
+  return 1
+elif (<memberfromuid.<src.uid>.uid>!=<src.uid>)&&(!<src.isgm>)
+  return 1
+endif
+  local.charpriv=<QVAL <src.isgm> ? <def0.STONEPRIV_MASTER>:<memberfromuid.<src.uid>.priv>>
+If (<local.charpriv>!=<def0.STONEPRIV_MEMBER>)&&(<local.charpriv>!=<def0.STONEPRIV_MASTER>)
+  return 1
+endif
+
+local.towncount=<guild.count>
+
+// The gump
+page 0
+resizepic 0 0 5054 550 440
+resizepic 10 10 3000 530 420
+dhtmlgump 20 10 500 35 0 0 <def0.center>WARFARE STATUS<def0.centere>
+dhtmlgump 55 400 300 35 0 0 Anasayfaya dön
+button 20 400 4005 4007 1 0 0 // Quit
+  
+  
+  
+page 1
+button 375 375 5224 5224 0 2 0 // Next Page
+dhtmlgump 410 373 100 25 0 0 Sonraki sayfa
+dhtmlgump 20 45 400 20 0 0 Savaş halinde olduğumuz factionlar:
+// At War List
+IF (<GUILD.COUNT <DEF0.STONEPRIV_ENEMY>>==0)  
+  DHTMLGUMP 20 65 400 20 0 0 - Şu anda savaş yok.
+ELSE
+  LOCAL.GICURRENT=0
+  LOCAL.GPCURRENT=0
+  WHILE (<LOCAL.GICURRENT> < <LOCAL.TOWNCOUNT>)
+    LOCAL.GCUIDCURRENT = <GUILD.<LOCAL.GICURRENT>.UID>
+    IF (<GUILDFROMUID.<LOCAL.GCUIDCURRENT>.ISENEMY>)
+      DHTMLGUMP 20 <EVAL (65 + (<local.gpcurrent> * 20))> 300 20 0 0 - <uid.<local.gcuidcurrent>.name> <qval (strlen(<uid.<local.gcuidcurrent>.abbrev>))&&(<DEF0.TOWNSCONFIG_TOWNLIST_SHOWABBREV>) ? [<uid.<local.gcuidcurrent>.abbrev>]:>
+      LOCAL.GPCURRENT += 1
+    ENDIF
+    LOCAL.GICURRENT += 1
+  ENDWHILE
+ENDIF
+  
+  
+  
+PAGE 2
+BUTTON 30 375 5223 5223 0 1 0 // Previous Page
+DHTMLGUMP 65 373 150 25 0 0 Önceki sayfa
+BUTTON 375 375 5224 5224 0 3 0 // Next Page
+DHTMLGUMP 410 373 100 25 0 0 Sonraki sayfa
+DHTMLGUMP 20 45 400 20 0 0 Savaş ilan ettiğimiz factionlar:
+// We Declare List
+IF (<GUILD.COUNT <DEF0.STONEPRIV_WEDECLARED>>==0)  
+  DHTMLGUMP 20 65 400 20 0 0 - Şu an için savaş davetiyesi gönderilmedi.
+ELSE
+  LOCAL.GICURRENT=0
+  LOCAL.GPCURRENT=0
+  WHILE (<LOCAL.GICURRENT> < <LOCAL.TOWNCOUNT>)
+    LOCAL.GCUIDCURRENT = <GUILD.<LOCAL.GICURRENT>.UID>
+    IF (<GUILDFROMUID.<LOCAL.GCUIDCURRENT>.WEWAR> && !<GUILDFROMUID.<LOCAL.GCUIDCURRENT>.THEYWAR>)
+      DHTMLGUMP 20 <EVAL (65 + (<LOCAL.GPCURRENT> * 20))> 300 20 0 0 - <uid.<local.gcuidcurrent>.name> <qval (strlen(<uid.<local.gcuidcurrent>.abbrev>))&&(<DEF0.TOWNSCONFIG_TOWNLIST_SHOWABBREV>) ? [<uid.<local.gcuidcurrent>.abbrev>]:>
+      LOCAL.GPCURRENT += 1
+    ENDIF
+    LOCAL.GICURRENT += 1
+  ENDWHILE
+ENDIF
+  
+  
+
+PAGE 3
+BUTTON 30 375 5223 5223 0 2 0 // Previous Page
+DHTMLGUMP 65 373 150 25 0 0 Önceki sayfa
+DHTMLGUMP 20 45 400 20 0 0 Bize savaş ilan eden factionlar:
+// They Declared List
+IF (<GUILD.COUNT <DEF0.STONEPRIV_THEYDECLARED>>==0)  
+    DHTMLGUMP 20 65 400 20 0 0 - Şu an için savaşa dair herhangi bir davetiye almadık.
+ELSE
+  LOCAL.GICURRENT=0
+  LOCAL.GPCURRENT=0
+  WHILE (<LOCAL.GICURRENT> < <LOCAL.TOWNCOUNT>)
+    LOCAL.GCUIDCURRENT = <GUILD.<LOCAL.GICURRENT>.UID>
+    IF (<GUILDFROMUID.<LOCAL.GCUIDCURRENT>.THEYWAR> && !<GUILDFROMUID.<LOCAL.GCUIDCURRENT>.WEWAR>)
+      DHTMLGUMP 20 <EVAL (65 + (<local.gpcurrent> * 20))> 300 20 0 0 - <uid.<local.gcuidcurrent>.name> <qval (strlen(<uid.<local.gcuidcurrent>.abbrev>))&&(<DEF0.TOWNSCONFIG_TOWNLIST_SHOWABBREV>) ? [<uid.<local.gcuidcurrent>.abbrev>]:>
+      LOCAL.GPCURRENT += 1
+    ENDIF
+    LOCAL.GICURRENT += 1
+  ENDWHILE
+ENDIF
+
+
+  
+[dialog d_Town_WarfareStatus Button]
+ON=0
+sdialog d_Town_Main,0
+return 1
+  
+  
+[EOF]

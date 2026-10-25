@@ -1,0 +1,34 @@
+
+
+
+[REGIONTYPE r_townFaction]
+
+ON=@EXIT
+IF (<SRC.ISPLAYER>)
+SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Faction şehrinden çıktınız.
+ENDIF
+
+ON=@ENTER
+IF !(<SRC.MEMORYFINDTYPE.MEMORY_TOWN>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu alana sadece Faction üyeleri girebilir.
+	RETURN 1
+
+ELSE
+	REF1=<SRC.MEMORYFINDTYPE.MEMORY_TOWN.LINK>
+	IF (<REF1.ISITEM>) && (<REF1.TYPE> == T_STONE_TOWN)
+	
+		IF (<REGION.DEFNAME> != <REF1.TAG0.CITYDEF>)
+			IF (<SRC.ISPLAYER>)
+				SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu şehir sizin factionunuza ait değil.
+				SRC.POISON 100.0
+				SRC.DAMAGE {3 8}
+			ENDIF
+		ELSE
+			SRC.SYSMESSAGELOC <def.tcolor_green>,<def.empty_cliloc2>, Şehrinize hoşgeldiniz sayın <src.name>
+		ENDIF
+		
+	ENDIF
+ENDIF
+
+
+[eof]

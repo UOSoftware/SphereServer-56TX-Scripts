@@ -31,17 +31,25 @@ As a general rule:
 // Defnames folder
 ////////////////////////
 
+
 defnames/defs.scp
+defnames/defs_backwards.scp
 defnames/defs_buffs_debuffs.scp
 defnames/defs_component_props.scp
+defnames/defs_custom.scp
 defnames/defs_faction.scp
 defnames/defs_height.scp
 defnames/defs_html.scp
 defnames/defs_hues.scp
 defnames/defs_mounts.scp
+defnames/defs_msgs.scp
 defnames/defs_sounds.scp
 defnames/defs_sphere.scp
+defnames/defs_templates.scp
+defnames/defs_terrain_types.scp
 defnames/defs_types_hardcoded.scp
+defnames/defs_types_name.scp
+
 
 ////////////////////////
 // World folder

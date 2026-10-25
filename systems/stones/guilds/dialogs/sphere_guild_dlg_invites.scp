@@ -1,0 +1,39 @@
+VERSION=0.56T
+
+[DIALOG D_GUILD_INVITE_ADD_MEMBER]
+<DEF.DSP>
+RESIZE 0,0,250,220,Guild - Uye Daveti
+REF1=<SRC.CTAG0.INVITE_GUILD>
+DORIGIN 20 50
+
+IF (<REF1.ISVALID>)
+	DHTMLGUMP +0 +0 200 25 1 0 Guild adı: <REF1.NAME>
+	DHTMLGUMP +0 +30 200 25 1 0 Guild kısaltması: <REF1.ABBREV>
+	DHTMLGUMP +0 +60 200 25 1 0 Guild destek yönü: <REF1.ALIGNTYPE>
+	DHTMLGUMP +0 +90 200 25 1 0 Guild üye sayısı: <REF1.MEMBER.COUNT>
+	
+	BUTTON +0 +120 4006 4007 1 0 1 
+	DTEXT +30 +120 <def.tcolor_green> Kabul et
+
+	BUTTON +120 +120 4006 4007 1 0 0
+	DTEXT +150 +120 <def.tcolor_red> Reddet
+
+ELSE
+	DTEXT 30 50 <def.tcolor_red> Guild bulunamadı!
+ENDIF
+
+[DIALOG D_GUILD_INVITE_ADD_MEMBER BUTTON]
+ON=0
+REF1=<SRC.CTAG0.INVITE_GUILD>
+IF (<REF1.ISVALID>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, <REF1.NAME> guildinin üyelik teklifini reddetin.
+	SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, <SRC.NAME> guild teklifinizi reddetti.
+ENDIF
+
+ON=1
+REF1=<SRC.CTAG0.INVITE_GUILD>
+IF (<REF1.ISVALID>)
+	F_GUILDSYS_ADDCHARTOGUILD <REF1>,<SRC>,1
+ENDIF
+
+[eof]

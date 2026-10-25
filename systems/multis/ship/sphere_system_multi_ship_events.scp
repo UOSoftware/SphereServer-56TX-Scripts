@@ -1,0 +1,22 @@
+	
+
+[events e_ship_priv]
+
+
+
+[events e_ship_events_player]
+// ON=@ITEMDCLICK
+// IF (<ACT.BASEID> == I_RUNEBOOK)
+	// SRC.SYSMESSAGELOC <def.tcolor_red>,600045, Gemi // "Bu alan (~1_val~) içerisinde bu işlemi yapamazsınız."
+	// RETURN 1
+// ENDIF
+
+ON=@LOGOUT
+REF1=<REGION.UID>
+IF (<REF1>) && (<REF1.TYPE> == T_SHIP)
+	IF (<REF1.MORE2> == 02060000) || (<REF1.TIMER> != -1)
+		REF1.SHIPSTOP
+	ENDIF
+ENDIF
+
+[eof]

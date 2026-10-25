@@ -1,0 +1,96 @@
+VERSION=0.56T
+
+
+[dialog d_Guild_Master_Warfare]
+<DEF.dsp>
+If (<type>!=t_stone_guild)
+  return 1
+elif (<masteruid>!=<src.uid>)&&(!<src.isgm>)
+  return 1
+endif
+
+page 0
+RESIZE 0,0,550,440,Savas Menusu
+
+// dhtmlgump 60 50 300 30 0 0 Guild adını arama yöntemi ile savaş ilan et
+dhtmlgump 60 50 300 30 0 0 Guild listesi
+button 30 50 4006 4007 1 0 1 // Search
+  
+local.gcount=0
+If (<guild.count <def0.STONEPRIV_ENEMY>>)
+  button 30 <eval (160 + (<local.gcount> * 30))> 4006 4007 1 0 2
+  dhtmlgump 60 <eval (160 + (<local.gcount> * 30))> 400 30 0 0 <DEF.BFONT_lGREEN>Barış ilan et.
+  local.gcount += 1
+else
+  gumppic 30 <eval (160 + (<local.gcount> * 30))> 4021
+  dhtmlgump 60 <eval (160 + (<local.gcount> * 30))> 400 30 0 0 <DEF.BFONT_DRED>Mevcut savaş yok.
+  local.gcount += 1
+endif
+  
+If (<guild.count <def0.STONEPRIV_THEYDECLARED>>)
+  button 30 <eval (160 + (<local.gcount> * 30))> 4006 4007 1 0 3
+  dhtmlgump 60 <eval (160 + (<local.gcount> * 30))> 400 30 0 0 Savaş davetlerini kabul et.
+  local.gcount += 1
+  button 30 <eval (160 + (<local.gcount> * 30))> 4006 4007 1 0 4
+  dhtmlgump 60 <eval (160 + (<local.gcount> * 30))> 400 30 0 0 <DEF.BFONT_lGREEN>Savaş davetlerini reddet.
+  local.gcount += 1
+else
+  gumppic 30 <eval (160 + (<local.gcount> * 30))> 4021
+  dhtmlgump 60 <eval (160 + (<local.gcount> * 30))> 400 30 0 0 <DEF.BFONT_DRED>Savaş daveti yok.
+  local.gcount += 1
+endif
+
+If (<guild.count <def0.STONEPRIV_WEDECLARED>>)
+  button 30 <eval (160 + (<local.gcount> * 30))> 4006 4007 1 0 5
+  dhtmlgump 60 <eval (160 + (<local.gcount> * 30))> 400 30 0 0 <DEF.BFONT_lGREEN>Savaş ilanlarını iptal et.
+  local.gcount += 1
+else
+  gumppic 30 <eval (160 + (<local.gcount> * 30))> 4021
+  dhtmlgump 60 <eval (160 + (<local.gcount> * 30))> 400 30 0 0 <DEF.BFONT_DRED>Mevcut savaş ilanı yok.
+  local.gcount += 1
+endif
+
+button 30 400 4015 4016 1 0 0
+dhtmlgump 60 400 400 35 0 0 Önceki menüye dön
+
+
+[dialog d_Guild_Master_Warfare Button]
+ON=0 5  
+IF (<MASTERUID>!=<SRC.UID>)&&(!<SRC.ISGM>)
+	RETURN 1
+ENDIF
+  
+IF (<ARGN1>==0)
+  
+	IF (<MASTERUID>==<SRC.UID>)||(<SRC.ISGM>)
+		SDIALOG D_GUILD_MASTER,0
+	ELSE
+		SDIALOG D_GUILD_MAIN,0
+    ENDIF
+	
+ELSEIF (<ARGN1>==1)
+	SDIALOG D_GUILD_MASTER_WARFARE_DECLAREWAR,0,allguilds
+	 //src.ctag.guild_prompthandler_guilduid=<uid>
+    //local.guildsearch_promptmessage = Arama yolu ile savas ilan edin;
+    //if ( <def0.GUILDCONFIG_ALLOW_ALLGUILD_SEARCH> )
+        //local.guildsearch_promptmessage = <local.guildsearch_promptmessage> ('<def.GUILDCONFIG_ALLOW_ALLGUILD_TEXT>' tum guildleri listeler)
+    //endif
+    //local.guildsearch_promptmessage = <local.guildsearch_promptmessage> (Minimum <dDEF0.GUILDCONFIG_NSEARCH_MINLENGTH> karakter) - Guild adini giriniz:
+    //try src.promptconsole f_prompthandler_guilddclarewar,<local.guildsearch_promptmessage>
+  
+	ELSEIF (<ARGN1>==2)
+		SDIALOG D_GUILD_GUILDLIST,0,<DEF0.GUILDDLG_LISTTYPE_G_DECLAREPEACE>
+	ELSEIF (<ARGN1>==3)
+		SDIALOG D_GUILD_GUILDLIST,0,<DEF0.GUILDDLG_LISTTYPE_G_ACCEPTWAR>
+	ELSEIF (<ARGN1>==4)
+		SDIALOG D_GUILD_GUILDLIST,0,<DEF0.GUILDDLG_LISTTYPE_G_REJECTWAR>
+	ELSEIF (<ARGN1>==5)
+		SDIALOG D_GUILD_GUILDLIST,0,<DEF0.GUILDDLG_LISTTYPE_G_RESCIND>
+	ENDIF
+
+RETURN 1
+
+[EOF]
+
+
+  

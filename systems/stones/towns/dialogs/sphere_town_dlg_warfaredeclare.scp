@@ -1,0 +1,121 @@
+VERSION=0.56T
+
+[dialog d_Town_Master_Warfare_DeclareWar]
+5,25
+LOCAL.TOSEARCH=<ARGS>
+IF (<TYPE>!=T_STONE_TOWN)
+  RETURN 1
+ELIF (<MASTERUID>!=<SRC.UID>)&&(!<SRC.ISGM>)
+  RETURN 1
+ENDIF
+
+src.ctag.dialog_townmasterwarfaredclarewar_townlist=<f_townsys_searchtownname <uid>,<local.tosearch>>
+IF (!<ISEMPTY <SRC.CTAG.DIALOG_TOWNMASTERWARFAREDCLAREWAR_TOWNLIST>>)
+  CALL f_townsys_listsplit <src.ctag.dialog_townmasterwarfaredclarewar_townlist>
+ELSE
+  LOCAL.TOWNLIST_COUNT=0
+ENDIF
+
+IF (!<LOCAL.TOWNLIST_COUNT>)
+	SRC.SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, No results found for "<local.tosearch>".
+	RETURN 1
+ENDIF
+
+//Construct the dialog
+page 0
+resizepic 0 0 5054 550 440
+resizepic 10 10 3000 530 420
+
+DHTMLGUMP 20 10 400 25 0 0 Select the town you wish to declare war on.
+DHTMLGUMP 55 400 245 30 0 0 Send the challenge!
+BUTTON 20 400 4005 4007 1 0 1
+
+
+DHTMLGUMP 335 400 100 35 0 0 Vazgeç
+BUTTON 300 400 4005 4007 1 0 0
+
+For num 0 <eval <local.townlist_count>-1>
+  If (! (<local.num> % 11))
+    If (<local.num>)
+      button 300 370 4005 4007 0 <eval ((<local.num> / 11) + 1)> 0
+      dhtmlgump 335 370 300 35 0 0 Sonraki sayfa
+    endif
+
+    page <eval ((<local.num> / 11) + 1)>
+    If (<local.num>)
+      button 300 370 4014 4016 0 <eval (<local.num> / 11)> 0
+      dhtmlgump 335 370 300 35 0 0 Önceki sayfa
+    endif
+  endif
+
+  radio 20 <eval (35 + ((<local.num> % 11) * 30))> 208 209 0 <eval (<local.num> + 10)>
+
+  local.currenttownuid=<local.townlist_data<dLOCAL.num>>
+
+  If (<local.currenttownuid> <= 0)
+    dhtmlgump 55 <eval (35 + ((<local.num> % 11) * 30))> 300 35 0 0 (unnamed)
+  else
+    dhtmlgump 55 <eval (35 + ((<local.num> % 11) * 30))> 300 35 0 0 <uid.<local.currenttownuid>.Name> <qval (strlen(<uid.<local.currenttownuid>.abbrev>))&&(<DEF0.TOWNSCONFIG_TOWNSLIST_SHOWABBREV>) ? [<uid.<local.currenttownuid>.abbrev>]:>
+  endif
+
+endfor
+
+
+
+[dialog d_Town_Master_Warfare_DeclareWar Button]
+ON=0 1
+If (!<src.ctag.dialog_townmasterwarfaredclarewar_townlist>)
+	SERV.LOG Declare war search function improperly returned info!!  Ctag not set!
+	RETURN 1
+ENDIF
+
+local.war_townlist=<src.ctag.dialog_townmasterwarfaredclarewar_townlist>
+src.ctag.dialog_townmasterwarfaredclarewar_townlist=
+
+IF (<MASTERUID>!=<SRC.UID>)&&(!<SRC.ISGM>)
+	RETURN 1
+ENDIF
+
+IF (<ARGN1>==0)
+	SDIALOG d_town_master_warfare,0
+ELIF (<ARGN1>==1)
+	CALL f_townsys_listsplit <local.war_townlist>
+
+	IF (!<LOCAL.TOWNLIST_COUNT>)
+		RETURN 1
+	ENDIF
+  
+	LOCAL.NUM=<ARGCHKID>-10
+	IF ((<LOCAL.NUM> < 0) || (<LOCAL.NUM> > <LOCAL.TOWNLIST_COUNT>))
+		RETURN 1
+	ENDIF
+
+	LOCAL.SELECTEDTOWN=<LOCAL.TOWNLIST_DATA<DLOCAL.NUM>>
+
+	IF (!<LOCAL.SELECTEDTOWN>)
+		RETURN 1
+	ENDIF
+  
+	IF (<UID.<LOCAL.SELECTEDTOWN>.TYPE>!=T_STONE_TOWN)
+		RETURN 1
+	ENDIF
+
+	IF ( <GUILDFROMUID.<LOCAL.SELECTEDTOWN>.ISENEMY> )
+		SRC.SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, You are already at war with <uid.<local.selectedtown>.name>.
+	ELSEIF ( <GUILDFROMUID.<LOCAL.SELECTEDTOWN>.THEYWAR> && !<GUILDFROMUID.<LOCAL.SELECTEDTOWN>.WEWAR> )
+		IF ( <F_TOWNSYS_CANDECLAREWARWITH <UID>,<LOCAL.SELECTEDTOWN>> )
+			F_TOWNSYS_DECLAREWAR <UID>,<LOCAL.SELECTEDTOWN>,1
+		ENDIF
+	ELSEIF ( <GUILDFROMUID.<LOCAL.SELECTEDTOWN>.WEWAR> && !<GUILDFROMUID.<LOCAL.SELECTEDTOWN>.THEYWAR> )
+		SRC.SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>,A declaration of war is already made to <uid.<local.selectedtown>.name>.
+	ELSEIF ( !<GUILDFROMUID.<LOCAL.SELECTEDTOWN>.WEWAR> && !<GUILDFROMUID.<LOCAL.SELECTEDTOWN>.THEYWAR> )
+		IF ( <F_TOWNSYS_CANDECLAREWARWITH <UID>,<LOCAL.SELECTEDTOWN>> )
+			F_TOWNSYS_DECLAREWAR <UID>,<LOCAL.SELECTEDTOWN>,2
+		ENDIF
+	ENDIF
+
+	SDIALOG d_Town_Master_Warfare,0
+ENDIF
+return 1
+
+[EOF]

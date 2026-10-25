@@ -1,0 +1,62 @@
+VERSION=0.56T
+
+
+
+
+[dialog d_Guild_info]
+<DEF.DSP>
+RESIZE 0,0,310,300,Guild - Bilgi
+
+LOCAL.MASTERNAME <QVAL (<EVAL STRLEN(<MASTERTITLE>)>)?<MASTERTITLE>:><MASTER>
+
+DHTMLGUMP 30 50 250 25 1 0 Guild Adı : <NAME>
+DHTMLGUMP 30 80 250 25 1 0 Guildmaster : <LOCAL.MASTERNAME>
+
+IF (STRMATCH('<ABBREV>',''))
+	DHTMLGUMP 30 110 250 25 1 0 Guild Kısaltması : Yok
+ELSE
+	DHTMLGUMP 30 110 250 25 1 0 Guild Kısaltması : <ABBREV>
+ENDIF
+
+DHTMLGUMP 30 140 250 25 1 0 Guild Üye Sayısı : <DMEMBER.COUNT>
+DHTMLGUMP 30 170 250 25 1 0 Guild Puanı : <f_guildsys_points_all>
+DHTMLGUMP 30 200 250 25 1 0 Guild Kurulum Tarihi : <TAG0.created_at>
+DHTMLGUMP 30 230 200 25 1 0 Guild Destek Yönü : <DEF0.GUILDCONFIG_ALIGN_<ALIGN>>
+
+IF (<ALIGN> == 1)
+	TILEPIC 220 230 <SERV.ITEMDEF.I_SHIELD_ORDER.ID>
+ELSEIF (<ALIGN> == 2)
+	TILEPIC 220 230 <SERV.ITEMDEF.I_SHIELD_CHAOS.ID>
+ENDIF
+
+IF (<SRC.CTAG0.GUILD_ADD_INVITE> < <SERV.TIME>)
+	BUTTON 30 260 0FBE 0FBF 1 0 1
+	DTEXT 60 260 <def.tcolor_text> Katılım talep bildirimi gönder
+
+ELSE
+	BUTTON 30 260 0FBE 0FBF 1 0 1
+	DTEXT 60 260 <def.tcolor_red> Katılım talep bildirimi gönder
+ENDIF
+
+[dialog d_Guild_info button]
+on=1
+REF1=<MASTERUID>
+IF (<SRC.CTAG0.GUILD_ADD_INVITE> > <SERV.TIME>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu kadar sık bildirim gönderemezsiniz.
+	RETURN 1
+ENDIF
+IF (<REF1>)
+	REF1.NOTICE <SRC.NAME> guildinize katılmak istiyor. Şu an guildstone yanında!
+ENDIF
+IF (<REF1.ISONLINE>)
+	SRC.SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, Guildstone yanında olduğunuzun ve guilde katılmak istediğinizin bildirimi guildmastera (Çevrimiçi) gönderildi.
+ELSE
+	SRC.SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, Guildstone yanında olduğunuzun ve guilde katılmak istediğinizin bildirimi guildmastera (Çevrimdışı) gönderildi.
+ENDIF
+SRC.CTAG0.GUILD_ADD_INVITE=<EVAL <SERV.TIME>+100> // 10 SANİYE sonra
+
+[EOF]
+
+
+
+

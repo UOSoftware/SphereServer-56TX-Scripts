@@ -1,0 +1,27 @@
+
+
+// char üzerinde çağırılır pek bir argümanı yok sadece 
+[FUNCTION f_multi_setup]
+// serv.b <src.name>, <name>, <argo.name>
+
+
+
+// multi üzerinde çağrılır
+[FUNCTION f_multi_onplacement_check]
+// SERV.b <src>(<src.name>): <local.id>: <SERV.MULTIDEF.<LOCAL.ID>.TYPE> (<uid>) <name> 
+
+IF ((<SERV.MULTIDEF.<LOCAL.ID>.TYPE> == T_MULTI) || (<SERV.MULTIDEF.<LOCAL.ID>.TYPE> == T_MULTI_CUSTOM))
+
+
+
+
+
+ELSEIF (<SERV.MULTIDEF.<LOCAL.ID>.TYPE> == T_SHIP) 
+	// ADAMI BİRAZ OYNATMAZSAN GEMİYİ KURDUĞUNDA GEMİ İÇİNDE OLMADIĞI HALDE GEMİ İÇİNDEYMİŞ GİBİ GÖRÜNÜYOR
+	// SRC.MOVENEAR <SRC> 1 
+ENDIF
+
+
+
+
+[eof]

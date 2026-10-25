@@ -1,0 +1,15 @@
+	
+[dialog d_Town_Market]
+<def.dsp>
+IF (<TYPE>!=T_STONE_TOWN)
+	RETURN 1
+ENDIF
+RESIZE 0,0,240,300,<NAME> Market
+DORIGIN 20 50
+
+[dialog d_Town_Market Button]
+ON=0
+SRC.CTAG.Faction.IsResign=
+
+
+[EOF]

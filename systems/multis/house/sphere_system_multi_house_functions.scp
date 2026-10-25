@@ -1,0 +1,1015 @@
+//****************************************************************************
+// SphereServer by: SphereServer development team and Menasoft.
+// www.sphereserver.net
+//****************************************************************************
+VERSION=X1
+
+
+
+// 0 = deedi geri verme.
+// 1 = deedi veri ver
+[FUNCTION FUNC_HOUSE_REDEED]
+REF1=<QVAL (<OWNER>)?<OWNER>:<MORE1>>
+IF (<REF1.ISVALIDE> && <ARGV0> > 0)
+	SERV.NEWITEM I_DEED_<STRSUB 2 55 <BASEID>>
+	NEW.CONT=<REF1.FINDLAYER.21>
+	NEW.ATTR=ATTR_NEWBIE
+	NEW.COLOR=<COLOR>
+	REF1.SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, Evinizi (<NAME>) tapu haline getirdiniz.
+ENDIF
+REMOVE 
+// Or
+// Redeed kullanilacaksa yukaridaki manuel deed verme olayi kaldirilmali.
+// REDEED
+// REGION.ALLCLIENTS.UPDATE
+SECTOR.ALLCLIENTS.UPDATE
+
+
+
+
+
+
+
+// F_HOUSE_REFRESH_TIMER 1 = SEND OWNER REFRESH MESSAGE
+// F_HOUSE_REFRESH_TIMER 0 = NO MESSAGE
+[FUNCTION F_HOUSE_REFRESH_TIMER]
+// LOCAL.TIME=<eval <EVAL <DEF.hs_can_decay>*24*60*60> -1 >
+LOCAL.TIME=1036800
+TIMER=<LOCAL.TIME> // EVİN TİMER
+
+IF (<LINK.ISVALIDE>)
+	//LOCAL.TIME_OLD <LINK.TIMER>
+	LINK.TIMER=<LOCAL.TIME> // TABELA TİMER
+ENDIF
+
+IF (<ARGN>)// && (<DLOCAL.TIME_OLD> <= <EVAL <LOCAL.TIME>-86400>)
+	SRC.SYSMESSAGELOC <def.tcolor_green>,<def.empty_cliloc2>, Ev yenilendi.
+ENDIF
+	
+
+
+
+
+
+
+
+[FUNCTION F_HOUSE_TIMER_RESET_ALL]
+LOCAL.P <SRC.P>
+FOR 0 254
+	IF (<SERV.MAPLIST.<DLOCAL._FOR>>)
+		SRC.P=0,0,0,<DLOCAL._FOR>
+		SERV.LOG PROCESSING MAP <DLOCAL._FOR>
+  		SRC.F_HOUSE_TIMER_ACTIVATE_ALL
+ 	ENDIF
+ENDFOR
+SRC.P <LOCAL.P>
+
+
+
+
+
+[FUNCTION F_HOUSE_TIMER_ACTIVATE_ALL]
+FORITEMS 7168
+	IF (<TYPE>==T_MULTI) || (<TYPE>==T_MULTI_CUSTOM)
+		REF1 <REGION.LINK>
+		REF1.F_HOUSE_REFRESH_TIMER 0
+	ENDIF
+ENDFOR
+
+
+
+
+
+[FUNCTION F_HOUSE_NEAR_DOOR]
+REF1=<UID>
+IF (<ARGV0> <= 0)
+	LOCAL.DIST 2
+ELSE
+	LOCAL.DIST <ARGV0>
+ENDIF
+FORITEMS <dLOCAL.DIST>
+	IF (<P.Z> == <REF1.P.Z>) && (<ISDOOR>)
+		LOCAL.DOORS ++
+	ENDIF
+ENDFOR
+RETURN <DLOCAL.DOORS>
+
+
+
+
+
+[FUNCTION F_HOUSE_CAN_ACCESS]
+REF1 = <REGION.UID>
+
+LOCAL.ACCESSLEVEL = <REF1.F_HOUSE_GET_PRIV <SRC>>
+//serv.b <dlocal.ACCESSLEVEL>
+
+IF (<dTAG0.ACCESS> == <dDEF.HOUSE_ACCESS_ALL> || <SRC.ISGM>)
+    RETURN 1
+ENDIF
+
+IF (<dTAG0.ACCESS>==<dDEF.HOUSE_ACCESS_FRIEND>)
+    IF (<dLOCAL.ACCESSLEVEL> <= <dDEF.HOUSE_ACCESS_FRIEND>)
+        RETURN 1
+    ENDIF
+	
+ELSEIF (<dTAG0.ACCESS>==<dDEF.HOUSE_ACCESS_COOWNER>)
+    IF (<dLOCAL.ACCESSLEVEL> <= <DEF.HOUSE_ACCESS_COOWNER>)
+        RETURN 1
+    ENDIF
+	
+ELSEIF (<dTAG0.ACCESS>==<dDEF.HOUSE_ACCESS_OWNER>)
+    IF (<dLOCAL.ACCESSLEVEL> <= <dDEF.HOUSE_ACCESS_OWNER>)
+        RETURN 1
+    ENDIF
+	
+ELSEIF (<dTAG0.ACCESS>==<dDEF.HOUSE_ACCESS_GUILD>)
+    IF ((<dLOCAL.ACCESSLEVEL> <= <dDEF.HOUSE_ACCESS_GUILD>))
+        RETURN 1
+    ENDIF
+	
+ELSEIF (<dTAG0.ACCESS>==<dDEF.house_access_family>)
+    IF ((<dLOCAL.ACCESSLEVEL> <= <dDEF.house_access_family>))
+        RETURN 1
+    ENDIF
+	
+ELSEIF (<dTAG0.ACCESS>==<dDEF.house_access_account>)
+    IF ((<dLOCAL.ACCESSLEVEL> == <dDEF.house_access_account>))
+        RETURN 1
+    ENDIF
+	
+ENDIF
+RETURN 0
+ 
+ 
+ 
+ 
+ 
+[FUNCTION F_HOUSE_GET_PRIV]
+IF (<ISOWNER <SRC>>)
+    RETURN <dDEF.HOUSE_ACCESS_OWNER>
+	
+ELSEIF (<GETCOOWNERPOS <SRC>> >= 0)
+    RETURN <dDEF.HOUSE_ACCESS_COOWNER>
+	
+ELSEIF (<GETFRIENDPOS <SRC>> >= 0)
+    RETURN <dDEF.HOUSE_ACCESS_FRIEND>
+	
+ELSEIF (<OWNER.GUILD>)
+    IF (<OWNER.GUILD> == <SRC.GUILD>)
+        LOCAL.PRIV=<SRC.GUILD.MEMBERFROMUID.<SRC>.PRIV>
+        IF ((<LOCAL.PRIV>==1) || (<LOCAL.PRIV>==2)) // 1 = MEMBER, 2 = MASTER
+            RETURN <dDEF.HOUSE_ACCESS_GUILD>
+        ENDIF
+    ENDIF
+	
+ELSEIF (<OWNER.TAG0.AILE.MEMORY>)
+    IF (<OWNER.TAG0.AILE.MEMORY> == <SRC.TAG0.AILE.MEMORY>)
+        RETURN <dDEF.HOUSE_ACCESS_FAMILY>
+    ENDIF
+
+ENDIF
+RETURN <dDEF.HOUSE_ACCESS_NONE>
+
+
+
+
+
+
+
+
+
+
+
+
+
+[FUNCTION F_HOUSE_RENDER_SIGNS]
+LOCAL.Y=157
+LOCAL.BTN1 = 20
+LOCAL.BTN2 = 50
+LOCAL.SIGN=2979
+BUTTONTILEART 20 132 07588 07588  1 0 2965 2965 0 -10 -5
+BUTTONTILEART 50 132 07588 07588 1 0 2966 2966 0 -10 -5
+FOR 1 112
+	IF (<LOCAL.Y> > 360)
+		LOCAL.Y=132
+		LOCAL.BTN1 += 60
+		LOCAL.BTN2 += 60
+	ENDIF
+	BUTTONTILEART <LOCAL.BTN1> <LOCAL.Y> 07588 07588 1 0 <LOCAL.SIGN> <LOCAL.SIGN> 0 -10 -5
+	LOCAL.SIGN +=1
+	BUTTONTILEART <LOCAL.BTN2> <LOCAL.Y> 07588 07588 1 0 <LOCAL.SIGN> <LOCAL.SIGN> 0 -10 -5
+	LOCAL.SIGN +=1
+	LOCAL._FOR +=1
+	LOCAL.Y += 25
+	IF (<DLOCAL.SIGN> == 3087)
+		LOCAL.SIGN = 3139
+	ELIF (<DLOCAL.SIGN> > 3140)
+		RETURN 
+	ENDIF
+ENDFOR
+
+
+
+
+
+
+
+[FUNCTION F_HOUSE_ADD_LIST]
+REF1=<REGION.UID> // EV
+
+IF !(<ARGO>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Hatalı seçim.
+	RETURN 1
+ELSEIF !(<ARGO.ISCHAR>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Hatalı seçim.
+	RETURN 1
+ELSEIF !(<ARGO.ISPLAYER>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Hatalı seçim.
+	RETURN 1
+ELSEIF !(<REF1.ISVALIDE>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, #1 Ev bulunamadı!
+	RETURN 1
+ELSEIF !(<REF1.ISITEM>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, #2 Ev bulunamadı!
+	RETURN 1
+ELSEIF !(<REF1.ISMULTI>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, #3 Ev bulunamadı!
+	RETURN 1
+ELSEIF (<ARGO> == <SRC>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Kendinizi seçemezsiniz.
+	RETURN 1
+ELSEIF (<REF1.ISOWNER <ARGO>>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, <ARGO.NAME> zaten evin sahibi.
+	RETURN 1
+ELIF (<REF1.GETCOOWNERPOS <ARGO>> >= 0)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, <ARGO.name> zaten eve ortak.
+	RETURN 1
+ELIF (<REF1.GETFRIENDPOS <REF2>> >= 0)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, <ARGO.name> zaten eve dost.
+	RETURN 1
+ELIF (<REF1.GETACCESSPOS <ARGO>> >= 0)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, <ARGO.name> zaten izin listesinde.
+	RETURN 1
+ELIF (<REF1.GETBANPOS <ARGO>> >= 0)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, <ARGO.name> yasaklı listesinde.
+	RETURN 1
+ENDIF
+ARGO.CTAG0.HOUSE_ACCESS_INVITE=<REF1>,<SRC>,<ARGV0>
+
+IF (<ARGV0> == 1) // ORTAK EKLE
+
+	IF (<REF1.COOWNERS> >= <DDEF.HS_MAX_CO_OWNERS>)
+		SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu evin ortak ekleme limiti dolmuş. (<REF1.COOWNERS>/<DDEF.HS_MAX_CO_OWNERS>)
+		RETURN 1
+	ENDIF
+	TRYSRC <ARGO> DIALOGCLOSE D_HOUSE_ACCESS_INVITE_PLAYER
+	TRYSRC <ARGO> DIALOG D_HOUSE_ACCESS_INVITE_PLAYER
+	ARGO.SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, <SRC.NAME> size <REF1.NAME> evi için ortaklık daveti gönderdi.
+	SRC.SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, <ARGO.NAME> sizinli kişiye <REF1.NAME> evi için ortaklık daveti gönderdin.
+		
+ELSEIF (<ARGV0> == 2) // dost ekle
+
+	IF (<REF1.Friends> >= <DDEF.hs_max_friends>)
+		SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu evin dost ekleme limiti dolmuş. (<REF1.Friends>/<DDEF.hs_max_friends>)
+		RETURN 1
+	ENDIF
+	TRYSRC <ARGO> DIALOGCLOSE D_HOUSE_ACCESS_INVITE_PLAYER
+	TRYSRC <ARGO> DIALOG D_HOUSE_ACCESS_INVITE_PLAYER
+	ARGO.SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, <SRC.NAME> size <REF1.NAME> evi için ortaklık daveti gönderdi.
+	SRC.SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, <ARGO.NAME> sizinli kişiye <REF1.NAME> evi için ortaklık daveti gönderdin.
+		
+ELSEIF (<ARGV0> == 3) // Yasakli ekle
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Tanımsız işlem.
+ELSEIF (<ARGV0> == 4) // Erişim ekle
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Tanımsız işlem.
+ELSE
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Tanımsız işlem.
+ENDIF
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+[FUNCTION IsHouseUnLockAllowedItem]
+IF (<IsDoor>)
+	RETURN 0
+ELSEIF (<TYPE> == T_SIGN_GUMP)
+	RETURN 0
+ELSEIF (<TYPE> == T_CORPSE)
+	RETURN 0
+ELSEIF (<TYPE> == T_SPELL)
+	RETURN 0
+ELSEIF (<BASEID> == I_SIGN_BRASS_HOUSE)
+	RETURN 0
+ENDIF
+RETURN 1
+
+
+
+[FUNCTION IsHouseLockAllowedItem]
+IF (<BASEID> == I_TRASHCAN)
+	RETURN 0
+ELSEIF (<BASEID> == i_reward_barrel)
+	RETURN 0
+ELSEIF (<TYPE> == T_COIN)
+	RETURN 0
+ELSEIF (<IsDoor>)
+	RETURN 0
+ELSEIF (<TYPE> == T_SIGN_GUMP)
+	RETURN 0
+ELSEIF (<TYPE> == T_CORPSE)
+	RETURN 0
+ELSEIF (<TYPE> == T_SPELL)
+	RETURN 0
+ELSEIF (<BASEID> == I_SIGN_BRASS_HOUSE)
+	RETURN 0
+ENDIF
+RETURN 1
+
+
+
+
+
+
+[FUNCTION F_HOUSE_ITEM_LOCK]
+REF1=<REGION.UID>
+IF !(<ARGO>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Hatalı seçim.
+	RETURN 1
+ELSEIF !(<ARGO.ISITEM>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Sadece eşyaları seçebilirsiniz.
+	RETURN 1
+	
+ELSEIF !((<REF1> == <ARGO.REGION.UID>) || (<ARGO.IsInHouse>))
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Sadece evdeki eşyaları sabitleyebilirsiniz.
+	RETURN 1
+	
+ELSEIF (<ARGO.F_HOUSE_NEAR_DOOR 2>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Kapıların yakınına eşya sabitleyemezsiniz.
+	RETURN 1
+	
+ELSEIF !((<REF1.ISOWNER <SRC>>) || (<REF1.GETCOOWNERPOS <SRC>> >= 0) || (<REF1.GETFRIENDPOS <SRC>> >= 0) || (<SRC.ISGM>))
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Ev ile ilişkiniz yok. (Sahip - Ortak - Dost)
+	RETURN 1
+	
+ELSEIF (<ARGO.DISTANCE <REF1.LINK>> < 2)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Tabelanın bu kadar yakınına eşya sabitleyemezsiniz.
+	RETURN 1
+	
+ELSEIF !(<ARGO.IsHouseLockAllowedItem>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu eşyayı sabitleyemezsiniz.
+	RETURN 1
+	
+ELSEIF (<ARGO.CONT>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu eşyayı bulunduğu yerde sabitleyemezsiniz.
+	RETURN 1
+
+ELSEIF (<ARGO.ATTR>&ATTR_LOCKEDDOWN) || (<ARGO.ISEVENT.ei_house_lockdown>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu eşya zaten sabit.
+	RETURN 1
+	
+ELSEIF (<ARGO.TYPE> == T_CONTAINER)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Kutu&kasa türü eşyaları sabitleyemezsiniz. Bu eşyayı "secure" yapmalısınız.
+	RETURN 1
+ENDIF
+
+IF (<DEF.HS_HS_SECURE_LOCKS_LIMIT>)
+	IF (<REF1.CURRENTSTORAGE> >= <REF1.MAXSTORAGE>)
+		SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Evin eşya sabitleme sınırı dolmuş.
+		RETURN 1
+	ENDIF
+ENDIF
+ARGO.HouseItemSetLockedProps 1
+
+
+
+[FUNCTION F_HOUSE_ITEM_UNLOCK]
+REF1=<REGION.UID> // Ev
+
+IF !(<ARGO>)
+	SRC.SYSMESSAGELOC 38,<DEF.EMPTY_CLILOC2>, Sadece eşyaları seçebilirsiniz.
+	RETURN 1
+	
+ELSEIF !(<ARGO.ISITEM>)
+	SRC.SYSMESSAGELOC 38,<DEF.EMPTY_CLILOC2>, Sadece eşyaları seçebilirsiniz.
+	RETURN 1
+
+ELSEIF !(<ARGO.IsHouseUnLockAllowedItem>) 
+	SRC.SYSMESSAGELOC 38,<DEF.EMPTY_CLILOC2>, Bunun sabitliğini kaldıramazsınız.
+	RETURN 1
+	
+ELSEIF !(<ARGO.REGION.UID> == <REF1>)
+	SRC.SYSMESSAGELOC 38,<DEF.EMPTY_CLILOC2>, <ARGO.NAME> bulunduğu yer bu ev değil.
+	RETURN 1
+	
+ELSEIF (<ARGO.CONT>)
+	SRC.SYSMESSAGELOC 38,<DEF.EMPTY_CLILOC2>, Kutuların içindekilerini sabitleyemezsiniz.
+	RETURN 1
+	
+ELSEIF !((<REF1.ISOWNER <SRC>>) || (<REF1.GETCOOWNERPOS <SRC>> >= 0) || (<REF1.GETFRIENDPOS <SRC>> >= 0) || (<SRC.ISGM>))
+	SRC.SYSMESSAGELOC 38,<DEF.EMPTY_CLILOC2>, Ev ile ilişkiniz yok. (Sahip - Ortak - Dost)
+	RETURN 1
+
+ELSEIF (<ARGO.BASEID> == I_STRONGBOX)
+	IF (<ARGO.MORE2> != <SRC>)
+		SRC.SYSMESSAGELOC 38,<DEF.EMPTY_CLILOC2>, Bu Strongbox size ait değil.
+		RETURN 1
+	ELSEIF (<ARGO.MORE1> != <REF1>)
+			SRC.SYSMESSAGELOC 38,<DEF.EMPTY_CLILOC2>, Bu Strongbox bu eve ait değil.
+		RETURN 1
+	ENDIF
+	SRC.SYSMESSAGELOC 38,<DEF.EMPTY_CLILOC2>, <ARGO.NAME> silindi.
+	ARGO.REMOVE
+	RETURN 1
+
+ELSEIF (<ARGO.BASEID> == I_TRASHCAN) || (<ARGO.BASEID> == i_reward_barrel)
+	SRC.SYSMESSAGELOC 38,<DEF.EMPTY_CLILOC2>, Bu eşyaların sabitliğini kaldıramayacağınız için silindi.
+	ARGO.REMOVE
+	RETURN 1
+	
+ELSEIF !((<ARGO.ATTR>&ATTR_LOCKEDDOWN) || (<ARGO.ISEVENT.ei_house_lockdown>))
+	SRC.SYSMESSAGELOC 38,<DEF.EMPTY_CLILOC2>, Bu eşya eve sabit değil.
+	RETURN 1
+
+ENDIF
+
+IF (<REF1.GETSECUREDCONTAINERPOS <ARGO>> = 0) && ((<REF1.ISOWNER <UID>>) || (<ISGM>))
+	REF1.RELEASE <ARGO>
+	ARGO.TAG.ACCESS=
+	ARGO.MESSAGE @,,2 501718	// NO LONGER SECURE!
+	
+ELIF (<ARGO.ISITEM> && <ARGO.REGION.UID>==<REF1>)
+	IF (<REF1.GETFRIENDPOS <SRC>> >= 0) && (<ARGO.TAG0.LOCKEDBY> != <SRC>)
+		SRC.SYSMESSAGELOC 38,<DEF.EMPTY_CLILOC2>, Dostlar yalnızca kendi sabitlediği eşyaların sabitliğini kaldırabilir.
+		RETURN 1
+	ENDIF
+	ARGO.HOUSEITEMSETLOCKEDPROPS 0 
+ENDIF
+
+
+
+
+
+
+
+
+
+
+[FUNCTION F_HOUSE_ITEM_SECURE]
+REF1=<REGION.UID>
+
+IF !(<ARGO>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Hatalı seçim.
+	RETURN 1
+ELSEIF !(<ARGO.ISITEM>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Sadece eşyaları seçebilirsiniz.
+	RETURN 1
+ELSEIF !((<REF1> == <ARGO.REGION.UID>) || (<ARGO.IsInHouse>))
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Sadece evdeki kutu & kasaları sabitleyebilirsiniz.
+	RETURN 1
+ELSEIF (<ARGO.F_HOUSE_NEAR_DOOR 2>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Kapıların yakınına kutu & kasa sabitleyemezsiniz.
+	RETURN 1
+ELSEIF !((<REF1.ISOWNER <SRC>>) || (<REF1.GETCOOWNERPOS <SRC>> >= 0) || (<SRC.ISGM>))
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Ev ile ilişkiniz yok. (Sahip - Ortak)
+	RETURN 1
+ELSEIF !(<ARGO.TYPE> == T_CONTAINER)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Sadece kutu & kasaları güvenli yapabilirsiniz.
+	RETURN 1
+ELIF (<ARGO.DISTANCE <REF1.LINK>> < 2)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Tabelanın bu kadar yakınına kutu & kasa sabitleyemezsiniz.
+	RETURN 1
+ENDIF
+IF (<DEF.HS_HS_SECURE_LOCKS_LIMIT>)
+	IF (<REF1.CURRENTSTORAGE> >= <REF1.MAXSTORAGE>) || (<EVAL <ARGO.COUNT>+1> >= <REF1.MAXSTORAGE>)
+		SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Your house reached its storage limit.
+		RETURN 1
+	ENDIF
+ENDIF
+REF1.SECURE <ARGO>
+ARGO.TAG.ACCESS = 1
+ARGO.SAYU * güvenli *
+IF ((<ARGO.ATTR>&ATTR_DECAY) && (<ARGO.TIMER> >= 0))
+	ARGO.TAG.DECAY=1
+	ARGO.TIMER -1
+	ARGO.ATTR &= ~ATTR_DECAY
+ENDIF
+
+
+
+
+
+
+[function f_d_house_secure]
+ref1=<argo.region.uid>
+if <src> == <ref1.owner>
+	if (<argo.type>==t_door) || (<argo.type>==t_door_locked) || (<argo.type>==t_telepad)
+		if <argo.isevent.ei_house_door> || <argo.isevent.ei_house_telepad>
+			dialogclose D_HOUSE_ACCESS
+			argo.sdialog D_HOUSE_ACCESS
+		endif
+	elif (<argo.f_isContainer>)
+		if <argo.isevent.t_house_secure>
+			dialogclose D_HOUSE_ACCESS
+			argo.sdialog D_HOUSE_ACCESS
+		else
+			src.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, You can only modify containers which are secured.
+			return 1
+		endif
+	endif
+else
+	src.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, You can only modify items which are in your house.
+	return 1
+endif
+
+
+
+
+
+
+
+
+[FUNCTION F_HOUSE_EJECT]
+REF1=<SRC.REGION.UID> // ev
+
+IF !(<ARGO>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Hatalı seçim.
+	RETURN 1
+	
+ELSEIF (<ARGO.ISITEM>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Sadece oyuncuları seçebilirsiniz.
+	RETURN 1
+	
+ELSEIF (<ARGO.ISGM>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Yetkilileri evden kovamazsınız.
+	RETURN 1
+	
+ELSEIF (<SRC.ISDEATH>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Ölüyken bu komutu kullanamazsınız.
+	RETURN 1
+	
+ELSEIF !(<ARGO.REGION.UID> == <REF1>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, <ARGO.NAME> bulunduğu yer bu ev değil.
+	RETURN 1
+
+ELSEIF !(<ARGO.IsInHouse>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, <ARGO.NAME> ev içinde değil.
+	RETURN 1
+	
+ELIF (<ARGO> == <SRC>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Kendinizi evden atamazsınız.
+	RETURN 1
+	
+ELSEIF (<ARGO.REGION.UID> != <REF1>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, <ARGO.NAME> bu ev içinde değil.
+	RETURN 1
+	
+ELIF (<REF1.ISOWNER <ARGO>>) || (<REF1.GETCOOWNERPOS <ARGO>> >= 0) || (<REF1.GETFRIENDPOS <ARGO>> >= 0)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Ev ile ilişiği olan birini evden kovamazsınız.
+	RETURN 1
+ENDIF
+REF2=<REF1.LINK> // TABELA
+IF !(<REF2.ISVALIDE>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Ev tabelası bulunamadığı için evden kovulamadı.
+	RETURN 1
+ENDIF
+ARGO.GO <REF2.P>
+ARGO.MOVE 0 <R1,2>
+ARGO.Func_House_BanishArea_Clear
+ARGO.FIX
+ARGO.SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, Evden kovuldunuz.
+SRC.SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, <ARGO.NAME> isimli varlık evden kovuldu.
+
+
+
+
+
+
+[FUNCTION Func_House_BanishArea_Clear]
+FORITEMS 5
+	IF (<IsItemTDataFlag <DEF.tilef_impassable>>)
+		TIMER=
+	ENDIF
+ENDFOR
+
+
+
+
+
+
+
+
+
+
+
+
+[FUNCTION F_HOUSE_TRANSFER]
+REF1= <REGION.UID>
+IF !(<ARGO>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Hatalı seçim.
+	RETURN 1
+ELSEIF !(<ARGO.ISCHAR>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Sadece varlıkları seçebilirsiniz.
+	RETURN 1
+ELSEIF !(<ARGO.ISPLAYER>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Sadece oyuncuları seçebilirsiniz.
+	RETURN 1
+ELSEIF (<ARGO>==<SRC>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Kendinizi seçemezsiniz.
+	RETURN 1
+ELSEIF (<ARGO.HOUSES> >= 1)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, <ARGO.NAME> isimli oyuncunun zaten evi var. (<ARGO.HOUSES>/1)
+	RETURN 1
+ELSEIF !(<SRC.IsInHouse>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Evin içerisinde değilsiniz.
+	RETURN 1
+ELSEIF !(<REF1.ISMULTI>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bulunduğunuz yer bir ev değil.
+	RETURN 1
+ELSEIF (<REF1.OWNER> != <SRC>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bulunduğunuz evin sahibi değilisiniz.
+	RETURN 1
+ENDIF
+ARGO.CTAG0.HOUSE_ACCESS_INVITE=<REF1>,<SRC>,3
+
+TRYSRC <ARGO> DIALOGCLOSE D_HOUSE_ACCESS_INVITE_PLAYER
+TRYSRC <ARGO> DIALOG D_HOUSE_ACCESS_INVITE_PLAYER
+
+ARGO.SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, <src.name> size <ref1.name> evini transfet etmek için davet gönderdi.
+SRC.SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, <ARGO.name> sizinli kişiye <ref1.name> evini transfer etmek için davet gönderdin.
+			
+
+
+
+
+
+
+
+
+
+
+
+
+[FUNCTION f_house_checkPlacement]
+REF1=<LINK.OWNER> //OWNER
+IF !<REF1.UID>
+	RETURN 1
+ENDIF
+	IF (<F_HOUSE_CHECKNEARAREA>)
+		REF1.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu alana ev kuramazsiniz.
+		IF !(<REF1.ISGM>)
+			LINK.FUNC_HOUSE_REDEED 1 
+			RETURN 1
+		ENDIF
+	ENDIF
+
+
+
+
+
+
+
+
+//////////////////////////////////////////////////////////////////////////////////////////
+// Custom Placement check
+//////////////////////////////////////////////////////////////////////////////////////////
+
+[FUNCTION f_house_checkNearArea]
+return 0
+ref1= <region.uid>
+ARGS=<ref1.MULTIREGION>
+SERV.NEWNPC c_pig
+NEW.FLAGS=statf_invul|statf_insubstantial
+for 0 7
+	NEW.P=<ref1.P>
+	doswitch <LOCAL._FOR>
+		NEW.MOVE <ARGV0> <ARGV1>
+		NEW.MOVE 0 <ARGV1>
+		NEW.MOVE <ARGV2> <ARGV1>
+		NEW.MOVE <ARGV2> 0
+		NEW.MOVE <ARGV2> <ARGV3>
+		NEW.MOVE 0 <ARGV3>
+		NEW.MOVE <ARGV0> <ARGV3>
+		NEW.MOVE <ARGV0> 0
+	enddo
+	doswitch <LOCAL._FOR>
+		LOCAL.CLEAR=<NEW.CANMOVE nw>
+		LOCAL.CLEAR=<NEW.CANMOVE n>
+		LOCAL.CLEAR=<NEW.CANMOVE ne>
+		LOCAL.CLEAR=<NEW.CANMOVE e>
+		LOCAL.CLEAR=<NEW.CANMOVE se>
+		LOCAL.CLEAR=<NEW.CANMOVE s>
+		LOCAL.CLEAR=<NEW.CANMOVE sw>
+		LOCAL.CLEAR=<NEW.CANMOVE w>
+	enddo
+	if (<NEW.f_isOnRoad>) || !(<LOCAL.CLEAR>)
+		NEW.REMOVE
+		return 1
+	endif
+endfor
+
+for 0 7
+	NEW.P=<UID.<REGION.UID>.P>
+	doswitch <LOCAL._FOR>
+		NEW.MOVE <eval <ARGV0>+1> <eval <ARGV1>+1>
+		NEW.MOVE 0 <eval <ARGV1>+1>
+		NEW.MOVE <eval <ARGV2>-1> <eval <ARGV1>+1>
+		NEW.MOVE <eval <ARGV2>-1> 0
+		NEW.MOVE <eval <ARGV2>-1> <eval <ARGV3>-1>
+		NEW.MOVE 0 <eval <ARGV3>-1>
+		NEW.MOVE <eval <ARGV0>+1> <eval <ARGV3>-1>
+		NEW.MOVE <eval <ARGV0>+1> 0
+	enddo
+	if (<NEW.ISNEARTYPE t_tree 2>)
+		NEW.REMOVE
+		return 1
+	endif
+endfor
+
+	LOCAL.AREA=3 //<DEF.hs_PlaceMinDistArea>
+	for 0 7
+		NEW.P=<UID.<REGION.UID>.P>
+		doswitch <LOCAL._FOR>
+			NEW.MOVE <eval <ARGV0>+(<LOCAL.AREA>*-1)> <eval <ARGV1>+(<LOCAL.AREA>*-1)>
+			NEW.MOVE 0 <eval <ARGV1>+(<LOCAL.AREA>*-1)>
+			NEW.MOVE <eval <ARGV2>+<LOCAL.AREA>> <eval <ARGV1>+(<LOCAL.AREA>*-1)>
+			NEW.MOVE <eval <ARGV2>+<LOCAL.AREA>> 0
+			NEW.MOVE <eval <ARGV2>+<LOCAL.AREA>> <eval <ARGV3>+<LOCAL.AREA>>
+			NEW.MOVE 0 <eval <ARGV3>+<LOCAL.AREA>>
+			NEW.MOVE <eval <ARGV0>+(<LOCAL.AREA>*-1)> <eval <ARGV3>+<LOCAL.AREA>>
+			NEW.MOVE <eval <ARGV0>+(<LOCAL.AREA>*-1)> 0
+		enddo
+		if STRMATCH("t_multi*","<UID.<NEW.REGION.UID>.TYPE>")
+			NEW.REMOVE
+			return 2
+		endif
+	endfor
+	LOCAL.FRONT=<DEF.hs_PlaceMinDistFront>
+	for 0 5
+		NEW.P=<UID.<REGION.UID>.P>
+		doswitch <LOCAL._FOR>
+			NEW.MOVE <ARGV2> <eval <ARGV3>+<LOCAL.FRONT>>
+			NEW.MOVE 0 <eval <ARGV3>+<LOCAL.FRONT>>
+			NEW.MOVE <ARGV0> <eval <ARGV3>+<LOCAL.FRONT>>
+			NEW.MOVE <ARGV0> <eval <ARGV1>+(<LOCAL.FRONT>*-1)>
+			NEW.MOVE 0 <eval <ARGV1>+(<LOCAL.FRONT>*-1)>
+			NEW.MOVE <ARGV2> <eval <ARGV1>+(<LOCAL.FRONT>*-1)>
+		enddo
+		if STRMATCH("t_multi*","<UID.<NEW.REGION.UID>.TYPE>")
+			NEW.REMOVE
+			return 3
+		endif
+	endfor
+NEW.REMOVE
+return 0
+
+
+
+
+[FUNCTION f_isOnRoad]
+LOCAL.TERRAIN=<SERV.MAP(<P.X>,<P.Y>,<P.M>).TERRAIN>
+if (<LOCAL.TERRAIN> >= 113) && (<LOCAL.TERRAIN> <= 140)
+	return 1
+elif (<LOCAL.TERRAIN> >= 232) && (<LOCAL.TERRAIN> <= 235)
+	return 1
+elif (<LOCAL.TERRAIN> >= 332) && (<LOCAL.TERRAIN> <= 335)
+	return 1
+elif (<LOCAL.TERRAIN> >= 353) && (<LOCAL.TERRAIN> <= 372)
+	return 1
+elif (<LOCAL.TERRAIN> >= 496) && (<LOCAL.TERRAIN> <= 499)
+	return 1
+elif (<LOCAL.TERRAIN> >= 622) && (<LOCAL.TERRAIN> <= 633)
+	return 1
+elif (<LOCAL.TERRAIN> >= 638) && (<LOCAL.TERRAIN> <= 641)
+	return 1
+elif (<LOCAL.TERRAIN> >= 804) && (<LOCAL.TERRAIN> <= 940)
+	return 1
+elif (<LOCAL.TERRAIN> >= 1351) && (<LOCAL.TERRAIN> <= 1366)
+	return 1
+elif (<LOCAL.TERRAIN> >= 1431) && (<LOCAL.TERRAIN> <= 1446)
+	return 1
+elif (<LOCAL.TERRAIN> >= 1966) && (<LOCAL.TERRAIN> <= 1969)
+	return 1
+elif (<LOCAL.TERRAIN> >= 1090) && (<LOCAL.TERRAIN> <= 1145)	// Sand stones
+	return 1
+elif (<LOCAL.TERRAIN> >= 1281) && (<LOCAL.TERRAIN> <= 1296)	// Sand stones
+	return 1
+elif (<LOCAL.TERRAIN> >= 9) && (<LOCAL.TERRAIN> <= 21)		// Furrows
+	return 1
+elif (<LOCAL.TERRAIN> >= 336) && (<LOCAL.TERRAIN> <= 348)	// Furrows
+	return 1
+else
+	return 0
+endif
+
+
+
+
+[FUNCTION F_HOUSE_FLOOR]
+SERV.LOG <ARGS> ---- <EVAL <SERV.MAP(<P.X>,<P.Y>,<P.M>).TERRAIN.Z>+5> ---- <SERV.MAP(<P.X>,<P.Y>,<P.M>).TERRAIN.Z> ---- <EVAL 1+(<ARGS>-<EVAL <SERV.MAP(<P.X>,<P.Y>,<P.M>).TERRAIN.Z>+5>)/20>
+
+LOCAL.TERRAINZ = <SERV.MAP(<P.X>,<P.Y>,<P.M>).TERRAIN.Z>
+LOCAL.TERRAIN=<EVAL <DLOCAL.TERRAIN.Z>+7>
+IF (<ARGS> > <DLOCAL.TERRAIN>)
+	RETURN <EVAL 1+(<ARGS>-<LOCAL.TERRAIN>)/20>
+ENDIF
+RETURN 0
+
+
+[FUNCTION HOUSEFLOOR]
+LOCAL.TERRAIN=<EVAL <SERV.MAP(<P.X>,<P.Y>,<P.M>).TERRAIN.Z>+5>
+IF (<ARGS> > <LOCAL.TERRAIN>)
+ RETURN <EVAL 1+(<ARGS>-<LOCAL.TERRAIN>)/20>
+ENDIF
+RETURN 0
+
+
+
+
+
+
+
+
+// src.f_house_remove_allitems <region.uid>
+[FUNCTION F_HOUSE_REMOVE_ALLITEMS]	
+IF (<ISEMPTY <ARGS>>)
+REF1=<REGION.UID>
+ELSE
+REF1=<ARGS>	// <REGION.UID>
+ENDIF
+
+ARGS=<REF1.MULTIREGION>
+LOCAL.M=<EVAL (<ARGV[2]>+<ARGV[3]>)>
+REF2=<REF1.OWNER>
+
+IF (<REF1.ISOWNER <UID>>)
+	FORITEMS <LOCAL.M>
+		IF (<REGION.UID>==<REF1>) && !(<TYPE>==T_MULTI || <TYPE>==T_MULTI_CUSTOM)
+		
+			IF (<ISEMPTY <TAG.MULTICOMPONENT>>)
+				// IF (<ISEVENT.EI_HOUSE_SECURE>)
+					// REF1.RELEASE <UID> // IN CASE FUNCTION IS USED WITHOUT REMOVING HOUSE, TO NOT MESS COUNTERS
+				// ENDIF
+				
+				// IF (<ISEVENT.EI_HOUSE_LOCKDOWN>)
+					// REF1.UNLOCKITEM <UID>
+				// ENDIF
+				
+				IF (<TYPE> == T_STONE_GUILD && <REF2.ISVALIDE>)
+					SERV.NEWITEM i_deed_guildstone,1,<REF2>,1
+					REMOVE
+				ENDIF
+			ELSE
+				FIX
+			ENDIF
+		ENDIF
+	ENDFOR
+	
+	FORCHARS <LOCAL.M>
+		IF (<REGION.UID>==<REF1>) && !(<TYPE>==T_MULTI || <TYPE>==T_MULTI_CUSTOM)
+			FIX
+		ENDIF
+	ENDFOR
+	
+ENDIF
+
+
+
+
+
+
+
+
+// F_HOUSE_ALLITEMS_COUNT
+[FUNCTION F_HOUSE_ALLITEMS_COUNT]
+REF1=<UID>
+IF (<REF1.ISVALIDE> && <REF1.TYPE> == T_MULTI)
+	ARGS=<REF1.MULTIREGION>
+	LOCAL.M=<EVAL (<ARGV[2]>+<ARGV[3]>)>
+	FORITEMS <LOCAL.M>
+		IF (<REGION.UID> == <REF1> && <ISEMPTY <TAG.MULTICOMPONENT>>) && !(<type> == t_stone_guild || <TYPE> == T_MULTI || <TYPE> == T_MULTI_CUSTOM)
+			LOCAL.COUNT ++
+		ENDIF
+	ENDFOR
+ENDIF
+RETURN <DLOCAL.COUNT>
+
+
+
+
+// F_HOUSE_Guildstone_COUNT
+[FUNCTION F_HOUSE_GUILDSTONE_COUNT]
+REF1=<UID>
+IF (<REF1.ISVALIDE> && <REF1.TYPE> == T_MULTI)
+	ARGS=<REF1.MULTIREGION>
+	LOCAL.M=<EVAL (<ARGV[2]>+<ARGV[3]>)>
+	FORITEMS <LOCAL.M>
+		IF (<REGION.UID> == <REF1>) && (<BASEID> == T_STONE_GUILD)
+			LOCAL.COUNT ++
+		ENDIF
+	ENDFOR
+ENDIF
+RETURN <DLOCAL.COUNT>
+
+
+// F_HOUSE_VENDOR_COUNT
+[FUNCTION F_HOUSE_VENDOR_COUNT]
+REF1=<UID>
+IF (<REF1.ISVALIDE> && <REF1.TYPE> == T_MULTI)
+	ARGS=<REF1.MULTIREGION>
+	LOCAL.M=<EVAL (<ARGV[2]>+<ARGV[3]>)>
+	FORCHARS <dLOCAL.M>
+		IF (<REGION.UID> == <REF1>) && (<BASEID> == c_h_vendor)
+			LOCAL.COUNT ++
+		ENDIF
+	ENDFOR
+ENDIF
+RETURN <DLOCAL.COUNT>
+
+
+
+// F_HOUSE_VENDOR_COUNT
+[FUNCTION F_HOUSE_ALLDOOR_SET_STATE]
+REF1=<UID>
+IF (<REF1.ISVALIDE> && <REF1.ISMULTI>)
+	REF2=<REF1.OWNER>
+	
+	IF (<REF2.ISVALIDE>)
+		REF2.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Eve vendor kurulduğu için tüm kapıların kilidi açıldı ve ev halka açık hale geldi.
+	ENDIF
+	
+	ARGS=<REF1.MULTIREGION>
+	LOCAL.M=<EVAL (<ARGV[2]>+<ARGV[3]>)>
+	FORITEMS <LOCAL.M>
+		IF (<REGION.UID> == <REF1>) && (<IsDoor>) && !(<TYPE> == T_MULTI || <TYPE> == T_MULTI_CUSTOM)
+			IF (<ARGV0> == 0)
+				TYPE=T_DOOR
+			ELSEIF (<ARGV0> == 1)
+				TYPE=T_DOOR_LOCKED
+			ELSE
+				TYPE=T_DOOR
+			ENDIF
+			// SAYU <TYPE>
+		ENDIF
+	ENDFOR
+ENDIF
+
+
+
+
+
+
+
+
+[FUNCTION HouseItemSetLockedProps]
+REF1=<REGION.UID>
+IF (<REF1.ISVALIDE> && <REF1.ISMULTI>)
+
+	IF (<ARGV> == 1) // SABİT
+		SAYU * sabit *
+		TAG.LOCKEDBY=<SRC>	
+		ATTR |= ATTR_MOVE_NEVER
+		REF1.LOCKITEM <UID>
+
+		IF ((<ATTR>&ATTR_DECAY) && (<TIMER> >= 0))
+			TAG.DECAY=1
+			TIMER -1
+			ATTR &= ~ATTR_DECAY			
+		ENDIF
+	
+	ELSE
+		SAYU * sabit değil *
+		TAG.LOCKEDBY=
+		ATTR &= ~ATTR_MOVE_NEVER
+		REF1.UNLOCKITEM <UID>
+		IF (<TAG0.DECAY>)
+			TAG.DECAY=
+			TIMER <EVAL <SERV.DECAYTIMER>*60>
+			ATTR |= ATTR_DECAY
+		ENDIF
+	ENDIF
+	
+	// UPDATE
+	// UPDATEX
+ENDIF
+
+
+
+
+[EOF]

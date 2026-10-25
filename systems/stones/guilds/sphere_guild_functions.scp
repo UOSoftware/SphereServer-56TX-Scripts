@@ -1,0 +1,495 @@
+
+
+[FUNCTION f_guildsys_stone_sort_world]
+forinstances i_guild_stone
+p = 4463,1104,0,0
+local.x  ++
+move s <dlocal.x>
+endfor
+
+
+[FUNCTION f_guildsys_point_gain]
+TAG0.POINTS.GUILD +=1
+SYSMESSAGELOC <def.tcolor_green>,<def.empty_cliloc2>, Guild puanı kazandın!
+
+[FUNCTION f_guildsys_point_lost]
+IF (<TAG0.POINTS.GUILD> > 0)
+	TAG0.POINTS.GUILD -=1
+	SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Guild puanı kaybettin!
+ENDIF
+IF (<TAG0.POINTS.GUILD> <= 0)
+	TAG0.POINTS.GUILD=0
+ENDIF
+
+
+
+[FUNCTION f_guildsys_info]
+IF (<ISITEM>) && (<TYPE> == t_stone_guild)
+	DIALOGCLOSE D_GUILD_INFO
+	DIALOG D_GUILD_INFO
+ENDIF
+
+
+[FUNCTION f_guildsys_main]
+IF !(<GUILD>)
+	SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bir guild üyesi değilsiniz.
+	RETURN 1
+ENDIF
+REF1=<GUILD>
+DIALOGCLOSE D_GUILD_MAIN
+REF1.DIALOG D_GUILD_MAIN
+
+
+[FUNCTION f_guildsys_create]
+IF (<SERV.GUILDS> >= <DEF.SERVER_MAX_GUILDS>)
+	SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Şu an için sunucuda en fazla <DEF.SERVER_MAX_GUILDS> guild kurulumuna izin verilmektedir. (Kurulu guild: <SERV.GUILDS>/<DEF.SERVER_MAX_GUILDS>)
+	RETURN 1
+ELSEIF (<GUILD>)
+	SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Sizin zaten bir guildiniz var.
+	RETURN 1
+ELSEIF (<HOUSES> <= 0)
+	SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Guild kurabilecek herhangi bir eviniz yok.
+	RETURN 1
+ENDIF
+
+IF (<HOUSES> > 0)
+	FOR 0 <EVAL <HOUSES>-1>
+		REF1=<HOUSE.<DLOCAL._FOR>>
+		IF (<REF1.ISVALID>)
+			IF ((<REF1.BASEID> == M_TOWER) || (<REF1.BASEID> == M_CASTLE) || (<REF1.BASEID> == M_SMALL_STONE_KEEP))
+				IF (<REF1.OWNER> != <SRC>)
+					SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Guild kurulabilecek evlerinizden herhangi birinin sahibi değilsiniz.
+					RETURN 1
+				ENDIF	
+			ENDIF
+		ENDIF
+	ENDFOR
+ENDIF
+
+DIALOGCLOSE D_GUILD_CREATE
+DIALOG D_GUILD_CREATE
+
+
+
+
+[FUNCTION f_guildsys_points_all]
+IF (<ISITEM>) && (<TYPE> == t_stone_guild)
+	FOR 0 <EVAL <MEMBER.COUNT>-1>
+		REF1=<MEMBER.<DLOCAL._FOR>.UID>
+		IF (<REF1>)
+			LOCAL._POINT +=<REF1.TAG0.GuildPoints>
+		ENDIF
+	ENDFOR
+RETURN <DLOCAL._POINT>
+ENDIF
+RETURN 0
+
+
+
+
+// ------------------------------------------------------
+[FUNCTION f_guildsys_member_add]
+IF (<ISEMPTY <ARGS>>)
+REF1=<SRC.GUILD>
+ELSE
+REF1=<ARGS>
+ENDIF
+
+IF !(<ARGO>)
+	SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Hatalı seçim.
+	RETURN 1
+
+ELSEIF !((<REF1.MASTERUID> == <SRC>) || (<ISGM>))
+	SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu işlemi sadece Guildmaster yapabilir.
+	RETURN 1
+  
+ELSEIF (<ARGO.ISITEM>)
+	SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Sadece oyuncuları guildinize dahil edebilirsiniz.
+	RETURN 1
+  
+ELSEIF !(<ARGO.ISPLAYER>)
+	SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Sadece oyuncuları guildinize dahil edebilirsiniz.
+	RETURN 1
+
+ELSEIF (<ARGO.FLAGS>&STATF_DEAD) || (<ARGO.IsNomove>)
+	SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, <ARGO.NAME> ölü veya şu an uygun bir halde değil.
+	RETURN 1
+
+ELSEIF (<ARGO.ISDIALOGOPEN.D_GUILD_INVITE_ADD_MEMBER>) || (<ARGO.ISDIALOGOPEN.D_GUILD_CREATE>)
+	SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, <ARGO.NAME> isimli oyuncuya zaten bir davet gönderilmiş veya yeni guild kuruyor.
+	RETURN 1
+
+ELSEIF (<REF1.MEMBER.COUNT> >= <DDEF.GUILDCONFIG_MAX_MEMBERCOUNT>)
+	SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Guildiniz en fazla üye sayısına ulaşmış. (Max:<DDEF.GUILDCONFIG_MAX_MEMBERCOUNT> - <REF1.MEMBER.COUNT>/<DDEF.GUILDCONFIG_MAX_MEMBERCOUNT>)
+	RETURN 1
+ENDIF
+
+IF (<ARGO> == <SRC>)
+	IF (<SRC.ACCOUNT.CHARS> > 1)
+		SRC.SDIALOG D_ACCOUNT_GUILD_UYE
+	ENDIF
+RETURN 1
+ENDIF
+
+IF (<ARGO.GUILD>)
+  IF (<ARGO.MEMORYFINDTYPE.MEMORY_GUILD.LINK> == <REF1.UID>)
+SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, <ARGO.NAME> zaten guildinize üye.
+  ELSE
+SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, <ARGO.NAME> zaten bir guilde üye.
+  ENDIF
+  RETURN 1
+ENDIF
+ARGO.CTAG0.INVITE_GUILD=<REF1>
+SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, <ARGO.NAME> isimli oyuncuya üye daveti gönderdiniz.
+TRYSRC <ARGO> SDIALOG D_GUILD_INVITE_ADD_MEMBER
+RETURN 1
+
+
+
+
+
+[FUNCTION f_guildsys_event_speech_fix]
+IF (<GUILD>)
+	IF !(<ISEVENT.<DEF.GUILDCONFIG_CHAREVENT_NAME>>)
+	  EVENTS +<DEF.GUILDCONFIG_CHAREVENT_NAME>
+	ENDIF
+	IF !(<ISDSPEECH.<DEF.GUILDCFGSPEECH_NAME>>)
+		DSPEECH +<DEF.GUILDCFGSPEECH_NAME>
+	ENDIF
+ELSE
+	IF (<ISEVENT.<DEF.GUILDCONFIG_CHAREVENT_NAME>>)
+	  EVENTS -<DEF.GUILDCONFIG_CHAREVENT_NAME>
+	ENDIF
+	IF (<ISDSPEECH.<DEF.GUILDCFGSPEECH_NAME>>)
+		DSPEECH -<DEF.GUILDCFGSPEECH_NAME>
+	ENDIF
+ENDIF
+
+
+
+
+
+[FUNCTION F_GUILDSYS_RECRUITGUY]
+REF1 = <ARGS> // GUILDSTONE
+
+IF (<REF1.TYPE> != T_STONE_GUILD)
+	RETURN 1
+ELIF ((<REF1.MASTERUID> != <UID>) && (<REF1.MEMBERFROMUID.<UID>.PRIV> != <DEF0.STONEPRIV_MEMBER>) && (!<ISGM>))
+	SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Sadece guild üyeleri yeni oyuncular alabilir.
+	RETURN 1
+ELIF (<ARGO.ISITEM>)
+	SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu bir oyuncu değil.
+	return 1
+ELIF (!<ARGO.ISPLAYER>)
+	SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>,  Bu bir oyuncu değil.
+	RETURN 1
+ELIF (<REF1.ISDIFF <ARGO>>)
+	SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, <ARGO.NAME>: <def.reach_fail>
+	RETURN 1
+ELIF (<ARGO.FLAGS>&<DEF.STATF_DEAD>)
+	SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu oyuncu hayatta değil.
+	RETURN 1
+ENDIF
+
+IF (<ARGO.MEMORYFINDTYPE.<DEF0.MEMORY_GUILD>.UID>)
+	IF (<ARGO.MEMORYFINDTYPE.<DEF0.MEMORY_GUILD>.LINK> == <REF1.UID>)
+		SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, <ARGO.NAME> zaten bir guilde üye.
+	ELSE
+		SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, <ARGO.NAME> zaten bir guilde üye.
+	ENDIF
+RETURN 1
+ENDIF
+
+IF (<REF1.MEMBERFROMUID.<ARGO.UID>.UID> != <ARGO.UID>)
+
+	IF ((<REF1.MASTERUID> == <UID>) || (<ISGM>))
+	
+		//
+		IF (<DEF0.GUILDCONFIG_MAXMEMBERS>)
+			IF (<REF1.MEMBER.COUNT <DEF0.STONEPRIV_MEMBER>> < <DEF0.GUILDCONFIG_MAXMEMBERS>)
+				F_GUILDSYS_ADDCHARTOGUILD <REF1.UID>,<ARGO.UID>,1
+			ELSE
+				SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Guildde <REF1.MEMBER.COUNT>/<dDEF0.GUILDCONFIG_MAXMEMBERS> üye var. Şu an bir üye daveti gönderemezsiniz.
+			ENDIF
+		ELSE
+			F_GUILDSYS_ADDCHARTOGUILD <REF1.UID>,<ARGO.UID>,1
+		ENDIF
+		//
+
+	ELSE
+	
+		//
+		IF (<DEF0.GUILDCONFIG_MAXCANDIDATES>)
+			IF (<REF1.MEMBER.COUNT <DEF0.STONEPRIV_CANDIDATE>> < <DEF0.GUILDCONFIG_MAXCANDIDATES>)
+				F_GUILDSYS_ADDCHARTOGUILD <REF1.UID>,<ARGO.UID>,0
+			ELSE
+				SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Guildde <dDEF0.GUILDCONFIG_MAXCANDIDATES> aday üye mevcut. Şu an bir aday üye daveti gönderemezsiniz.
+			ENDIF
+		ELSE
+			F_GUILDSYS_ADDCHARTOGUILD <ref1.uid>,<argo.uid>,0
+		ENDIF
+		//
+		
+	ENDIF
+   
+ELSE
+	SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, <ARGO.NAME> zaten guild üye adayı.
+ENDIF
+
+
+
+// ------------------------------------------------------
+[FUNCTION f_guildsys_addchartoguild]
+// no checks here, everything should be checked before calling this functions
+REF1 = <ARGV[0]> // THE GUILD
+REF2 = <ARGV[1]> // THE CHAR
+LOCAL.ADDASMEMBER = <ARGV[2]>
+
+IF (<LOCAL.ADDASMEMBER>)
+	REF1.JOINASMEMBER <REF2.UID>
+	REF1.SAYU Yeni üye : <REF2.NAME>
+	REF2.GC Guildinizin yeni üyesi olarak kabul edildim, teşekkürler...
+ELSE
+	REF1.APPLYTOJOIN <REF2.UID>
+	REF1.SAYU Yeni üye adayı : <REF2.NAME>
+	REF2.GC Merhaba! Guildinizin yeni üye adayıyım.
+ENDIF
+REF2.f_guildsys_event_speech_fix
+
+ref2.CHARWORLDMEMORYDEL
+
+sector.allclients notoupdate
+
+
+// ------------------------------------------------------
+[FUNCTION f_guildsys_removecharfromguild]
+REF1 = <ARGV[0]> // THE GUILD
+REF2 = <ARGV[1]> // THE CHAR
+
+// Online ise timer memory ver.
+IF (<REF2.ISONLINE>)
+	IF (<REF2.FINDID.I_GUILD_RESIGN_MEMORY>)
+		SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, <ref2.name> isimli oyuncu zaten guildden ayrılma aşamasında.
+		RETURN 1
+	ENDIF
+	SERV.NEWITEM I_GUILD_RESIGN_MEMORY,1,<REF2>,1
+
+
+ELSE
+	f_guildsys_resigncharfromguild <ref1>,<ref2>
+ENDIF
+
+
+
+[function f_guildsys_resigncharfromguild]
+REF1 = <ARGV[0]> // THE GUILD
+REF2 = <ARGV[1]> // THE CHAR
+REF2.CRIMINAL 0
+IF (<REF2.MEMORYFINDTYPE.MEMORY_SAWCRIME>)
+	REF2.MEMORYFINDTYPE.MEMORY_SAWCRIME.REMOVE
+ENDIF
+IF (<REF2.FINDID.I_RUNE_POISON>)
+	REF2.FINDID.I_RUNE_POISON.REMOVE
+ENDIF
+
+ref2.attacker.clear
+
+REF1.RESIGN <REF2.UID>
+F_GUILDSYS_SENDSMSG <ref1.uid>,<ref2.name> guidden ayrildi.
+REF2.f_guildsys_event_speech_fix
+REF2.UPDATE
+REF2.GC Guildden ayrıldı!
+REF2.SAYUA 38,6,0,0 Guildden ayrılır
+REF2.NOTICE Guildden ayrıldın!
+
+ref2.CHARWORLDMEMORYDEL
+Sector.allclients notoupdate
+	
+	
+// ------------------------------------------------------
+[FUNCTION f_guildsys_isnameused]
+RETURN <f_stonesys_isnameused <args>>
+
+// ------------------------------------------------------
+[FUNCTION f_guildsys_isabbrevused]
+RETURN <f_stonesys_isabbrevused <args>>
+
+
+
+// ------------------------------------------------------
+[FUNCTION F_GUILDSYS_ISATWARWITH]
+LOCAL.MYGUILD=<ARGV[0]>
+LOCAL.OTHERGUILD=<ARGV[1]>
+IF ((<UID.<LOCAL.MYGUILD>.TYPE>!=T_STONE_GUILD) || (<UID.<LOCAL.OTHERGUILD>.TYPE>!=T_STONE_GUILD))
+	RETURN 0
+ENDIF
+IF (<UID.<LOCAL.MYGUILD>.GUILDFROMUID.<LOCAL.OTHERGUILD>.ISENEMY> && <UID.<LOCAL.OTHERGUILD>.GUILDFROMUID.<LOCAL.MYGUILD>.ISENEMY>)
+	RETURN 1
+ENDIF
+RETURN 0
+
+
+
+
+// ------------------------------------------------------
+[FUNCTION F_GUILDSYS_CANDECLAREWARWITH]
+LOCAL.MYGUILD=<ARGV[0]>
+LOCAL.OTHERGUILD=<ARGV[1]>
+IF ((<UID.<LOCAL.MYGUILD>.TYPE>!=T_STONE_GUILD) || (<UID.<LOCAL.OTHERGUILD>.TYPE>!=T_STONE_GUILD))
+  RETURN 0
+ENDIF
+LOCAL.MYGUILD_COUNT=<UID.<LOCAL.MYGUILD>.MEMBER.COUNT <DEF0.STONEPRIV_MEMBER>>
+IF (<UID.<LOCAL.MYGUILD>.MASTERUID>)
+	LOCAL.MYGUILD_COUNT += 1
+ENDIF
+IF (<LOCAL.MYGUILD_COUNT>==0)
+	RETURN 0
+ENDIF
+LOCAL.OTHERGUILD_COUNT=<UID.<LOCAL.OTHERGUILD>.MEMBER.COUNT <DEF0.STONEPRIV_MEMBER>>
+IF (<UID.<LOCAL.OTHERGUILD>.MASTERUID>)
+  LOCAL.OTHERGUILD_COUNT += 1
+ENDIF
+IF (<LOCAL.OTHERGUILD_COUNT>==0)
+  RETURN 0
+ENDIF
+RETURN 1
+
+
+
+
+// ------------------------------------------------------
+[FUNCTION F_GUILDSYS_SEARCHGUILDNAME]
+LOCAL.CURRENTUID=<ARGV[0]>	// CURRENT GUILD UID
+LOCAL.TEXTSEARCH=<ARGV[1]>	// TEXT TO SEARCH IN OTHER GUILD NAMES
+LOCAL.ALLGUILDS=0           	// ALLGUILDS CHECK
+LOCAL.SEARCH_FOUND=0
+LOCAL.SEARCH_NUM=0
+LOCAL.SEARCH_UID=<SERV.GUILDSTONES.<LOCAL.SEARCH_NUM>.UID>
+
+IF (<DEF0.GUILDCONFIG_ALLOW_ALLGUILD_SEARCH>)
+    IF (!STRCMPI("<LOCAL.TEXTSEARCH>","<DEF.GUILDCONFIG_ALLOW_ALLGUILD_TEXT>"))
+        LOCAL.ALLGUILDS=1
+    ENDIF
+ENDIF
+
+WHILE (<LOCAL.SEARCH_UID>)
+
+	IF (<LOCAL.CURRENTUID>!=<LOCAL.SEARCH_UID>)
+		IF (<LOCAL.ALLGUILDS>)
+			IF (!<LOCAL.RETURNDATA>)
+				LOCAL.RETURNDATA=<LOCAL.SEARCH_UID>
+			ELSE
+				LOCAL.RETURNDATA .= ,<LOCAL.SEARCH_UID>
+			ENDIF
+			LOCAL.SEARCH_FOUND += 1
+			
+		ELIF (STRREGEX(<LOCAL.TEXTSEARCH>*,<UID.<LOCAL.SEARCH_UID>.NAME>))
+			IF (!<LOCAL.RETURNDATA>)
+				LOCAL.RETURNDATA=<LOCAL.SEARCH_UID>
+			ELSE
+				LOCAL.RETURNDATA .= ,<LOCAL.SEARCH_UID>
+			ENDIF
+			LOCAL.SEARCH_FOUND += 1
+		ENDIF
+	ENDIF
+  
+  LOCAL.SEARCH_NUM += 1
+  LOCAL.SEARCH_UID=<SERV.GUILDSTONES.<LOCAL.SEARCH_NUM>.UID>
+  
+	IF (<DEF0.GUILDCONFIG_MAX_NSEARCH_RES>)
+		IF (<LOCAL.SEARCH_NUM> >= <DEF0.GUILDCONFIG_MAX_NSEARCH_RES>)
+			LOCAL.SEARCH_UID=0 // BREAK THE LOOP
+		ENDIF
+	ENDIF
+ENDWHILE
+
+IF (!<LOCAL.SEARCH_FOUND>)
+	RETURN ""
+ENDIF
+RETURN <LOCAL.RETURNDATA>
+
+
+
+
+// ------------------------------------------------------
+[FUNCTION F_GUILDSYS_LISTSPLIT]
+LOCAL.GUILDLIST_COUNT=<ARGV>
+IF (<LOCAL.GUILDLIST_COUNT>)
+  FOR X 0 <EVAL <LOCAL.GUILDLIST_COUNT>-1>
+    TRY LOCAL.GUILDLIST_DATA<DLOCAL.X>=<ARGV[<DLOCAL.X>]>
+  ENDFOR
+ENDIF
+
+
+
+
+
+// ------------------------------------------------------
+[FUNCTION F_GUILDSYS_DECLAREWAR]
+LOCAL.FIRSTUID=<ARGV[0]>
+LOCAL.SECONDUID=<ARGV[1]>
+IF ((<UID.<LOCAL.FIRSTUID>.TYPE>!=T_STONE_GUILD) || (<UID.<LOCAL.SECONDUID>.TYPE>!=T_STONE_GUILD))
+	RETURN 0
+ENDIF
+REF1 = <LOCAL.FIRSTUID>
+REF2 = <LOCAL.SECONDUID>
+IF (<REF1.ISVALID>)
+	REF1.DECLAREWAR <LOCAL.SECONDUID>
+ENDIF
+IF (<ARGV[2]> == 1)
+  F_GUILDSYS_SENDSMSG <local.firstuid>,Guildiniz savaş davetini kabul etti: <uid.<local.seconduid>.name> <qval (strlen(<uid.<local.seconduid>.abbrev>)) ? [<uid.<local.seconduid>.abbrev>]:>
+  F_GUILDSYS_SENDSMSG <local.seconduid>,Guildiniz savaş davetini kabul etti: <uid.<local.firstuid>.name> <qval (strlen(<uid.<local.firstuid>.abbrev>)) ? [<uid.<local.firstuid>.abbrev>]:>
+
+ELSEIF (<ARGV[2]> == 2)
+  F_GUILDSYS_SENDSMSG <local.firstuid>,Guildiniz <uid.<local.seconduid>.name> guildine bir savaş daveti gönderdi: <qval (strlen(<uid.<local.seconduid>.abbrev>)) ? [<uid.<local.seconduid>.abbrev>]:>
+  F_GUILDSYS_SENDSMSG <local.seconduid>,Guildiniz şu an bir savaş daveti aldı: <uid.<local.firstuid>.name> <qval (strlen(<uid.<local.firstuid>.abbrev>)) ? [<uid.<local.firstuid>.abbrev>]:>
+ENDIF
+
+F_STONESYS_UPDATENOTO <LOCAL.FIRSTUID>
+F_STONESYS_UPDATENOTO <LOCAL.SECONDUID>
+
+RETURN 1
+
+
+
+
+// ------------------------------------------------------
+[FUNCTION F_GUILDSYS_DECLAREPEACE]
+REF1=<ARGV[0]>
+REF2=<ARGV[1]>
+IF ((<UID.<REF1>.TYPE>!=T_STONE_GUILD) || (<UID.<ref2>.TYPE>!=T_STONE_GUILD))
+	RETURN 0
+ENDIF
+REF1.DECLAREPEACE <REF2>
+IF (<ARGV[2]> != 0)
+  F_GUILDSYS_SENDSMSG <REF1>,Artık barış içindesiniz <REF2.name> [<REF2.abbrev>]
+  F_GUILDSYS_SENDSMSG <REF2>,Artık barış içindesiniz <REF2.name> [<REF1.abbrev>]
+ENDIF
+F_STONESYS_UPDATENOTO <REF1>
+F_STONESYS_UPDATENOTO <REF2>
+RETURN 1
+
+
+
+
+// ------------------------------------------------------
+[FUNCTION F_GUILDSYS_SENDSMSG]
+F_STONESYS_SENDSMSG <ARGS>
+
+
+// ------------------------------------------------------
+[FUNCTION F_GUILDSYS_SPEECH_SENDSMSG]
+F_STONESYS_SPEECH_SENDSMSG <ARGS>
+
+
+// ------------------------------------------------------
+[FUNCTION F_GUILDSYS_ISWARRING]
+FOR CGUILD 0 <GUILD.COUNT>
+	IF ((<GUILD.<LOCAL.CGUILD>.ISENEMY>) && (<UID.<GUILD.<LOCAL.CGUILD>.UID>.GUILDFROMUID.<UID>.ISENEMY>))
+		LOCAL.WARS += 1
+	ENDIF
+ENDFOR
+RETURN <DLOCAL.WARS>
+
+
+[EOF]

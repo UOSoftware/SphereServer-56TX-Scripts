@@ -1,0 +1,505 @@
+
+[TEMPLATE MEAGER_MONSTER_BACKPACK]
+DEFNAME=MEAGER_MONSTER_BACKPACK
+CATEGORY=Item Templates
+SUBSECTION=Loot Templates
+DESCRIPTION=Meager Monster Backpack
+CONTAINER=i_backpack
+ITEM={ random_meat 1 0 2 },{ 1 2 }
+ITEM={ i_torch 1 0 6 }
+ITEM={ random_meager_magic_loot 1 0 150 }
+ITEM=MEAGER_GOLD_PILE
+
+[TEMPLATE AVERAGE_MONSTER_BACKPACK]
+DEFNAME=AVERAGE_MONSTER_BACKPACK
+CATEGORY=Item Templates
+SUBSECTION=Loot Templates
+DESCRIPTION=Average Monster Backpack
+CONTAINER=i_backpack
+ITEM={ random_meat 1 0 2 },{ 1 3 }
+ITEM={ i_torch 1 0 4 },{ 1 2 }
+ITEM={ random_average_magic_loot 1 0 75 }
+ITEM=AVERAGE_GOLD_PILE
+
+
+/////////////////////////
+// Gold Pile Templates //
+/////////////////////////
+
+[TEMPLATE poor_monster_backpack]
+DEFNAME=poor_monster_backpack
+CATEGORY=Item Templates
+SUBSECTION=Loot Templates
+DESCRIPTION=Poor Monster Backpack
+CONTAINER=i_backpack
+ITEM={ random_meat 1 0 2 }
+ITEM={ i_torch 1 0 8 }
+ITEM={ random_poor_magic_loot 1 0 300 }
+ITEM=POOR_GOLD_PILE
+
+[TEMPLATE backpack_poor]
+DEFNAME=backpack_poor
+CATEGORY=Item Templates
+SUBSECTION=Loot Templates
+DESCRIPTION=Poor Backpack
+CONTAINER=i_backpack
+ITEM={ random_food 1 0 3 },{ 1 3 }
+ITEM={ random_bottle 1 0 8 }
+ITEM={ random_light 1 0 8 }
+ITEM={ random_male_tops 1 0 4 }
+COLOR=colors_all
+ITEM={ random_male_pants 1 0 4 }
+COLOR=colors_all
+ITEM=POOR_GOLD_PILE
+
+[TEMPLATE backpack_meager]
+DEFNAME=backpack_meager
+CATEGORY=Item Templates
+SUBSECTION=Loot Templates
+DESCRIPTION=Meager Backpack
+CONTAINER=i_backpack
+ITEM={ random_food 1 0 2 },{ 1 4 }
+ITEM={ random_bottle 1 0 6 }
+ITEM={ random_light 1 0 6 }
+ITEM={ random_hats 1 0 9 }
+ITEM=MEAGER_GOLD_PILE
+
+[TEMPLATE backpack_average]
+DEFNAME=backpack_average
+CATEGORY=Item Templates
+SUBSECTION=Loot Templates
+DESCRIPTION=Average Backpack
+CONTAINER=i_backpack
+ITEM={ random_food 1 0 1 },{ 2 6 }
+ITEM={ random_bottle 1 0 4 },{ 1 3 }
+ITEM={ i_cape 1 0 9 }
+COLOR=colors_all
+ITEM=AVERAGE_GOLD_PILE
+
+
+[TEMPLATE backpack_rich]
+DEFNAME=backpack_rich
+CATEGORY=Item Templates
+SUBSECTION=Loot Templates
+DESCRIPTION=Rich Backpack
+CONTAINER=i_backpack
+ITEM={ random_food 2 0 1 },{ 3 8 }
+ITEM={ random_bottle 1 0 2 },{ 1 5 }
+ITEM={ i_torch 1 0 2 },{ 1 5 }
+ITEM={ i_CAPE 1 random_over_armor 1 0 9 }
+COLOR=colors_all
+ITEM={ random_jewelry 1 0 2 }
+ITEM=RICH_GOLD_PILE
+
+[TEMPLATE backpack_loaded]
+DEFNAME=backpack_loaded
+CATEGORY=Item Templates
+SUBSECTION=Loot Templates
+DESCRIPTION=Filthy Rich Backpack
+CONTAINER=i_backpack
+ITEM={ random_food 3 0 1 },{ 4 10 }
+ITEM={ random_bottle 1 0 1 }
+ITEM={ random_jewelry 1 0 1 }
+ITEM=loaded_gold_pile
+
+
+[TEMPLATE random_gold_pile]
+CATEGORY=Item Templates
+SUBSECTION=Loot Templates
+DESCRIPTION=Random Gold Pile
+ITEM={ poor_gold_pile 16 meager_gold_pile 8 average_gold_pile 4 rich_gold_pile 2 loaded_gold_pile 1 }
+
+[TEMPLATE poor_gold_pile]
+CATEGORY=Item Templates
+SUBSECTION=Loot Templates
+DESCRIPTION=Poor Gold Pile
+ITEM=i_gold,{6 25}
+
+[TEMPLATE meager_gold_pile]
+CATEGORY=Item Templates
+SUBSECTION=Loot Templates
+DESCRIPTION=Meager Gold Pile
+ITEM=i_gold,{20 50}
+
+[TEMPLATE average_gold_pile]
+CATEGORY=Item Templates
+SUBSECTION=Loot Templates
+DESCRIPTION=Average Gold Pile
+ITEM=i_gold,{90 175}
+
+[TEMPLATE rich_gold_pile]
+CATEGORY=Item Templates
+SUBSECTION=Loot Templates
+DESCRIPTION=Rich Gold Pile
+ITEM=i_gold,{160 320}
+
+[TEMPLATE loaded_gold_pile]
+CATEGORY=Item Templates
+SUBSECTION=Loot Templates
+DESCRIPTION=Loaded Gold Pile
+ITEM=i_gold,{400 480}
+
+
+
+/////////////////////
+// Pouch Templates //
+/////////////////////
+
+[TEMPLATE pouch_poor]
+DEFNAME=pouch_poor
+CATEGORY=Item Templates
+SUBSECTION=Loot Templates
+DESCRIPTION=Poor Pouch
+CONTAINER=i_bag
+ITEM=poor_gold_pile
+
+[TEMPLATE pouch_meager]
+DEFNAME=pouch_meager
+CATEGORY=Item Templates
+SUBSECTION=Loot Templates
+DESCRIPTION=Meager Pouch
+CONTAINER=i_bag
+ITEM=meager_gold_pile
+
+[TEMPLATE pouch_average]
+DEFNAME=pouch_average
+CATEGORY=Item Templates
+SUBSECTION=Loot Templates
+DESCRIPTION=Average Pouch
+CONTAINER=i_bag
+ITEM=average_gold_pile
+
+[TEMPLATE pouch_rich]
+DEFNAME=pouch_rich
+CATEGORY=Item Templates
+SUBSECTION=Loot Templates
+DESCRIPTION=Rich Pouch
+CONTAINER=i_bag
+ITEM=rich_gold_pile
+ITEM={ random_jewel 1 0 1 }
+
+[TEMPLATE pouch_loaded]
+DEFNAME=pouch_loaded
+CATEGORY=Item Templates
+SUBSECTION=Loot Templates
+DESCRIPTION=Filthy Rich Pouch
+CONTAINER=i_bag
+ITEM=loaded_gold_pile
+ITEM={ random_jewel 1 0 1 }
+ITEM={ random_jewel 1 0 1 }
+
+
+[TEMPLATE random_coin_purse]
+CATEGORY=Item Templates
+SUBSECTION=Loot Templates
+DESCRIPTION=Random Pouch
+ITEM={ poor_pouch 16 meager_pouch 8 average_pouch 4 rich_pouch 2 loaded_pouch 1 }
+
+[TEMPLATE poor_pouch]
+CATEGORY=Item Templates
+SUBSECTION=Loot Templates
+DESCRIPTION=Poor Pouch
+CONTAINER=i_bag
+ITEM=poor_gold_pile
+ITEM={ random_jewel 1 0 1 }
+ITEM={ random_jewelry 1 0 5 }
+
+[TEMPLATE meager_pouch]
+CATEGORY=Item Templates
+SUBSECTION=Loot Templates
+DESCRIPTION=Meager Pouch
+CONTAINER=i_bag
+ITEM=meager_gold_pile
+ITEM={ random_jewel 1 0 1 },{1 2}
+ITEM={ random_jewelry 1 0 4 }
+
+[TEMPLATE average_pouch]
+CATEGORY=Item Templates
+SUBSECTION=Loot Templates
+DESCRIPTION=Average Pouch
+CONTAINER=i_bag
+ITEM=average_gold_pile
+ITEM={ random_jewel 1 0 1 },{2 3}
+ITEM={ random_jewelry 1 0 3 }
+
+[TEMPLATE rich_pouch]
+CATEGORY=Item Templates
+SUBSECTION=Loot Templates
+DESCRIPTION=Rich Pouch
+CONTAINER=i_bag
+ITEM=rich_gold_pile
+ITEM={ random_jewel 1 0 1 },{3 4}
+ITEM={ random_jewelry 1 0 2 }
+
+[TEMPLATE loaded_pouch]
+CATEGORY=Item Templates
+SUBSECTION=Loot Templates
+DESCRIPTION=Loaded Pouch
+CONTAINER=i_bag
+ITEM=loaded_gold_pile
+ITEM={ random_jewel 1 0 1 },{4 5}
+ITEM={ random_jewelry 1 0 1 }
+
+
+
+//////////////////////
+// Goodie Templates //
+//////////////////////
+
+[TEMPLATE random_goodie]
+CATEGORY=Item Templates
+SUBSECTION=Loot Templates
+DESCRIPTION=Random Goodie
+ITEM={ poor_goodie 16 meager_goodie 8 average_goodie 4 rich_goodie 2 loaded_goodie 1 }
+
+[TEMPLATE poor_goodie]
+CATEGORY=Item Templates
+SUBSECTION=Loot Templates
+DESCRIPTION=Poor Goodie
+CONTAINER=random_container
+ITEM=random_clothing_all
+COLOR=colors_all
+ITEM={ random_food 1 0 1 }
+ITEM={ random_drink 1 0 1 }
+ITEM={ random_jewelry 1 0 5 }
+ITEM={ random_instrument 1 0 5 }
+
+[TEMPLATE meager_goodie]
+CATEGORY=Item Templates
+SUBSECTION=Loot Templates
+DESCRIPTION=Meager Goodie
+CONTAINER=random_container
+ITEM=random_clothing_all
+COLOR=colors_all
+ITEM={ random_food 1 0 1 }
+ITEM={ random_food 1 0 1 }
+ITEM={ random_drink 1 0 1 }
+ITEM={ random_drink 1 0 1 }
+ITEM={ random_jewelry 1 0 4 }
+ITEM={ random_instrument 1 0 4 }
+
+[TEMPLATE average_goodie]
+CATEGORY=Item Templates
+SUBSECTION=Loot Templates
+DESCRIPTION=Average Goodie
+CONTAINER=random_container
+ITEM=random_clothing_all
+COLOR=colors_all
+ITEM={ random_food 1 0 1 }
+ITEM={ random_food 1 0 1 }
+ITEM={ random_food 1 0 1 }
+ITEM={ random_drink 1 0 1 }
+ITEM={ random_drink 1 0 1 }
+ITEM={ random_drink 1 0 1 }
+ITEM={ random_jewelry 1 0 3 }
+ITEM={ random_instrument 1 0 3 }
+
+[TEMPLATE rich_goodie]
+CATEGORY=Item Templates
+SUBSECTION=Loot Templates
+DESCRIPTION=Rich Goodie
+CONTAINER=random_container
+ITEM=random_clothing_all
+COLOR=colors_all
+ITEM={ random_food 1 0 1 }
+ITEM={ random_food 1 0 1 }
+ITEM={ random_food 1 0 1 }
+ITEM={ random_food 1 0 1 }
+ITEM={ random_drink 1 0 1 }
+ITEM={ random_drink 1 0 1 }
+ITEM={ random_drink 1 0 1 }
+ITEM={ random_drink 1 0 1 }
+ITEM={ random_jewelry 1 0 2 }
+ITEM={ random_instrument 1 0 2 }
+
+[TEMPLATE loaded_goodie]
+CATEGORY=Item Templates
+SUBSECTION=Loot Templates
+DESCRIPTION=Loaded Goodie
+CONTAINER=random_container
+ITEM=random_clothing_all
+COLOR=colors_all
+ITEM={ random_food 1 0 1 }
+ITEM={ random_food 1 0 1 }
+ITEM={ random_food 1 0 1 }
+ITEM={ random_food 1 0 1 }
+ITEM={ random_food 1 0 1 }
+ITEM={ random_drink 1 0 1 }
+ITEM={ random_drink 1 0 1 }
+ITEM={ random_drink 1 0 1 }
+ITEM={ random_drink 1 0 1 }
+ITEM={ random_drink 1 0 1 }
+ITEM={ random_jewelry 1 0 1 }
+ITEM={ random_instrument 1 0 1 }
+
+////////////////////////////
+// Magic Goodie Templates //
+////////////////////////////
+
+[TEMPLATE random_magic_goodie]
+CATEGORY=Item Templates
+SUBSECTION=Loot Templates
+DESCRIPTION=Random Magic Goodie
+ITEM={ poor_magic_goodie 16 meager_magic_goodie 8 average_magic_goodie 4 rich_magic_goodie 2 loaded_magic_goodie 1 }
+
+[TEMPLATE poor_magic_goodie]
+CATEGORY=Item Templates
+SUBSECTION=Loot Templates
+DESCRIPTION=Poor Magic Goodie
+CONTAINER=random_container
+ITEM=random_clothing_all
+COLOR=colors_all
+ITEM={ random_scroll 1 0 5 }
+ITEM={ random_potion 1 0 5 }
+ITEM={ random_wand_magery 1 0 5 }
+ITEM={ random_reagent 1 0 5 },{3 5}
+
+[TEMPLATE meager_magic_goodie]
+CATEGORY=Item Templates
+SUBSECTION=Loot Templates
+DESCRIPTION=Meager Magic Goodie
+CONTAINER=random_container
+ITEM=random_clothing_all
+COLOR=colors_all
+ITEM={ random_scroll 1 0 4 },{1 2}
+ITEM={ random_potion 1 0 4 },{1 2}
+ITEM={ random_wand_magery 1 0 4 }
+ITEM={ random_reagent 1 0 4 },{4 7}
+
+[TEMPLATE average_magic_goodie]
+CATEGORY=Item Templates
+SUBSECTION=Loot Templates
+DESCRIPTION=Average Magic Goodie
+CONTAINER=random_container
+ITEM=random_clothing_all
+COLOR=colors_all
+ITEM={ random_scroll 1 0 3 },{2 3}
+ITEM={ random_potion 1 0 3 },{1 2}
+ITEM={ random_wand_magery 1 0 3 }
+ITEM={ random_reagent 1 0 3 },{5 9}
+
+[TEMPLATE rich_magic_goodie]
+CATEGORY=Item Templates
+SUBSECTION=Loot Templates
+DESCRIPTION=Rich Magic Goodie
+CONTAINER=random_container
+ITEM=random_clothing_all
+COLOR=colors_all
+ITEM={ random_scroll 1 0 2 },{3 4}
+ITEM={ random_potion 1 0 2 },{2 3}
+ITEM={ random_wand_magery 1 0 2 }
+ITEM={ random_reagent 1 0 2 },{6 11}
+
+[TEMPLATE loaded_magic_goodie]
+CATEGORY=Item Templates
+SUBSECTION=Loot Templates
+DESCRIPTION=Loaded Magic Goodie
+CONTAINER=random_container
+ITEM=random_clothing_all
+COLOR=colors_all
+ITEM={ random_scroll 1 0 1 },{4 5}
+ITEM={ random_potion 1 0 1 },{2 3}
+ITEM={ random_wand_magery 1 0 1 }
+ITEM={ random_reagent 1 0 1 },{7 13}
+
+////////////////////////
+// Backpack Templates //
+////////////////////////
+
+[TEMPLATE poor_backpack]
+CATEGORY=Item Templates
+SUBSECTION=Loot Templates
+DESCRIPTION=Poor Backpack
+CONTAINER=i_backpack
+ITEM=poor_gold_pile
+ITEM=poor_pouch
+ITEM={ poor_goodie 1 poor_magic_goodie 1 }
+ITEM={ random_food 1 0 5 }
+ITEM={ random_drink 1 0 5 }
+
+[TEMPLATE meager_backpack]
+CATEGORY=Item Templates
+SUBSECTION=Loot Templates
+DESCRIPTION=Meager Backpack
+CONTAINER=i_backpack
+ITEM=meager_gold_pile
+ITEM=meager_pouch
+ITEM={ meager_goodie 1 meager_magic_goodie 1 }
+ITEM={ random_food 1 0 4 }
+ITEM={ random_drink 1 0 4 }
+
+[TEMPLATE average_backpack]
+CATEGORY=Item Templates
+SUBSECTION=Loot Templates
+DESCRIPTION=Average Backpack
+CONTAINER=i_backpack
+ITEM=average_gold_pile
+ITEM=average_pouch
+ITEM={ average_goodie 1 average_magic_goodie 1 }
+ITEM={ random_food 1 0 3 }
+ITEM={ random_drink 1 0 3 }
+
+[TEMPLATE rich_backpack]
+CATEGORY=Item Templates
+SUBSECTION=Loot Templates
+DESCRIPTION=Rich Backpack
+CONTAINER=i_backpack
+ITEM=rich_gold_pile
+ITEM=rich_pouch
+ITEM={ rich_goodie 1 rich_magic_goodie 1 }
+ITEM={ random_food 1 0 2 }
+ITEM={ random_drink 1 0 2 }
+
+[TEMPLATE loaded_backpack]
+CATEGORY=Item Templates
+SUBSECTION=Loot Templates
+DESCRIPTION=Loaded Backpack
+CONTAINER=i_backpack
+ITEM=loaded_gold_pile
+ITEM=loaded_pouch
+ITEM={ loaded_goodie 1 loaded_magic_goodie 1 }
+ITEM={ random_food 1 0 1 }
+ITEM={ random_drink 1 0 1 }
+
+////////////////
+// Magic Loot //
+////////////////
+
+[TEMPLATE random_magic_loot]
+CATEGORY=Item Templates
+SUBSECTION=Random Magic Loot Templates
+DESCRIPTION=Random Magic Loot
+ITEM={ random_poor_magic_loot 16 random_meager_magic_loot 8 random_average_magic_loot 4 random_rich_magic_loot 2 random_loaded_magic_loot 1 }
+
+[TEMPLATE random_poor_magic_loot]
+CATEGORY=Item Templates
+SUBSECTION=Random Magic Loot Templates
+DESCRIPTION=Random Poor Magic Loot
+ITEM={ random_potions_all 1 random_scroll 1 random_magic_custom_lesser 1 }
+
+[TEMPLATE random_meager_magic_loot]
+CATEGORY=Item Templates
+SUBSECTION=Random Magic Loot Templates
+DESCRIPTION=Random Meager Magic Loot
+ITEM={ random_potions_all 1 random_scroll 1 random_magic_custom_lesser 1 }
+
+[TEMPLATE random_average_magic_loot]
+CATEGORY=Item Templates
+SUBSECTION=Random Magic Loot Templates
+DESCRIPTION=Random Average Magic Loot
+ITEM={ random_potions_all 1 random_scroll 1 random_magic_custom_lesser 1 }
+
+[TEMPLATE random_rich_magic_loot]
+CATEGORY=Item Templates
+SUBSECTION=Random Magic Loot Templates
+DESCRIPTION=Random Rich Magic Loot
+ITEM={ random_potions_all 1 random_scroll 1 random_magic_custom_greater 1 }
+
+[TEMPLATE random_loaded_magic_loot]
+CATEGORY=Item Templates
+SUBSECTION=Random Magic Loot Templates
+DESCRIPTION=Random Loaded Magic Loot
+ITEM={ random_potions_all 1 random_scroll 1 random_magic_custom_greater 1 }
+
+
+[EOF]

@@ -1,0 +1,23 @@
+
+
+[CHARDEF 01a8]
+//Use this as our invis man id.
+DEFNAME=c_man_invisible
+NAME=Man Invisible
+CAN=mt_walk|mt_run|mt_usehands
+ICON=i_pet_man
+HEIGHT=16
+RESOURCES=4 i_ribs_raw
+FOODTYPE=15 t_food,t_fruit
+CATEGORY=Humanoids
+SUBSECTION=Human
+DESCRIPTION=Human, Invisible
+BLOODCOLOR=-1
+TEVENTS=e_generic_npcs
+
+ON=@Create
+NPC=brain_human
+STR=1
+
+
+[EOF]

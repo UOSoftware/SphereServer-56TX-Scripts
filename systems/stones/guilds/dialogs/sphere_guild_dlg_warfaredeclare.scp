@@ -1,0 +1,148 @@
+VERSION=0.56T
+
+
+[dialog d_Guild_Master_Warfare_DeclareWar]
+<DEF.dsp>
+local.tosearch=<args>
+If (<type>!=t_stone_guild)
+  return 1
+elif (<masteruid>!=<src.uid>)&&(!<src.isgm>)
+  return 1
+endif
+
+src.ctag.dialog_guildmasterwarfaredclarewar_guildlist=<f_guildsys_searchguildname <uid>,<local.tosearch>>
+If (!<isempty <src.ctag.dialog_guildmasterwarfaredclarewar_guildlist>>)
+  CALL f_guildsys_listsplit <src.ctag.dialog_guildmasterwarfaredclarewar_guildlist>
+else
+  local.guildlist_count=0
+endif
+
+If (!<local.guildlist_count>)
+  src.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Sonuç bulunamadı: "<local.tosearch>".
+  return 1
+endif
+
+//Construct the dialog
+page 0
+RESIZE 0,0,370,450,Savas Menusu
+
+// dhtmlgump 30 50 400 25 0 0 Savaş ilan etmek istediğiniz guildi seçin.
+
+dhtmlgump 290 400 120 30 0 0 <DEF.BFONT_lGREEN>Meydan oku!
+button 260 400 4006 4007 1 0 1
+  
+dhtmlgump 60 400 100 35 0 0 <DEF.BFONT_DRED>Vazgeç
+button 30 400 0fb2 0fb3 1 0 0
+
+For num 0 <eval <local.guildlist_count>-1>
+  If (! (<local.num> % 11))
+    If (<local.num>)
+      button 300 370 4005 4007 0 <eval ((<local.num> / 11) + 1)> 0
+      // dhtmlgump 335 370 300 35 0 0 Sonraki sayfa
+    endif
+
+    page <eval ((<local.num> / 11) + 1)>
+    If (<local.num>)
+      button 300 370 4014 4016 0 <eval (<local.num> / 11)> 0
+      // dhtmlgump 335 370 300 35 0 0 Önceki sayfa
+    endif
+  endif
+
+  radio 30 <eval (50 + ((<local.num> % 11) * 30))> 208 209 0 <eval (<local.num> + 10)>
+
+  local.currentguilduid=<local.guildlist_data<dLOCAL.num>>
+	if (<uid.<local.currentguilduid>.align> <= 0)
+		local.bfont_hue = <def.bfont_gray>
+	elseif (<uid.<local.currentguilduid>.align> == 1)
+		local.bfont_hue = <def.bfont_orange>
+	elseif (<uid.<local.currentguilduid>.align> == 2)
+		local.bfont_hue = <def.bfont_lblue>
+	endif
+
+  If (<local.currentguilduid> <= 0)
+    dhtmlgump 60 <eval (50 + ((<local.num> % 11) * 30))> 300 35 0 0 <def.bfont_red>(-)
+  else
+    dhtmlgump 60 <eval (50 + ((<local.num> % 11) * 30))> 300 35 0 0 <local.bfont_hue><uid.<local.currentguilduid>.Name> <qval (strlen(<uid.<local.currentguilduid>.abbrev>))&&(<DEF0.GUILDCONFIG_GUILDLIST_SHOWABBREV>) ? [<uid.<local.currentguilduid>.abbrev>]:>
+  endif
+
+endfor
+
+
+
+[dialog d_Guild_Master_Warfare_DeclareWar Button]
+ON=0 1
+IF (!<SRC.CTAG.DIALOG_GUILDMASTERWARFAREDCLAREWAR_GUILDLIST>)
+	SERV.LOG Savas ilan et arama islevi yanlis bilgi dondurdu. Etiket ayarlanmadı!
+	RETURN 1
+ENDIF
+
+LOCAL.WAR_GUILDLIST=<SRC.CTAG.DIALOG_GUILDMASTERWARFAREDCLAREWAR_GUILDLIST>
+SRC.CTAG.DIALOG_GUILDMASTERWARFAREDCLAREWAR_GUILDLIST=
+  
+IF (<MASTERUID>!=<SRC.UID>)&&(!<SRC.ISGM>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Sadece guildmasterlar savaş ilan edebilir.
+	RETURN 1
+ENDIF
+
+
+IF (<ARGN1>==0)
+SDIALOG D_GUILD_MASTER_WARFARE,0
+
+ELIF (<ARGN1>==1)
+
+	CALL F_GUILDSYS_LISTSPLIT <LOCAL.WAR_GUILDLIST>
+  
+    IF (!<LOCAL.GUILDLIST_COUNT>)
+		SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Guild yok.
+		RETURN 1
+    ENDIF
+    
+    LOCAL.NUM=<ARGCHKID>-10
+	
+	IF ((<LOCAL.NUM> < 0) || (<LOCAL.NUM> > <LOCAL.GUILDLIST_COUNT>))
+		SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bir hata oluştu!
+		RETURN 1
+    ENDIF
+
+    LOCAL.SELECTEDGUILD=<LOCAL.GUILDLIST_DATA<DLOCAL.NUM>>
+
+    IF (!<LOCAL.SELECTEDGUILD>)
+		SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Seçili guild yok.
+		RETURN 1
+    ENDIF
+    
+    IF (<UID.<LOCAL.SELECTEDGUILD>.TYPE>!=T_STONE_GUILD)
+		SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Seçili guild bulunamadı!
+		RETURN 1
+    ENDIF
+
+    IF (<GUILDFROMUID.<LOCAL.SELECTEDGUILD>.ISENEMY>)
+		SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, <UID.<LOCAL.SELECTEDGUILD>.NAME> guildi ile zaten bir savaş içerisindesiniz.
+		
+    ELSEIF ( <GUILDFROMUID.<LOCAL.SELECTEDGUILD>.THEYWAR> && !<GUILDFROMUID.<LOCAL.SELECTEDGUILD>.WEWAR>)
+      
+		IF ( <F_GUILDSYS_CANDECLAREWARWITH <UID>,<LOCAL.SELECTEDGUILD>> )
+			F_GUILDSYS_DECLAREWAR <uid>,<local.selectedguild>,1
+		ELSE
+			SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Destek yönü aynı olan guildlere savaş açamazsınız.
+		ENDIF
+
+    ELSEIF (<GUILDFROMUID.<LOCAL.SELECTEDGUILD>.WEWAR> && !<GUILDFROMUID.<LOCAL.SELECTEDGUILD>.THEYWAR>)
+		SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, <uid.<local.selectedguild>.name> guilde zaten bir savaş ilanı yapılmış.
+		
+    ELSEIF (!<GUILDFROMUID.<LOCAL.SELECTEDGUILD>.WEWAR> && !<GUILDFROMUID.<LOCAL.SELECTEDGUILD>.THEYWAR>)
+      
+		IF ( <F_GUILDSYS_CANDECLAREWARWITH <UID>,<LOCAL.SELECTEDGUILD>> )
+			F_GUILDSYS_DECLAREWAR <UID>,<LOCAL.SELECTEDGUILD>,2
+		ELSE
+			SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Destek yönü aynı olan guildlere savaş açamazsınız.
+		ENDIF
+	  
+    ENDIF
+
+	SDIALOG D_GUILD_MASTER_WARFARE,0
+	
+ENDIF
+RETURN 1
+
+[EOF]

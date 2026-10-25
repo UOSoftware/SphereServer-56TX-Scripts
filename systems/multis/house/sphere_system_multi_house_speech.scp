@@ -1,0 +1,323 @@
+//****************************************************************************
+// SphereServer by: SphereServer development team and Menasoft.
+// www.sphereserver.net
+//****************************************************************************
+VERSION=X1
+
+// Bu Speech eve giren herkese verilir, evden cikista silinir.
+[SPEECH spk_house_cmds_player]
+ON=*
+
+
+
+// Bu Speech ev itemine verilir. Girilen speechler ev uzeirnde calisir.
+[SPEECH spk_house_cmds]
+ON=*strongbox*
+REF1=<REGION.UID>
+
+LOCAL.HITS = <EVAL (50*<SRC.STR>)/100> 
+
+IF (<REF1.TAG0.PRICE>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Satiliga çikartilmis evlere esya sabitleyemezsiniz.
+	RETURN 1
+ELSEIF (<SRC.ISDEATH>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Ölüyken bu komutu kullanamazsiniz.
+	RETURN 1
+ELSEIF (<SRC.HITS> < <DLOCAL.HITS>) 
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Hitsiniz %50 altinda oldugu için eve strongbox yerlestiremezsiniz.
+	RETURN 1
+ELSEIF (<SRC.F_HOUSE_NEAR_DOOR 2>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Kapi yakinlarina Strongbox koyamazsiniz.
+	RETURN 1
+ELSEIF (<SRC.FLAGS>&STATF_WAR)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Su an savas modundayken Strongbox koyamazsiniz.
+	RETURN 1
+ELSEIF !(<REF1.ISOWNER <SRC>> || <REF1.GETCOOWNERPOS <SRC>> >= 0 || <REF1.GETFRIENDPOS <SRC>> >= 0 || <SRC.ISGM>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Ev ile iliskiniz yok. (Sahip - Ortak)
+	RETURN 1
+ENDIF
+
+ARGS=<REF1.MULTIREGION>
+LOCAL.M=<EVAL (<ARGV[2]>+<ARGV[3]>)>
+FORITEMS <dLOCAL.M>
+	IF (<REGION.UID> == <REF1>) && ((<BASEID> == I_STRONGBOX) && (<MORE1> == <REF1>) && (<MORE2> == <SRC>))
+		REF2=<UID>
+	ENDIF
+ENDFOR
+
+IF (<REF2.ISVALIDE>) && ((<REF2.BASEID> == I_STRONGBOX) && (<REF2.MORE1>==<REF1>) && (<REF2.MORE2> == <SRC>))
+	REF2.P <SRC.P>
+	REF2.UPDATE
+	SRC.SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, Evde zaten bir strongboxunuz oldugu için mevcut strongboxunuz bulundugunuz yere getirildi.
+ELSE
+	SRC.SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, Strongbox bulundugunuz yerde olusturuldu.
+	SERV.NEWITEM I_STRONGBOX
+	NEW.P=<SRC.P>
+	NEW.MORE1=<REF1> // EV
+	NEW.MORE2=<SRC> // strongboxu koyan player
+	NEW.HouseItemSetLockedProps 1
+ENDIF
+
+
+
+
+
+
+on=*item up*
+REF1=<REGION.UID>
+
+IF (<SRC.ISDEATH>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Ölüyken bu komutu kullanamazsiniz.
+	RETURN 1
+ELSEIF !(<REF1.ISOWNER <SRC>> || <REF1.GETCOOWNERPOS <SRC>> >= 0 || <REF1.GETFRIENDPOS <SRC>> >= 0 || <SRC.ISGM>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Ev ile iliskiniz yok. (Sahip - Ortak - Dost)
+	RETURN 1
+ENDIF
+
+ref1=<src.findid.i_house_interior_decorator>
+if (<ref1.isvalid>)
+	ref1.tag0.MODE=2 // up
+	ref1.TAG.HOUSE=<uid>
+	src.dclick <ref1>
+ELSE
+SRC.SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, Architect vendorunda bulunan "Interior Decorator" esyasini kullaniniz.
+endif
+
+
+on=*item down*
+REF1=<REGION.UID>
+
+IF (<SRC.ISDEATH>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Ölüyken bu komutu kullanamazsiniz.
+	RETURN 1
+ELSEIF !(<REF1.ISOWNER <SRC>> || <REF1.GETCOOWNERPOS <SRC>> >= 0 || <REF1.GETFRIENDPOS <SRC>> >= 0 || <SRC.ISGM>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Ev ile iliskiniz yok. (Sahip - Ortak - Dost)
+	RETURN 1
+ENDIF
+SRC.SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, Architect vendorunda bulunan "Interior Decorator" esyasini kullaniniz.
+ref1=<src.findid.i_house_interior_decorator>
+if (<ref1.isvalid>)
+	ref1.tag0.MODE=3 // down
+	ref1.TAG.HOUSE=<uid>
+	src.dclick <ref1>
+ELSE
+SRC.SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, Architect vendorunda bulunan "Interior Decorator" esyasini kullaniniz.
+endif
+
+
+on=*item flip*
+REF1=<REGION.UID>
+
+IF (<SRC.ISDEATH>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Ölüyken bu komutu kullanamazsiniz.
+	RETURN 1
+ELSEIF !(<REF1.ISOWNER <SRC>> || <REF1.GETCOOWNERPOS <SRC>> >= 0 || <REF1.GETFRIENDPOS <SRC>> >= 0 || <SRC.ISGM>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Ev ile iliskiniz yok. (Sahip - Ortak - Dost)
+	RETURN 1
+ENDIF
+SRC.SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, Architect vendorunda bulunan "Interior Decorator" esyasini kullaniniz.
+ref1=<src.findid.i_house_interior_decorator>
+if (<ref1.isvalid>)
+	ref1.tag0.MODE=1 // flip
+	ref1.TAG.HOUSE=<uid>
+	src.dclick <ref1>
+ELSE
+SRC.SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, Architect vendorunda bulunan "Interior Decorator" esyasini kullaniniz.
+endif
+
+
+
+
+ON=lock this*
+ON=*sabitle*
+REF1=<REGION.UID>
+IF (<SRC.ISDEATH>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Ölüyken bu komutu kullanamazsiniz.
+	RETURN 1
+ELSEIF !(<REF1.ISOWNER <SRC>> || <REF1.GETCOOWNERPOS <SRC>> >= 0 || <REF1.GETFRIENDPOS <SRC>> >= 0 || <SRC.ISGM>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Ev ile iliskiniz yok. (Sahip - Ortak - Dost)
+	RETURN 1
+ENDIF
+SRC.TARGETF F_HOUSE_ITEM_LOCK
+SRC.SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, Sabitlemek istediginiz esyayi seçiniz.
+
+
+
+
+
+ON=release this*
+ON=*serbest birak*
+REF1=<REGION.UID>
+IF (<SRC.ISDEATH>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Ölüyken bu komutu kullanamazsiniz.
+	RETURN 1
+ELSEIF !(<REF1.ISOWNER <SRC>> || <REF1.GETCOOWNERPOS <SRC>> >= 0 || <REF1.GETFRIENDPOS <SRC>> >= 0 || <SRC.ISGM>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Ev ile iliskiniz yok. (Sahip - Ortak - Dost)
+	RETURN 1
+ENDIF
+SRC.TARGETF F_HOUSE_ITEM_UNLOCK
+SRC.SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, What do you wish to release?
+
+
+
+
+
+ON=secure this*
+REF1=<REGION.UID>
+IF (<SRC.ISDEATH>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Ölüyken bu komutu kullanamazsiniz.
+	RETURN 1
+ELSEIF !(<REF1.ISOWNER <SRC>> || <REF1.GETCOOWNERPOS <SRC>> >= 0 || <REF1.GETFRIENDPOS <SRC>> >= 0 || <SRC.ISGM>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Ev ile iliskiniz yok. (Sahip - Ortak - Dost)
+	RETURN 1
+ENDIF
+SRC.TARGETF F_HOUSE_ITEM_SECURE
+SRC.SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, What do you wish to secure?
+
+
+
+
+ON=bank*
+IF (<DEF.HS_CAN_BANK>)
+	REF1=<REGION.UID>
+	IF (<SRC.ISDEATH>)
+		SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Ölüyken bu komutu kullanamazsiniz.
+		RETURN 1
+	ELSEIF !(<REF1.ISOWNER <SRC>> || <REF1.GETCOOWNERPOS <SRC>> >= 0 || <REF1.GETFRIENDPOS <SRC>> >= 0 || <SRC.ISGM>)
+		SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Ev ile iliskiniz yok. (Sahip - Ortak - Dost)
+		RETURN 1
+	ENDIF
+SRC.OPENBANK
+ENDIF
+
+
+
+
+
+ON=remove thyself
+ON=i ban thee
+REF1=<REGION.UID>
+IF (<SRC.ISDEATH>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Ölüyken bu komutu kullanamazsiniz.
+	RETURN 1
+ELSEIF !(<REF1.ISOWNER <SRC>> || <REF1.GETCOOWNERPOS <SRC>> >= 0 || <REF1.GETFRIENDPOS <SRC>> >= 0 || <SRC.ISGM>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Ev ile iliskiniz yok. (Sahip - Ortak - Dost)
+	RETURN 1
+ENDIF
+TARGETF, F_HOUSE_EJECT
+SRC.SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, Kovmak istediginizi varligi seçiniz.
+
+
+
+
+
+ON=*trashcan*
+REF1=<REGION.UID>
+IF (<SRC.ISDEATH>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Ölüyken bu komutu kullanamazsiniz.
+	RETURN 1
+ELSEIF !(<REF1.ISOWNER <SRC>> || <REF1.GETCOOWNERPOS <SRC>> >= 0 || <REF1.GETFRIENDPOS <SRC>> >= 0 || <SRC.ISGM>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Ev ile iliskiniz yok. (Sahip - Ortak - Dost)
+	RETURN 1
+ELSEIF (<REF1.TAG0.PRICE>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Satiliga çikartilmis evlerde bu komutu kullanamazsiniz.
+	RETURN 1
+ELSEIF (<SRC.F_HOUSE_NEAR_DOOR 2>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Kapilarin yakininda bu komutu kullanamazsiniz.
+	RETURN 1
+ENDIF
+ARGS=<REF1.MULTIREGION>
+LOCAL.M=<EVAL (<ARGV[2]>+<ARGV[3]>)>
+FORITEMS <dLOCAL.M>
+	IF (<REGION.UID> == <REF1>) && (<BASEID> == I_TRASHCAN)
+		REF2=<UID>
+	ENDIF
+ENDFOR
+IF (<REF2.ISVALIDE>) && (<REF2.BASEID> == I_TRASHCAN)
+	REF2.P <SRC.P>
+	REF2.UPDATE
+	SRC.SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, Evde zaten bir trashcan oldugu için mevcut trashcan bulundugunuz yere getirildi.
+ELSE
+	SRC.SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, Trashcan bulundugunuz yerde olusturuldu.
+	SERV.NEWITEM I_TRASHCAN
+	NEW.P=<SRC.P>
+	NEW.HouseItemSetLockedProps 1
+ENDIF
+
+
+
+
+ON=*reward barrel*
+REF1=<REGION.UID>
+IF (<SRC.ISDEATH>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Ölüyken bu komutu kullanamazsiniz.
+	RETURN 1
+ELSEIF !(<REF1.ISOWNER <SRC>> || <REF1.GETCOOWNERPOS <SRC>> >= 0 || <REF1.GETFRIENDPOS <SRC>> >= 0 || <SRC.ISGM>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Ev ile iliskiniz yok. (Sahip - Ortak - Dost)
+	RETURN 1
+ELSEIF (<REF1.TAG0.PRICE>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Satiliga cikartilmis evlerde bu komutu kullanamazsiniz.
+	RETURN 1
+ELSEIF (<SRC.F_HOUSE_NEAR_DOOR 2>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Kapilarin yakininda bu komutu kullanamazsiniz.
+	RETURN 1
+ENDIF
+ARGS=<REF1.MULTIREGION>
+LOCAL.M=<EVAL (<ARGV[2]>+<ARGV[3]>)>
+FORITEMS <dLOCAL.M>
+	IF (<REGION.UID> == <REF1>) && (<BASEID> == i_reward_barrel)
+		REF2=<UID>
+	ENDIF
+ENDFOR
+IF (<REF2.ISVALIDE>) && (<REF2.BASEID> == I_REWARD_BARREL)
+	REF2.P <SRC.P>
+	REF2.UPDATE
+	SRC.SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, Evde zaten bir reward barrel oldugu için mevcut reward barrel bulundugunuz yere getirildi.
+ELSE
+	SRC.SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, Reward barrel bulundugunuz yerde olusturuldu.
+	SERV.NEWITEM I_REWARD_BARREL
+	NEW.P=<SRC.P>
+	NEW.HouseItemSetLockedProps 1
+ENDIF
+
+
+
+
+ON=*resurrect*
+REF1=<REGION.UID>
+IF (<DEF.hs_can_resurrect>)
+	IF !(<SRC.ISDEATH>)
+		SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Zaten hayattasin.
+		RETURN 1
+	ELSEIF !(<REF1.ISOWNER <SRC>> || <REF1.GETCOOWNERPOS <SRC>> >= 0 || <REF1.GETFRIENDPOS <SRC>> >= 0 || <SRC.ISGM>)
+		SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Ev ile iliskiniz yok. (Sahip - Ortak - Dost)
+		RETURN 1
+	ELSEIF (<REF1.TAG0.PRICE>)
+		SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Satiliga çikartilmis evlerde bu komutu kullanamazsiniz.
+		RETURN 1
+	ELSEIF (<SRC.F_HOUSE_NEAR_DOOR 2>)
+		SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Kapilarin yakininda bu komutu kullanamazsiniz.
+		RETURN 1
+	ELSEIF (<SRC.FINDID.I_RESTIMER>)
+		SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Zaten hayata dönmeyi bekliyorsunuz.
+		RETURN 1
+	ENDIF
+	SRC.STONE 1
+	SRC.FUNC_ResTIMER <ddef.hs_can_resurrect_timer>
+ENDIF
+
+
+
+
+ON=help*
+ON=commands*
+IF !(<REF1.ISOWNER <SRC>> || <REF1.GETCOOWNERPOS <SRC>> >= 0 || <REF1.GETFRIENDPOS <SRC>> >= 0 || <SRC.ISGM>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Ev ile iliskiniz yok. (Sahip - Ortak - Dost)
+	RETURN 1
+ENDIF
+DIALOGCLOSE D_HOUSE_MENU
+SDIALOG D_HOUSE_MENU 6
+
+
+
+[EOF]

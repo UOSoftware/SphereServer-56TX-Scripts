@@ -1,0 +1,17 @@
+VERSION=0.56T
+
+
+
+[SPEECH spk_guildspeech]
+ON=I resign from my guild
+RETURN 1
+
+ON=*
+IF (<ARGN1> != <DEF.TALKMODE_GUILD>)
+    RETURN 0
+ENDIF
+GC <ARGS>
+RETURN 1
+
+
+[EOF]

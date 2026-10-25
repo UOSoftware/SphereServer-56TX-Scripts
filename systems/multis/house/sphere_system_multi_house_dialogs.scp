@@ -1,0 +1,1222 @@
+//****************************************************************************
+// SphereServer by: SphereServer development team and Menasoft.
+// www.sphereserver.net
+//****************************************************************************
+VERSION=X1
+
+
+[DIALOG D_HOUSE_MENU]
+<DEF.DSP>
+
+PAGE 0
+
+RESIZEPIC 0 0 5054 399 375
+GUMPPICTILED 150 8 240 102 2624                //TOP BOX
+GUMPPICTILED 7 116 383 253 2624                //MIDDLE BOX     
+
+GUMPPIC 7 8 100                                //BRASS SIGN GUMP
+DHTMLGUMP 25 38 106 60 0 0 <DEF.CENTER><DEF.H3><DEF.BFONT_SIZE7><LINK.NAME>
+
+DORIGIN 150 10
+
+BUTTON +0 +0 4005 4007 0 1 0 // page
+DHTMLGUMP +30 +0 100 20 0 0 <def.bfont_white>BİLGİ
+
+BUTTON +0 +20 4005 4007 0 2 0 // page
+DHTMLGUMP +30 +20 100 20 0 0 <def.bfont_white>GÜVENLİK
+
+BUTTON +0 +40 4005 4007 0 3 0 // page
+DHTMLGUMP +30 +40 100 20 0 0 <def.bfont_white>DEPOLAMA
+
+BUTTON +0 +60 4005 4007 0 4 0 // page
+DHTMLGUMP +30 +60 100 20 0 0 <def.bfont_white>ÖZELLEŞTİRME
+
+BUTTON +0 +80 4005 4007 0 5 0 // page
+DHTMLGUMP +30 +80 100 20 0 0 <def.bfont_white>MÜLKİYET
+
+BUTTON +140 +0 4005 4007 0 6 0 // page
+DHTMLGUMP +170 +0 100 20 0 0 <def.bfont_white>KOMUTLAR
+
+IF (<DEF.hs_can_bank>)
+	BUTTON +140 +20 4005 4007 1 0 7 // button
+	DHTMLGUMP +170 +20 100 20 0 0 <def.bfont_white>BANKA
+ENDIF
+
+IF (<SRC.ISGM>)
+	BUTTON +140 +40 4005 4007 0 8 0 // page
+	DHTMLGUMP +170 +40 100 20 0 0 <def.bfont_hs_text1>STAFF
+ENDIF
+
+
+
+
+// INFORMATION
+PAGE 1
+DORIGIN 150 10
+BUTTON +0 +0 4006 4007 0 1 0
+DHTMLGUMP +30 +0 100 20 0 0 <def.BFONT_HS_TITLE>BİLGİ
+
+DORIGIN 20 130
+DHTMLGUMP +0 +0 220 20 0 0 <DEF.bfont_white>Sahibi: <owner.name> 
+
+IF (<HOUSETYPE> == <DEF.house_private>)
+	DHTMLGUMP 20 +20 220 20 0 0 <def.bfont_white>Türü: <def.bfont_lgreen>Özel
+ELSEIF (<HOUSETYPE> == <DEF.house_public>)
+	DHTMLGUMP 20 +20 220 20 0 0 <def.bfont_white>Türü: <def.bfont_lred>Halka açık
+ELSE
+	DHTMLGUMP 20 +20 220 20 0 0 <def.bfont_white>Türü: <def.bfont_lred>Tanımsız
+ENDIF
+
+DHTMLGUMP +0 +40 220 20 0 0 <QVAL (<tag0.demolition>)?<def.bfont_lred>Bu ev düzgün yerleştirilmemiş.:<def.bfont_lgreen>Bu ev düzgün şekilde yerleştirilmiş.>
+
+DHTMLGUMP +0 +60 320 20 0 0 <def.bfont_lred>Evin çürümesine <KalanSure <LINK.TIMER>> kaldı.
+
+IF (<TAG0.PRICE>)
+    DHTMLGUMP +0 +80 220 20 0 0 <def.bfont_lgreen>Bu ev satışta: <def.bfont_yellow><def.bfont_hs_text2><bolukayir <dtag0.price>> gp
+ENDIF
+
+DHTMLGUMP +0 +100 360 40 0 0 <def.bfont_lgreen>Sahibi, ortağı veya dostu eve girdiğinde, kapıları açtığında, tabelaya tıkladığında ev otomatik olarak yenilenir.
+
+IF !(<isblank <TAG0.LASTTRANSFER>>)
+    DHTMLGUMP +0 +140 220 20 0 0 <def.bfont_white>Last Traded: <def.bfont_white><tag0.lasttransfer>
+ENDIF
+
+DHTMLGUMP +0 +160 220 20 0 0 <def.bfont_white>Kurulum tarihi: <tag0.created_at>
+DHTMLGUMP +0 +180 220 20 0 0 <def.bfont_white>Fiyatı: <bolukayir <value>> gp
+DHTMLGUMP +0 +200 220 20 0 0 <def.bfont_white>Ziyaretçi sayısı: <eval <link.tag0.VISITS> + <tag0.VISITS>>
+
+
+// GÜVENLİK
+PAGE 2
+DORIGIN 150 10
+BUTTON +0 +20 4006 4007 0 2 0
+DHTMLGUMP +30 +20 100 20 0 0 <def.bfont_hs_title>GÜVENLİK
+
+DORIGIN 20 130
+
+IF (<ISOWNER <SRC>>) || (<SRC.ISGM>)
+    BUTTON +0 +0 4006 4007 0 20 20 // page
+    DHTMLGUMP +30 +0 150 20 0 0 <def.bfont_hs_text1>Ortak işlemleri
+ENDIF
+
+IF (<ISOWNER <SRC>>) || (<GETCOOWNERPOS <SRC>> >= 0) || (<SRC.ISGM>)
+    BUTTON +0 +20 4006 4007 0 21 21 // page
+    DHTMLGUMP +30 +20 120 20 0 0 <def.bfont_hs_text1>Dost işlemleri
+ENDIF
+
+IF (<ISOWNER <SRC>>) || (<GETCOOWNERPOS <SRC>> >= 0) || (<GETFRIENDPOS <SRC>> >= 0) || (<SRC.ISGM>)
+	BUTTON +0 +40 4006 4007 1 0 20 // button
+	DHTMLGUMP +30 +40 280 20 0 0 <def.bfont_hs_text1>Ev anahtarlarımı yenile
+ENDIF
+
+IF (<ISOWNER <SRC>>) || (<SRC.ISGM>)
+    BUTTON +0 +60 4006 4007 1 0 21 // button
+    DHTMLGUMP +30 +60 180 20 0 0 <def.bfont_hs_text1>Kapı, kutu/kasa izinlerini ayarla.
+	
+	IF !(<HOUSETYPE> == <DEF.HOUSE_PUBLIC>)
+		BUTTON +0 +100 4006 4007 1 0 22  // button
+	ENDIF
+	DHTMLGUMP +30 +100 250 20 0 0 <QVAL (<HOUSETYPE> != <DEF.HOUSE_PUBLIC>)?<DEF.BFONT_lRED>:<DEF.BFONT_lGREEN>> Halka açık duruma getir.
+				
+	IF !(<HOUSETYPE> == <DEF.HOUSE_PRIVATE>)
+		BUTTON +0 +120 4006 4007 1 0 23  // button
+	ENDIF
+	DHTMLGUMP +30 +120 250 20 0 0 <QVAL (<HOUSETYPE> != <DEF.HOUSE_PRIVATE>)?<DEF.BFONT_lRED>:<DEF.BFONT_lGREEN>> Özel duruma getir.
+	
+    DHTMLGUMP +40 +140 280 20 0 0 <def.bfont_hs_text1>* Eviniz şuan <QVAL (<housetype> != <def.house_private>)? Halka açık:Özel> durumda.
+	
+	BUTTON +0 +170 4006 4007 1 0 24  // button
+	DHTMLGUMP +30 +170 280 20 0 0 <def.bfont_hs_text1>Tüm anahtarları yenile
+	
+ENDIF
+
+IF (<GETCOOWNERPOS <SRC>> >= 0)
+    BUTTON +0 +200 4006 4007 1 0 25 // button
+    DHTMLGUMP +30 +200 120 20 0 0 <def.bfont_hs_text1>Ortaklıktan ayrıl
+	
+ELSEIF (<GETFRIENDPOS <SRC>> >= 0)
+    BUTTON +0 +240 4006 4007 1 0 25 // button
+    DHTMLGUMP +30 +240 120 20 0 0 <def.bfont_hs_text1>Dostluktan ayrıl
+ENDIF
+
+
+// Ortak Listesi
+PAGE 20
+DORIGIN 20 130
+LOCAL.Xc=20
+LOCAL.Yc=160
+BUTTON +0 +0 4006 4007 1 0 200 // button
+DHTMLGUMP +30 +0 150 20 0 0 <def.bfont_hs_text1>Ortak Ekle (<coowners>/<ddef.hs_max_co_owners>)
+IF (<Coowners>)
+    BUTTON +150 +0 4003 4004 1 0 201 // button
+    DHTMLGUMP +180 +0 150 20 0 0 <def.bfont_lred>Tüm Ortakları Sil (<COOWNERS>)
+	FOR c 0 <EVAL <Coowners>-1>
+		IF ( <CoOwners.<DLOCAL.c>>)
+			BUTTON <DLOCAL.Xc> <eval <DLOCAL.Yc>+2> 03 04 1 0 <EVAL <DLOCAL._FOR>+2000>
+			DTEXT <EVAL <DLOCAL.Xc>+0> <eval <DLOCAL.Yc>+15> <def.tcolor_red> Sil
+			DCROPPEDTEXT <EVAL <DLOCAL.Xc>+17> <DLOCAL.Yc> 120 25 <def.tcolor_grey> <CoOwner.<DLOCAL.c>.name>
+			LOCAL.Yc += 32
+			IF (<LOCAL.Yc> > 340)
+				LOCAL.Yc 160
+				LOCAL.Xc +=90
+			ENDIF
+		ENDIF
+	ENDFOR
+ELSE
+    DHTMLGUMP +0 +20 120 20 0 0 <def.bfont_hs_text1>Ortak yok.
+ENDIF
+
+
+// Dost Listesi
+PAGE 21
+DORIGIN 20 130
+LOCAL.Xf=20
+LOCAL.Yf=160
+BUTTON +0 +0 4005 4007 1 0 202 // button
+DHTMLGUMP +30 +0 150 20 0 0 <def.bfont_hs_text1>Dost Ekle (<friends>/<ddef.hs_max_friends>)
+IF (<Friends>)
+    BUTTON +150 +0 4005 4007 1 0 203 // button
+    DHTMLGUMP +180 +0 150 20 0 0 <def.bfont_lred>Tüm Dostları Sil (<Friends>)
+	FOR f 0 <EVAL <Friends>-1>
+		IF ( <Friends.<DLOCAL.f>>)			
+			BUTTON <DLOCAL.Xf> <eval <DLOCAL.Yf>+2> 03 04 1 0 <EVAL <DLOCAL.f>+2100>
+			DTEXT <EVAL <DLOCAL.Xf>+0> <eval <DLOCAL.Yf>+15> <def.tcolor_red> Sil
+			DCROPPEDTEXT <EVAL <DLOCAL.Xf>+17> <DLOCAL.Yf> 120 25 <def.tcolor_grey> <Friend.<DLOCAL.f>.name>
+			LOCAL.Yf += 32
+			IF (<LOCAL.Yf> > 340)
+				LOCAL.Yf 160
+				LOCAL.Xf +=90
+			ENDIF
+		ENDIF
+	ENDFOR
+ELSE
+    DHTMLGUMP +0 +20 120 20 0 0 <def.bfont_hs_text1>Dost yok.
+ENDIF
+
+
+
+
+
+// Depolama
+PAGE 3
+DORIGIN 150 10
+BUTTON +0 +40 4006 4007 0 3 0
+DHTMLGUMP +30 +40 100 20 0 0 <def.bfont_hs_title>DEPOLAMA
+
+DORIGIN 20 130
+DHTMLGUMP +0 +0 140 20 0 0 <def.bfont_hs_text3>Maksimum Depolama: <qval (!<def.hs_hs_secure_locks_limit>)?Limitsiz:<maxstorage>>
+DHTMLGUMP +0 +40 140 20 0 0 <def.bfont_hs_text3>Sabit eşya sayısı : <qval (!<def.hs_hs_secure_locks_limit>)?Limitsiz:<lockdowns>>
+DHTMLGUMP +0 +60 140 20 0 0 <def.bfont_hs_text3>Güvenli kasa sayısı: <qval (!<def.hs_hs_secure_locks_limit>)?Limitsiz:<getSECUREDitems>>
+DHTMLGUMP +0 +80 140 20 0 0 <def.bfont_hs_text3>Maksimum kasa sınırı: <qval (!<def.hs_hs_secure_locks_limit>)?Limitsiz:<eval (<maxstorage>-(<lockdowns>+<getSECUREDitems>))>>
+DHTMLGUMP +0 +100 140 20 0 0 <def.bfont_hs_text3>Maksimum sabit sınırı: <qval (!<def.hs_hs_secure_locks_limit>)?Limitsiz:<maxlockdowns>>
+DHTMLGUMP +0 +120 140 20 0 0 <def.bfont_hs_text3>Mevcut sabit eşya: <qval (!<def.hs_hs_secure_locks_limit>)?Limitsiz:<eval (<maxlockdowns>-<lockdowns>)>>
+DHTMLGUMP +0 +140 140 20 0 0 <def.bfont_hs_text3>Vendors: <vendors>/<maxvendors>
+
+
+
+
+
+
+// ÖZELLEŞTİRME
+PAGE 4
+DORIGIN 150 10
+BUTTON +0 +60 4006 4007 0 4 0
+DHTMLGUMP +30 +60 100 20 0 0 <def.bfont_hs_title>ÖZELLEŞTİRME
+
+DORIGIN 20 130
+IF (<ISOWNER <SRC>>) || (<SRC.ISGM>)
+	
+	IF (<DEF.hs_allow_sign_type>)
+		BUTTON +0 +20 4005 4007 0 40 40 // page
+		DHTMLGUMP +30 +20 200 20 0 0 <def.bfont_hs_text1>Tabelya tipini değiştir
+	ENDIF
+    IF <DEF.HS_ALLOW_SIGN_COLOR>
+        BUTTON +0 +40 4005 4007 0 41 41 // page
+        DHTMLGUMP +30 +40 200 20 0 0 <def.bfont_hs_text1>Tabela rengini değiştir
+    ENDIF
+ENDIF
+
+IF (<ISOWNER <SRC>>) || (<SRC.ISGM>)
+    BUTTON +0 +60 4005 4007 1 0 41 // button
+    DHTMLGUMP +30 +60 200 20 0 0 <def.bfont_hs_text1>Evin adını değiştir
+	
+	BUTTON +0 +80 4005 4007 1 0 42 // button
+	IF (<LINK.REGION.FLAGS>&REGION_FLAG_NODECAY || <REGION.FLAGS>&REGION_FLAG_NODECAY )
+		DHTMLGUMP +30 +80 340 40 0 0 <def.bfont_lred>Evin içinde yere atılan eşyalar hiçbir zaman SİLİNMESİN olarak ayarla. <def.bfont_white>(şuan silinir olarak ayarlı)
+	ELSE
+	    DHTMLGUMP +30 +80 340 40 0 0 <def.bfont_green>Evin içinde yere atılan eşyalar bir süre sonra SİLİNSİN olarak ayarla. <def.bfont_white>(şuan silinmiyor olarak ayarlı)
+	ENDIF
+
+ENDIF
+
+
+// Tabela tipini değiştir.
+PAGE 40
+F_HOUSE_RENDER_SIGNS
+
+//  Tabela rengini değiştir
+PAGE 41
+BUTTON 300 250 4017 4019 1 0 86
+DHTMLGUMP 337 253 100 20 0 0 <def.bfont_hs_text1>Sıfırla
+
+DORIGIN 20 130
+LOCAL.X5=20
+LOCAL.Y5=130
+FOR 1 30
+	IF (<LOCAL.Y5> > 351)
+		LOCAL.Y5=130
+		LOCAL.X5 += 50
+	ENDIF
+	BUTTONTILEART <DLOCAL.X5> <DLOCAL.Y5> 07588 07588 1 0 <EVAL <DLOCAL._FOR>+5000> <LINK.DISPIDDEC> <DEF.SIGN_COLOR_<DLOCAL._FOR>> -10 -5
+	LOCAL.Y5 += 30
+ENDFOR
+
+
+// MÜLKİYET
+PAGE 5
+DORIGIN 150 10
+BUTTON +0 +80 4006 4007 0 4 0
+DHTMLGUMP +30 +80 100 20 0 0 <def.bfont_hs_title>MÜLKİYET
+
+DORIGIN 20 130
+IF (<ISOWNER <SRC>>) || (<SRC.ISGM>)
+    BUTTON +0 +0 4005 4007 1 0 50 // button
+    DHTMLGUMP +30 +0 150 20 0 0 <def.bfont_hs_text1>Evi transfer et
+	
+    IF (<DEF.HOUSE_SELL>)
+        BUTTON +0 +20 4005 4007 0 50 50 // page
+        DHTMLGUMP +30 +20 220 20 0 0 <def.bfont_hs_text1><QVAL (<DTAG0.PRICE>)?Evi satıştan kaldır:Evi satışa çıkart>
+    ENDIF
+	
+    BUTTON +0 +40 4005 4007 1 0 51 // button
+    DHTMLGUMP +30 +40 150 20 0 0 <def.bfont_hs_text1>Evi kaldır
+ENDIF
+
+
+
+// Evi satılığa çıkart
+PAGE 50
+
+DORIGIN 20 130
+
+DHTMLGUMP +0 +0 100 20 0 0 <def.bfont_hs_text1>Satış fiyatı:
+GUMPPIC +90 +0 2501
+IF !(<TAG0.PRICE>)
+	DTEXTENTRYLIMITED +100 +0 100 20 90 0 10
+	BUTTON +0 +40 4023 4025 1 0 500
+	DHTMLGUMP +30 +40 190 20 0 0 <def.bfont_hs_text1>Evi satışa çıkart
+ELSE
+	DTEXTENTRYLIMITED +100 +0 100 20 90 0 10 <dtag0.price>
+	BUTTON +0 +40 4023 4025 1 0 501
+	DHTMLGUMP +30 +40 190 20 0 0 <def.bfont_hs_text1>Fiyatı güncelle
+	
+	BUTTON +0 +60 4017 4019 1 0 502
+	DHTMLGUMP +30 +60 190 20 0 0 <def.bfont_hs_text1>Evi satmaktan vazgeç
+ENDIF
+
+
+
+//KOMUTLAR 
+PAGE 6
+DORIGIN 150 10
+BUTTON +140 +0 4006 4007 0 6 0
+DHTMLGUMP +170 +0 100 20 0 0 <def.bfont_hs_title>KOMUTLAR
+
+DORIGIN 20 130
+// DHTMLGUMP +0 +0 120 20 0 0 <def.bfont_white>lock this
+// DHTMLGUMP +0 +20 120 20 0 0 <def.bfont_white>release this
+// DHTMLGUMP +0 +40 120 20 0 0 <def.bfont_white>secure this
+// DHTMLGUMP +0 +60 120 20 0 0 <def.bfont_white>reward barrel
+// DHTMLGUMP +0 +80 120 20 0 0 <def.bfont_white>trashcan
+// DHTMLGUMP +0 +100 120 20 0 0 <def.bfont_white>strongbox
+// DHTMLGUMP +0 +120 120 20 0 0 <def.bfont_white>remove thyself
+// DHTMLGUMP +0 +140 120 20 0 0 <def.bfont_white>i ban thee
+// DHTMLGUMP +0 +160 120 20 0 0 <def.bfont_white>item up
+// DHTMLGUMP +0 +180 120 20 0 0 <def.bfont_white>item down
+// DHTMLGUMP +0 +200 120 20 0 0 <def.bfont_white>item flip
+DHTMLGUMP +0 +0 360 220 0 1 <def.bfont_lgreen>LOCK THIS : <def.bfont_white>Seçtiğiniz eşyanın sabitlenmesini sağlar.<DEF.BR><def.bfont_lgreen>RELEASE THIS : <def.bfont_white>Seçtiğiniz eşyanın sabitliğini kaldırır.<DEF.BR><def.bfont_lgreen>SECURE THIS : <def.bfont_white>Seçtiğiniz kasayı güvenli hale getirir.<DEF.BR><def.bfont_lgreen>REWARD BARREL : <def.bfont_white>Evinize çöp kutusu koymanızı sağlar.<DEF.BR><def.bfont_lgreen>TRASHCAN : <def.bfont_white>-----.<DEF.BR><def.bfont_lgreen>STRONGBOX : <def.bfont_white>Bulunduğunuz konuma size ait kasa koyar.<DEF.BR><def.bfont_lgreen>REMOVE THYSELF : <def.bfont_white>Seçtiğiniz yabancıyı evinizden atar.<DEF.BR><def.bfont_lgreen>I BAN THEE : <def.bfont_white>Seçtiğiniz yabancıyı evinizden atar.<DEF.BR><def.bfont_lgreen>ITEM UP : <def.bfont_white>Seçtiğiniz eşyayı yükseltir.<DEF.BR><def.bfont_lgreen>ITEM DOWN : <def.bfont_white>Seçtiğiniz eşyayı alçaltır.<DEF.BR><def.bfont_lgreen>ITEM FLIP : <def.bfont_white>Seçtiğiniz eşyanın yönünü değiştirir.
+
+// IF (<DEF.HS_CAN_RESURRECT>)
+	// DHTMLGUMP +220 +0 120 20 0 0 <def.bfont_white>resurrect
+// ENDIF
+// IF (<DEF.HS_CAN_BANK>)
+	// DHTMLGUMP +220 +20 120 20 0 0 <def.bfont_white>bank
+// ENDIF
+
+
+
+// STAFF
+PAGE 8
+DORIGIN 150 10
+BUTTON +140 +40 4006 4007 0 6 0
+DHTMLGUMP +170 +40 100 20 0 0 <def.bfont_hs_title>STAFF
+IF (<SRC.ISGM>)
+	DORIGIN 20 130
+	BUTTON +0 +0 4023 4025 1 0 80
+	IF !(<TAG0.DEMOLITION>)
+		DHTMLGUMP +30 +0 220 20 0 0 <def.bfont_hs_text1>Bu ev
+        DTEXTENTRYLIMITED +75 +0 32 20 55 1 2 7
+        DHTMLGUMP +100 +0 120 20 0 0 <def.bfont_hs_text1>gün sonra silinsin.
+	ELSE
+		DHTMLGUMP +30 +0 220 20 0 0 <def.bfont_hs_text1>Bu evin silinmesini iptal et
+    ENDIF
+
+ENDIF
+
+
+[DIALOG D_HOUSE_MENU BUTTON]
+
+//////////////////////////////////////////////////////
+//  PAGE 0: MAIN
+//////////////////////////////////////////////////////
+// Button yok
+
+
+
+
+//////////////////////////////////////////////////////
+//  PAGE 1: Bilgi
+//////////////////////////////////////////////////////
+// Button yok
+
+
+
+
+//////////////////////////////////////////////////////
+//  PAGE 2: Güvenlik
+//////////////////////////////////////////////////////
+// Ev anahtarlarımı yenile
+ON=20
+REMOVEKEYS <SRC>
+ADDKEY <SRC>,0
+SDIALOG d_house_menu,2
+
+
+// Kapı, kutu/kasa izinlerini ayarla.
+ON=21
+
+
+// Halka aç
+ON=22
+HOUSETYPE=<DEF.HOUSE_PUBLIC>
+SRC.SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, Bu ev "Halka Açık" olarak ayarlandı.
+SDIALOG d_house_menu,2
+
+// Özel
+ON=23
+HOUSETYPE=<DEF.HOUSE_PRIVATE>
+SRC.SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, Bu ev "Özel" olarak ayarlandı.
+SDIALOG d_house_menu,2
+
+
+// Tüm anahtarları yenile
+ON=24
+REF1=<UID>
+FORINSTANCES I_KEY_COPPER
+	IF (<LINK.ISVALIDE>)
+		IF (<LINK> == <REF1>)
+			REMOVE
+		ENDIF
+	ENDIF
+ENDFOR
+SRC.SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, Bu eve ait tüm anahtarlar silindi.
+REMOVEKEYS <SRC>
+ADDKEY <SRC>,1
+
+// ORTAKLARA ANAHTAR
+IF (<Coowners>)
+	FOR 0 <EVAL <Coowners>-1>
+		IF (<CoOwner.<DLOCAL._FOR>>)
+			REF1=<CoOwner.<DLOCAL._FOR>>
+			IF (<REF1.ISPLAYER>)
+				REMOVEKEYS <REF1>
+				ADDKEY <REF1>,1
+				REF1.NOTICE <NAME> isimli ev anahtarlarını yenilendi.
+			ENDIF
+		ENDIF
+	ENDFOR
+	SRC.SRC.SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, Evin anahtarı tüm ortaklara dağıtıldı.
+ENDIF
+
+// DOSTLARA ANAHTAR
+IF (<Friends>)
+	FOR 0 <EVAL <Friends>-1>
+		IF (<Friend.<DLOCAL._FOR>>)
+			REF2=<Friend.<DLOCAL._FOR>>
+			IF (<REF2.ISVALIDE>)
+				REMOVEKEYS <REF2>
+				ADDKEY <REF2>,1
+				REF2.NOTICE <NAME> isimli ev anahtarlarını yenilendi.
+			ENDIF
+		ENDIF
+	ENDFOR
+	SRC.SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, Evin anahtarı tüm dostlara dağıtıldı.
+ENDIF
+
+REF99=<OWNER>
+// GUILD UYELERINE ANAHTAR
+IF (<REF99.GUILD>)
+	REF98=<REF99.GUILD>	
+	FOR 0 <EVAL <REF98.MEMBER.COUNT>>
+	REF97=<REF98.MEMBER.<DLOCAL._FOR>.UID>
+		IF (<REF97.ISVALIDE>)
+			REMOVEKEYS <REF97>
+			ADDKEY <REF97>,1
+			REF97.NOTICE <NAME> isimli ev anahtarlarını yenilendi.
+		ENDIF
+	ENDFOR
+	SRC.SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, Evin anahtarı tüm guild üyelerine dağıtıldı.
+ENDIF
+
+SDIALOG d_house_menu,2
+
+
+
+
+
+
+// Ortaklık/dostluktan ayrıl
+on=25
+IF !(<SRC.IsInHouse>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Ev içinde değilsiniz.
+	RETURN 1
+ELSEIF (<SRC.REGION.UID> != <UID>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Ev içinde değilsiniz.
+	RETURN 1
+ENDIF
+IF (<GETCOOWNERPOS <SRC>> >= 0)
+	DELCOOWNER <SRC>
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Evin ortaklığından ayrıldınız.
+ELSEIF (<GETFRIENDPOS <SRC>> >= 0)
+	DELFRIEND <src>
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Evin dostluğundan ayrıldınız.
+ENDIF
+REMOVEKEYS <SRC>
+
+
+
+
+//////////////////////////////////////////////////////
+//  PAGE 20: Ortak işlemleri
+//////////////////////////////////////////////////////
+// Ortak Ekle
+ON=200
+IF !(<SRC.IsInHouse>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Ev içinde değilsiniz.
+	RETURN 1
+ELSEIF (<SRC.REGION.UID> != <UID>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Ev içinde değilsiniz.
+	RETURN 1
+ENDIF
+TARGETF F_HOUSE_ADD_LIST 1
+SRC.SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, Eve ortak olarak eklemek istediğiniz oyuncuyu seçiniz.
+
+// Tüm Ortakları Sil 
+ON=201
+SRC.CTAG0.LIST=coowner
+SDIALOG D_HOUSE_LIST_CLEAR 
+
+// Ortak Sil
+ON=2000 2099
+REF1=<CoOwner.<EVAL <DARGN>-2000>.UID>
+IF !(<REF1.ISVALIDE>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Oyuncu bulunamadı!
+	RETURN 1
+ELSEIF !(<REF1.ISPLAYER>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Oyuncu bulunamadı!
+	RETURN 1
+ENDIF
+REF1.NOTICE <OWNER.NAME> isimli oyuncunun sahibi olduğu <NAME> evindeki ortaklığınız kaldırıldı!
+SRC.SYSMESSAGELOC <def.tcolor_green>,<def.empty_cliloc2>, <REF1.NAME> isimli oyuncunun ortaklığı kaldırıldı.
+DELCOOWNER <REF1>
+REMOVEKEYS <REF1>
+
+
+// Dost sil
+ON=2100 2200
+REF1=<Friend.<EVAL <DARGN>-2100>.UID>
+IF !(<REF1.ISVALIDE>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Oyuncu bulunamadı!
+	RETURN 1
+ELSEIF !(<REF1.ISPLAYER>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Oyuncu bulunamadı!
+	RETURN 1
+ENDIF
+REF1.NOTICE <OWNER.NAME> isimli oyuncunun sahibi olduğu <NAME> evindeki dostluğunuz kaldırıldı!
+SRC.SYSMESSAGELOC <def.tcolor_green>,<def.empty_cliloc2>, <REF1.NAME> isimli oyuncunun dostluğu kaldırıldı.
+DELFRIEND <REF1>
+REMOVEKEYS <REF1>
+
+
+
+
+//////////////////////////////////////////////////////
+//  PAGE 21: Dost işlemleri
+//////////////////////////////////////////////////////
+// Dost Ekle
+ON=202
+IF !(<SRC.IsInHouse>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Ev içinde değilsiniz.
+	RETURN 1
+ELSEIF (<SRC.REGION.UID> != <UID>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Ev içinde değilsiniz.
+	RETURN 1
+ENDIF
+TARGETF F_HOUSE_ADD_LIST 2
+
+// Tüm Dostları Sil 
+ON=203
+SRC.CTAG0.LIST=friend
+SDIALOG D_HOUSE_LIST_CLEAR 
+
+
+
+
+
+
+
+//////////////////////////////////////////////////////
+//  PAGE 3: Depolama
+//////////////////////////////////////////////////////
+// Button yok
+
+
+
+//////////////////////////////////////////////////////
+//  PAGE 4: Özelleştirme
+//////////////////////////////////////////////////////
+// Relocate Moving Crate
+ON=40
+SRC.TARGETF F_D_HOUSE_SECURE
+
+// Evin adını değiştir
+ON=41
+SDIALOG D_HOUSE_RENAME
+
+// Nodecay change
+ON=42
+IF (<LINK.REGION.FLAGS>&REGION_FLAG_NODECAY || <REGION.FLAGS>&REGION_FLAG_NODECAY)
+	SRC.SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, Evin içinde yere atılan eşyalar SİLİNECEK şekilde ayarlandı.
+	LINK.REGION.FLAGS <link.region.flags>&~region_flag_nodecay
+
+ELSE
+SRC.SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, Evin içinde yere atılan eşyalar SİLİNMEYECEK şekilde ayarlandı.
+	LINK.REGION.FLAGS |= region_flag_nodecay
+	
+ENDIF
+
+
+
+//////////////////////////////////////////////////////
+//  PAGE 5: Mülkiyet
+//////////////////////////////////////////////////////
+// Evi transfer et
+ON=50
+IF (<TAG0.DEMOLITION>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu evin yıkılması planlanıyor ve satışı yapılamaz.
+	RETURN 1
+ENDIF
+SRC.TARGETF F_HOUSE_TRANSFER <UID>
+SRC.SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, Evi transfer etmek istediğiniz kişiyi seçiniz.
+
+
+// Evi kaldır
+ON=51
+IF (<SRC.IsInHouse>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Ev içindeyken evi yıkamazsınız.
+	RETURN 1
+ENDIF
+
+SDIALOG D_HOUSE_REDEED
+
+
+//////////////////////////////////////////////////////
+//  PAGE 50: Satışa çıkart
+//////////////////////////////////////////////////////
+// Satışa çıkart
+ON=500
+IF (<TAG0.DEMOLITION>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu evin yıkılması planlanıyor ve satışı yapılamaz.
+	RETURN 1
+ENDIF
+IF !(<ISNUM <ARGTXT[0]>>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Sadece rakam girebilirsiniz.
+	RETURN 1
+ENDIF
+TAG0.PRICE=<ARGTXT[0]>
+SRC.SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, Evi satılığa çıkarttınız.
+SDIALOG D_HOUSE_MENU 50
+
+
+
+// Fiyatı güncelle
+ON=501
+IF (<TAG0.DEMOLITION>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu evin yıkılması planlanıyor ve satışı yapılamaz.
+	RETURN 1
+ENDIF
+IF !(<ISNUM <ARGTXT[0]>>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Sadece rakam girebilirsiniz.
+	RETURN 1
+ENDIF
+
+TAG0.PRICE=<ARGTXT[0]>
+SRC.SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, Evin fiyatı güncellendi.
+SDIALOG D_HOUSE_MENU 50
+
+
+
+// Satıştan kaldır
+ON=502
+TAG0.PRICE=
+SRC.SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, Evi satmaktan vazgeçtiniz.
+SDIALOG D_HOUSE_MENU 50
+
+
+
+//////////////////////////////////////////////////////
+//  PAGE 7: Banka
+//////////////////////////////////////////////////////
+ON=7
+IF (<DEF.hs_can_bank>)
+	IF !(<SRC.IsInHouse>)
+		SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Ev içinde değilsiniz.
+		RETURN 1
+	ENDIF
+	SRC.OPENBANK
+ENDIF
+	
+
+
+//////////////////////////////////////////////////////
+//  PAGE 8: Staff
+//////////////////////////////////////////////////////
+// Demolish Plan
+ON=80
+IF !(<TAG0.DEMOLITION>)
+	IF (<TAG0.PRICE>)
+		TAG.PRICE=
+		SRC.SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, Bu evin satisi durduruldu.
+	ENDIF
+			
+	IF (<ISNUM <ARGTXT[1]>>)
+		IF (<EVAL <ARGTXT[1]>> < 31)
+			IF (<EVAL <ARGTXT[1]>> > 6)
+				TAG0.DEMOLITION=<EVAL <ARGTXT[1]>>
+				LINK.TIMER=60*60*24*<EVAL <ARGTXT[1]>>
+				SRC.SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, Bu ev <EVAL <TAG0.DEMOLITION>> sonra yıkılması planladı.
+			ELSE
+				SRC.SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, Yıkımdan önce en az 7 günlük ihbar süresi gerekmektedir.
+			ENDIF
+		ELSE
+			SRC.SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, Yıkım 30 gün içinde gerçekleşmelidir
+		ENDIF
+		
+	ELSE
+		SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Geçersiz giriş, günler sayısal olmalı & < 30
+	ENDIF
+ELSE
+	TAG.DEMOLITION=
+	SRC.SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, Evin yikilma sureci iptal edildi.
+ENDIF
+
+	
+    
+// ELIF (<ARGN>==86)
+    // LINK.COLOR=00
+    // DIALOG d_house_menu 15
+    // RETURN 1
+// ENDIF
+
+
+
+// SIGN DISPID
+ON=2965 3140
+LINK.DISPID=<HVAL <ARGN>>
+LINK.UPDATE
+
+// SIGN COLORING
+ON=5000 9000    
+LINK.COLOR=<DEF.SIGN_COLOR_<EVAL <ARGN>-5000>>
+DIALOG d_house_menu 15
+
+
+//-------------------------------------------------------------------------------END MAIN MENU--------------------------------------------------------------------//
+
+
+[DIALOG D_HOUSE_REDEED]
+<DEF.DSP>
+RESIZE 0,0,460,290,Evi kaldir
+
+DORIGIN 20 50
+DHTMLGUMP +0 +0 420 100 1 1 Evi yıkmak üzeresiniz!<DEF.BR>Ev kontrat haline getirilecektir. Ev içindeki eşyalar kalacaktır ve çürüyene kadar herhangi biri tarafından alınabilir. Ev yıkıldıktan sonra herhangi biri oraya ev kurabilir o alan boş sayılır. Devam etmek istediğinize eminmisiniz ?
+DORIGIN 20 170
+
+IF (<F_HOUSE_ALLITEMS_COUNT>)
+	DHTMLGUMP +0 +0 420 50 0 0 <DEF.CENTER><DEF.BFONT_RED>DİKKAT! Ev içinde <F_HOUSE_ALLITEMS_COUNT> adet eşyalar bulunuyor.
+	// RADIO +20 +25 0D2 0D3 1 1
+	// DTEXT +40 +25 <def.tcolor_green> Ev içindeki eşyaları bankama aktar
+ELSE
+	DHTMLGUMP +0 +0 420 50 0 0 <DEF.CENTER><DEF.BFONT_LRED>Ev içinde eşya yok.
+ENDIF
+
+DORIGIN 20 220
+RESIZEPIC +0 +0 9350 420 50 
+DHTMLGUMP +70 +17 180 25 0 0 Evi kontrat haline getir.
+BUTTON +10 +17 0845 0846 1 0 1
+TILEPICHUE +25 +10 <EVAL <SERV.ITEMDEF.I_DEED.ID>+1> 0
+
+[DIALOG D_HOUSE_REDEED PREBUTTON]
+
+IF (<F_HOUSE_Guildstone_COUNT>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Eve guild kuruluyken yıkım yapamazsınız.
+	RETURN 1
+ELSEIF (<SRC.IsInHouse>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Evin içindeyken evi yıkamazsınız.
+	RETURN 1
+ELSEIF (<LINK.DISTANCE <SRC>> > 20)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Eve uzaksiniz.
+	RETURN 1
+ELSEIF !(<ISOWNER <SRC>>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Evein sahibİ değilsiniz.
+	RETURN 1
+ENDIF
+
+[DIALOG D_HOUSE_REDEED button]
+ON=0
+SRC.DIALOGCLOSE d_house_menu
+DIALOG d_house_menu 5
+
+
+// DEMOLISH
+ON=1 
+FUNC_HOUSE_REDEED 1 
+
+// Ev içinde eşyalar varsa
+IF (<ARGCHK[1]>)
+
+	IF (<F_HOUSE_ALLITEMS_COUNT>)
+		// SRC.F_HOUSE_REMOVE_ALLITEMS <REF1>
+		// REF1.SYSMESSAGELOC <def.tcolor_green>,<def.empty_cliloc2>,Ev içindeki eşyalar bankanıza <NEW.NAME> içerisinde aktarıldı.
+	ENDIF
+	
+ELSE
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Ev içindeki eşyaları bankanıza aktarmamayı SEÇMEDİĞİNİZ için ev içindeki eşyalar silindi.
+ENDIF
+region.allclients.update
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+[DIALOG D_HOUSE_VISITOR]
+<DEF.DSP>
+RESIZE 0,0,185,230
+
+GUMPPIC 20 20 100
+GUMPPIC 20 20 0232C
+
+IF (<LINK.ISVALIDE>)
+	TAG0.VISITS ++
+	DHTMLGUMP 30 35 125 75 0 0 <DEF.CENTER><DEF.BIG><DEF.BFONT_BLACK><NAME>
+	REF1=<QVAL (<TYPE> == T_MULTI)?<OWNER>:<MORE2>> // dialog ev uzerinde aciliyorsa owner, tabela uzerinde aciliyorsa more2
+	IF !(<REF1.ISVALIDE>)
+		REF1=<MORE1>
+	ENDIF
+	IF (<MORE1>)
+		DHTMLGUMP 20 130 145 25 1 0 Ev sahibi : <CROPTEXT 27 <REF1.NAME>>
+	ELSE
+		DHTMLGUMP 20 130 145 25 1 0 Ev sahibi : Yok
+	ENDIF
+	DHTMLGUMP 20 160 145 50 1 0 <DEF.CENTER>Çürümesine <KalanSure <TIMER>> kaldı.
+	IF (<TAG0.PRICE>)
+		RESIZE 190,0,230,230,Ev - Satış
+		DORIGIN 210 0
+		DTEXT +0 50 030 Bu ev satılık
+		DTEXT +0 70 1153 Evin fiyatı: <Bolukayir <dTAG0.PRICE>> gp
+
+		BUTTON +0 110 4006 4007 1 0 1
+		DTEXT 240 110 <def.tcolor_green> Satın al
+	ENDIF
+ENDIF
+
+[DIALOG D_HOUSE_VISITOR BUTTON]
+// Evi satın al
+ON=1
+IF !(<DTAG0.PRICE>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu ev satilik degil.
+	RETURN 1
+ELSEIF (<DTAG0.PRICE> <= 0)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu ev satilik degil.
+	RETURN 1
+ELSEIF (<SRC.GOLD> < <DTAG0.PRICE>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, <bolukayir <DTAG0.PRICE>> gpniz yok.
+	RETURN 1
+ENDIF
+
+REF1=<OWNER> // Eski sahibi
+IF !(<REF1.ISVALIDE>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Evin sahibi bulunamadı!
+	RETURN 1
+ENDIF
+
+// Eski sahibi
+REF1.DELHOUSE <UID>
+
+REF1.GOLD +=<DTAG0.PRICE>
+
+IF (<REF1.ISONLINE>)
+	REF1.SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, Sahip olduğunuz <NAME> isimli ev <SRC.NAME> isimli oyuncu tarafından <Bolukayir <DTAG.PRICE>> gp karşılığından satın alınmıştır. Dost - Ortak - Yasaklı - Erişim listesi temizlendi. Evin sahibi artık <SRC.NAME>.
+ENDIF
+
+// Yeni sahibi
+SRC.GOLD -=<DTAG0.PRICE>
+IF (<SRC.ISONLINE>)
+	SRC.SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, <Bolukayir <DTAG.PRICE>> gp karşılığında <NAME> isimli ev satın alındı. Dost - Ortak - Yasaklı - Erişim listesi temizlendi. Evin sahibi artık sensin.
+ENDIF
+SRC.ADDHOUSE <UID>
+
+// Tabela
+LINK.SAYU Yeni sahibi: <SRC.NAME>
+
+// Ev
+TAG0.PRICE=
+REMOVEKEYS
+
+ADDKEY <SRC>,1
+MORE1=<SRC>
+OWNER=<SRC>
+DELBAN -1
+DELCOOWNER -1
+DELACCESS -1
+DELFRIEND -1
+TAG0.LASTTRANSFER=<SERV.RTIME>
+
+
+
+
+
+
+[DIALOG D_HOUSE_RENAME]
+<DEF.DSP>
+RESIZE 0,0,185,185
+
+DORIGIN 20 20
+
+GUMPPIC +0 +0 100
+
+DTEXTENTRYLIMITED 50 40 98 80 0 1 60 <name>
+
+BUTTON +0 +105 4005 4007 1 0 1
+DHTMLGUMP +30 +105 100 20 0 0 Değiştir
+
+BUTTON +0 +125 4017 4018 1 0 0
+DHTMLGUMP +30 +125 100 20 0 0 Vazgeç
+
+[DIALOG D_HOUSE_RENAME BUTTON]
+ON=0
+SRC.DIALOGCLOSE d_house_menu
+SRC.SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, Ev adini degistirmekten vazgectiniz.
+DIALOG d_house_menu 4
+
+ON=1
+SRC.DIALOGCLOSE d_house_menu
+LINK.NAME=<ARGTXT[1]>
+REGION.NAME=<ARGTXT[1]>
+IF <DEF.HS_CAN_DECAY>
+    LINK.ATTR=02|010
+    IF <LINK.TIMER> < 0
+        LINK.TIMER 60*60*24*<DEF.HS_CAN_DECAY>
+    ENDIF
+ELSE
+    LINK.TIMER =-1
+    LINK.ATTR=010
+ENDIF
+DIALOG d_house_menu 4
+
+
+
+
+
+
+[DIALOG D_HOUSE_LIST_CLEAR]
+<DEF.DSP>
+RESIZE 0,0,220,160,Erişim Sil
+
+DORIGIN 20 50
+IF !(STRCMPI("<src.ctag0.list>","coowner"))
+	DHTMLGUMP +0 +0 180 60 1 0 <def.bfont_red>Tüm ortak listesini temizlemek istediğinizden emin misiniz?
+ELIF !(STRCMPI("<SRC.CTAG0.LIST>","friend"))
+	DHTMLGUMP +0 +0 180 60 1 0<def.bfont_red>Tüm dost listesini temizlemek istediğinizden emin misiniz?
+ENDIF
+
+IF !(STRCMPI("<src.ctag0.list>","coowner"))
+    BUTTON +0 +70 4005 4007 1 0 1
+ELIF !(STRCMPI("<src.ctag0.list>","friend"))
+    BUTTON +0 +70 4005 4007 1 0 2
+ENDIF
+DHTMLGUMP +30 +70 100 20 0 0 Onayla
+
+
+[DIALOG D_HOUSE_LIST_CLEAR BUTTON]
+ON=0
+SRC.DIALOGCLOSE d_house_menu
+SRC.CTAG.LIST=
+SRC.SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, İşlem iptal edildi.
+DIALOG d_house_menu 2
+
+ON=1 2
+IF (<ARGN>==1) //CO-OWNER
+    DELCOOWNER -1
+    SRC.SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, Tüm ortaklar silindi.
+ELIF (<ARGN>==2) //FRIEND
+    DELFRIEND -1
+    SRC.SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, Tüm dostlar silindi.
+ENDIF
+SRC.DIALOGCLOSE d_house_menu
+DIALOG d_house_menu 2
+
+
+
+
+
+
+
+
+
+[DIALOG D_HOUSE_ACCESS]
+<DEF.DSP>
+REF1=<REGION.UID>
+RESIZE 0,0,240,250,Erişim İzinleri (<name>)
+
+IF (<REF1.ISVALIDE> && <REF1.ISMULTI>)
+	DORIGIN 20 50
+	 
+	LOCAL.VENDORCOUNT = <REF1.F_HOUSE_VENDOR_COUNT>
+	IF (<dLOCAL.VENDORCOUNT> <= 0)
+		 
+		DHTMLGUMP +0 +0 180 20 0 0 <def.bfont_black>Ev: <qval (<LINK.ISVALIDE>)?<link.name>:Yok>
+		DHTMLGUMP +0 +20 180 20 0 0 <def.bfont_black>Sahibi: <qval (<LINK.ISVALIDE>)?<uid.<link.owner>.name>:Yok>
+
+		DHTMLGUMP +30 +40 180 20 0 0 <qval (<dtag0.access.1>)?<def.bfont_green>:<def.bfont_black>>Sadece sahibi
+		DHTMLGUMP +30 +60 180 20 0 0 <qval (<dtag0.access.2>)?<def.bfont_green>:<def.bfont_black>>Ortaklar
+		DHTMLGUMP +30 +80 180 20 0 0 <qval (<dtag0.access.3>)?<def.bfont_green>:<def.bfont_black>>Dostlar
+		DHTMLGUMP +30 +100 180 20 0 0 <qval (<dtag0.access.4>)?<def.bfont_green>:<def.bfont_black>>Guild üyeleri
+		DHTMLGUMP +30 +120 180 20 0 0 <qval (<dtag0.access.5>)?<def.bfont_green>:<def.bfont_black>>Aile üyeleri
+		DHTMLGUMP +30 +140 180 20 0 0 <qval (<dtag0.access.6>)?<def.bfont_green>:<def.bfont_black>>Hesaptaki karakterler
+		DHTMLGUMP +30 +160 180 20 0 0 <qval (<dtag0.access.7>)?<def.bfont_green>:<def.bfont_black>>Herkes
+
+		BUTTON +0 +40 <qval (<dtag0.access.1>)? 4006 4006 : 4005 4007> 1 0 1
+		BUTTON +0 +60 <qval (<dtag0.access.2>)? 4006 4006 : 4005 4007> 1 0 2
+		BUTTON +0 +80 <qval (<dtag0.access.3>)? 4006 4006 : 4005 4007> 1 0 3
+		BUTTON +0 +100 <qval (<dtag0.access.4>)? 4006 4006 : 4005 4007> 1 0 4
+		BUTTON +0 +120 <qval (<dtag0.access.5>)? 4006 4006 : 4005 4007> 1 0 5
+		BUTTON +0 +140 <qval (<dtag0.access.6>)? 4006 4006 : 4005 4007> 1 0 6
+		BUTTON +0 +160 <qval (<dtag0.access.7>)? 4006 4006 : 4005 4007> 1 0 7
+
+	ELSE
+		DTEXT +0 +0 <def.tcolor_red> Vendor varken izin ayarlanamaz.
+	ENDIF
+ENDIF
+
+[DIALOG D_HOUSE_ACCESS BUTTON]
+ON=1 7
+TAG.ACCESS <dARGN>
+IF !(<dTAG.ACCESS.<DARGN>>)
+	TAG.ACCESS.<DARGN>=1
+ELSE
+	TAG.ACCESS.<DARGN>=
+ENDIF
+
+
+FOR 1 7
+	IF (<dTAG.ACCESS.<DLOCAL._FOR>>)
+		LOCAL.IZINCOUNT ++
+	ENDIF
+ENDFOR
+IF !(<DLOCAL.IZINCOUNT>)
+	TAG0.ACCESS=
+ENDIF
+
+SRC.SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, <NAME> izinleri ayarlandı.
+DIALOGCLOSE D_HOUSE_ACCESS
+DIALOG D_HOUSE_ACCESS
+
+
+
+
+
+
+
+
+
+
+
+
+[DIALOG d_house_interior_decorator]
+<DEF.DSP>
+RESIZE 0,0,150,210
+DORIGIN 20 40
+
+IF (<ISITEM>)
+TILEPICHUE +30 +0 <DISPIDDEC> <eval <COLOR> &~ 08000|04000>
+ENDIF
+
+BUTTON +0 +50 2152 2154 1 0 1
+DHTMLGUMP +40 +50 70 40 0 0 <def.bfont_size7><def.h3>Çevir
+
+BUTTON +0 +80 2152 2154 1 0 2
+DHTMLGUMP +40 +80 70 40 0 0 <def.bfont_size7><def.h3>Yukarı
+
+BUTTON +0 +110 2152 2154 1 0 3
+DHTMLGUMP +40 +110 70 40 0 0 <def.bfont_size7><def.h3>Aşağı
+
+[DIALOG d_house_interior_decorator BUTTON]
+ON=1 3
+TAG.Mode=<ARGN>
+DClick
+
+
+
+[DIALOG D_HOUSE_ACCESS_INVITE_PLAYER]
+<DEF.DSP>
+RESIZE 0,0,280,170,Ev - Yetki Onay
+DORIGIN 20 50
+ARGS=<SRC.CTAG0.HOUSE_ACCESS_INVITE>
+REF1=<ARGV0> // ev
+IF (<REF1.ISVALIDE> && <REF1.ISMULTI>)
+	REF2=<ARGV1> // teklifi gönderen
+	// ARGV2 == teklif Türü
+	IF (<REF2.ISVALIDE>)
+		DTEXT +0 +0 <def.tcolor_text> Teklifi gönderen: <REF2.NAME>
+	ENDIF
+	DTEXT +0 +20 <def.tcolor_text> Ev: <REF1.NAME>
+
+	IF (<ARGV2> == 1)
+		DTEXT +0 +40 <def.tcolor_text> Yetki: Ortak
+	ELSEIF (<ARGV2> == 2)
+		DTEXT +0 +40 <def.tcolor_text> Yetki: Dost
+	ELSEIF (<ARGV2> == 3)
+		DTEXT +0 +40 <def.tcolor_text> Yetki: Sahiplik (Transfer)
+	ELSE
+		DTEXT +0 +40 <def.tcolor_text> Yetki: Tanımsız
+	ENDIF
+
+	BUTTON +0 +60 4006 4007 1 0 1 
+	DTEXT +30 +60 <def.tcolor_green> Kabul et
+	
+	BUTTON +0 +80 0fb2 0fb1 1 0 10
+	DTEXT +30 +80 <def.tcolor_red> Reddet
+ELSE
+	DTEXT +0 +0 <def.tcolor_red> Ev bulunamadı!
+ENDIF
+
+
+[DIALOG D_HOUSE_ACCESS_INVITE_PLAYER BUTTON]
+ON=0
+ARGS=<SRC.CTAG0.HOUSE_ACCESS_INVITE>
+REF1=<ARGV0> // ev
+REF2=<ARGV1> // teklifi gönderen
+IF (<REF1.ISVALIDE>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, <REF1.NAME> teklifini reddettiniz.
+	IF (<REF2.ISVALIDE>)
+		REF2.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, <SRC.NAME> teklifi reddetti!
+	ENDIF
+ENDIF
+SRC.CLEARCTAGS HOUSE_ACCESS_INVITE
+
+
+
+
+ON=1
+ARGS=<SRC.CTAG0.HOUSE_ACCESS_INVITE>
+REF1=<ARGV0>		// ev
+REF2=<ARGV1>		// teklifi gönderen
+REF3=<REF1.LINK>	// tabela
+
+IF !(<REF1.ISVALIDE>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Ev bulunamadı!
+	RETURN 1
+ELSEIF !(<REF1.ISMULTI>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Burası ev olarak görünmüyor.
+	RETURN 1
+ENDIF
+
+IF (<ARGV2> == 1) // ORTAK eklemek
+	IF (<REF1.COOWNERS> >= <DDEF.HS_MAX_CO_OWNERS>)
+		SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu evin ortak ekleme limiti dolmuş. (<REF1.COOWNERS>/<DDEF.HS_MAX_CO_OWNERS>)
+		REF1.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu evin ortak ekleme limiti dolmuş. (<REF1.COOWNERS>/<DDEF.HS_MAX_CO_OWNERS>)
+		RETURN 1
+	ELSEIF (<REF1.ISOWNER <SRC>>) || (<REF1.GETCOOWNERPOS <SRC>> >= 0) || (<REF1.GETFRIENDPOS <SRC>> >= 0) || (<SRC.ISGM>)
+		SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu ev ile zaten bir ilişiğiniz var.
+		REF1.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, <SRC.NAME> isimli oyuncunun bu ev ile zaten bir ilişiği var.
+		RETURN 1
+	ENDIF
+	REF1.ADDKEY <SRC>
+	REF1.ADDCOOWNER=<SRC>
+	REF3.SAYU Yeni ortak: <SRC.NAME>
+	SRC.SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, <ref1.name> isimli eve ortak oldunuz.
+	REF2.SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, <SRC.NAME> <ref1.name> isimli evin ortaklar listesine başarıyla eklendi.
+
+ELSEIF (<ARGV2> == 2) // Dost ekleme
+
+	IF (<REF1.FRIENDS> >= <DDEF.hs_max_friends>)
+		SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu evin dost ekleme limiti dolmuş. (<REF1.FRIENDS>/<DDEF.hs_max_friends>)
+		REF1.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu evin dost ekleme limiti dolmuş. (<REF1.FRIENDS>/<DDEF.hs_max_friends>)
+		RETURN 1
+	ELSEIF (<REF1.ISOWNER <SRC>>) || (<REF1.GETCOOWNERPOS <SRC>> >= 0) || (<REF1.GETFRIENDPOS <SRC>> >= 0) || (<SRC.ISGM>)
+		SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu ev ile zaten bir ilişiğiniz var.
+		REF1.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>,  <SRC.NAME> isimli oyuncunun bu ev ile zaten bir ilişiği var.
+		RETURN 1
+	ENDIF
+	REF1.ADDKEY <SRC>
+	REF1.ADDFRIEND=<SRC>
+	REF3.SAYU Yeni dost: <SRC.NAME>
+	SRC.SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, <ref1.name> isimli eve dost oldunuz.
+	REF2.SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, <SRC.NAME> <ref1.name> isimli evin dost listesine başarıyla eklendi.
+
+ELSEIF (<ARGV2> == 3) // Transfer
+
+	SRC.SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, <REF2.NAME> isimli oyuncudan <REF1.name> isimli evi başarıyla transfer aldınız.
+	SRC.SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, Evin tüm ortak - dost - yasaklı ve izin listesi temizlendi.
+	
+	REF2.SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, <SRC.NAME> isimli oyuncuya evi başarıyla transfer ettiniz.
+	REF2.SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, Evin tüm ortak - dost - yasaklı ve izin listesi temizlendi.
+	
+	REF1.REMOVEKEYS
+	
+	REF1.ADDKEY <SRC>,1
+	
+	REF1.TAG.LASTTRANSFER=<SERV.RTIME>
+	REF1.OWNER=<SRC>
+	REF1.MORE1=<SRC>
+	REF1.DELBAN -1
+	REF1.DELCOOWNER -1
+	REF1.DELACCESS -1
+	REF1.DELFRIEND -1
+	
+	REF3.SAYU Yeni sahibi: <SRC.NAME>
+	
+	REF2.DELHOUSE <REF1>
+
+
+ELSE
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Tanımsız işlem.
+ENDIF
+
+SRC.CLEARCTAGS HOUSE_ACCESS_INVITE
+
+
+
+
+[EOF]

@@ -1,0 +1,297 @@
+//****************************************************************************
+// SphereServer by: SphereServer development team and Menasoft.
+// www.sphereserver.net
+//****************************************************************************
+VERSION=X1
+
+
+
+[ITEMDEF i_sign_brass_house]
+DEFNAME=i_sign_brass_house
+ID=i_sign_brass_2
+NAME=house sign
+CAN=CAN_O_NOSLEEP|can_i_dcignoredist|can_i_dcignorelos
+
+ON=@CREATE
+TIMERF 1, TRIGGER @CreateInit
+
+ON=@CreateInit
+IF (<LINK.ISVALIDE>)
+	ATTR=ATTR_DECAY|ATTR_MOVE_NEVER
+	LINK.F_HOUSE_REFRESH_TIMER 0
+	LINK.REGION.EVENTS=+r_house_system
+ENDIF
+
+
+ON=@CLICK
+IF (<LINK.HOUSETYPE> == <DEF.HOUSE_PRIVATE>)
+	MESSAGE @38,,1,1 (Özel)
+ELSEIF (<LINK.HOUSETYPE> == <DEF.HOUSE_PUBLIC>)
+	MESSAGE @044,,1,1 (Halka Açık)
+ENDIF
+MESSAGE @<DEF.NOTO.<LINK.OWNER.NOTOGETFLAG>> [<LINK.OWNER.NAME>] // sahibinin adı
+IF (<LINK.ISVALIDE>)
+	MESSAGE @,,1,1 [<LINK.NAME>] // evin adı
+ENDIF
+IF (<LINK.DTAG0.PRICE>)
+	MESSAGE @044,,1,1 [Satılık]
+	MESSAGE <LINK.DTAG0.PRICE> gp
+ENDIF
+// MESSAGE <NAME>
+RETURN 1
+
+ON=@DClick
+IF (<LINK.ISOWNER <SRC>>) || (<LINK.GETCOOWNERPOS <SRC>> >= 0) || (<LINK.GETFRIENDPOS <SRC>> >= 0) || (<SRC.ISGM>)	
+	LINK.F_HOUSE_REFRESH_TIMER 1
+	DIALOGCLOSE d_house_menu
+	LINK.DIALOG d_house_menu
+ELSE
+	LINK.DIALOG D_HOUSE_VISITOR
+ENDIF
+RETURN 1
+
+
+ON=@TIMER
+ATTR=ATTR_DECAY|ATTR_MOVE_NEVER
+IF (<LINK.ISVALIDE>)
+	REF1=<LINK.OWNER>
+	IF (<REF1.ISVALIDE>)
+		REF1.Notice <LINK.NAME> isimli evinizi uzun süredir yenilemediğiniz için eviniz silindi.
+	ENDIF
+	LINK.REMOVE
+ENDIF
+RETURN 1
+
+
+
+
+
+
+[ITEMDEF I_STRONGBOX]
+DEFNAME=I_STRONGBOX
+TYPE=T_CONTAINER
+ID=I_BOX_BRASS
+NAME=Strongbox
+TDATA2=04B
+
+ON=@CREATE
+TIMER -1
+ATTR=ATTR_MOVE_NEVER
+COLOR=0
+
+On=@Click
+REF1=<MORE2>
+IF (<REF1.ISVALIDE>)
+	MESSAGE @38,,1,1 (<REF1.NAME>)
+ENDIF
+
+On=@DClick
+REF1=<MORE1> // EV
+REF2=<MORE2> // SAHİBİ
+REF3=<REGION.UID> // İÇİNDE BULUNDUĞU eval
+
+IF (<SRC.ACCOUNT.PLEVEL> == 7)
+	RETURN 0
+ENDIF
+IF (<REF2.ISPLAYER>)
+	IF (<REF2> == <SRC>) || (<REF1.ISOWNER <SRC>>)
+		RETURN 0
+	ELSE
+		SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu kasa size ait degil.
+		RETURN 1
+	ENDIF
+ENDIF
+
+On=@PickUp_Ground
+IF !(<SRC.ISGM>)
+	RETURN 1
+ENDIF
+
+
+
+
+[ITEMDEF I_TRASHCAN]
+DEFNAME=I_TRASHCAN
+ID=I_BARREL_OPEN
+NAME=trashcan
+// RESDISPDNHUE=0
+// RESDISPDNHUE=052f
+RESDISPDNHUE=0
+// CAN=can_o_nosleep
+
+ON=@Create
+COLOR=<SERV.ITEMDEF.<BASEID>.RESDISPDNHUE>
+ATTR=ATTR_MOVE_NEVER
+
+ON=@DCLICK
+COLOR=<SERV.ITEMDEF.<BASEID>.RESDISPDNHUE>
+IF (<TIMER> <= 0)
+	TIMER=
+ENDIF
+
+
+
+ON=@CLICK
+COLOR=<SERV.ITEMDEF.<BASEID>.RESDISPDNHUE>
+IF (<RESCOUNT>)
+	MESSAGE @,,1,1 (Esya : <RESCOUNT>)
+ENDIF
+IF !(<TIMER> <= 0)
+	MESSAGE @044,1,1 (<timer> sn sonra bosaltilacak)
+ENDIF
+MESSAGE @,1,1 çöp kutusu
+RETURN 1
+
+
+
+ON=@PICKUP_GROUND
+IF !(<SRC.ISGM>)
+	RETURN 1
+ENDIF
+
+
+ON=@Timer
+COLOR=<SERV.ITEMDEF.<BASEID>.RESDISPDNHUE>
+IF (<RESCOUNT>)
+	EMPTY
+	UPDATEX
+	SAYU * çöp kutusu bosaltildi *
+ENDIF
+TIMER 10
+RETURN 1
+
+
+ON=@DropOn_Self
+IF (<RESCOUNT> >= 50)
+	SAYU Çöp kutusu doldugu için bosaltildi!
+	EMPTY
+	UPDATEX
+ELSE
+	SRC.sysmessage <ARGO.NAME> <TIMER> saniye sonra silinecektir.
+	// TIMER=10
+ENDIF
+
+
+
+
+
+
+
+
+[ITEMDEF i_house_interior_decorator]
+DEFNAME=i_house_interior_decorator
+ID=0fc1
+NAME=Interior Decorator
+VALUE=10000
+WEIGHT=1.0
+RESOURCES=
+SKILLMAKE=
+
+ON=@Click
+IF (<TAG0.MODE>==1)
+	MESSAGE @,,1,1 Mod : Çevir
+ELIF (<TAG0.MODE>==2)
+	MESSAGE @,,1,1 Mod : Yukarı kaldır
+ELIF (<TAG0.MODE>==3)
+	MESSAGE @,,1,1 Mod : Aşağı indir
+ENDIF
+
+
+ON=@DCLICK
+REF1=<SRC.REGION.UID>
+IF !(<REF1.ISVALID>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Ev bulunamadı!
+	RETURN 1
+ENDIF
+
+IF (<CONT.TOPOBJ> != <SRC>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, That must be in your pack for you to use it.
+	RETURN 1
+ELIF !((<REF1.ISOWNER <SRC>>) || (<REF1.GETCOOWNERPOS <SRC>> >= 0) || (<SRC.ISGM>))
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Only owner and co-owners can change items locations!
+	RETURN 1
+ELIF !(<TAG0.MODE>)
+	SDIALOG D_HOUSE_INTERIOR_DECORATOR
+ELSE
+	TAG.HOUSE=<REGION.UID>
+	TARGET
+ENDIF
+RETURN 1
+
+ON=@TARGON_CHAR
+TAG.HOUSE=
+SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Hatalı seçim.
+RETURN 1
+
+ON=@TARGON_GROUND
+TAG.HOUSE=
+SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Hatalı seçim.
+RETURN 1
+
+
+ON=@TARGON_CANCEL
+TAG.HOUSE=
+
+ON=@TARGON_ITEM
+IF (<ARGO> == <UID>)
+	TAG.HOUSE=
+	TAG.MODE=
+	SDIALOG D_HOUSE_INTERIOR_DECORATOR
+	RETURN 1
+ELSE
+
+	REF1 = <ARGO.REGION.UID>
+	
+	IF (<REF1> != <TAG0.HOUSE>) || !(<SRC.IsInHouse>)
+		SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, You must be in your house to do this.
+		RETURN 1
+	ELIF (<ARGO.CONT>) || (<ARGO.REGION.UID> != <TAG0.HOUSE>) || !(<ARGO.IsInHouse>)
+		SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, That must be in your house.
+		RETURN 1
+	ELIF !(<ARGO.ISEVENT.EI_HOUSE_LOCKDOWN>)
+		SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu eve sabit bir esya degil.
+		RETURN 1
+	ELIF !(<REF1.OWNER> == <SRC>)
+		SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu evin sahibi degilsiniz.
+		RETURN 1		
+	ELSE
+		TAG.HOUSE=
+		
+		IF (<TAG0.MODE>==1) // flip
+			IF !(<ARGO.FLIP>)
+				SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu cevirilebilen bir esya degil.
+			ELSE
+				ARGO.FLIP
+				DCLICK
+			ENDIF
+			RETURN 1
+			
+		ELIF (<TAG0.MODE>==2) // up
+			IF (<ARGO.HouseFloor <ARGO.Z>> != <ARGO.HouseFloor <eval <ARGO.Z>+<ARGO.HEIGHT>+3>>)
+				SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu esya daha fazla yukari cikamaz.
+			ELSE
+				ARGO.NUDGEUP
+				DCLICK
+			ENDIF
+			RETURN 1
+			
+		ELIF (<TAG0.MODE>==3) // down
+			IF (<ARGO.P.Z> <= <SRC.P.Z>)
+				SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu eşya sizinle aynı seviyeden daha aşağı inemez.
+				RETURN 1
+			ENDIF
+			IF (<ARGO.HouseFloor <ARGO.Z>> != <ARGO.HouseFloor <eval <ARGO.Z>-1>>)
+				SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu esya daha fazla asagi inemez.
+			ELSE
+				ARGO.NUDGEDOWN
+				DCLICK
+			ENDIF
+			RETURN 1
+		ENDIF
+	ENDIF
+	RETURN 1
+ENDIF
+
+
+
+[EOF]

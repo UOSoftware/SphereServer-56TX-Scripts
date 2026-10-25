@@ -1,0 +1,85 @@
+
+
+[DEFNAME def_jail_system_configs]
+JAILCELL_1 Alan Ihlali, 86400
+JAILCELL_2 Küfür, 7200
+JAILCELL_3 Hakaret, 3600
+JAILCELL_4 Hatalı Çağrı, 3600
+JAILCELL_5 Hata Sömürme, 604800
+JAILCELL_6 Uygunsuz Davranış, 86400
+
+
+[events e_jailed]
+
+ON=@CLICK
+IF (<SERV.TIME> > <ACCOUNT.DTAG0.JailTime>)
+	FORGIVE
+ELSE
+	MESSAGE @38,,1,1 [<f_stonesys_determine_timeleft <ACCOUNT.DTAG0.JailTime>>]
+ENDIF
+MESSAGE @38,,1,1 [Hücre: <ACCOUNT.DTAG0.JailCell>]
+
+
+ON=@ITEMDCLICK
+SRC.SYSMESSAGELOC <def.tcolor_red>,<DEF.empty_cliloc2>, Hapiste <act.name> kullanamazsınız.
+RETURN 1
+
+ON=@SKILLSTART
+SRC.SYSMESSAGELOC <def.tcolor_red>,<DEF.empty_cliloc2>, Bu alanda becerilerinizi kullanamazsınız.
+RETURN 1
+
+ON=@ITEMDROPON_GROUND
+SRC.SYSMESSAGELOC <def.tcolor_red>,<DEF.empty_cliloc2>, Bu alanda yere eşya atamazsınız.
+RETURN 1
+
+
+
+
+
+
+[PLEVEL 1]
+sicil
+
+[FUNCTION SICIL]
+IF (<ACCOUNT.PLEVEL> == 1)
+	DIALOGCLOSE D_JAIL_SICIL
+	DIALOG D_JAIL_SICIL
+ELSE
+	SRC.SYSMESSAGELOC <def.tcolor_grey>,<DEF.empty_cliloc2>, Hangi oyuncunun siciline bakacaksınız.
+	SRC.TARGETF FUNC_SICIL_TARGET
+ENDIF
+
+[FUNCTION FUNC_SICIL_TARGET]
+IF !(<ARGO>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,600101 // "Sadece oyuncular üzerinde işlem yapabilirsiniz."
+	RETURN 1
+ELSEIF !(<ARGO.ISCHAR>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,600101 // "Sadece oyuncular üzerinde işlem yapabilirsiniz."
+	RETURN 1
+ELSEIF !(<ARGO.ISPLAYER>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,600101 // "Sadece oyuncular üzerinde işlem yapabilirsiniz."
+	RETURN 1
+// ELSEIF (<ARGO.ISGM>)
+	// SRC.SYSMESSAGELOC <def.tcolor_red>,<DEF.empty_cliloc2>, Yetkilileri seçemezsiniz.
+	// RETURN 1
+ELSE
+	ARGO.DIALOG D_JAIL_SICIL
+ENDIF
+
+[DIALOG D_JAIL_SICIL]
+<DEF.dsp>
+RESIZE 0,0,350,<eval (6*25)+120>,Hapis Sicil (<NAME>)
+
+DORIGIN 20 50
+FOR 1 10
+	ARGS = <DEF.JAILCELL_<DLOCAL._FOR>>
+	IF (<ARGV1>)
+		DHTMLGUMP +0 <EVAL (<DLOCAL._FOR>*30)+30> 220 25 1 0 Hücre: <DLOCAL._FOR> (<ARGV0>)
+		DHTMLGUMP +230 <EVAL (<DLOCAL._FOR>*30)+30> 80 25 1 0 <DEF.CENTER><ACCOUNT.dTAG0.JailCount<dlocal._for>> kere
+	ENDIF
+ENDFOR
+	
+	
+	
+	
+[eof]

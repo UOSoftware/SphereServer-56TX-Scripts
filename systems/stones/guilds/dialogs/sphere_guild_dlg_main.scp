@@ -1,0 +1,185 @@
+VERSION=0.56T
+
+	
+[DIALOG D_GUILD_MAIN]
+
+<DEF.dsp>
+
+IF (<ISITEM>) && (<TYPE>!=T_STONE_GUILD)
+	RETURN 1
+ELIF (<MEMBERFROMUID.<SRC.UID>.UID>!=<SRC.UID>)&&(!<SRC.ISGM>)
+	RETURN 1
+ENDIF
+
+LOCAL.CHARPRIV=<QVAL <SRC.ISGM> ? <DEF0.STONEPRIV_MASTER>:<MEMBERFROMUID.<SRC.UID>.PRIV>>
+IF (<LOCAL.CHARPRIV>!=<DEF0.STONEPRIV_MEMBER>)&&(<LOCAL.CHARPRIV>!=<DEF0.STONEPRIV_MASTER>)
+	RETURN 1
+ENDIF
+
+PAGE 0
+RESIZE 0,0,240,470,Guild [<name>]
+
+DORIGIN 20 20
+
+LOCAL.MASTERNAME <QVAL (<EVAL STRLEN(<MASTERTITLE>)>)?<MASTERTITLE>:><MASTER>
+DHTMLGUMP +0 +30 200 25 1 0 <def.bfont_black> Sahibi: <LOCAL.MASTERNAME>
+
+IF (STRMATCH('<ABBREV>',''))
+	DHTMLGUMP +0 +60 200 25 1 0 <def.bfont_black>Kısaltması: Yok
+ELSE
+	DHTMLGUMP +0 +60 200 25 1 0 <def.bfont_black>Kısaltması: <ABBREV>
+ENDIF
+
+DHTMLGUMP +0 +90 200 25 1 0 <def.bfont_black>Üye Sayısı: <DMEMBER.COUNT>
+DHTMLGUMP +0 +120 200 25 1 0 <def.bfont_black>Kurulum Tarihi: <TAG0.CREATED_AT>
+
+IF (<ALIGN> <= 0) // NATURAL
+	DHTMLGUMP +0 +150 150 25 1 0 <def.bfont_black>Destek Yönü: <DEF.BFONT_GRAY><DEF.GUILDCONFIG_ALIGN_<ALIGN>>
+ELSEIF (<ALIGN> == 1) // ORDER
+	DHTMLGUMP +0 +150 150 25 1 0 <def.bfont_black>Destek Yönü: <DEF.BFONT_BLUE><DEF.GUILDCONFIG_ALIGN_<ALIGN>>
+ELSEIF (<ALIGN> == 2) // CHAOS
+	DHTMLGUMP +0 +150 150 25 1 0 <def.bfont_black>Destek Yönü: <DEF.BFONT_DORANGE><DEF.GUILDCONFIG_ALIGN_<ALIGN>>
+ELSE // UNDEFINIED
+	DHTMLGUMP +0 +150 150 25 1 0 <def.bfont_black>Destek Yönü: <DEF.GUILDCONFIG_ALIGN_<ALIGN>>
+ENDIF
+
+IF (<ALIGN> == 1)
+	TILEPIC +150 +150 <SERV.ITEMDEF.I_SHIELD_ORDER.ID>
+ELSEIF (<ALIGN> == 2)
+	TILEPIC +150 +150 <SERV.ITEMDEF.I_SHIELD_CHAOS.ID>
+ENDIF
+
+DHTMLGUMP +30 +190 170 25 1 0 Üye listesi
+BUTTON +0 +190 4006 4007 1 0 1
+
+DHTMLGUMP +30 +220 170 25 1 0 Üye al
+BUTTON +0 +220 4006 4007 1 0 2
+
+IF (<MEMBER.COUNT <DEF0.STONEPRIV_CANDIDATE>>)
+	DHTMLGUMP +30 +250 170 25 1 0 Aday üye listesi
+	BUTTON +0 +250 4006 4007 1 0 3
+ELSE
+	DHTMLGUMP +30 +250 170 25 1 0 <def.bfont_dred>Üyelik için aday yok.
+	GUMPPIC +0 +250 0FB5
+ENDIF
+
+DHTMLGUMP +30 +280 170 25 1 0 Tüzük
+BUTTON +0 +280 4006 4007 1 0 4
+  
+IF (<MASTERUID> == <SRC>)
+	DHTMLGUMP +30 +310 170 25 1 0 <QVAL (<SRC.CTAG0.Guild.IsRemoving>)?<DEF.BFONT_RED>Eminmisiniz?:<def.bfont_black>Guildi yık>
+	BUTTON +0 +310 0FA3 0FA4 1 0 5
+ELSE
+	IF !(<SRC.FINDID.I_GUILD_RESIGN_MEMORY>)
+		DHTMLGUMP +30 +310 170 25 1 0 <QVAL (<SRC.CTAG0.Guild.IsResign>)?<DEF.BFONT_RED>Eminmisiniz?:<def.bfont_black>Guildden ayrıl>
+		BUTTON +0 +310 0FA3 0FA4 1 0 5
+	ENDIF
+ENDIF
+
+DHTMLGUMP +30 +340 170 25 1 0 Savaş durumu
+BUTTON +0 +340 4006 4007 1 0 6
+
+// markete eklenecek.
+// IF (<ALIGN> > 0)
+// DHTMLGUMP 60 380 170 30 1 0 <ALIGNTYPE> shield
+// BUTTON 30 385 4006 4007 1 0 9
+// ENDIF
+
+DHTMLGUMP +30 +370 170 25 1 0 Guild market
+BUTTON +0 +370 4006 4007 1 0 7
+
+DHTMLGUMP +30 +400 170 25 1 0 Guildmaster
+IF (<SRC.ISGM>)||(<MASTERUID>==<SRC.UID>)
+	BUTTON +0 +400 4006 4007 1 0 8
+ELSE
+	GUMPPIC +0 +400 4021
+ENDIF
+
+
+[DIALOG D_GUILD_MAIN BUTTON]
+ON=0
+SRC.CTAG.Guild.IsRemoving=
+
+// ÜYE LISTESI
+ON=1
+SDIALOG D_GUILD_CHARLIST,0,<DEF0.GUILDDLG_LISTTYPE_LOYALITY>
+
+ 
+// ÜYE AL
+ON=2
+IF !((<MASTERUID> == <SRC.UID>) || (<SRC.ISGM>))
+	DIALOGCLOSE D_GUILD_MAIN
+	DIALOG D_GUILD_MAIN
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu işlemi sadece Guildmaster yapabilir.
+	RETURN 1
+ENDIF
+IF (<MEMBER.COUNT> >= <DDEF.GUILDCONFIG_MAX_MEMBERCOUNT>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Guildiniz en fazla üye sayısına ulaşmış. (Max:<DDEF.GUILDCONFIG_MAX_MEMBERCOUNT> - <REF1.MEMBER.COUNT>/<DDEF.GUILDCONFIG_MAX_MEMBERCOUNT>)
+	RETURN 1
+ENDIF
+SRC.TARGETF f_guildsys_member_add <UID>
+SRC.SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, Kime guild üye daveti göndermek istiyorsun?
+SDIALOG D_GUILD_MAIN,0,<UID>
+  
+  
+// ADAY ÜYE LISTESI
+ON=3
+SDIALOG D_GUILD_CHARLIST,0,<DEF0.GUILDDLG_LISTTYPE_CANDIDATES>
+
+
+// TÜZÜK
+ON=4
+SDIALOG d_Guild_ViewCharter,0,<uid>
+
+
+// GUILDDEN AYRIL & GUILDI YıK
+ON=5
+IF (<MASTERUID> == <SRC>)
+	IF !(<SRC.CTAG0.Guild.IsRemoving>)
+		SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Guildi yıkmak istediğinizden emin misiniz?
+		SRC.CTAG.Guild.IsRemoving=1
+		sdialog d_Guild_Main,0,<uid>
+		RETURN 1
+	ELSE
+		SRC.CTAG.GUILD.ISREMOVING=
+		SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Guildi yıktınız!
+		REMOVE
+	ENDIF
+ELSE
+
+	IF !(<SRC.CTAG0.Guild.IsResign>)
+		SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Guildden ayrılmak istediğinizden emin misiniz?
+		SRC.CTAG.GUILD.ISRESIGN=1
+		SDIALOG D_GUILD_MAIN,0,<UID>
+		RETURN 1
+	ELSE
+		SRC.CTAG.GUILD.IsResign=
+		SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Guildden ayrıldınız.
+
+
+		RESIGN
+
+		sector.allclients notoupdate
+		src.CHARWORLDMEMORYDEL
+	ENDIF
+
+ENDIF
+
+// SAVAŞ DURUMU
+ON=6
+SDIALOG D_GUILD_WARFARESTATUS,0,<UID>
+
+// GUILD MARKET
+ON=7
+SDIALOG d_Guild_Market,0,<UID>
+ 
+ 
+// Guildmaster menü
+ON=8
+IF (<SRC.ISGM>)||(<MASTERUID>==<SRC.UID>)
+	SDIALOG D_GUILD_MASTER,0
+ENDIF
+
+
+	
+[EOF]

@@ -1,0 +1,328 @@
+VERSION=0.56T
+
+
+[DIALOG D_GUILD_CREATE]
+<DEF.dsp>
+RESIZE 0,0,365,490,Guild - Kurulum
+
+DORIGIN 20 20 
+DHTMLGUMP +0 +30 325 80 1 1 Guild adı en az <dDEF.GUILDCONFIG_NAME_MINLENGTH> ve en fazla <DDEF0.GUILDCONFIG_NAME_MAXLENGTH>, Guild kısaltması en az <DDEF.GUILDCONFIG_ABBREV_MINLENGTH> en fazla <DDEF.GUILDCONFIG_ABBREV_MINLENGTH> karakterden oluşabilir. Guild adı ve kısaltması aynı olamaz. Alfabetik karakterleri ve özel karakter olarak yalnızca kesme işareti kullanabilirsiniz. Hakaret veya küfür içerikli olmamalıdır. Guild wadınız sunucu veya yöneticilerinden herhangi birinin isimlerini içermemelidir. Guild adınızda boşluk kullanabilirsiniz.
+
+// Guild adı
+DHTMLGUMP +0 +115 80 25 1 0 Adı:
+RESIZEPIC +80 +115 3000 120 25
+IF (<ISBLANK <CTAG0.GUILD_NAME_TEXT>>)
+	DTEXTENTRYLIMITED +85 +120 130 25 0 1 <DDEF0.GUILDCONFIG_NAME_MAXLENGTH>
+ELSE
+	DTEXTENTRYLIMITED +85 +120 130 25 0 1 <DDEF0.GUILDCONFIG_NAME_MAXLENGTH> <CTAG0.GUILD_NAME_TEXT>
+ENDIF
+
+
+// Guild kısaltması
+DHTMLGUMP +205 +115 70 25 1 0 Kısaltma:
+RESIZEPIC +280 +115 3000 45 25
+IF (<ISBLANK <CTAG0.GUILD_ABBREV_TEXT>>)
+	DTEXTENTRYLIMITED +285 +120 50 25 0 2 <DDEF0.GUILDCONFIG_ABBREV_MAXLENGTH> 
+ELSE
+	DTEXTENTRYLIMITED +285 +120 50 25 0 2 <DDEF0.GUILDCONFIG_ABBREV_MAXLENGTH> <CTAG0.GUILD_ABBREV_TEXT>
+ENDIF
+
+// Taraf
+DHTMLGUMP +0 +145 80 25 1 0 Tarafı;
+IF (<CTAG0.GUILD_ALIGN> == 0)
+	BUTTON +80 +147 0D3 0D2 1 0 1
+ELSE
+	BUTTON +80 +147 0D2 0D3 1 0 1
+ENDIF
+DTEXT +100 +147 <def.tcolor_text> Natural
+
+
+IF (<CTAG0.GUILD_ALIGN> == 1)
+	BUTTON +170 +147 0D3 0D2 1 0 2  
+ELSE
+	BUTTON +170 +147 0D2 0D3 1 0 2 
+ENDIF
+DTEXT +190 +147 063 Order
+
+
+IF (<CTAG0.GUILD_ALIGN> == 2)
+	BUTTON +250 +145 0D3 0D2 1 0 3
+ELSE
+	BUTTON +250 +145 0D2 0D3 1 0 3
+ENDIF
+DTEXT +270 +145 02B Chaos
+
+
+// Ücreti
+DHTMLGUMP +0 +175 80 25 1 0 Ücreti: 
+
+
+// Deed
+LOCAL.CREATEGOLD=<DDEF.GUILDCONFIG_CREATED_GOLD>
+IF (<TAG0.GUILD_PAY>)
+	BUTTON +80 +177 0D3 0D2 1 0 4 
+ELSE
+	BUTTON +80 +177 0D2 0D3 1 0 4
+ENDIF
+DTEXT +100 +177 0 Guild deed
+
+
+// Gold
+IF !(<TAG0.GUILD_PAY>)
+	BUTTON 210 +177 0D3 0D2 1 0 5 
+ELSE
+	BUTTON 210 +177 0D2 0D3 1 0 5
+ENDIF
+DTEXT 230 +177 <def.tcolor_text> <BolukAyir <DLOCAL.CREATEGOLD>> gp 
+
+
+DTEXT +0 +210 <def.tcolor_white> Evleriniz;
+IF (<SRC.HOUSES> > 0)
+	FOR 0 <EVAL <SRC.HOUSES>-1>
+	REF1=<SRC.HOUSE.<DLOCAL._FOR>>
+		IF (<REF1.ISVALID>) && (<REF1.OWNER> == <SRC>)
+			IF ((<REF1.BASEID> == M_TOWER) || (<REF1.BASEID> == M_CASTLE) || (<REF1.BASEID> == M_SMALL_STONE_KEEP))
+				LOCAL.X ++
+				IF (<CTAG0.GUILD_HOUSE> == <REF1>)
+					BUTTON +0 <EVAL (<DLOCAL.X>*25)+230> 0D3 0D2 1 0 <EVAL <DLOCAL._FOR>+100>
+				ELSE
+					BUTTON +0 <EVAL (<DLOCAL.X>*25)+230> 0D2 0D3 1 0 <EVAL <DLOCAL._FOR>+100>
+				ENDIF
+				DTEXT +20 <EVAL (<DLOCAL.X>*25)+230> 0 <SERV.MAP(<REF1.P.X>,<REF1.P.Y>,<REF1.P.Z>,<REF1.P.M>).REGION.NAME>
+			ENDIF
+		ENDIF
+	ENDFOR
+ELSE
+	DTEXT +0 +230 <def.tcolor_green> Guild kurabileceğiniz eviniz bulunmuyor.
+ENDIF
+
+
+BUTTON +0 +430 4006 4007 1 0 999
+DTEXT +30 +430 <def.tcolor_green> Guildi Kur
+
+[DIALOG D_GUILD_CREATE BUTTON]
+ON=1 3
+LOCAL.ALIGN = <EVAL <ARGN>-1>
+SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, Kuracağınız guildin desyek yönünü <def.GUILDCONFIG_ALIGN_<dLOCAL.ALIGN>> olarak seçtiniz.
+CTAG0.GUILD_ALIGN=<dLOCAL.ALIGN>
+CTAG0.GUILD_NAME_TEXT <ARGTXT[1]>
+CTAG0.GUILD_ABBREV_TEXT <ARGTXT[2]>
+DIALOGCLOSE D_GUILD_CREATE
+DIALOG D_GUILD_CREATE
+
+// Payment method: guildstone deed
+ON=4
+SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, Guildi guildstone deed karşılığında kuracaksınız.
+TAG0.GUILD_PAY=1
+DIALOGCLOSE D_GUILD_CREATE
+DIALOG D_GUILD_CREATE
+
+
+// Payment method: gold
+ON=5
+SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, Guildi gold karşılığında kuracaksınız.
+TAG0.GUILD_PAY=
+DIALOGCLOSE D_GUILD_CREATE
+DIALOG D_GUILD_CREATE
+
+
+// Ev seç
+ON=100 199
+REF1=<SRC.HOUSE.<EVAL <DARGN>-100>>
+CTAG0.GUILD_NAME_TEXT <ARGTXT[1]>
+CTAG0.GUILD_ABBREV_TEXT <ARGTXT[2]>
+
+IF !((<REF1.BASEID> == M_TOWER) || (<REF1.BASEID> == M_CASTLE) || (<REF1.BASEID> == M_SMALL_STONE_KEEP))
+	SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu ev guild kurulabilecek nitelikte değil.
+ELSE
+	SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, Guildinizi kuracağınız evi başarıyla seçtiniz.
+	CTAG0.GUILD_HOUSE=<REF1>
+ENDIF
+DIALOGCLOSE D_GUILD_CREATE
+DIALOG D_GUILD_CREATE
+		
+	
+
+	
+// Kur
+ON=999
+IF (<SERV.GUILDS> >= <DEF.SERVER_MAX_GUILDS>)
+	SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Şu an için sunucuda en fazla <DEF.SERVER_MAX_GUILDS> guild kurulumuna izin verilmektedir. (Kurulu guild: <SERV.GUILDS>/<DEF.SERVER_MAX_GUILDS>)
+	RETURN 1
+	
+ELSEIF (<GUILD>)
+	SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Sizin zaten bir guildiniz var.
+	RETURN 1
+	
+ELSEIF (<HOUSES> <= 0)
+	SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Herhangi bir eviniz yok.
+	RETURN 1
+ENDIF
+
+REF1=<CTAG0.GUILD_HOUSE>
+
+IF (<REF1.ISVALID>)
+	IF !(<REF1.MORE1> == <SRC>)
+		SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, <REF1.NAME> sahibi değilsiniz.
+		RETURN 1
+	ELSEIF !((<REF1.BASEID> == M_TOWER) || (<REF1.BASEID> == M_CASTLE) || (<REF1.BASEID> == M_SMALL_STONE_KEEP))
+		SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu ev guild kurulabilecek nitelikte değil.
+		RETURN 1
+	ENDIF
+ELSE
+	SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Guildi kuracağınız evi seçiniz.
+	DIALOGCLOSE D_GUILD_CREATE
+	DIALOG D_GUILD_CREATE
+	RETURN 1
+ENDIF
+
+LOCAL.GUILDNAME=<ARGTXT[1]>
+LOCAL.GUILDABBREV=<ARGTXT[2]>
+
+
+
+// GUILD ADI
+SRC.CTAG0.GUILD_NAME_TEXT <LOCAL.GUILDNAME>
+IF (<ISBADCHAR <LOCAL.GUILDNAME>>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Guild adı: Hatalı karakter içeriyor.
+	SRC.DIALOGCLOSE D_GUILD_CREATE
+	SRC.DIALOG D_GUILD_CREATE
+	RETURN 1
+	
+ELIF (<IsBlank <LOCAL.GUILDNAME>>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Guild adı: Boş olamaz.
+	SRC.DIALOGCLOSE D_GUILD_CREATE
+	SRC.DIALOG D_GUILD_CREATE
+	RETURN 1
+	
+ELIF !(<ISSTRING <LOCAL.GUILDNAME>>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Guild adı: Sadece harflerden oluşabilir.
+	SRC.DIALOGCLOSE D_GUILD_CREATE
+	SRC.DIALOG D_GUILD_CREATE
+	RETURN 1
+	
+ELIF (<ISFORBIDSTRING <LOCAL.GUILDNAME>>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Guild adı: Yasaklı karakter içeriyor.
+	SRC.DIALOGCLOSE D_GUILD_CREATE
+	SRC.DIALOG D_GUILD_CREATE
+	RETURN 1
+
+ELIF (STRMATCH('<LOCAL.GUILDNAME>','<LOCAL.GUILDABBREV>'))
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Guild adı ve Guild kısaltması aynı olamaz.
+	SRC.DIALOGCLOSE D_GUILD_CREATE
+	SRC.DIALOG D_GUILD_CREATE
+	RETURN 1
+
+ELIF (<EVAL STRLEN(<LOCAL.GUILDNAME>)> < <DEF0.GUILDCONFIG_NAME_MINLENGTH>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Guild adı: En az <dDEF0.GUILDCONFIG_NAME_MINLENGTH> karakter olabilir.
+	SRC.DIALOGCLOSE D_GUILD_CREATE
+	SRC.DIALOG D_GUILD_CREATE
+	RETURN 1
+
+ELIF (<EVAL STRLEN(<LOCAL.GUILDNAME>)> > <DEF0.GUILDCONFIG_NAME_MAXLENGTH>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Guild adı: En fazla <dDEF0.GUILDCONFIG_NAME_MAXLENGTH> karakter olabilir.
+	SRC.DIALOGCLOSE D_GUILD_CREATE
+	SRC.DIALOG D_GUILD_CREATE
+	RETURN 1
+ENDIF
+
+
+// GUILD KISALTMASI
+SRC.CTAG0.GUILD_ABBREV_TEXT <ARGTXT[2]>
+
+IF (<ISBADCHAR <LOCAL.GUILDABBREV>>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Guild kısaltması: Hatalı karakter içeriyor.
+	SRC.DIALOGCLOSE D_GUILD_CREATE
+	SRC.DIALOG D_GUILD_CREATE
+	RETURN 1
+	
+ELIF (<ISBLANK <LOCAL.GUILDABBREV>>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Guild kısaltması: Boş olamaz.
+	SRC.DIALOGCLOSE D_GUILD_CREATE
+	SRC.DIALOG D_GUILD_CREATE
+	RETURN 1
+	
+ELIF !(<ISSTRING <LOCAL.GUILDABBREV>>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Guild kısaltması: Sadece harflerden oluşabilir.
+	SRC.DIALOGCLOSE D_GUILD_CREATE
+	SRC.DIALOG D_GUILD_CREATE
+	RETURN 1
+	
+ELIF (<ISFORBIDSTRING <LOCAL.GUILDABBREV>>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Guild kısaltması: Yasaklı karakter içeriyor.
+	SRC.DIALOGCLOSE D_GUILD_CREATE
+	SRC.DIALOG D_GUILD_CREATE
+	RETURN 1
+	
+ELIF (<EVAL STRLEN(<LOCAL.GUILDABBREV>)> < <DEF0.GUILDCONFIG_ABBREV_MINLENGTH>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Guild kısaltma: En az <dDEF0.GUILDCONFIG_ABBREV_MINLENGTH> karakter olabilir.
+	SRC.DIALOGCLOSE D_GUILD_CREATE
+	SRC.DIALOG D_GUILD_CREATE
+	RETURN 1
+
+ELIF (<EVAL STRLEN(<LOCAL.GUILDABBREV>)> > <DEF0.GUILDCONFIG_ABBREV_MAXLENGTH>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Guild kısaltma: En fazla <dDEF0.GUILDCONFIG_ABBREV_MAXLENGTH> karakter olabilir.
+	SRC.DIALOGCLOSE D_GUILD_CREATE
+	SRC.DIALOG D_GUILD_CREATE
+	RETURN 1
+ENDIF
+
+
+FORINSTANCES I_GUILDSTONE
+	IF (STRMATCH('<LOCAL.GUILDABBREV>','<ABBREV>')) 
+		SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, <LOCAL.GUILDABBREV> kısaltmasında bir guild bulunuyor.
+		SRC.DIALOGCLOSE D_GUILD_CREATE
+		SRC.DIALOG D_GUILD_CREATE
+		RETURN 1
+	ENDIF
+	IF (STRMATCH('<LOCAL.GUILDNAME>','<NAME>'))
+		SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, <LOCAL.GUILDNAME> adında bir guild bulunuyor.
+		SRC.DIALOGCLOSE D_GUILD_CREATE
+		SRC.DIALOG D_GUILD_CREATE
+		RETURN 1
+	ENDIF
+ENDFOR
+
+
+IF !(<SRC.TAG0.GUILD_PAY>) 
+	IF (<SRC.GOLD> < <DDEF.GUILDCONFIG_CREATED_GOLD>)
+		SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, <SRC.NoGoldMsg <DDEF.GUILDCONFIG_CREATED_GOLD>>
+		SRC.DIALOGCLOSE D_GUILD_CREATE
+		SRC.DIALOG D_GUILD_CREATE
+		RETURN 1
+	ENDIF
+ELSE
+	IF !(<SRC.RESTEST 1 i_deed_guildstone>)
+		SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Yanınızda Guildstone deed yok.
+		SRC.DIALOGCLOSE D_GUILD_CREATE
+		SRC.DIALOG D_GUILD_CREATE
+		RETURN 1
+	ENDIF
+ENDIF
+
+REF2=<REF1.LINK> // EVİN TABELA
+
+SERV.NEWITEM=I_GUILDSTONE
+NEW.P=<REF2.P>
+
+NEW.TIMER=604800
+NEW.ATTR=ATTR_MOVE_NEVER
+NEW.JOINASMEMBER <SRC>
+NEW.MASTERUID=<SRC>
+NEW.NAME=<LOCAL.GUILDNAME>
+// NEW.WEBPAGE=<SERV.URL>
+NEW.ALIGN=<SRC.CTAG0.GUILD_ALIGN>
+NEW.ABBREV=<LOCAL.GUILDABBREV>
+
+// NEW.FIX
+
+IF !(<SRC.TAG0.GUILD_PAY>) 
+	SRC.GOLD -=<DDEF.GUILDCONFIG_CREATED_GOLD>
+ELSE
+	SRC.CONSUME 1 I_DEED_GUILDSTONE
+ENDIF
+SRC.SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, Guildi başarıyla kurdunuz.
+
+
+
+[eof]

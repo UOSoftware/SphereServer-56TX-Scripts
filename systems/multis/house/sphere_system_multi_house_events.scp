@@ -1,0 +1,89 @@
+
+//////////////////////////////////////////////////////////////////////////////////////events///////////////////////////////////////////////////
+
+
+
+
+// Event applied when you are listed (with any privilege) on one or more houses.
+// Sadece ev sahiplerine verilen event
+[EVENTS e_house_priv]
+
+
+
+
+// Eve giris cikis yapan herkese verilen event.
+[EVENTS e_house_events_player]
+
+ON=@REGIONLEAVE
+SRC.EVENTS -e_house_events_player
+
+On=@EnvironChange
+IF !(<SRC.IsInHouse>)
+	SRC.EVENTS -e_house_events_player
+ENDIF
+
+ON=@SPELLSELECT
+IF (<SERV.SPELL.<ARGN>.FLAGS>&spellflag_field)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Burada bu büyü kullanamazsiniz.
+	RETURN 1
+ENDIF
+
+on=@spellcast
+IF (<SERV.SPELL.<ARGN>.FLAGS>&spellflag_field)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Burada bu büyü kullanamazsiniz.
+	RETURN 1
+ENDIF
+
+// ON=@SKILLSTART
+// IF (<ACTION>==021)
+	// IF (<EVAL <SRC.UID>>==<EVAL <SRC.TARG.REGION.TAG.NAME>>) || (<EVAL <SRC.TARG.REGION.TAG.CO1UID>>==<EVAL <SRC.UID>>) || (<EVAL <SRC.TARG.REGION.TAG.CO2UID>>==<EVAL <SRC.UID>>) || (<EVAL <SRC.TARG.REGION.TAG.CO3UID>>==<EVAL <SRC.UID>>) || (<EVAL <SRC.TARG.REGION.TAG.CO4UID>>==<EVAL <SRC.UID>>) || (<EVAL <SRC.TARG.REGION.TAG.CO5UID>>==<EVAL <SRC.UID>>) || (<EVAL <SRC.TARG.REGION.TAG.CO6UID>>==<EVAL <SRC.UID>>) || (<EVAL <SRC.TARG.REGION.TAG.CO7UID>>==<EVAL <SRC.UID>>) || (<EVAL <SRC.TARG.REGION.TAG.CO8UID>>==<EVAL <SRC.UID>>) || (<EVAL <SRC.TARG.REGION.TAG.F1UID>>==<EVAL <SRC.UID>>) || (<EVAL <SRC.TARG.REGION.TAG.F2UID>>==<EVAL <SRC.UID>>) || (<EVAL <SRC.TARG.REGION.TAG.F3UID>>==<EVAL <SRC.UID>>) || (<EVAL <SRC.TARG.REGION.TAG.F4UID>>==<EVAL <SRC.UID>>) || (<EVAL <SRC.TARG.REGION.TAG.F5UID>>==<EVAL <SRC.UID>>) || (<EVAL <SRC.TARG.REGION.TAG.F6UID>>==<EVAL <SRC.UID>>) || (<EVAL <SRC.TARG.REGION.TAG.F7UID>>==<EVAL <SRC.UID>>) || (<EVAL <SRC.TARG.REGION.TAG.F8UID>>==<EVAL <SRC.UID>>) || (<EVAL <SRC.TARG.REGION.TAG.F9UID>>==<EVAL <SRC.UID>>) || (<EVAL <SRC.TARG.REGION.TAG.F10UID>>==<EVAL <SRC.UID>>) || (<EVAL <SRC.TARG.REGION.TAG.F11UID>>==<EVAL <SRC.UID>>) || (<EVAL <SRC.TARG.REGION.TAG.F12UID>>==<EVAL <SRC.UID>>) || (<EVAL <SRC.TARG.REGION.TAG.F13UID>>==<EVAL <SRC.UID>>) || (<EVAL <SRC.TARG.REGION.TAG.F14UID>>==<EVAL <SRC.UID>>) || (<EVAL <SRC.TARG.REGION.TAG.F15UID>>==<EVAL <SRC.UID>>) || (<EVAL <SRC.TARG.REGION.TAG.F16UID>>==<EVAL <SRC.UID>>) || (<EVAL <SRC.TARG.REGION.TAG.F17UID>>==<EVAL <SRC.UID>>) || (<EVAL <SRC.TARG.REGION.TAG.F18UID>>==<EVAL <SRC.UID>>) || (<EVAL <SRC.TARG.REGION.TAG.F19UID>>==<EVAL <SRC.UID>>) || (<EVAL <SRC.TARG.REGION.TAG.F20UID>>==<EVAL <SRC.UID>>)
+		// RETURN 0
+	// ELSEIF (<ACTION>==021)
+		// src.sysmessage Kendinize ait olmayan bir evde saklanamazsiniz.
+		// SRC.SKILL FAIL
+		// RETURN 1
+	// ENDIF
+// ENDIF
+// if (<action>==015)
+	// if (<eval <src.uid>>==<eval <src.targ.region.tag.name>>) || (<eval <src.targ.region.tag.co1uid>>==<eval <src.uid>>) || (<eval <src.targ.region.tag.co2uid>>==<eval <src.uid>>) || (<eval <src.targ.region.tag.co3uid>>==<eval <src.uid>>) || (<eval <src.targ.region.tag.co4uid>>==<eval <src.uid>>) || (<eval <src.targ.region.tag.co5uid>>==<eval <src.uid>>) || (<eval <src.targ.region.tag.co6uid>>==<eval <src.uid>>) || (<eval <src.targ.region.tag.co7uid>>==<eval <src.uid>>) || (<eval <src.targ.region.tag.co8uid>>==<eval <src.uid>>) || (<eval <src.targ.region.tag.f1uid>>==<eval <src.uid>>) || (<eval <src.targ.region.tag.f2uid>>==<eval <src.uid>>) || (<eval <src.targ.region.tag.f3uid>>==<eval <src.uid>>) || (<eval <src.targ.region.tag.f4uid>>==<eval <src.uid>>) || (<eval <src.targ.region.tag.f5uid>>==<eval <src.uid>>) || (<eval <src.targ.region.tag.f6uid>>==<eval <src.uid>>) || (<eval <src.targ.region.tag.f7uid>>==<eval <src.uid>>) || (<eval <src.targ.region.tag.f8uid>>==<eval <src.uid>>) || (<eval <src.targ.region.tag.f9uid>>==<eval <src.uid>>) || (<eval <src.targ.region.tag.f10uid>>==<eval <src.uid>>) || (<eval <src.targ.region.tag.f11uid>>==<eval <src.uid>>) || (<eval <src.targ.region.tag.f12uid>>==<eval <src.uid>>) || (<eval <src.targ.region.tag.f13uid>>==<eval <src.uid>>) || (<eval <src.targ.region.tag.f14uid>>==<eval <src.uid>>) || (<eval <src.targ.region.tag.f15uid>>==<eval <src.uid>>) || (<eval <src.targ.region.tag.f16uid>>==<eval <src.uid>>) || (<eval <src.targ.region.tag.f17uid>>==<eval <src.uid>>) || (<eval <src.targ.region.tag.f18uid>>==<eval <src.uid>>) || (<eval <src.targ.region.tag.f19uid>>==<eval <src.uid>>) || (<eval <src.targ.region.tag.f20uid>>==<eval <src.uid>>)
+		// return 0
+	// elseif (<action>==015)
+		// src.sysmessage Kendinize ait olmayan bir evde saklanamazsiniz.
+		// src.skill fail
+		// return 1
+	// endif
+// endif
+
+
+on=@Login
+REF1=<SRC.REGION.UID>
+REF2=<REF1.LINK>
+
+IF !((<REF1.ISOWNER <SRC>>) || (<REF1.GETCOOWNERPOS <SRC>> >= 0) || (<REF1.GETFRIENDPOS <SRC>> >= 0) || (<SRC.ISGM>))
+	
+	IF (<REF2.ISVALIDE>)
+		SRC.GO <REF2.P>
+		SRC.MOVE 0 <r1,2>
+		SRC.Func_House_BanishArea_Clear
+		SRC.FIX
+		SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu eve Sahip & ortak veya dost olmadiginiz için evden atildin!
+	ENDIF
+ELSE
+	SRC.SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, Evinizdesiniz!
+ENDIF
+
+
+
+
+
+
+
+[EVENTS e_house_count_block]
+//ON=@AddMulti
+//IF <ARGN2>!=<DEF.HP_OWNER>
+	//RETURN 1 // PREVENTS THIS MULTI FROM BEING ADDED TO SRC'S HOUSE STORAGE
+//ENDIF
+
+
+
+[eof]

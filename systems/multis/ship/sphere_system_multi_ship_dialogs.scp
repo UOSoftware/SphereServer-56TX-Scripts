@@ -1,0 +1,232 @@
+
+
+
+[DIALOG D_SHIP_VISITOR]
+<DEF.DSP>
+RESIZE 0,0,290,150,Ship Visitor (<NAME>)
+
+DORIGIN 20 50
+
+RESIZEPIC +0 +0 2620 80 80
+TILEPICHUE +20 +10 <LINK.DISPIDDEC> <EVAL <COLOR> &~ 08000|04000>
+
+DORIGIN 110 50
+DHTMLGUMP +0 +0 160 25 1 0 Sahibi: <OWNER.NAME>
+DHTMLGUMP +0 +30 160 25 1 0 Gemi: <NAME>
+DHTMLGUMP +0 +60 160 25 1 0 Ziyaretçi: <DTAG0.VISITS>
+
+
+
+[DIALOG D_SHIP_MENU]
+<DEF.DSP>
+RESIZE 0,0,290,300,Ship (<NAME>)
+
+DORIGIN 20 50
+
+RESIZEPIC +0 +0 2620 80 80
+TILEPICHUE +20 +10 <LINK.DISPIDDEC> <EVAL <COLOR> &~ 08000|04000>
+
+DORIGIN 110 50
+DHTMLGUMP +0 +0 160 25 1 0 Sahibi: <OWNER.NAME>
+DHTMLGUMP +0 +30 160 25 1 0 Gemi: <NAME>
+REF1=<HATCH>
+IF (<REF1.ISVALIDE>)
+	DHTMLGUMP +0 +60 160 25 1 0 Hatchet: <REF1.RESCOUNT> items
+ENDIF
+
+DORIGIN 20 50
+DHTMLGUMP +0 +90 250 25 1 0 Çürümesine: <KalanSure <LINK.TIMER>> kaldı.
+DHTMLGUMP +0 +120 250 25 1 0 Kurulum tarihi: <TAG0.CREATED_AT>
+DHTMLGUMP +0 +120 250 25 1 0 Koordinat: <P.x>,<p.y>,<p.z>,<p.m>
+DHTMLGUMP +0 +150 250 25 1 0 Pusula: <SEXTANTP>
+DHTMLGUMP +0 +180 250 25 1 0 Bölge: <REGION.NAME>
+DHTMLGUMP +0 +210 250 25 1 0 Ziyaretçi sayısı: <DTAG0.VISITS>
+
+
+
+
+[DIALOG D_SHIP_DEMOLISH]
+<DEF.DSP>
+RESIZE 0,0,460,290,Ship Demolish
+
+DORIGIN 20 50
+
+DHTMLGUMP +0 +0 420 100 1 1 Geminizi yıkmak üzeresiniz!<DEF.BR>Gemi kontrat haline getirilecektir. Gemi içindeki eşyalar kalacaktır ve çürüyene kadar herhangi biri tarafından alınabilir. Gemi yıkıldıktan sonra herhangi biri oraya gemi kurabilir o alan boş sayılır. Devam etmek istediğinize eminmisiniz ?
+
+DORIGIN 20 170
+REF1=<HATCH>
+IF (<REF1.ISVALIDE>)
+	IF (<REF1.RESCOUNT> > 0 )
+		DHTMLGUMP +0 +0 420 50 0 0 <DEF.CENTER><DEF.BFONT_RED>DİKKAT! Gemi kasasında <REF1.RESCOUNT> adet eşyalar bulunuyor.
+		RADIO +20 +25 0D2 0D3 1 1
+		DTEXT +40 +25 <def.tcolor_green> Gemi kasasındaki eşyaları bankama aktar 
+	ELSE
+		DHTMLGUMP +0 +0 420 50 0 0 <DEF.CENTER><DEF.BFONT_LRED>Gemi kasası boş.
+	ENDIF
+ENDIF
+
+DORIGIN 20 220
+RESIZEPIC +0 +0 9350 420 50 
+DHTMLGUMP +70 +17 180 25 0 0 Gemiyi kontrat haline getir.
+BUTTON +10 +17 0845 0846 1 0 1
+TILEPICHUE +25 +10 <EVAL <SERV.ITEMDEF.i_deed_ship.ID>+1> 0
+
+[DIALOG d_Ship_demolish button]
+ON=0
+SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Gemiyi kaldırmaktan vazgeçtin.
+
+ON=1
+REF1=<MORE1>
+REF2=<HATCH>
+REF3=<UID>
+
+// CALL GemiIciniKontrolEt
+
+IF (<SRC.DISTANCE <UID>> > 18)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,600018,<NAME>
+	RETURN 1
+	
+ELSEIF (<SRC.REGION.UID> == <REF3>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Şu an içinde olduğunuz gemiyi yıkamazsınız.
+	RETURN 1
+	
+ELSEIF (<GemiIciniKontrolEt>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Gemi içinde varlık varken gemiyi kontrat haline getiremezsiniz.
+	RETURN 1
+ENDIF
+
+IF (<REGION.UID> == <UID>)	
+	LOCAL.BASEIDLENGTH = <EVAL STRLEN(<BASEID>)>
+	LOCAL.BASEID <STRSUB 2 <EVAL <DLOCAL.BASEIDLENGTH>-4> <BASEID>>
+	LOCAL.DEEDID = I_DEED_<LOCAL.BASEID>_N
+
+	IF (<RESOURCETYPE <LOCAL.DEEDID>> != RES_ITEMDEF)
+		SRC.SYSMESSAGELOC <def.tcolor_red>,600022 // Bir hata oluştu!
+		SRC.SYSMESSAGELOC <def.tcolor_red>,600050 // Eşya sunucuda kayıtlı değil/bulunamadı!
+		RETURN 1
+	ENDIF
+	
+	// KASA VARSA
+	IF (<REF2.ISITEM>)
+		IF (<ARGCHK[1]>)
+			IF (<REF2.RESCOUNT> > 0)
+				SERV.NEWITEM I_CHEST_METAL,1,<SRC.FINDLAYER.29>,1
+				NEW.NAME <REF3.NAME> Hatch
+				NEW.COLOR=<REF3.COLOR>
+				LOCAL._CONTAINER=<NEW.UID>
+				
+				FOR <EVAL <REF2.RESCOUNT>-1> 0 
+					REF90=<REF2.FINDCONT.<DLOCAL._FOR>>
+					IF (<REF90>)
+						REF90.CONT=<LOCAL._CONTAINER>
+					ENDIF
+				ENDFOR
+				
+				REF1.SYSMESSAGELOC <def.tcolor_green>,<def.empty_cliloc2>,Gemi kasasındaki eşyalar bankanıza <NEW.NAME> içerisinde aktarıldı.
+			ENDIF
+		ELSE
+			SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Gemi kasasındaki eşyaları bankanıza aktarmamayı SEÇMEDİĞİNİZ için gemi kasasındaki eşyalar silindi.
+		ENDIF
+	ENDIF
+
+	SERV.NEWITEM <LOCAL.DEEDID>,1,<SRC.FINDLAYER.21>,1
+	NEW.ATTR=ATTR_NEWBIE
+	NEW.COLOR=<COLOR>
+	SRC.SYSMESSAGELOC <def.tcolor_grey>,<def.empty_cliloc2>, Gemi kontrat haline getirildi.
+
+	// SRC.ShipRemoveKeys
+	
+	REMOVE
+ELSE
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Gemi içinde değilsiniz.
+
+ENDIF
+
+
+
+
+
+[DIALOG D_Ship_Placement]
+<DEF.DSP>
+RESIZE 0,0,190,260,Gemi Kurulum
+
+DORIGIN 20 40
+BUTTON +0 +0 4507 4507 1 0 1 //W
+// DTEXT 65 +0 <def.tcolor_text> W
+
+BUTTON +90 +0 4501 4501 1 0 2 // N
+// DTEXT 155 +0 <def.tcolor_text> N
+
+BUTTON +0 +60 4505 4505 1 0 3 // S
+// DTEXT 70 125 <def.tcolor_text> S
+
+BUTTON +90 +60 4503 4503 1 0 4 // E
+// DTEXT +0 +125 <def.tcolor_text> E
+
+DORIGIN 20 150
+DHTMLGUMP +0 +0 150 60 1 0 <DEF.CENTER><SRC.DHTMLBFONTDEFAULT>Gemiyi hangi yöne doğru kurmak istiyorsunuz?
+
+IF (<SERV.MULTIDEF.<MORE1>>)
+	DTEXT +0 +70 <def.tcolor_text> Gemi: <SERV.MULTIDEF.<MORE1>.NAME>
+	// IF (<ISSHIPGUMP <MORE1>>)
+		// GUMPPIC 40 250 <ISSHIPGUMP <MORE1>>
+	// ENDIF
+ENDIF
+
+[DIALOG D_SHIP_PLACEMENT BUTTON]
+on=1 4
+IF (<ARGN> == 1)
+	LOCAL.DIR W
+ELSEIF (<ARGN> == 2)
+	LOCAL.DIR N
+ELSEIF (<ARGN> == 3)
+	LOCAL.DIR S
+ELSEIF (<ARGN> == 4)
+	LOCAL.DIR E
+ENDIF
+LOCAL.HITS = <EVAL (<def.Ship_Create_Hits_Percent>*<SRC.STR>)/100> 
+
+IF (<SRC.REGION.FLAGS>&REGION_FLAG_SHIP)
+	SRC.FUNC_SYS_ERROR Gemi içerisindeyken gemi kuramazsınız.
+	RETURN 1
+ELSEIF (<SRC.ISINSAFE>) || (<SRC.REGION.FLAGS>&region_flag_underground) || (strmatch('Sosarria Lair','<REGION.NAME>')) || (strmatch('Star','<REGION.NAME>')) || (strmatch(*Green Acres*,'<REGION.NAME>'))
+	SRC.FUNC_SYS_ERROR Bu bölgeye gemi kuramazsınız. Bu bölge korumalı. Dungeon veya yapı kurulmaya kapalı. (<SRC.REGION.NAME>)
+	RETURN 1
+ELSEIF (<SRC.HITS> < <DLOCAL.HITS>)
+	SRC.FUNC_SYS_ERROR Hitsiniz %<def.Ship_Create_Hits_Percent> altinda olduğu için gemi kuramazsınız.
+	RETURN 1
+ELSEIF (<SRC.MyShipCount> >= 2)
+	SRC.FUNC_SYS_ERROR Sizin zaten sahibi olduğunuz geminiz var. (<SRC.MyShipCount>/2)
+	RETURN 1
+ENDIF
+
+FORITEMS 100
+	IF (<BASEID> == I_DEED_UYARI_MULTI) && (<TAG0.KARE>)
+		LOCAL.KARE <DTAG0.KARE>
+	ENDIF
+ENDFOR
+IF (<SRC.ISNEARTYPE T_DEED_UYARI_MULTI <DLOCAL.KARE>>)
+	SRC.FUNC_SYS_ERROR Bu alanda yapı kurulamaz uyarısı mevcut. (<dLOCAL.KARE> mt.)
+	RETURN 1
+ENDIF
+MORE1 = <STRSUB 0 <EVAL STRLEN(<MORE1>) - 1> <MORE1>><LOCAL.DIR>
+MORE2=1
+USE
+
+
+
+
+
+[function GemiIciniKontrolEt]
+REF1=<UID>
+FORCHARS 18
+	IF !(<ISGM>) && (<REGION.UID> == <REF1>) && !(<FLAGS>&STATF_DEAD)
+		LOCAL.OBJECTCOUNT ++
+	ENDIF
+ENDFOR
+RETURN <DLOCAL.OBJECTCOUNT>
+
+
+
+
+[EOF]

@@ -1,0 +1,87 @@
+VERSION=0.56T
+
+
+[TYPEDEF T_STONE_GUILD]
+ON=@CLICK
+SRC.SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, Guildmaster: [<MASTER>]
+MESSAGE @,,1,1 (<MEMBER.COUNT> Üye)
+MESSAGE @<QVAL (<ALIGN>==0)?<def.tcolor_text>:<QVAL (<ALIGN> == 2)?<def.tcolor_orange>:<def.tcolor_blue>>>,,1,1 [<DEF.GUILDCONFIG_ALIGN_<ALIGN>>]
+IF (<ISEMPTY <ABBREV>>)
+	MESSAGE @035 <NAME>
+ELSE
+	MESSAGE @035 <NAME>, <ABBREV>
+ENDIF
+MESSAGE Guildstone
+RETURN 1
+
+
+
+On=@PickUp_Ground
+IF (<SRC.ACCOUNT.PLEVEL> < 5)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Sistem tarafından sabitlenmiştir.
+	RETURN 1
+ENDIF
+
+
+
+ON=@Dclick
+REF1=<UID>
+IF (<MEMBER.COUNT>==0) && (!<MASTERUID>)
+	F_GUILDSYS_ADDCHARTOGUILD <UID>,<SRC.UID>,1
+	
+ELIF (!<MASTERUID>)
+	F_GUILDSYS_ADDCHARTOGUILD <UID>,<MEMBER.0.UID>,1
+  
+ELIF (<MEMBERFROMUID.<SRC.UID>.UID>!=<SRC.UID>)&&(!<SRC.ISGM>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Guild ile bir ilişkiniz bulunmuyor.
+	f_guildsys_info
+	
+ELIF (<MEMBERFROMUID.<SRC.UID>.PRIV> == <DEF0.STONEPRIV_ACCEPTED>)
+	F_GUILDSYS_ADDCHARTOGUILD <UID>,<SRC.UID>,1
+  
+ELIF (<MEMBERFROMUID.<SRC.UID>.PRIV>==<DEF0.STONEPRIV_CANDIDATE>)&&(!<SRC.ISGM>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Guildmaster tarafından kabul edilmeyi bekliyorsunuz.
+	
+ELIF (<MEMBERFROMUID.<SRC.UID>.PRIV>==<DEF0.STONEPRIV_MEMBER>)||(<MASTERUID>==<SRC.UID>)||(<SRC.ISGM>)
+	DIALOGCLOSE D_GUILD_MAIN
+	DIALOG D_GUILD_MAIN,0
+ENDIF
+RETURN 1
+
+
+ON=@TIMER
+// IF (<MEMBER.COUNT> < <DDEF.GUILDCONFIG_MIN_MEMBERCOUNT>)
+	// REF1=<MASTERUID>
+	// IF (<REF1>)
+		// REF1.NOTICE Guildinizin toplam üye sayısı yetersiz. (Minimum: <DDEF.GUILDCONFIG_MIN_MEMBERCOUNT> üye) olduğu için guildiniz otomatik olarak silinmiştir.
+	// ENDIF
+	// REMOVE
+// ELSE
+	// TIMER -1
+// ENDIF
+RETURN 1
+
+
+ON=@DESTROY
+REF1=<UID>
+FOR 0 <EVAL <REF1.MEMBER.COUNT>-1>
+	REF100=<REF1.MEMBER.<Dlocal._FOR>.UID>
+	IF (<REF100>)
+		IF (<REF100.ISEVENT.<DEF.GUILDCONFIG_CHAREVENT_NAME>>)
+		  REF100.EVENTS -<DEF.GUILDCONFIG_CHAREVENT_NAME>
+		ENDIF
+		IF (<REF100.ISDSPEECH.<DEF.GUILDCFGSPEECH_NAME>>)
+		  REF100.DSPEECH -<DEF.GUILDCFGSPEECH_NAME>
+		ENDIF
+	ENDIF
+ENDFOR
+
+
+// Guild cloaklari sil
+FORINSTANCES I_CLOAK_GUILD
+	IF (<REF1> == <ownedby>)
+		REMOVE
+	ENDIF
+ENDFOR
+
+[EOF]

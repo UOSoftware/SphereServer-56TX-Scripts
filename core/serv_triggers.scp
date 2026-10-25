@@ -1,0 +1,519 @@
+
+[COMMENT]
+
+[PLEVEL 7]
+f_axis_preload
+
+// OnAccount
+f_onaccount_connect
+f_onaccount_login
+f_onaccount_create
+f_onaccount_delete
+f_onaccount_pwchange
+f_onaccount_block
+f_onaccount_unblock
+
+// OnChar
+f_onchar_create_init
+f_onchar_create
+f_onchar_delete
+
+// OnServer
+f_onserver_start
+f_onserver_exit
+f_onserver_save
+f_onserver_save_ok
+f_onserver_save_fail
+f_onserver_save_finished
+f_onserver_blockip
+f_onserver_timer
+f_onserver_connectreq_ex
+f_onserver_connection_acquired
+f_onserver_broadcast
+
+// OnClient
+f_onclient_exceed_network_quota
+
+
+
+[FUNCTION f_axis_preload]
+// This function is called every time someone connects from Axis to retrieve information.
+// Variables:
+//	LOCAL.Account --> Account name connecting
+//	LOCAL.IP      --> IP address connecting
+// Return:
+//	0 --> Deny access without send deny message
+//	1 --> Deny access and send deny message
+//	2 --> Allow access (default action)
+SERV.LOGGER f_axis_preload: Giris reddedildi. Account=<LOCAL.Account>, IP=<LOCAL.IP>
+RETURN 1
+
+
+
+[FUNCTION f_onclient_exceed_network_quota]
+// This function is called after a client exceeded its in/out network traffic quota.
+// Variables:
+//	LOCAL.Account --> Account name connecting ("NA" if no account attached)
+//	LOCAL.IP      --> IP address connecting
+//      SRC --> Client Object
+//      ARGN1 --> (1: output quota; 2: input quota)
+//      ARGN2 --> bytes sent/received
+//      ARGN3 --> maximum bytes allowed to be sent/received (quota)
+// Return:
+//    0 --> Ignore this, stop hardcoded behavior but generate a log message
+//    1 --> Ignore this, stop hardcoded behavior and do not generate a log message
+//    2 --> Disconnect client and generate log message (default behavior)
+SERV.LOGGER Exceed Network Quota : Char:<SRC.NAME>[<SRC>] Account:<local.account> IP:<local.ip> Info: (<ARGN1>)<ARGN2> [<ARGN3>]
+// RETURN 2
+
+
+
+
+
+[FUNCTION f_onaccount_connect]
+// This function is called when an client connect on server, before password checks.
+// Variables:
+//	LOCAL.Account  --> Account name given
+//	LOCAL.Password --> Password given
+// Return:
+//	0 --> Use internal password checks (default action)
+//	1 --> Disconnect client assuming the given password is wrong
+//	6 --> Skip internal password checks (password checks must be done manually on scripts)
+// SERV.LOG f_onaccount_connect: <LOCAL.ACCOUNT>
+
+
+[FUNCTION f_onaccount_login]
+// This function is called after client entered correct password.
+// Variables:
+//	ARGS  --> Account name connecting
+//	ARGO  --> Client connecting
+//  ARGN1 --> Login type (3: UO client connected to login server, 4: client connected to game server,
+//				5: HTTP, 6: telnet, 7: UOG, 8: Axis)
+// ARGN2 = denied packet number
+// Return:
+//	0 --> Allow connection (default action)
+//	1 --> Deny connection
+// LOCAL.ACCOUNT=<ARGS>
+// SERV.LOG f_onaccount_login: <LOCAL.ACCOUNT> (<ARGN1>)
+
+// Hesaptaki karakterlerin paperdoll bilgilerini cliente gonderir. (Deneysel)
+IF (<dARGN1> == 3)
+	FOR c 0 <eval <serv.account.<args>.chars>-1>
+		ref99=<serv.account.<args>.char.<dlocal.c>>
+		IF (<ref99>)
+			LOCAL.ITEMDATA =
+			LOCAL.LAYERS = 0
+			FOR l 0 24
+				REF1=<ref99.FINDLAYER.<DLOCAL.l>>
+				IF (<REF1.ISVALID>)
+					LOCAL.ITEMDATA .= " W<REF1.ID>"
+					LOCAL.ITEMDATA .= " W<REF1.COLOR>"
+					LOCAL.ITEMDATA .= " B<DLOCAL.l>"
+					LOCAL.LAYERS += 1
+				ENDIF
+			ENDFOR
+			// chra bilgilerini hazırla
+			LOCAL.BODYHUE = <REF99.COLOR>
+			LOCAL.ISFEMALE = <QVAL (<REF99.ID> == C_MAN)?0:1>
+			LOCAL.BODYGRAPHIC = <REF99.BODY>
+			LOCAL.NAMECOLOR = 044
+			// Paket uzunluğu:
+			// 1 (layers) + 2 (body graphic) + 2 (body hue) + 1 (isfemale) + 30 (name) + (5 * N items)
+			LOCAL.LEN = 13 + 30 + (<dLOCAL.LAYERS> * 5)
+			LOCAL.PACKET = 0BF
+			LOCAL.PACKET .= " W<dLOCAL.LEN>"
+			LOCAL.PACKET .= " W02725"
+			// Header BODYPACKET
+			LOCAL.PACKET .= " B<dLOCAL.LAYERS>"           // byte: kaç item
+			LOCAL.PACKET .= " W<dLOCAL.BODYGRAPHIC>"      // ushort: body graphic (0x0190 = male)
+			LOCAL.PACKET .= " W<dLOCAL.BODYHUE>"          // ushort: hue
+			LOCAL.PACKET .= " B<dLOCAL.ISFEMALE>"         // byte: 0 = male, 1 = female
+			LOCAL.PACKET .= " W<dLOCAL.NAMECOLOR>"          // ushort: NAMECOLOR
+			LOCAL.PACKET .= " <ASCPAD 30,<REF99.NAME>>"   // 30 byte: name padded
+			LOCAL.PACKET .= <LOCAL.ITEMDATA>
+			ARGO.SENDPACKET <LOCAL.PACKET>
+		ENDIF
+	ENDFOR
+ENDIF
+
+
+IF (<dARGN1> == 4)
+    LOCAL.TIME = <SERV.TIME>
+    LOCAL.HASH = "<VAR0.uosoft_client.security_verifykey1_onaccount_login_prefix><STRTOUPPER <MD5HASH <DLOCAL.TIME>>>"
+    LOCAL.HASH = Z<STRTOUPPER <MD5HASH <LOCAL.HASH>>>
+    SERV.ACCOUNT.<ARGS>.TAG0.UOSOFT_CLIENT_VERIFY_0x12.Hash <LOCAL.HASH>
+    SERV.ACCOUNT.<ARGS>.TAG0.UOSOFT_CLIENT_VERIFY_0x12.Time <LOCAL.TIME>
+    ARGO.SENDPACKET 012 000 00D 0FF 000 000 000 007 D<LOCAL.TIME> 000
+ENDIF
+
+
+
+// 1. Dogrulama
+// 0xA4 paketinden gelen dogrulama
+IF (<SERV.ACCOUNT.<args>>)
+	LOCAL.MsgDetail (0xA4) [Account=<ARGS>]
+	
+	IF !(<SERV.ACCOUNT.<ARGS>.dTAG0.UOSOFT_CLIENT_VERIFY_MUAF>)
+	
+		IF (<ARGN1> == 3)
+			SERV.ACCOUNT <ARGS> TAG0.UOSOFT_CLIENT_VERIFY_0xA4.Hash=
+		ENDIF
+		
+		IF (<ARGN1> == 4)
+			LOCAL.Plain = MD5_<STRTOUPPER <ARGS>>_<STRTOUPPER <SERV.NAME>>
+			Local.GirisKodu = <STRTOUPPER <SERV.ACCOUNT.<ARGS>.TAG0.UOSOFT_CLIENT_VERIFY_0xA4.Hash>>
+			IF (<ISBLANK <LOCAL.GirisKodu>>)
+				LOCAL.MsgContent (Client Onay) Tanimsiz istemci ile giris denemesi. Kod yok.
+				FUNC_UOSOFT_LOGGER <LOCAL.MsgContent> <LOCAL.MsgDetail>
+				FUNC_UOSOFT_STAFF_CHAT <LOCAL.MsgContent> <LOCAL.MsgDetail>
+				//RETURN 1 // Girise izin verme
+				RETURN 0 // Girise izin ver
+			ELSEIF !(STRMATCH('HASH_<STRTOUPPER <MD5HASH <Local.Plain>>>','<Local.GirisKodu>'))
+				LOCAL.MsgContent (Client Onay) Tanimsiz istemci ile giris denemesi. Kod uyusmuyor.
+				FUNC_UOSOFT_LOGGER <LOCAL.MsgContent> <LOCAL.MsgDetail>
+				FUNC_UOSOFT_STAFF_CHAT <LOCAL.MsgContent> <LOCAL.MsgDetail>
+				//RETURN 1 // Girise izin verme
+				RETURN 0 // Girise izin ver
+			ENDIF
+			//LOCAL.MsgContent (Client Onay) Giris onaylandi. (Giris Kodu=<Local.GirisKodu>)
+			//FUNC_UOSOFT_LOGGER <LOCAL.MsgContent> <LOCAL.MsgDetail>
+		ENDIF
+	ELSE
+		LOCAL.MsgContent (Client Onay) Giris onaylandi. (Muaf)
+		FUNC_UOSOFT_LOGGER <LOCAL.MsgContent> <LOCAL.MsgDetail>
+    ENDIF
+	
+ENDIF
+
+
+
+
+
+[FUNCTION f_onaccount_create]
+// This function is called before an account get created.
+// Variables:
+//	ARGS --> Account name being created
+// Return:
+//	0 --> Allow account creation (default action)
+//	1 --> Deny account creation
+
+
+
+
+[FUNCTION f_onaccount_delete]
+// This function is called before an account get deleted.
+// Variables:
+//	ARGS --> Account name being deleted
+// RETURN
+//	0 --> Allow account deletion (default action)
+//	1 --> Deny account deletion
+IF ((<SERV.MYSQL>) && (<DB.CONNECTED>))
+	LOCAL.SQLTIMEFORMAT = <SERV.RTIME.FORMAT %Y-%m-%d> <SERV.RTIME.FORMAT %H:%M:%S>
+	 DB.EXECUTE UPDATE sphere_accounts SET deleted_at='<LOCAL.SQLTIMEFORMAT>' WHERE username='<ARGS>'
+ENDIF
+
+
+
+[FUNCTION f_onaccount_block]
+// Variables:
+// ARGS = Account name.
+// Spheredeki bloklanan hesabi siteden de blokla
+IF ((<SERV.MYSQL>) && (<DB.CONNECTED>))
+  LOCAL.SQLTIMEFORMAT = <SERV.RTIME.FORMAT %Y-%m-%d> <SERV.RTIME.FORMAT %H:%M:%S>
+	 DB.EXECUTE UPDATE sphere_accounts SET blocked_at='<LOCAL.SQLTIMEFORMAT>' WHERE username='<ARGS>'
+ENDIF
+
+
+[FUNCTION f_onaccount_unblock]
+// Variables:
+// ARGS = Account name.
+
+IF ((<SERV.MYSQL>) && (<DB.CONNECTED>))
+	 DB.EXECUTE UPDATE sphere_accounts SET blocked_at=NULL WHERE username='<ARGS>'
+ENDIF
+
+
+
+[FUNCTION f_onaccount_pwchange]
+// This function is called when an account password is being changed.
+// Variables:
+//	ARGS 				--> Account name
+//	LOCAL.PASSWORD  	--> New password
+//	LOCAL.OLDPASSWORD	--> Old password (empty if creating a new account, or, you know, no previous password)
+// Return:
+//	0 --> Allow password change (default action)
+//	1 --> Deny password change
+// SERV.LOG <args> isimli hesabin sifresi degisti. (Eski=<local.oldpassword>, Yeni=<LOCAL.PASSWORD>)
+
+
+
+// Karakter olusturulurken once burasi cagrilir.
+[FUNCTION f_onchar_create_init]
+// This function is called before an account character is created.
+// Variables:
+//  Read-Write:
+//	 ARGN1 --> Feature flags sent by client
+//	 ARGN2 --> Character profession (0=Advanced, 1=Warrior, 2=Mage, 3=Blacksmith, 4=Necromancer, 5=Paladin, 6=Samurai, 7=Ninja)
+//	 ARGN3 --> Character race (1=Human, 2=Elf, 3=Gargoyle)
+//  Read-Only:
+//	 ARGS  --> Account name
+//	 ARGO  --> Client creating the character
+// Return:
+//	0 --> Allow character creation (default action)
+//	1 --> Deny character creation
+// serv.log f_onchar_create_init
+
+ARGO.TAG0.CharCreateInitRace=<dargn1>
+ARGO.TAG0.CharCreateInitProf=<dargn2>
+ARGN3=1 // her zaman human
+
+
+
+// Karakter olusturulurken sonra burasi cagrilir.
+
+[FUNCTION f_onchar_create]
+// This function is called after an account character got created.
+// Variables (Read-Only):
+//	SRC   --> Character being created
+//	ARGN1 --> Feature flags sent by client
+//	ARGN2 --> Character profession (0=Advanced, 1=Warrior, 2=Mage, 3=Blacksmith, 4=Necromancer, 5=Paladin, 6=Samurai, 7=Ninja)
+//	ARGN3 --> Character race (1=Human, 2=Elf, 3=Gargoyle)
+//	ARGS  --> Account name
+//	ARGO  --> Client creating the character
+// Return:
+//	0 --> Allow character creation (default action)
+//	1 --> Deny character creation
+// serv.log f_onchar_create
+ARGN3=1  // her zamam human
+
+SRC.TAG0.CharCreateFeature=<ARGN1>
+SRC.TAG0.CharCreateProf=<DARGN2>
+SRC.TAG0.CharCreateRace=<DARGN3>
+
+SRC.TAG.BODY_DEFAULT_COLOR=<SRC.COLOR>
+SRC.TAG.BODY_DEFAULT_OSKIN=<SRC.OSKIN>
+
+IF (<SRC.FINDLAYER(LAYER_HAIR)>)
+	SRC.TAG.HAIR_DEFAULT_COLOR=<SRC.FINDLAYER(LAYER_HAIR).COLOR>
+	SRC.TAG.HAIR_DEFAULT_BASEID=<SRC.FINDLAYER(LAYER_HAIR).BASEID>
+ENDIF
+IF (<SRC.FINDLAYER(LAYER_BEARD)>)
+	SRC.TAG.BEARD_DEFAULT_COLOR=<SRC.FINDLAYER(LAYER_BEARD).COLOR>
+	SRC.TAG.BEARD_DEFAULT_BASEID=<SRC.FINDLAYER(LAYER_BEARD).BASEID>
+ENDIF
+
+IF (<SRC.ACCOUNT.PLEVEL> > 1)
+	SRC.Func_Char_Start_Staff
+ELSEIF (<SRC.ACCOUNT.PLEVEL> <= 1)
+	SRC.Func_Char_Start_Player
+ENDIF
+
+
+
+[FUNCTION Func_Char_Start_Player]
+Func_Char_Default_Set
+
+// bunu yapma herkes istedigi gibi isim koysun.
+// NAME <STRARG <STRTOUPPER(<STRSUB 0 1 <NAME>>)><STRTOLOWER(<STRSUB 1 16 <NAME>>)>>
+// ONAME = <NAME>
+
+FUNC_ISIM_KONTROL <NAME>
+
+
+
+
+
+[FUNCTION f_onchar_delete]
+// This function is called before an account character got deleted.
+// Variables:
+//	SRC  --> Char being deleted
+//	ARGO --> Client deleting the character (only available if the char is being deleted from client Character Selection menu)
+// Return:
+//	0 --> Allow character deletion (default action)
+//	1 --> Deny character deletion
+
+
+
+
+[FUNCTION f_onserver_start]
+// This function is called on server startup.
+//SERV.ServIP=xxx.xxx.xxx.xxx	//Add your public IP here (not domain) if you are behind a router
+
+// SQLITE BAGLI DEGILSE BAGLA VE BAGLANTIYI HEP ACIK TUT, HIC BIR YERDE LDB.CLOSE YAPMA
+// IF !(<LDB.CONNECTED>)
+	LDB.CONNECT "db/master.db"
+// ENDIF
+// Ilk acilista MySQL Bagla, bir daha db.connect veya db.close yapma, Sphere surekli bagli kalsin.
+IF !(<DB.CONNECTED>)
+    DB.CONNECT
+ENDIF
+
+
+[FUNCTION f_onserver_exit]
+// This function is called on server shutdown.
+
+
+
+[FUNCTION f_onserver_save]
+// This function is called before server worldsave start.
+// Variables:
+//	ARGN1 --> Save is forced (writable)
+//	ARGN2 --> Save stage (for backgroud save goes 1 to 6146 [sector count + 2])
+// Return:
+//	0 --> Allow save (default action)
+//	1 --> Deny save
+
+// Savede SQLite Bagla, bir daha ldb.connect veya ldb.close yapma, Sphere surekli bagli kalsin.
+// IF !(<LDB.CONNECTED>)
+	LDB.CONNECT "db/master.db"
+// ENDIF
+
+// Savede MySQL Bagla, bir daha db.connect veya db.close yapma, Sphere surekli bagli kalsin.
+IF !(<DB.CONNECTED>)
+    DB.CONNECT
+ENDIF
+
+
+IF (RAND(5) == 1)
+	Serv.ForceGarbageCollect=1
+ELSE
+	Serv.ForceGarbageCollect=0
+ENDIF
+SERV.LOG GC = <serv.ForceGarbageCollect>
+
+
+SERV.SaveStatics // Uncomment this line if you are building your server, so static items are saved also with normal saves, or comment it again in live servers to speed up the save proccess (if commented, you MUST type manually .serv.savestatics to save static items)
+
+
+// Linksiz anahtarları sil, savede badlink uyarısı veriyor, vermesin.
+FORINSTANCES I_KEY_COPPER
+REF1=<LINK>
+	IF !(<REF1.ISVALID>)
+		REMOVE
+	ENDIF
+ENDFOR
+
+// Alan kontrolcu adamlarini sil
+FORINSTANCES c_man_invisible
+	REMOVE
+ENDFOR
+
+
+
+
+[FUNCTION f_onserver_save_ok]
+// This function is called after server has saved correctly (once per stage with background save).
+
+// UOSoft Mysql Islemleri
+Func_UOSoft_Mysql_Process
+
+serv.allclients F_STAFFPANEL_REFRESH
+
+
+
+[FUNCTION f_onserver_save_fail]
+// This function is called after server has failed to correctly save (once per stage with background save).
+
+
+
+
+[FUNCTION f_onserver_save_finished]
+// This function is called after server completely finished saving (also at end of background save).
+// Variables:
+//	ARGS --> Time it took to save (in seconds, 4 digit precision)
+VAR0.SAVE_LAST_TIME <SERV.RTIME.FORMAT %H:%S>
+// VAR0.SAVE_LAST_DATE <SERV.RTIME.FORMAT %y.%m.%d>
+// VAR0.SAVE_LAST_DATETIME <SERV.RTIME>
+// VAR0.SAVE_PERIOD <SERV.SAVEPERIOD>
+VAR0.SAVE_TIME_TOOK <STRSUB 0 3 <ARGS>>
+// SERV.B @0,3 Kayit islemi <STRSUB 0 3 <args>> saniyede tamamlandi.
+
+// SQLITE BAGLI DEGILSE BAGLA VE BAGLANTIYI HEP ACIK TUT, HIC BIR YERDE LDB.CLOSE YAPMA
+// IF !(<LDB.CONNECTED>)
+	LDB.CONNECT "db/master.db"
+// ENDIF
+
+
+
+[FUNCTION f_onserver_blockip]
+// This function is called when an IP get blocked from the server.
+// Variables:
+//	ARGS  --> IP being blocked
+//	ARGN1 --> Time to block the IP, in tenths of second (writable)
+
+IF ((<SERV.MYSQL>) && (<DB.CONNECTED>))
+    DB.QUERY "SELECT id FROM blacklists WHERE ip='<ARGS>'"
+    IF !(<dDB.ROW.NUMROWS>)
+        DB.EXECUTE "INSERT INTO blacklists (`ip`,`reason`) VALUES ('<ARGS>','Sphereden IP Bloke.')"
+    ENDIF
+ENDIF
+
+
+
+[FUNCTION f_onserver_timer]
+// This function is called periodically at every X minutes (value is defined on TimerCall setting of sphere.ini).
+// SERV.LOG <serv.rtime>
+local.rtime = <serv.rtime.format %H%M>
+//serv.b <local.rtime>
+
+// Ph time on
+IF (<local.rtime> == 2000)
+    PowerHourTime 1,22:00
+ENDIF
+// Ph time off
+IF (<local.rtime> == 2200)
+    PowerHourTime 0,23:00
+ENDIF
+
+// Ph time on
+IF (<local.rtime> == 2300)
+    PowerHourTime 1,01:00
+ENDIF
+// Ph time off
+IF (<local.rtime> == 0100)
+    PowerHourTime 0, 20:00
+ENDIF
+
+// General Server Timeload 00:00
+IF (<local.rtime> == 0000)
+	SERV.LOG Server time loaded
+	TestEntityRemove
+ENDIF
+
+
+
+[FUNCTION f_onserver_connectreq_ex]
+//called after an IP exceeds MaxConnectRequestsPerIP
+// Variables:
+//	ARGS --> IP address.
+//	ARGN1 --> System time in milliseconds since the last connection.
+//	ARGN2 --> System time in milliseconds of this connection attempt.
+//	ARGN3 --> Number of connection attempts since the IP History entry for this IP was (re)created.
+//	LOCAL.BAN_TIMEOUT --> 5 * 60 (default), seconds to keep banned the ip from new connections to the server (permanent if negative).
+// RETURN
+//	1 --> Only reject the connection.
+//	2 --> Reject and ban the IP for <LOCAL.BAN_TIMEOUT> seconds.
+
+
+
+
+[FUNCTION f_onserver_connection_acquired]
+//called after an IP successifully establishes a connection with the server and passess the security checks
+// Variables:
+//	ARGS --> IP address.
+//	ARGN1 --> System time in milliseconds since the last connection.
+//	ARGN2 --> System time in milliseconds of this connection attempt.
+
+
+
+[FUNCTION f_onserver_broadcast]
+// Variables:
+// ARGS = message
+// - Returns:
+// 1: Prevents server to send broadcast message.
+	
+	
+	
+	
+	
+[EOF]
