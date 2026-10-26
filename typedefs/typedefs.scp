@@ -1399,25 +1399,7 @@ FORITEMS <EVAL <MAXDIST>+5>
 	ENDIF
 ENDFOR
 
-ON=@CLICK
-IF (<SRC.ACCOUNT.PLEVEL> >= 7)
-	IF (<TIMER> > 0)
-		MESSAGE @946,,1,1 (<DURATIONFORHUMANS <TIMER>,,short>)
-	ELSE
-		MESSAGE @946,,1,1 (Spawned)
-	ENDIF
-ENDIF
-IF (<SRC.ACCOUNT.PLEVEL> > 1)
-MESSAGE <NAME> <QVAL (<ATTR>&ATTR_INVIS)?(Invis):>
-	IF (STRMATCH('i_','<STRSUB 0 2 <MORE1>>')) && (<SERV.ITEMDEF.<MORE1>>)
-		SRC.SYSMESSAGELOC <def.tcolor_grey>,<def.empty_cliloc2>, Item: <MORE1> (<SERV.ITEMDEF.<MORE1>.NAME>)
-	ELSEIF (STRMATCH('spawn_','<STRSUB 0 6 <MORE1>>'))
-		SRC.SYSMESSAGELOC <def.tcolor_grey>,<def.empty_cliloc2>,Spawns: <MORE1>
-	ELSE
-		SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Invalid Spawn ID.
-	ENDIF
-RETURN 1
-ENDIF
+// GM'in tek tıklamasındaki ayrıntıyı (tür, ad, DEFNAME, sayı, süre aralığı, kalan süre) emulatör yazar.
 
 ON=@DCLICK
 IF (<SRC.ACCOUNT.PLEVEL> < 5)
@@ -1439,26 +1421,7 @@ RETURN 1
 
 
 [TYPEDEF t_spawn_char]
-
-ON=@CLICK
-IF (<SRC.ACCOUNT.PLEVEL> >= 7)
-	IF (<TIMER> > 0)
-		MESSAGE @946,,1,1 (<DURATIONFORHUMANS <TIMER>,,short>)
-	ELSE
-		MESSAGE @946,,1,1 (Spawned)
-	ENDIF
-ENDIF
-IF (<SRC.ACCOUNT.PLEVEL> > 1)
-MESSAGE <NAME> <QVAL (<ATTR>&ATTR_INVIS)?(Invis):>
-	IF (STRMATCH('c_','<STRSUB 0 2 <MORE1>>')) && (<SERV.CHARDEF.<MORE1>>)
-		SRC.SYSMESSAGELOC <def.tcolor_grey>,<def.empty_cliloc2>, Char: <MORE1> (<SERV.CHARDEF.<MORE1>.NAME>)
-	ELSEIF (STRMATCH('spawn_','<STRSUB 0 6 <MORE1>>'))
-		SRC.SYSMESSAGELOC <def.tcolor_grey>,<def.empty_cliloc2>,Spawns: <MORE1>
-	ELSE
-		SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Invalid Spawn ID.
-	ENDIF
-RETURN 1
-ENDIF
+// GM'in tek tıklamasındaki ayrıntıyı (tür, ad, DEFNAME, sayı, süre aralığı, kalan süre) emulatör yazar.
 
 // ON=@DelObj
 // SERV.B DelObj
