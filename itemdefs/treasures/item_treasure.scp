@@ -126,7 +126,7 @@ IF (<SRC.ISGM>)
 ENDIF
 IF !(<TYPE> == T_CONTAINER_LOCKED)
 	IF (<TIMER> > 0)
-		SRC.SYSMESSAGELOC <def.tcolor_yellow>,<def.empty_cliloc2>, <NAME> <KalanSure <TIMER>> sonra silinecektir.
+		SRC.SYSMESSAGELOC <def.tcolor_yellow>,<def.empty_cliloc2>, <NAME> <DURATIONFORHUMANS <TIMER>,,short> sonra silinecektir.
 	ENDIF
 ENDIF
 

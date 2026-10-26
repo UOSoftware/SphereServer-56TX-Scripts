@@ -35,7 +35,7 @@ IF (<REF1.ISVALIDE>)
 ENDIF
 
 DORIGIN 20 50
-DHTMLGUMP +0 +90 250 25 1 0 Çürümesine: <KalanSure <LINK.TIMER>> kaldı.
+DHTMLGUMP +0 +90 250 25 1 0 Çürümesine: <DURATIONFORHUMANS <LINK.TIMER>,,short> kaldı.
 DHTMLGUMP +0 +120 250 25 1 0 Kurulum tarihi: <TAG0.CREATED_AT>
 DHTMLGUMP +0 +120 250 25 1 0 Koordinat: <P.x>,<p.y>,<p.z>,<p.m>
 DHTMLGUMP +0 +150 250 25 1 0 Pusula: <SEXTANTP>

@@ -22,7 +22,7 @@ IF (<LINK.ISITEM>)
 		MESSAGE @,,1,1 [Sahibi: <UID.<LINK.MORE1>.NAME>]
 	ENDIF
 	IF (<TIMER> > 0)
-		SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Geminin çürümesine <KalanSure <TIMER>> kaldı.
+		SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Geminin çürümesine <DURATIONFORHUMANS <TIMER>,,short> kaldı.
 	ENDIF
 ENDIF
 RETURN 1

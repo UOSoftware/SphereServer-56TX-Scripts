@@ -143,7 +143,7 @@ TIMER=1
 ON=@EQUIP
 TIMER=1
 SRC.EVENTS +e_memory_revealtimer_eq
-SRC.sysmessageloc <def.tcolor_text>, <def.empty_cliloc2>, Gizliliginiz <KalanSure <MORE1>> saniye sonra otomatik olarak bozulacaktir.	
+SRC.sysmessageloc <def.tcolor_text>, <def.empty_cliloc2>, Gizliliginiz <DURATIONFORHUMANS <MORE1>,,short> sonra otomatik olarak bozulacaktir.	
 
 ON=@UNEQUIP
 SRC.EVENTS -e_memory_revealtimer_eq
@@ -200,7 +200,7 @@ TIMER=1
 ON=@EQUIP
 TIMER=1
 SRC.EVENTS +e_memory_disconnecttimer_eq
-SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, <KalanSure <MORE1>> sonra baglantiniz kesilecektir.
+SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, <DURATIONFORHUMANS <MORE1>,,short> sonra baglantiniz kesilecektir.
 
 ON=@UNEQUIP
 SRC.EVENTS -e_memory_disconnecttimer_eq
@@ -313,7 +313,7 @@ ATTR=ATTR_INVIS|ATTR_NEWBIE
 ON=@EQUIP
 SRC.STONE 1
 SRC.EVENTS +e_memory_stonetimer_eq
-SRC.SYSMESSAGELOC <def.tcolor_grey>,<def.empty_cliloc2>, <KalanSure <MORE1>> saniye stone stoneliğiniz kalkacaktır.
+SRC.SYSMESSAGELOC <def.tcolor_grey>,<def.empty_cliloc2>, <DURATIONFORHUMANS <MORE1>,,short> sonra stone stoneliğiniz kalkacaktır.
 
 ON=@UNEQUIP
 SRC.STONE 0

@@ -20,7 +20,7 @@ MESSAGE @<qval (<TYPE> == T_CONTAINER_LOCKED)?38,,1 (Kilitli):044,,1 (Açık)>
 
 IF (<TIMER> > 0)
 	IF (<TYPE> == T_CONTAINER)
-		SRC.SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, <KalanSure <timer>> saniye kilitlenecek.
+		SRC.SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, <DURATIONFORHUMANS <TIMER>,,short> sonra kilitlenecek.
 	ENDIF
 ENDIF
 
@@ -1108,7 +1108,7 @@ ENDIF
 
 ON=@CLICK
 IF (<SRC.ISGM>)
-MESSAGE (<KalanSure <TIMER>>) GM Only
+MESSAGE (<DURATIONFORHUMANS <TIMER>,,short>) GM Only
 ENDIF
 
 IF !(<LINK.ISVALIDE>)
@@ -1251,7 +1251,7 @@ ENDIF
 
 ON=@Click
 IF (<SRC.ISGM>)
-MESSAGE <KalanSure <TIMER>>
+MESSAGE <DURATIONFORHUMANS <TIMER>,,short>
 ENDIF
 
 ON=@DCLICK
@@ -1271,7 +1271,7 @@ ENDIF
 
 ON=@Click
 IF (<SRC.ISGM>)
-	MESSAGE @0 (<KalanSure <TIMER>>)
+	MESSAGE @0 (<DURATIONFORHUMANS <TIMER>,,short>)
 ENDIF
 
 ON=@DCLICK
@@ -1446,7 +1446,7 @@ ENDFOR
 ON=@CLICK
 IF (<SRC.ACCOUNT.PLEVEL> >= 7)
 	IF (<TIMER> > 0)
-		MESSAGE @946,,1,1 (<KalanSure <TIMER>>)
+		MESSAGE @946,,1,1 (<DURATIONFORHUMANS <TIMER>,,short>)
 	ELSE
 		MESSAGE @946,,1,1 (Spawned)
 	ENDIF
@@ -1487,7 +1487,7 @@ RETURN 1
 ON=@CLICK
 IF (<SRC.ACCOUNT.PLEVEL> >= 7)
 	IF (<TIMER> > 0)
-		MESSAGE @946,,1,1 (<KalanSure <TIMER>>)
+		MESSAGE @946,,1,1 (<DURATIONFORHUMANS <TIMER>,,short>)
 	ELSE
 		MESSAGE @946,,1,1 (Spawned)
 	ENDIF
@@ -1593,7 +1593,7 @@ ON=@CLICK
 IF (<LINK.ISVALIDE>)
 	IF (<LINK> == <SRC>)
 		IF !(<TIMER> <= 0)
-			MESSAGE @,,1,1 (<KalanSure <TIMER>> sonra sönecek)
+			MESSAGE @,,1,1 (<DURATIONFORHUMANS <TIMER>,,short> sonra sönecek)
 		ENDIF
 	ENDIF
 	MESSAGE (Camper <LINK.NAME>)

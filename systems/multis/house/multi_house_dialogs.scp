@@ -69,7 +69,7 @@ ENDIF
 
 DHTMLGUMP +0 +40 220 20 0 0 <QVAL (<tag0.demolition>)?<def.bfont_lred>Bu ev düzgün yerleştirilmemiş.:<def.bfont_lgreen>Bu ev düzgün şekilde yerleştirilmiş.>
 
-DHTMLGUMP +0 +60 320 20 0 0 <def.bfont_lred>Evin çürümesine <KalanSure <LINK.TIMER>> kaldı.
+DHTMLGUMP +0 +60 320 20 0 0 <def.bfont_lred>Evin çürümesine <DURATIONFORHUMANS <LINK.TIMER>,,short> kaldı.
 
 IF (<TAG0.PRICE>)
     DHTMLGUMP +0 +80 220 20 0 0 <def.bfont_lgreen>Bu ev satışta: <def.bfont_yellow><def.bfont_hs_text2><NumberFormat <dtag0.price>> gp
@@ -838,7 +838,7 @@ IF (<LINK.ISVALIDE>)
 	ELSE
 		DHTMLGUMP 20 130 145 25 1 0 Ev sahibi : Yok
 	ENDIF
-	DHTMLGUMP 20 160 145 50 1 0 <DEF.CENTER>Çürümesine <KalanSure <TIMER>> kaldı.
+	DHTMLGUMP 20 160 145 50 1 0 <DEF.CENTER>Çürümesine <DURATIONFORHUMANS <TIMER>,,short> kaldı.
 	IF (<TAG0.PRICE>)
 		RESIZE 190,0,230,230,Ev - Satış
 		DORIGIN 210 0

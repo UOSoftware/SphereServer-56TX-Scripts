@@ -81,7 +81,7 @@ IF (<SRC.FINDID.I_DISGUE_MEMORY>)
 	RESIZE 0,0,240,190,Disgue
 	DORIGIN 20 40
 	
-	DHTMLGUMP +0 +0 200 100 1 1 <DEF.CENTER>Gerçek kimliğiniz <KalanSure <SRC.FINDID.I_DISGUE_MEMORY.TIMER>> sonra ortaya çıkacak.
+	DHTMLGUMP +0 +0 200 100 1 1 <DEF.CENTER>Gerçek kimliğiniz <DURATIONFORHUMANS <SRC.FINDID.I_DISGUE_MEMORY.TIMER>,,short> sonra ortaya çıkacak.
 	
 	BUTTON +0 +110 0FB5 0FB6 1 0 996
 	DTEXT +30 +110 38 Kimliğimi göster

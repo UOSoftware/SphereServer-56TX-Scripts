@@ -15,8 +15,8 @@ COLOR=0
 
 // ON=@CLICK
 // IF (<TIMER>)
-	// MESSAGE [<KALANSURE <TIMER>> sonra silinecek]
-	// SRC.SYSMESSAGELOC <def.tcolor_grey>,<def.empty_cliloc2>, <name> <KALANSURE <TIMER>> sonra silinecek
+	// MESSAGE [<DURATIONFORHUMANS <TIMER>,,short> sonra silinecek]
+	// SRC.SYSMESSAGELOC <def.tcolor_grey>,<def.empty_cliloc2>, <name> <DURATIONFORHUMANS <TIMER>,,short> sonra silinecek
 // ENDIF
 
 ON=@PICKUP_PACK
