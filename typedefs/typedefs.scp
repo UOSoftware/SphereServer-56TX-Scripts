@@ -393,79 +393,35 @@ RETURN 1
 
 
 
-[TYPEDEF t_sewing_kit]
-ON=@DCLICK
-src.F_Craftmenu 34 , 0 
-RETURN 1
+// Üretim: dikiş kiti (kumaş ya da deri hedefi), ingot, ok şaftı, havan, boş scroll, tinker aletleri ve testere
+//  motorun yolundan açılır; motor menüyü açmadan önce @SkillMenu'yü çağırır, e_generic_chars üretim dialog'unu
+//  (dialogs_craftmenu.scp) açar. Motorun açmadığı aletler aşağıda.
 
-
-
+// Blacksmithing: motor çekicin elde olmasını ister, çantadaki kuşanılır; menüyü motor açar (forge kontrolüyle).
 [TYPEDEF t_ingot]
 ON=@DCLICK
 IF (<SRC.FINDID.I_HAMMER_SMITH>)
 	SRC.FINDID.I_HAMMER_SMITH.EQUIP
 ENDIF
-F_Craftmenu_Blacksmithing
-RETURN 1
-
-
-
-
-
-
-// Bowcraft
-[TYPEDEF t_shaft]
-ON=@dclick
-src.F_Craftmenu 8 , 0 
-RETURN 1
-
-
-// Alchemy
-[TYPEDEF t_mortar]
-ON=@dclick
-src.F_Craftmenu 0 , 0 
-RETURN 1
-
-
-// Inscription
-[TYPEDEF t_scroll_blank]
-ON=@dclick
-src.F_Craftmenu 23 , 0 
-RETURN 1
 
 
 // Cartography
 [TYPEDEF t_map_blank]
 ON=@dclick
-// src.sysmessage incomplated
-src.F_Craftmenu 12 , 0 
-RETURN 1
-
-
-// Tinkering
-[TYPEDEF t_tinker_tools]
-ON=@dclick
-src.F_Craftmenu 37 , 0 
+SRC.f_craft_open 12,<UID>
 RETURN 1
 
 
 // Alchemy
 [TYPEDEF t_potion_empty]
 ON=@dclick
-src.F_Craftmenu 0 , 0 
-RETURN 1
-
-
-// Carpentry (Saw)
-[TYPEDEF t_carpentry]
-ON=@dclick
-src.F_Craftmenu 11 , 0 
+SRC.f_craft_open 0,<UID>
 RETURN 1
 
 // Alchemy
 [TYPEDEF t_Reagent]
 ON=@dclick
-F_Craftmenu_Alchemy
+SRC.f_craft_open 0,<UID>
 RETURN 1
 
 

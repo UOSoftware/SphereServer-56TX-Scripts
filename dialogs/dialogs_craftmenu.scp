@@ -1,751 +1,413 @@
+VERSION=0.56TX
+
+[COMMENT]
+Üretim dialog'u (d_craft): bütün craft skill'leri için tek dialog, menü (SKILLMENU) yerine.
+ Açılış: motor craft aletlerinde (ingot, havan, testere, tinker aletleri, boş scroll, dikiş kiti + kumaş ya da deri,
+   kalem, ok şaftı...) menüyü açmadan önce @SkillMenu'yü çağırır; e_generic_chars onu f_craft_skillmenu'ye verir.
+   Eşyası olan skill'de d_craft açılır, olmayanda motorun menüsü. ARGO menüyü açan eşya: malzemeli skill'de onun
+   malzemesi seçilir (altın ingot'a çift tıklanınca Golden). Paketin kendi açtığı yerler f_craft_open'ı çağırır.
+ Eşyalar emulatörün tanım veritabanından (sphere.ini DefsDatabase, crafts view'ı): SKILLMAKE'teki skill, RESOURCES'taki
+   ilk eşya (malzeme) ve ID= zincirinin kökü (şekil). Elle sadece kategoriler yazılır; maden başına liste yok.
+ Ayarlar ([DEFNAME craft_settings]); <skill> skill'in KEY'i (Blacksmithing):
+   craft_<skill>_cats       kategori adları, virgülle. Yazılmazsa bütün eşyalar tek listede ("Hepsi").
+   craft_<skill>_cat_<n>    n. kategorinin eşyaları, sırasıyla; tanımların asıl adı (DEFNAME2 değil).
+   craft_<skill>_materials  malzemeler (isteğe bağlı), şeridin sırasıyla, küçük harf. Yazılırsa kategorideki her ad
+                            bir şekildir (i_platemail_chest) ve seçili malzemedeki karşılıkları listelenir
+                            (Golden seçiliyken i_golden_platemail). Malzemesiz skill'de ad eşyanın kendisidir: aynı
+                            şekli paylaşan eşyalar (carpentry'nin deed'leri, bowcraft'ın yayları) ayrı ayrı yazılır.
+   craft_<skill>_repair     1: Tamir butonu.
+ Kategorilerde olmayan eşyalar "Diğer"de: pakete eklenen eşya dialog değişmeden görünür. Malzemeli skill'de Diğer
+   seçili malzemenin, listede olmayan malzemelerin ve malzemesiz eşyaların eşyalarını gösterir.
+ Durum client'ın CTAG'lerinde (Craft.*); seçili malzeme ve son yapılmak istenen eşya (Tekrar yap) karakterin
+   TAG'lerinde (Craft.Mat.<skill>, Craft.Last.<skill>).
+ Bağlantı dialogs_defsdatabase.scp'ninki (LDB.defs, f_defs_connect).
+
+[DEFNAME craft_settings]
+// Alchemy
+craft_alchemy_cats Lesser,Normal,Greater,Misc
+craft_alchemy_cat_1 i_potion_poisonless,i_potion_cureless,i_potion_explosionless,i_potion_healless
+craft_alchemy_cat_2 i_potion_refresh,i_potion_nightsight,i_potion_agility,i_potion_poison,i_potion_cure,i_potion_explosion,i_potion_strength,i_potion_heal
+craft_alchemy_cat_3 i_potion_refreshtotal,i_potion_agilitygreat,i_potion_poisongreat,i_potion_curegreat,i_potion_explosiongreat,i_potion_strengthgreat,i_potion_healgreat
+craft_alchemy_cat_4 i_potion_poisondeadly
+
+// Blacksmithing: malzemeli, kategorilerde şekiller
+craft_blacksmithing_materials i_ingot_iron,i_ingot_dull_copper,i_ingot_shadow,i_ingot_copper,i_ingot_bronze,i_ingot_gold,i_ingot_agapite,i_ingot_verite,i_ingot_valorite,i_ingot_mytheril,i_ingot_bloodrock,i_ingot_blackrock,i_ingot_silver
+craft_blacksmithing_repair 1
+craft_blacksmithing_cats Shields,Platemails,Chainmails,Ringmails,Helmets,Swords,Polearms,Fencing,Maces,Axes
+craft_blacksmithing_cat_1 i_shield_buckler,i_shield_round_bronze,i_shield_round_metal,i_shield_kite_metal,i_shield_heater
+craft_blacksmithing_cat_2 i_platemail_chest,i_armor_female_plate,i_platemail_leggings,i_platemail_arms,i_platemail_gloves,i_platemail_gorget
+craft_blacksmithing_cat_3 i_chainmail_tunic,i_chainmail_leggings,i_chainmail_coif
+craft_blacksmithing_cat_4 i_ringmail_tunic,i_ringmail_leggings,i_ringmail_sleeves,i_ringmail_gloves
+craft_blacksmithing_cat_5 i_platemail_helm,i_helm_closed,i_helm_open,i_bascinet,i_helm_nose
+craft_blacksmithing_cat_6 i_sword_viking,i_sword_long,i_sword_broad,i_katana,i_scimitar,i_cutlass
+craft_blacksmithing_cat_7 i_halberd,i_bardiche
+craft_blacksmithing_cat_8 i_dagger,i_kryss,i_war_fork,i_spear_short,i_spear
+craft_blacksmithing_cat_9 i_mace,i_hammer_war,i_mace_war,i_maul,i_hammer_smith
+craft_blacksmithing_cat_10 i_axe_exec,i_axe_battle,i_axe,i_axe_double,i_axe_battle_large,i_axe_two_hand,i_axe_war
+
+// Bowcraft
+craft_bowcraft_cats Items,Normal,Superior,Exceptional,Misc
+craft_bowcraft_cat_1 i_kindling,i_arrow_shaft,i_arrow,i_xbolt
+craft_bowcraft_cat_2 i_bow,i_crossbow,i_crossbow_heavy
+craft_bowcraft_cat_3 i_bow_sup,i_xbow_sup,i_hxbow_sup
+craft_bowcraft_cat_4 i_bow_excep,i_xbow_excep,i_hxbow_excep
+craft_bowcraft_cat_5 i_bow_elven
+
+// Carpentry
+craft_carpentry_cats Chairs,Containers,Tables,Weapons & Tools,Furniture,AddOns 1,AddOns 2,AddOns 3
+craft_carpentry_cat_1 i_chair_throne,i_chair_wood_rough_dark,i_chair_wood_fancy_cushion,i_chair_wood_cushion,i_chair_wood,i_chair_stool_bamboo,i_chair_stool_bar,i_chair_stool,i_bench_wood_dark
+craft_carpentry_cat_2 i_chest_wooden_brass,i_box_wood,i_crate_small,i_crate_md,i_crate_lg
+craft_carpentry_cat_3 i_table_nightstand,i_table_wood_rough_small,i_table_wood_rough_board,i_bench_woodworker,i_bench_cooper,i_table_writing
+craft_carpentry_cat_4 i_club,i_staff_gnarled,i_staff_quarter,i_shepherds_crook,i_staff_black,i_fishing_pole,i_shield_wood
+craft_carpentry_cat_5 i_bar_door_ne,i_bar_piece,i_bookcase,i_armoir_dk,i_armoir_lt,i_bureau_2,i_music_stand,i_music_stand_tall
+craft_carpentry_cat_6 i_dye_tub,i_dartboard,i_model_ship,i_board,i_barrel_open,i_barrel_staves,i_dress_form,i_easel
+craft_carpentry_cat_7 i_deed_forge,i_deed_anvil,i_saddle,i_deed_dummyw,i_deed_pickpock
+craft_carpentry_cat_8 i_deed_spinwheel,i_deed_bboard,i_deed_archbutte
+
+// Cartography
+craft_cartography_cats Maps
+craft_cartography_cat_1 i_map_local,i_map_city,i_map_sea_chart,i_map_world
+
+// Inscription
+craft_inscription_cats Circle 1,Circle 2,Circle 3,Circle 4,Circle 5,Circle 6,Circle 7,Circle 8,Misc
+craft_inscription_cat_1 i_scroll_clumsy,i_scroll_create_food,i_scroll_feeblemind,i_scroll_heal,i_scroll_magic_arrow,i_scroll_night_sight,i_scroll_reactive_armor,i_scroll_weaken
+craft_inscription_cat_2 i_scroll_agility,i_scroll_cunning,i_scroll_cure,i_scroll_harm,i_scroll_magic_trap,i_scroll_magic_untrap,i_scroll_protection,i_scroll_strength
+craft_inscription_cat_3 i_scroll_bless,i_scroll_fireball,i_scroll_magic_lock,i_scroll_poison,i_scroll_telekinesis,i_scroll_teleport,i_scroll_unlock,i_scroll_wall_of_stone
+craft_inscription_cat_4 i_scroll_archcure,i_scroll_archprotection,i_scroll_curse,i_scroll_fire_field,i_scroll_greater_heal,i_scroll_lightning,i_scroll_mana_drain,i_scroll_recall
+craft_inscription_cat_5 i_scroll_blade_spirits,i_scroll_dispel_field,i_scroll_incognito,i_scroll_magic_reflection,i_scroll_mind_blast,i_scroll_paralyze,i_scroll_poison_field,i_scroll_summon_creature
+craft_inscription_cat_6 i_scroll_dispel,i_scroll_energy_bolt,i_scroll_explosion,i_scroll_invisibility,i_scroll_mark,i_scroll_mass_curse,i_scroll_paralyze_field,i_scroll_reveal
+craft_inscription_cat_7 i_scroll_chain_lightning,i_scroll_energy_field,i_scroll_flamestrike,i_scroll_gate_travel,i_scroll_mana_vampire,i_scroll_mass_dispel,i_scroll_meteor_swarm,i_scroll_polymorph
+craft_inscription_cat_8 i_scroll_earthquake,i_scroll_energy_vortex,i_scroll_resurrection,i_scroll_summon_elem_air,i_scroll_summon_daemon,i_scroll_summon_elem_earth,i_scroll_summon_elem_fire,i_scroll_summon_elem_water
+craft_inscription_cat_9 i_runebook
+
+// Tailoring
+craft_tailoring_cats Hats,Shirts,Pants,Foot,Leather,Studded,Female Armor,Bags,Masks,Misc
+craft_tailoring_cat_1 i_skull_cap,i_bandana,i_hat_floppy,i_hat_wide_brim,i_hat_straw,i_hat_straw_tall,i_bonnet,i_hat_feather,i_hat_tricorne,i_hat_jester,i_cap
+craft_tailoring_cat_2 i_doublet,i_cape,i_dress_full,i_shirt_fancy,i_jester_suit,i_dress_plain,i_robe,i_shirt_plain,i_surcoat,i_tunic
+craft_tailoring_cat_3 i_pants_short,i_pants_long,i_kilt,i_skirt_long
+craft_tailoring_cat_4 i_sandals,i_shoes_plain,i_boots_calf,i_boots_thigh
+craft_tailoring_cat_5 i_leather_gorget,i_leather_cap,i_leather_gloves,i_leather_sleeves,i_leather_leggings,i_leather_tunic
+craft_tailoring_cat_6 i_studded_gorget,i_studded_gloves,i_studded_sleeves,i_studded_leggings,i_studded_tunic
+craft_tailoring_cat_7 i_armor_female_shorts,i_armor_female_skirt,i_armor_female_bustier,i_armor_female_bustier_studded,i_armor_female_leather,i_armor_female_studded
+craft_tailoring_cat_8 i_backpack,i_pouch,i_bag
+craft_tailoring_cat_9 i_mask_bear,i_mask_deer,i_mask_blue,i_mask_tribal_red
+craft_tailoring_cat_10 i_sash,i_apron_half,i_apron_full,i_oil_cloth
+
+// Tinkering
+craft_tinkering_cats Jewelry,Tools,Parts,Utensils,More,Misc
+craft_tinkering_cat_1 i_bracelet_gold,i_earrings_gold,i_necklace_gold_beads,i_necklace_gold,i_necklace_metal_beads,i_ring_gold
+craft_tinkering_cat_2 i_scissors,i_mortar_pestle,i_scorp,i_tinker_tools,i_hatchet,i_knife_draw,i_sewing_kit,i_saw,i_saw_dovetail
+craft_tinkering_cat_3 i_gears,i_clock_parts,i_barrel_tap,i_springs,i_sextant_parts,i_barrel_hoops,i_barrel_lid,i_hinge,i_axle,i_axle_and_gears
+craft_tinkering_cat_4 i_knife_butcher,i_plate,i_spoon,i_spoon_2,i_knife_skinning,i_cleaver_meat,i_knife_3,i_knife,i_goblet,i_mug_pewter,i_fork,i_fork_2
+craft_tinkering_cat_5 i_froe,i_tongs,i_shovel,i_hammer,i_hammer_sledge,i_inshave,i_pickaxe,i_lockpick
+craft_tinkering_cat_6 i_pouch_trapped,i_keg_potion,i_candelabra,i_lantern,i_scales,i_key_iron,i_globe,i_spyglass,i_chest_metal,i_heating_stand,i_key_ring
 
 
-[DEFNAME CRAFT_MENU_Configs]
-////////////////////////////////
-// Alchemy: 0
-// Complated
-////////////////////////////////
-CRAFTMENU_ALCHEMY_CATEGORIES Lesser,Normal,Greater,Misc
-CRAFTMENU_ALCHEMY_CATEGORY_1 I_POTION_POISONLESS,I_POTION_CURELESS,I_POTION_EXPLOSIONLESS,I_POTION_HEALLESS
-CRAFTMENU_ALCHEMY_CATEGORY_2 I_POTION_REFRESH,I_POTION_NIGHTSIGHT,I_POTION_AGILITY,I_POTION_POISON,I_POTION_CURE,I_POTION_EXPLOSION,I_POTION_STRENGTH,I_POTION_HEAL
-CRAFTMENU_ALCHEMY_CATEGORY_3 I_POTION_REFRESHTOTAL,I_POTION_AGILITYGREAT,I_POTION_POISONGREAT,I_POTION_CUREGREAT,I_POTION_EXPLOSIONGREAT,I_POTION_STRENGTHGREAT,I_POTION_HEALGREAT
-CRAFTMENU_ALCHEMY_CATEGORY_4 I_POTION_POISONDEADLY
+// Not: boş olabilecek bir değer LOCAL'e kopyalanmaz (boş metin LOCAL'de 0 olur, ISEMPTY yanlış döner): ISEMPTY
+//  değerin kaynağına bakar, ara değerler CTAG'de.
 
-CRAFTMENU_ALCHEMY_CATEGORY_I_REAG_BLACK_PEARL I_POTION_REFRESH,I_POTION_REFRESHTOTAL
-CRAFTMENU_ALCHEMY_CATEGORY_I_REAG_BLOOD_MOSS I_POTION_AGILITY,I_POTION_AGILITYGREAT
-CRAFTMENU_ALCHEMY_CATEGORY_I_REAG_GARLIC I_POTION_CURELESS,I_POTION_CURE,I_POTION_CUREGREAT
-CRAFTMENU_ALCHEMY_CATEGORY_I_REAG_MANDRAKE_ROOT I_POTION_STRENGTH,I_POTION_STRENGTHGREAT
-CRAFTMENU_ALCHEMY_CATEGORY_I_REAG_NIGHTSHADE I_POTION_POISON,I_POTION_POISONGREAT,I_POTION_POISONDEADLY
-CRAFTMENU_ALCHEMY_CATEGORY_I_REAG_SULFUR_ASH I_POTION_EXPLOSIONLESS,I_POTION_EXPLOSION,I_POTION_EXPLOSIONGREAT
-CRAFTMENU_ALCHEMY_CATEGORY_I_REAG_SPIDER_SILK I_POTION_NIGHTSIGHT
-CRAFTMENU_ALCHEMY_CATEGORY_I_REAG_GINSENG I_POTION_HEALLESS,I_POTION_HEAL,I_POTION_HEALGREAT
-
-
-////////////////////////////////
-// Blacksmithing: 7
-////////////////////////////////
-
-// Iron
-CRAFTMENU_BLACKSMITHING_CATEGORY_I_INGOT_IRON_CATEGORIES Shields, Platemails, Chainmails, Ringmails, Helmets, Weapons(Sword), Weapons(Fenc), Weapons(Mace), Weapons(Axe)
-CRAFTMENU_BLACKSMITHING_CATEGORY_I_INGOT_IRON_1 i_shield_buckler, i_shield_round_bronze,i_shield_round_metal,i_shield_kite_metal,i_shield_heater
-CRAFTMENU_BLACKSMITHING_CATEGORY_I_INGOT_IRON_2 i_platemail_chest,i_armor_female_plate,i_platemail_leggings,i_platemail_arms,i_platemail_gloves,i_platemail_helm,i_platemail_gorget
-CRAFTMENU_BLACKSMITHING_CATEGORY_I_INGOT_IRON_3 i_chainmail_tunic,i_chainmail_leggings,i_chainmail_coif // CHAINMAILS
-CRAFTMENU_BLACKSMITHING_CATEGORY_I_INGOT_IRON_4 i_ringmail_tunic,i_ringmail_leggings,i_ringmail_sleeves,i_ringmail_gloves // RINGMAILS
-CRAFTMENU_BLACKSMITHING_CATEGORY_I_INGOT_IRON_5 i_helm_closed,i_helm_open,i_bascinet,i_helm_nose // HELMETS 
-
-CRAFTMENU_BLACKSMITHING_CATEGORY_I_INGOT_IRON_6 i_sword_viking,i_sword_long,i_sword_broad,i_katana,i_scimitar,i_cutlass,i_halberd,i_bardiche
-CRAFTMENU_BLACKSMITHING_CATEGORY_I_INGOT_IRON_7 i_dagger,i_kryss,i_war_fork,i_spear_short,i_spear
-CRAFTMENU_BLACKSMITHING_CATEGORY_I_INGOT_IRON_8 i_mace,i_hammer_war,i_mace_war,i_maul,i_hammer_smith
-CRAFTMENU_BLACKSMITHING_CATEGORY_I_INGOT_IRON_9 i_axe_exec,i_axe_battle,i_axe,i_axe_double,i_axe_battle_large,i_axe_two_hand,i_axe_war
-
-// Dull Copper
-CRAFTMENU_BLACKSMITHING_CATEGORY_I_INGOT_DULL_COPPER_CATEGORIES Shields, Platemails, Chainmails, Ringmails, Helmets
-CRAFTMENU_BLACKSMITHING_CATEGORY_I_INGOT_DULL_COPPER_1 i_dull_copper_buckler_shield,i_dull_copper_metal_shield,i_dull_copper_heater_shield
-CRAFTMENU_BLACKSMITHING_CATEGORY_I_INGOT_DULL_COPPER_2 i_dull_copper_platemail,i_dull_copper_female_platemail,i_dull_copper_platemail_leggings,i_dull_copper_platemail_arms,i_dull_copper_platemail_gauntlets,i_dull_copper_plate_helm,i_dull_copper_platemail_gorget
-CRAFTMENU_BLACKSMITHING_CATEGORY_I_INGOT_DULL_COPPER_3 i_dull_copper_chainmail_tunic,i_dull_copper_chainmail_leggings,i_dull_copper_chainmail_coif // CHAINMAILS
-CRAFTMENU_BLACKSMITHING_CATEGORY_I_INGOT_DULL_COPPER_4 i_dull_copper_ringmail_tunic,i_dull_copper_ringmail_leggings,i_dull_copper_ringmail_sleeves,i_dull_copper_ringmail_gloves // RINGMAILS
-CRAFTMENU_BLACKSMITHING_CATEGORY_I_INGOT_DULL_COPPER_5 i_dull_copper_closed_helm,i_dull_copper_helmet,i_dull_copper_bascinet,i_dull_copper_nose_helm // HELMETS 
-
-// Copper
-CRAFTMENU_BLACKSMITHING_CATEGORY_I_INGOT_COPPER_CATEGORIES Shields, Platemails, Chainmails, Ringmails, Helmets
-CRAFTMENU_BLACKSMITHING_CATEGORY_I_INGOT_COPPER_1 i_copper_buckler_shield,i_copper_metal_shield,i_copper_heater_shield
-CRAFTMENU_BLACKSMITHING_CATEGORY_I_INGOT_COPPER_2 i_copper_platemail,i_copper_female_platemail,i_copper_platemail_leggings,i_copper_platemail_arms,i_copper_platemail_gauntlets,i_copper_plate_helm,i_copper_platemail_gorget
-CRAFTMENU_BLACKSMITHING_CATEGORY_I_INGOT_COPPER_3 i_copper_chainmail_tunic,i_copper_chainmail_leggings,i_copper_chainmail_coif // CHAINMAILS
-CRAFTMENU_BLACKSMITHING_CATEGORY_I_INGOT_COPPER_4 i_copper_ringmail_tunic,i_copper_ringmail_leggings,i_copper_ringmail_sleeves,i_copper_ringmail_gloves // RINGMAILS
-CRAFTMENU_BLACKSMITHING_CATEGORY_I_INGOT_COPPER_5 i_copper_closed_helm,i_copper_helmet,i_copper_bascinet,i_copper_nose_helm // HELMETS 
-
-
-// Bronze
-CRAFTMENU_BLACKSMITHING_CATEGORY_I_INGOT_BRONZE_CATEGORIES Shields, Platemails, Chainmails, Ringmails, Helmets
-CRAFTMENU_BLACKSMITHING_CATEGORY_I_INGOT_BRONZE_1 i_BRONZE_buckler_shield,i_BRONZE_metal_shield,i_BRONZE_heater_shield
-CRAFTMENU_BLACKSMITHING_CATEGORY_I_INGOT_BRONZE_2 i_BRONZE_platemail,i_BRONZE_female_platemail,i_BRONZE_platemail_leggings,i_BRONZE_platemail_arms,i_BRONZE_platemail_gauntlets,i_BRONZE_plate_helm,i_BRONZE_platemail_gorget
-CRAFTMENU_BLACKSMITHING_CATEGORY_I_INGOT_BRONZE_3 i_BRONZE_chainmail_tunic,i_BRONZE_chainmail_leggings,i_BRONZE_chainmail_coif // CHAINMAILS
-CRAFTMENU_BLACKSMITHING_CATEGORY_I_INGOT_BRONZE_4 i_BRONZE_ringmail_tunic,i_BRONZE_ringmail_leggings,i_BRONZE_ringmail_sleeves,i_BRONZE_ringmail_gloves // RINGMAILS
-CRAFTMENU_BLACKSMITHING_CATEGORY_I_INGOT_BRONZE_5 i_BRONZE_closed_helm,i_BRONZE_helmet,i_BRONZE_bascinet,i_BRONZE_nose_helm // HELMETS 
-
-// Gold
-CRAFTMENU_BLACKSMITHING_CATEGORY_I_INGOT_GOLDEN_CATEGORIES Shields, Platemails, Chainmails, Ringmails, Helmets
-CRAFTMENU_BLACKSMITHING_CATEGORY_I_INGOT_GOLDEN_1 i_GOLDEN_buckler_shield,i_GOLDEN_metal_shield,i_GOLDEN_heater_shield
-CRAFTMENU_BLACKSMITHING_CATEGORY_I_INGOT_GOLDEN_2 i_GOLDEN_platemail,i_GOLDEN_female_platemail,i_GOLDEN_platemail_leggings,i_GOLDEN_platemail_arms,i_GOLDEN_platemail_gauntlets,i_GOLDEN_plate_helm,i_GOLDEN_platemail_gorget
-CRAFTMENU_BLACKSMITHING_CATEGORY_I_INGOT_GOLDEN_3 i_GOLDEN_chainmail_tunic,i_GOLDEN_chainmail_leggings,i_GOLDEN_chainmail_coif // CHAINMAILS
-CRAFTMENU_BLACKSMITHING_CATEGORY_I_INGOT_GOLDEN_4 i_GOLDEN_ringmail_tunic,i_GOLDEN_ringmail_leggings,i_GOLDEN_ringmail_sleeves,i_GOLDEN_ringmail_gloves // RINGMAILS
-CRAFTMENU_BLACKSMITHING_CATEGORY_I_INGOT_GOLDEN_5 i_GOLDEN_closed_helm,i_GOLDEN_helmet,i_GOLDEN_bascinet,i_GOLDEN_nose_helm // HELMETS 
-
-// Gold
-CRAFTMENU_BLACKSMITHING_CATEGORY_I_INGOT_GOLD_CATEGORIES Shields, Platemails, Chainmails, Ringmails, Helmets
-CRAFTMENU_BLACKSMITHING_CATEGORY_I_INGOT_GOLD_1 i_GOLD_buckler_shield,i_GOLD_metal_shield,i_GOLD_heater_shield
-CRAFTMENU_BLACKSMITHING_CATEGORY_I_INGOT_GOLD_2 i_GOLD_platemail,i_GOLD_female_platemail,i_GOLD_platemail_leggings,i_GOLD_platemail_arms,i_GOLD_platemail_gauntlets,i_GOLD_plate_helm,i_GOLD_platemail_gorget
-CRAFTMENU_BLACKSMITHING_CATEGORY_I_INGOT_GOLD_3 i_GOLD_chainmail_tunic,i_GOLD_chainmail_leggings,i_GOLD_chainmail_coif // CHAINMAILS
-CRAFTMENU_BLACKSMITHING_CATEGORY_I_INGOT_GOLD_4 i_GOLD_ringmail_tunic,i_GOLD_ringmail_leggings,i_GOLD_ringmail_sleeves,i_GOLD_ringmail_gloves // RINGMAILS
-CRAFTMENU_BLACKSMITHING_CATEGORY_I_INGOT_GOLD_5 i_GOLD_closed_helm,i_GOLD_helmet,i_GOLD_bascinet,i_GOLD_nose_helm // HELMETS 
-
-
-
-// Shadow
-CRAFTMENU_BLACKSMITHING_CATEGORY_I_INGOT_SHADOW_CATEGORIES Shields, Platemails, Chainmails, Ringmails, Helmets
-CRAFTMENU_BLACKSMITHING_CATEGORY_I_INGOT_SHADOW_1 i_SHADOW_buckler_shield,i_SHADOW_metal_shield,i_SHADOW_heater_shield
-CRAFTMENU_BLACKSMITHING_CATEGORY_I_INGOT_SHADOW_2 i_SHADOW_platemail,i_SHADOW_female_platemail,i_SHADOW_platemail_leggings,i_SHADOW_platemail_arms,i_SHADOW_platemail_gauntlets,i_SHADOW_plate_helm,i_SHADOW_platemail_gorget
-CRAFTMENU_BLACKSMITHING_CATEGORY_I_INGOT_SHADOW_3 i_SHADOW_chainmail_tunic,i_SHADOW_chainmail_leggings,i_SHADOW_chainmail_coif // CHAINMAILS
-CRAFTMENU_BLACKSMITHING_CATEGORY_I_INGOT_SHADOW_4 i_SHADOW_ringmail_tunic,i_SHADOW_ringmail_leggings,i_SHADOW_ringmail_sleeves,i_SHADOW_ringmail_gloves // RINGMAILS
-CRAFTMENU_BLACKSMITHING_CATEGORY_I_INGOT_SHADOW_5 i_SHADOW_closed_helm,i_SHADOW_helmet,i_SHADOW_bascinet,i_SHADOW_nose_helm // HELMETS 
-
-
-// Agapite
-CRAFTMENU_BLACKSMITHING_CATEGORY_I_INGOT_AGAPITE_CATEGORIES Shields, Platemails, Chainmails, Ringmails, Helmets
-CRAFTMENU_BLACKSMITHING_CATEGORY_I_INGOT_AGAPITE_1 i_AGAPITE_buckler_shield,i_AGAPITE_metal_shield,i_AGAPITE_heater_shield
-CRAFTMENU_BLACKSMITHING_CATEGORY_I_INGOT_AGAPITE_2 i_AGAPITE_platemail,i_AGAPITE_female_platemail,i_AGAPITE_platemail_leggings,i_AGAPITE_platemail_arms,i_AGAPITE_platemail_gauntlets,i_AGAPITE_plate_helm,i_AGAPITE_platemail_gorget
-CRAFTMENU_BLACKSMITHING_CATEGORY_I_INGOT_AGAPITE_3 i_AGAPITE_chainmail_tunic,i_AGAPITE_chainmail_leggings,i_AGAPITE_chainmail_coif // CHAINMAILS
-CRAFTMENU_BLACKSMITHING_CATEGORY_I_INGOT_AGAPITE_4 i_AGAPITE_ringmail_tunic,i_AGAPITE_ringmail_leggings,i_AGAPITE_ringmail_sleeves,i_AGAPITE_ringmail_gloves // RINGMAILS
-CRAFTMENU_BLACKSMITHING_CATEGORY_I_INGOT_AGAPITE_5 i_AGAPITE_closed_helm,i_AGAPITE_helmet,i_AGAPITE_bascinet,i_AGAPITE_nose_helm // HELMETS 
-
-// Verite
-CRAFTMENU_BLACKSMITHING_CATEGORY_I_INGOT_VERITE_CATEGORIES Shields, Platemails, Chainmails, Ringmails, Helmets
-CRAFTMENU_BLACKSMITHING_CATEGORY_I_INGOT_VERITE_1 i_VERITE_buckler_shield,i_VERITE_metal_shield,i_VERITE_heater_shield
-CRAFTMENU_BLACKSMITHING_CATEGORY_I_INGOT_VERITE_2 i_VERITE_platemail,i_VERITE_female_platemail,i_VERITE_platemail_leggings,i_VERITE_platemail_arms,i_VERITE_platemail_gauntlets,i_VERITE_plate_helm,i_VERITE_platemail_gorget
-CRAFTMENU_BLACKSMITHING_CATEGORY_I_INGOT_VERITE_3 i_VERITE_chainmail_tunic,i_VERITE_chainmail_leggings,i_VERITE_chainmail_coif // CHAINMAILS
-CRAFTMENU_BLACKSMITHING_CATEGORY_I_INGOT_VERITE_4 i_VERITE_ringmail_tunic,i_VERITE_ringmail_leggings,i_VERITE_ringmail_sleeves,i_VERITE_ringmail_gloves // RINGMAILS
-CRAFTMENU_BLACKSMITHING_CATEGORY_I_INGOT_VERITE_5 i_VERITE_closed_helm,i_VERITE_helmet,i_VERITE_bascinet,i_VERITE_nose_helm // HELMETS 
-
-// Mytheril
-CRAFTMENU_BLACKSMITHING_CATEGORY_I_INGOT_Mytheril_CATEGORIES Shields, Platemails, Chainmails, Ringmails, Helmets
-CRAFTMENU_BLACKSMITHING_CATEGORY_I_INGOT_Mytheril_1 i_Mytheril_buckler_shield,i_Mytheril_metal_shield,i_Mytheril_heater_shield
-CRAFTMENU_BLACKSMITHING_CATEGORY_I_INGOT_Mytheril_2 i_Mytheril_platemail,i_Mytheril_female_platemail,i_Mytheril_platemail_leggings,i_Mytheril_platemail_arms,i_Mytheril_platemail_gauntlets,i_Mytheril_plate_helm,i_Mytheril_platemail_gorget
-CRAFTMENU_BLACKSMITHING_CATEGORY_I_INGOT_Mytheril_3 i_Mytheril_chainmail_tunic,i_Mytheril_chainmail_leggings,i_Mytheril_chainmail_coif // CHAINMAILS
-CRAFTMENU_BLACKSMITHING_CATEGORY_I_INGOT_Mytheril_4 i_Mytheril_ringmail_tunic,i_Mytheril_ringmail_leggings,i_Mytheril_ringmail_sleeves,i_Mytheril_ringmail_gloves // RINGMAILS
-CRAFTMENU_BLACKSMITHING_CATEGORY_I_INGOT_Mytheril_5 i_Mytheril_closed_helm,i_Mytheril_helmet,i_Mytheril_bascinet,i_Mytheril_nose_helm // HELMETS 
-
-// Valorite
-CRAFTMENU_BLACKSMITHING_CATEGORY_I_INGOT_Valorite_CATEGORIES Shields, Platemails, Chainmails, Ringmails, Helmets
-CRAFTMENU_BLACKSMITHING_CATEGORY_I_INGOT_VALORITE_1 i_VALORITE_buckler_shield,i_VALORITE_metal_shield,i_VALORITE_heater_shield
-CRAFTMENU_BLACKSMITHING_CATEGORY_I_INGOT_VALORITE_2 i_VALORITE_platemail,i_VALORITE_female_platemail,i_VALORITE_platemail_leggings,i_VALORITE_platemail_arms,i_VALORITE_platemail_gauntlets,i_VALORITE_plate_helm,i_VALORITE_platemail_gorget
-CRAFTMENU_BLACKSMITHING_CATEGORY_I_INGOT_VALORITE_3 i_VALORITE_chainmail_tunic,i_VALORITE_chainmail_leggings,i_VALORITE_chainmail_coif // CHAINMAILS
-CRAFTMENU_BLACKSMITHING_CATEGORY_I_INGOT_VALORITE_4 i_VALORITE_ringmail_tunic,i_VALORITE_ringmail_leggings,i_VALORITE_ringmail_sleeves,i_VALORITE_ringmail_gloves // RINGMAILS
-CRAFTMENU_BLACKSMITHING_CATEGORY_I_INGOT_VALORITE_5 i_VALORITE_closed_helm,i_VALORITE_helmet,i_VALORITE_bascinet,i_VALORITE_nose_helm // HELMETS 
-
-// Bloodrock
-CRAFTMENU_BLACKSMITHING_CATEGORY_I_INGOT_Bloodrock_CATEGORIES Shields, Platemails, Chainmails, Ringmails, Helmets
-CRAFTMENU_BLACKSMITHING_CATEGORY_I_INGOT_BLOODROCK_1 i_BLOODROCK_buckler_shield,i_BLOODROCK_metal_shield,i_BLOODROCK_heater_shield
-CRAFTMENU_BLACKSMITHING_CATEGORY_I_INGOT_BLOODROCK_2 i_BLOODROCK_platemail,i_BLOODROCK_female_platemail,i_BLOODROCK_platemail_leggings,i_BLOODROCK_platemail_arms,i_BLOODROCK_platemail_gauntlets,i_BLOODROCK_plate_helm,i_BLOODROCK_platemail_gorget
-CRAFTMENU_BLACKSMITHING_CATEGORY_I_INGOT_BLOODROCK_3 i_BLOODROCK_chainmail_tunic,i_BLOODROCK_chainmail_leggings,i_BLOODROCK_chainmail_coif // CHAINMAILS
-CRAFTMENU_BLACKSMITHING_CATEGORY_I_INGOT_BLOODROCK_4 i_BLOODROCK_ringmail_tunic,i_BLOODROCK_ringmail_leggings,i_BLOODROCK_ringmail_sleeves,i_BLOODROCK_ringmail_gloves // RINGMAILS
-CRAFTMENU_BLACKSMITHING_CATEGORY_I_INGOT_BLOODROCK_5 i_BLOODROCK_closed_helm,i_BLOODROCK_helmet,i_BLOODROCK_bascinet,i_BLOODROCK_nose_helm // HELMETS 
-
-// Blackrock
-CRAFTMENU_BLACKSMITHING_CATEGORY_I_INGOT_Blackrock_CATEGORIES Shields, Platemails, Chainmails, Ringmails, Helmets
-CRAFTMENU_BLACKSMITHING_CATEGORY_I_INGOT_BLACKROCK_1 i_BLACKROCK_buckler_shield,i_BLACKROCK_metal_shield,i_BLACKROCK_heater_shield
-CRAFTMENU_BLACKSMITHING_CATEGORY_I_INGOT_BLACKROCK_2 i_BLACKROCK_platemail,i_BLACKROCK_female_platemail,i_BLACKROCK_platemail_leggings,i_BLACKROCK_platemail_arms,i_BLACKROCK_platemail_gauntlets,i_BLACKROCK_plate_helm,i_BLACKROCK_platemail_gorget
-CRAFTMENU_BLACKSMITHING_CATEGORY_I_INGOT_BLACKROCK_3 i_BLACKROCK_chainmail_tunic,i_BLACKROCK_chainmail_leggings,i_BLACKROCK_chainmail_coif // CHAINMAILS
-CRAFTMENU_BLACKSMITHING_CATEGORY_I_INGOT_BLACKROCK_4 i_BLACKROCK_ringmail_tunic,i_BLACKROCK_ringmail_leggings,i_BLACKROCK_ringmail_sleeves,i_BLACKROCK_ringmail_gloves // RINGMAILS
-CRAFTMENU_BLACKSMITHING_CATEGORY_I_INGOT_BLACKROCK_5 i_BLACKROCK_closed_helm,i_BLACKROCK_helmet,i_BLACKROCK_bascinet,i_BLACKROCK_nose_helm // HELMETS 
-
-
-// Silver
-CRAFTMENU_BLACKSMITHING_CATEGORY_I_INGOT_Silver_CATEGORIES Weapons
-CRAFTMENU_BLACKSMITHING_CATEGORY_I_INGOT_Silver_1 i_silver_sword_viking,i_silver_sword_katana,i_silver_wmace,i_silver_daxe,i_silver_wfork,i_silver_kryss,i_silver_halb
-
-
-
-////////////////////////////////
-// Bowcraft: 8
-// Complated
-////////////////////////////////
-CRAFTMENU_BOWCRAFT_CATEGORIES Items,Normal,Superior,Exceptional,Misc
-CRAFTMENU_BOWCRAFT_CATEGORY_1 I_KINDLING,I_TORCH,I_ARROW_SHAFT,I_ARROW,I_XBOLT
-CRAFTMENU_BOWCRAFT_CATEGORY_2 I_BOW,I_TORCH,I_CROSSBOW,I_CROSSBOW_HEAVY
-CRAFTMENU_BOWCRAFT_CATEGORY_3 I_BOW_SUP,I_XBOW_SUP,I_HXBOW_SUP
-CRAFTMENU_BOWCRAFT_CATEGORY_4 I_BOW_EXCEP,I_XBOW_EXCEP,I_HXBOW_EXCEP
-CRAFTMENU_BOWCRAFT_CATEGORY_5 I_BOW_ELVEN
-
-////////////////////////////////
-// Carpentry: 11
-////////////////////////////////
-CRAFTMENU_CARPENTRY_CATEGORIES Chairs,Containers,Tables,Weapons & Tools,Furniture, AddOns 1, AddOns 2, AddOns 3
-CRAFTMENU_CARPENTRY_CATEGORY_1 I_CHAIR_THRONE,I_CHAIR_WOOD_ROUGH_DARK,I_CHAIR_WOOD_FANCY_CUSHION,I_CHAIR_WOOD_CUSHION,I_CHAIR_WOOD,I_CHAIR_WOOD_BAMBOO,I_CHAIR_STOOL_BAR,I_CHAIR_STOOL,I_BENCH_WOOD_DARK
-CRAFTMENU_CARPENTRY_CATEGORY_2 I_CHEST_WOODEN_BRASS,I_BOX_WOOD,I_CRATE_SMALL,I_CRATE_MD,I_CRATE_LG
-CRAFTMENU_CARPENTRY_CATEGORY_3 I_TABLE_NIGHTSTAND,I_TABLE_WOOD_ROUGH_SMALL,I_TABLE_WOOD_ROUGH_BOARD,I_BENCH_WOODWORKER_END,I_VISE,I_BENCH_COOPER,I_TABLE_WRITING
-CRAFTMENU_CARPENTRY_CATEGORY_4 I_CLUB,I_STAFF_GNARLED,I_STAFF_QUARTER,I_SHEPHERDS_CROOK,I_STAFF_BLACK,I_FISHING_POLE,I_SHIELD_WOOD
-CRAFTMENU_CARPENTRY_CATEGORY_5 I_BAR_DOOR_NE,I_BAR_PIECE,I_BOOKCASE,I_ARMOIR_DK,I_ARMOIR_LT,I_BUREAU_2,I_MUSIC_STAND,I_MUSIC_STAND_TALL
-CRAFTMENU_CARPENTRY_CATEGORY_6 I_DYE_TUB,I_DARTBOARD,I_MODEL_SHIP,i_LANTERN,i_board,i_barrel_open,i_barrel_lid,i_dress_form,i_easel
-CRAFTMENU_CARPENTRY_CATEGORY_7 I_DEED_FORGE,I_DEED_ANVIL,I_SADDLE,I_DEED_DUMMYW,I_DEED_PICKPOCK
-CRAFTMENU_CARPENTRY_CATEGORY_8 I_DEED_SPINWHEEL,i_deed_bboard,I_DEED_ARCHBUTTE
-// CRAFTMENU_CARPENTRY_CATEGORY_9 I_DYE_RARE,I_DYE_LEATHER,I_DYE_FURNITURE
-
-
-////////////////////////////////
-// Cartography: 12
-// Complated
-////////////////////////////////
-CRAFTMENU_CARTOGRAPHY_CATEGORIES Maps, Misc
-CRAFTMENU_CARTOGRAPHY_CATEGORY_1 I_MAP_LOCAL,I_MAP_CITY,I_MAP_SEA_CHART,I_MAP_WORLD
-CRAFTMENU_CARTOGRAPHY_CATEGORY_2 I_GLOBE
-
-
-////////////////////////////////
-// Inscription: 23
-// Complated
-////////////////////////////////
-CRAFTMENU_INSCRIPTION_CATEGORIES Circle 1, Circle 2, Circle 3, Circle 4, Circle 5, Circle 6, Circle 7, Circle 8, Misc
-CRAFTMENU_INSCRIPTION_CATEGORY_1 I_SCROLL_CLUMSY,I_SCROLL_CREATE_FOOD,I_SCROLL_FEEBLEMIND,I_SCROLL_HEAL,I_SCROLL_MAGIC_ARROW,I_SCROLL_NIGHT_SIGHT,I_SCROLL_REACTIVE_ARMOR,I_SCROLL_WEAKEN
-CRAFTMENU_INSCRIPTION_CATEGORY_2 I_SCROLL_AGILITY,I_SCROLL_CUNNING,I_SCROLL_CURE,I_SCROLL_HARM,I_SCROLL_MAGIC_TRAP,I_SCROLL_MAGIC_UNTRAP,I_SCROLL_PROTECTION,I_SCROLL_STRENGTH
-CRAFTMENU_INSCRIPTION_CATEGORY_3 I_SCROLL_BLESS,I_SCROLL_FIREBALL,I_SCROLL_MAGIC_LOCK,I_SCROLL_POISON,I_SCROLL_TELEKINESIS,I_SCROLL_TELEPORT,I_SCROLL_UNLOCK,I_SCROLL_WALL_OF_STONE
-CRAFTMENU_INSCRIPTION_CATEGORY_4 I_SCROLL_ARCHCURE,I_SCROLL_ARCHPROTECTION,I_SCROLL_CURSE,I_SCROLL_FIRE_FIELD,I_SCROLL_GREATER_HEAL,I_SCROLL_LIGHTNING,I_SCROLL_MANA_DRAIN,I_SCROLL_RECALL
-CRAFTMENU_INSCRIPTION_CATEGORY_5 I_SCROLL_BLADE_SPIRITS,I_SCROLL_DISPEL_FIELD,I_SCROLL_INCOGNITO,I_SCROLL_MAGIC_REFLECTION,I_SCROLL_MIND_BLAST,I_SCROLL_PARALYZE,I_SCROLL_POISON_FIELD,I_SCROLL_SUMMON_CREATURE
-CRAFTMENU_INSCRIPTION_CATEGORY_6 I_SCROLL_DISPEL,I_SCROLL_ENERGY_BOLT,I_SCROLL_EXPLOSION,I_SCROLL_INVISIBILITY,I_SCROLL_MARK,I_SCROLL_MASS_CURSE,I_SCROLL_PARALYZE_FIELD,I_SCROLL_REVEAL
-CRAFTMENU_INSCRIPTION_CATEGORY_7 I_SCROLL_CHAIN_LIGHTNING,I_SCROLL_ENERGY_FIELD,I_SCROLL_FLAMESTRIKE,I_SCROLL_GATE_TRAVEL,I_SCROLL_MANA_VAMPIRE,I_SCROLL_MASS_DISPEL,I_SCROLL_METEOR_SWARM,I_SCROLL_POLYMORPH
-CRAFTMENU_INSCRIPTION_CATEGORY_8 I_SCROLL_EARTHQUAKE,I_SCROLL_ENERGY_VORTEX,I_SCROLL_RESURRECTION,I_SCROLL_SUMMON_ELEM_AIR,I_SCROLL_SUMMON_DAEMON,I_SCROLL_SUMMON_ELEM_EARTH,I_SCROLL_SUMMON_ELEM_FIRE,I_SCROLL_SUMMON_ELEM_WATER
-CRAFTMENU_INSCRIPTION_CATEGORY_9 I_RUNEBOOK
-
-
-////////////////////////////////
-// Tailoring: 34
-// Complated
-////////////////////////////////
-CRAFTMENU_TAILORING_CATEGORIES Hats, Shirts, Pants, Foot, Leather, Studded, Female Armor, Bags , Masks, Misc
-CRAFTMENU_TAILORING_CATEGORY_1 I_SKULL_CAP,I_BANDANA,I_HAT_FLOPPY,I_HAT_WIDE_BRIM,I_HAT_STRAW,I_HAT_STRAW_TALL, I_BONNET,I_HAT_FEATHER,I_HAT_TRICORNE,I_HAT_JESTER,I_CAP,I_HAT_WIZARDS // HATS
-CRAFTMENU_TAILORING_CATEGORY_2 I_DOUBLET,I_CAPE,I_DRESS_FULL,I_SHIRT_FANCY,I_JESTER_SUIT,I_DRESS_PLAIN,I_ROBE,I_SHIRT_PLAIN,I_SURCOAT,I_TUNIC // SHIRTS 
-CRAFTMENU_TAILORING_CATEGORY_3 I_PANTS_SHORT,I_PANTS_LONG,I_KILT,I_SKIRT_LONG // PANTS
-CRAFTMENU_TAILORING_CATEGORY_4 I_SANDALS,I_SHOES_PLAIN,I_BOOTS_CALF,I_BOOTS_THIGH // FOOT
-CRAFTMENU_TAILORING_CATEGORY_5 I_LEATHER_GORGET,I_LEATHER_CAP,I_LEATHER_GLOVES,I_LEATHER_SLEEVES,I_LEATHER_LEGGINGS,I_LEATHER_TUNIC // LEATHER
-CRAFTMENU_TAILORING_CATEGORY_6 I_STUDDED_GORGET,I_STUDDED_GLOVES,I_STUDDED_SLEEVES,I_STUDDED_LEGGINGS,I_STUDDED_TUNIC // STUDDED
-CRAFTMENU_TAILORING_CATEGORY_7 I_ARMOR_FEMALE_SHORTS,I_ARMOR_FEMALE_SKIRT,I_ARMOR_FEMALE_BUSTIER,I_ARMOR_FEMALE_BUSTIER_STUDDED,I_ARMOR_FEMALE_LEATHER,I_ARMOR_FEMALE_STUDDED // FEMALE ARMOR
-CRAFTMENU_TAILORING_CATEGORY_8 I_BACKPACK, I_POUCH, I_BAG // BAGS
-CRAFTMENU_TAILORING_CATEGORY_9 I_MASK_BEAR,I_MASK_DEER,I_MASK_BLUE,I_MASK_TRIBAL_RED // MASKS
-CRAFTMENU_TAILORING_CATEGORY_10 I_SASH,I_APRON_HALF,I_APRON_FULL,I_OIL_CLOTH,I_TC_R // MISC - SUPERRIOR CAPE EKLENECEK.
-
-////////////////////////////////
-// Tinkering: 37
-// Complated
-////////////////////////////////
-CRAFTMENU_TINKERING_CATEGORIES Jewelry,Tools,Parts,Utentils,More,Misc
-CRAFTMENU_TINKERING_CATEGORY_1 I_BRACELET_GOLD,I_EARRINGS_GOLD,I_NECKLACE_GOLD_BEADS,I_NECKLACE_GOLD,I_NECKLACE_METAL_BEADS,I_RING_GOLD
-CRAFTMENU_TINKERING_CATEGORY_2 I_SCISSORS,I_MORTAR_PESTLE,I_SCORP,I_TINKER_TOOLS,I_HATCHET,I_KNIFE_DRAW,I_SEWING_KIT,I_SAW,I_SAW_DOVETAIL
-CRAFTMENU_TINKERING_CATEGORY_3 I_GEARS,I_CLOCK_PARTS,I_BARREL_TAP,I_SPRINGS,I_SEXTANT_PARTS,I_BARREL_HOOPS,I_HINGE,I_AXEL,I_AXEL_AND_GEARS
-CRAFTMENU_TINKERING_CATEGORY_4 I_KNIFE_BUTCHER,I_PLATE,I_SPOON,I_SPOON_2,I_KNIFE_SKINNING,I_CLEAVER_MEAT,I_KNIFE_3,I_KNIFE,I_GOBLET,I_MUG_PEWTER,I_FORK,I_FORK_2
-CRAFTMENU_TINKERING_CATEGORY_5 I_FROE, I_TONGS, I_SHOVEL, I_HAMMER, I_HAMMER_SMITH, I_HAMMER_SLEDGE, I_INSHAVE, I_PICKAXE, I_LOCKPICK
-CRAFTMENU_TINKERING_CATEGORY_6 i_pouch_Trapped, I_KEG_POTION, I_CANDLEABRA I_SCALES, I_KEY_IRON, I_GLOBE, I_SPYGLASS, I_CHEST_METAL, I_HEATING_STAND, I_KEY_RING
-
-
-
-////////////////////////////////
-// Glassblower: 58
-////////////////////////////////
-CRAFTMENU_Glassblow_CATEGORIES Misc
-CRAFTMENU_Glassblow_CATEGORY_1 i_bottle_empty,i_flask_smaller
-
-
-////////////////////////////////
-// StoneCraft: 59
-////////////////////////////////
-CRAFTMENU_StoneCraft_CATEGORIES Misc
-CRAFTMENU_StoneCraft_CATEGORY_1 i_bottle_empty,i_flask_smaller
-
-
-
-[FUNCTION F_Craftmenu_Blacksmithing]
-SRC.ctag0.dialog.craftmenu.skillid=7
-SRC.ctag0.dialog.craftmenu.skillkey=<serv.skill.<SRC.dctag0.dialog.craftmenu.skillid>.key>
-
-DIALOGCLOSE d_craftmenu_Blacksmithing
-DIALOG d_craftmenu_Blacksmithing , <ARGV1>
-
-[DIALOG d_craftmenu_Blacksmithing]                            
-<def.dsp>
-LOCAL.CategoryCount = <ARRAYCOUNT <DEF.CRAFTMENU_BLACKSMITHING_CATEGORY_<BASEID>_CATEGORIES>>
-
-Local.MaxWidth = <EVAL (<DLOCAL.CategoryCount>*25)+150>
-// MAIN BORDERS
-RESIZEPIC 0 0 5054 515 <dLocal.MaxWidth>
-DHTMLGUMP 0 3 515 25 0 0 <def.center><serv.name> Blacksmithing (<strtitle <serv.itemdef.<baseid>.name>>) Menu
-
-// Alt
-DORIGIN 155 <eval <dLocal.MaxWidth>-30>
-BUTTON +0 +0 4006 4007 1 0 9999
-LOCAL.LastMakeItem.Skill <SRC.TAG0.CRAFT_LASTMAKE.<SRC.CTAG0.DIALOG.CRAFTMENU.SKILLKEY>>
-IF (<LOCAL.LastMakeItem.Skill>)
-	TILEPICHUE +20 +0 <SERV.ITEMDEF.<LOCAL.LastMakeItem.Skill>.ID> <dSERV.ITEMDEF.<LOCAL.LastMakeItem.Skill>.RESDISPDNHUE>
-	dcroppedtext +60 +0 120 25 0 Tekrar yap (<SERV.ITEMDEF.<LOCAL.LastMakeItem.Skill>.NAME>)
-ELSE
-	LOCAL.LastMakeItem <SRC.TAG0.CRAFT_LASTMAKE>
-	IF (<LOCAL.LastMakeItem>)
-		TILEPICHUE +20 +0 <SERV.ITEMDEF.<LOCAL.LastMakeItem.Skill>.ID> <dSERV.ITEMDEF.<LOCAL.LastMakeItem>.RESDISPDNHUE>
-		dcroppedtext +60 +0 120 25 0 Tekrar yap (<SERV.ITEMDEF.<LOCAL.LastMakeItem>.NAME>)
-	ELSE
-		DCROPPEDTEXT +30 +0 200 25 0 Tekrar yap
-	ENDIF
+// @SkillMenu (e_generic_chars): ARGV0 skill, ARGV1 menüyü açan eşyanın UID'i. 1: d_craft açıldı, motorun menüsü
+//  açılmaz. Skill'in eşyası yoksa 0: motorun menüsü (SKILLMENU). Veritabanı açılamıyorsa dialog nedenini gösterir.
+[FUNCTION f_craft_skillmenu]
+IF !(<f_defs_connect>)
+	f_craft_open <ARGV[0]>,<ARGV[1]>
+	RETURN 1
 ENDIF
-
-
-DCROPPEDTEXT +190 +0 200 25 <def.tcolor_text> Blacksmithing: <src.Blacksmithing>
-
-
-// Sol Taraf
-DORIGIN 10 5
-FOR c 1 <dLOCAL.CategoryCount>
-	LOCAL.Category = <ARRAY <DEF.CRAFTMENU_BLACKSMITHING_CATEGORY_<BASEID>_CATEGORIES>,<DLOCAL.C>>
-	RESIZEPIC +0 *25 3000 110 24
-	DCROPPEDTEXT +5 +3 200 25 <def.tcolor_text> <LOCAL.Category>
-	BUTTON +110 +0 4006 4007 0 <DLOCAL.C> <DLOCAL.C>
-ENDFOR
-
-RESIZEPIC +0 +80 3000 110 24
-DCROPPEDTEXT +5 +83 200 25 <def.tcolor_text> Repair
-BUTTON +110 +80 4006 4007 1 0 9998
-
-FOR p 1 <dLOCAL.CategoryCount>
-	PAGE <DLOCAL.P>
-	DORIGIN 10 <eval <dLocal.MaxWidth>-30>
-	DCROPPEDTEXT +0 +0 200 25 <def.tcolor_text> <ARRAY <DEF.CRAFTMENU_BLACKSMITHING_CATEGORY_<BASEID>_CATEGORIES>,<DLOCAL.P>>
-	DORIGIN 155 30
-	RESIZEPIC +0 +0	3000 350 <eval <Local.MaxWidth>-75>
-	FOR i 1 <ARRAYCOUNT <DEF.CRAFTMENU_BLACKSMITHING_CATEGORY_<BASEID>_<DLOCAL.P>>>
-		LOCAL.Item = <ARRAY <DEF.CRAFTMENU_BLACKSMITHING_CATEGORY_<BASEID>_<DLOCAL.P>>,<DLOCAL.i>>
-		LOCAL.iX=<EVAL ((<LOCAL.i>-1)%4)*83>
-		LOCAL.iY=<EVAL ((<LOCAL.i>-1)/4)*65>
-		
-		IF (<LOCAL.ITEM> == <SRC.TAG0.CRAFT_LASTMAKE>)
-			LOCAL.ItemLabelHue = <def.tcolor_blue>
-		ELSEIF !(<SRC.CANMAKESKILL <LOCAL.ITEM>> || <SRC.CANMAKE <LOCAL.ITEM>>)
-			LOCAL.ItemLabelHue = <def.tcolor_red>
-		ELSE
-			LOCAL.ItemLabelHue = 0
-		ENDIF
-
-		DCROPPEDTEXT <EVAL <LOCAL.iX>+170> <EVAL <LOCAL.iY>+35> 80 25 <LOCAL.ItemLabelHue> <SERV.ITEMDEF.<LOCAL.Item>.NAME>
-		BUTTON <EVAL <LOCAL.iX>+170> <EVAL <LOCAL.iY>+55> 210 211 1 0 <EVAL (<DLOCAL.P> * 10) + <DLOCAL.i>>
-		TILEPICHUE <EVAL <LOCAL.iX>+185> <EVAL <LOCAL.iY>+55> <SERV.ITEMDEF.<LOCAL.Item>.ID> <dSERV.ITEMDEF.<LOCAL.Item>.RESDISPDNHUE>
-	ENDFOR
-ENDFOR
-
-[DIALOG d_craftmenu_Blacksmithing button]
-ON=1,999
-LOCAL.Button = <ARGN1>
-LOCAL.Page = <EVAL <LOCAL.Button> / 10>
-LOCAL.Id   = <EVAL <LOCAL.Button> % 10>
-LOCAL.Item = <ARRAY <DEF.CRAFTMENU_BLACKSMITHING_CATEGORY_<BASEID>_<DLOCAL.Page>>,<DLOCAL.Id>>
-
-IF !(<SRC.CANMAKESKILL <LOCAL.ITEM>>)
-	SRC.SYSMESSAGE Gerekli beceri : <SERV.ITEMDEF.<LOCAL.ITEM>.SKILLMAKE>
-ELSEIF !(<SRC.CANMAKE <LOCAL.ITEM>>)
-	SRC.SYSMESSAGE Gerekli malzeme : <SERV.ITEMDEF.<LOCAL.ITEM>.RESMAKE>
-ELSE
-	SRC.MAKEITEM <LOCAL.ITEM>
-ENDIF
-F_Craftmenu_Blacksmithing <BASEID>, <DLOCAL.Page>
-
-
-// MAKELAST
-on=9999
-LOCAL.LastMakeItem <SRC.TAG0.CRAFT_LASTMAKE.<SRC.CTAG0.DIALOG.CRAFTMENU.SKILLKEY>>
-
-IF (<ISBLANK <LOCAL.LastMakeItem>>)
-LOCAL.LastMakeItem=<SRC.TAG0.CRAFT_LASTMAKE>
-ENDIF
-
-IF (<ISBLANK <SRC.TAG0.CRAFT_LASTMAKE>>)
-	SRC.SYSMESSAGE En son yaptiginiz esyayi hatirlamiyorsunuz.
-ELSE
-	LOCAL.ITEM <SRC.TAG0.CRAFT_LASTMAKE>
-	IF !(<SRC.CANMAKESKILL <LOCAL.ITEM>>)
-		SRC.SYSMESSAGE Gerekli beceri : <SERV.ITEMDEF.<LOCAL.ITEM>.SKILLMAKE>
-	ELSEIF !(<SRC.CANMAKE <LOCAL.ITEM>>)
-		SRC.SYSMESSAGE Gerekli malzeme : <SERV.ITEMDEF.<LOCAL.ITEM>.RESMAKE>
-	ELSE
-		SRC.MAKEITEM <LOCAL.ITEM>
-	ENDIF
-ENDIF
-F_Craftmenu_Blacksmithing <BASEID>, 0
-
-
-
-// Repair
-on=9998
-src.repair
-
-
-
-
-
-
-
-
-[FUNCTION F_Craftmenu_Alchemy]
-DIALOGCLOSE d_craftmenu_alchemy
-DIALOG d_craftmenu_alchemy
-
-[DIALOG d_craftmenu_alchemy]                            
-<def.dsp>
-
-RESIZEPIC 150 0 5054  360 95
-RESIZEPIC 155 30 3000 350 60
-RESIZEPIC 155 5 3000 140 24
-
-DCROPPEDTEXT 160 7 200 25 <def.tcolor_text> <name>
-TILEPIC 245 10 <id>
-
-FOR i 1 <ARRAYCOUNT <DEF.CRAFTMENU_ALCHEMY_CATEGORY_<BASEID>>>
-	LOCAL.Item = <ARRAY  <DEF.CRAFTMENU_ALCHEMY_CATEGORY_<BASEID>>,<DLOCAL.i>>
-	LOCAL.iX=<EVAL ((<LOCAL.i>-1)%4)*113>
-	LOCAL.iY=<EVAL ((<LOCAL.i>-1)/4)*65>
-	
-	BUTTON <EVAL <LOCAL.iX>+175> <EVAL <LOCAL.iY>+55> 210 211 1 0 <DLOCAL.i>
-	// BUTTON <EVAL <LOCAL.iX>+178> <EVAL <LOCAL.iY>+75> 2103 2104 1 0 <EVAL <DLOCAL.i> + 1000> // yapim asamasinda
-	
-	DCROPPEDTEXT <EVAL <LOCAL.iX>+175> <EVAL <LOCAL.iY>+35> 90 25 0 <SERV.ITEMDEF.<LOCAL.Item>.DESCRIPTION> 
-	TILEPICHUE <EVAL <LOCAL.iX>+195> <EVAL <LOCAL.iY>+55> <SERV.ITEMDEF.<LOCAL.Item>.ID> <dSERV.ITEMDEF.<LOCAL.Item>.RESDISPDNHUE>
-ENDFOR
-
-[DIALOG d_craftmenu_alchemy button]
-ON=1,10
-LOCAL.Item = <ARRAY  <DEF.CRAFTMENU_ALCHEMY_CATEGORY_<BASEID>>,<DARGN>>
-SRC.MAKEITEM=<LOCAL.Item>
-F_Craftmenu_Alchemy <baseid>
-
-
-ON=1000,1999
-LOCAL.Item = <ARRAY  <DEF.CRAFTMENU_ALCHEMY_CATEGORY_<BASEID>>,<eval <DARGN>-1000>>
-src.ctag0.dialog.craftmenu.skillid=0
-src.ctag0.dialog.craftmenu.skillkey=<serv.skill.<src.dctag0.dialog.craftmenu.skillid>.key>
-Src.Ctag0.Dialog.Craftmenu.ItemInfo=<LOCAL.Item>
-dialogclose d_craftmenu
-dialog d_craftmenu , 999
-
-
-
-
-
-
-
-
-[FUNCTION F_Craftmenu]
-if !(<isblank <argv0>>)
-	ctag0.dialog.craftmenu.skillid=<argv0>
-ELSE
-	ctag0.dialog.craftmenu.skillid=0
-endif
-ctag0.dialog.craftmenu.skillkey=<serv.skill.<dctag0.dialog.craftmenu.skillid>.key>
-
-// SERV.B Skillid <ARGV0> 
-// SERV.B Page <ARGV1> 
-
-DIALOGCLOSE d_craftmenu
-DIALOG d_craftmenu , <argv1>
-
-
-
-[DIALOG d_craftmenu]                            
-<DEF.DSP>
-PAGE 0
-LOCAL.CategoryCount = <ARRAYCOUNT <DEF.CRAFTMENU_<SRC.CTAG0.DIALOG.CRAFTMENU.SKILLKEY>_CATEGORIES>>
-
-Local.MaxWidth = <EVAL (<DLOCAL.CategoryCount>*25)+110>
-
-// MAIN BORDERS
-RESIZEPIC 0 0 5054 515 <eval <dLocal.MaxWidth>+10>
-DHTMLGUMP 0 3 515 25 0 0 <def.center><serv.name> <SRC.CTAG0.DIALOG.CRAFTMENU.SKILLKEY> Menu
-
-// Alt
-DORIGIN 155 <eval <dLocal.MaxWidth>-30>
-BUTTON +0 +0 4006 4007 1 0 10002
-
-LOCAL.LastMakeItem.Skill <SRC.TAG0.CRAFT_LASTMAKE.<SRC.CTAG0.DIALOG.CRAFTMENU.SKILLKEY>>
-IF (<LOCAL.LastMakeItem.Skill>)
-	TILEPICHUE +20 +0 <SERV.ITEMDEF.<LOCAL.LastMakeItem.Skill>.ID> <dSERV.ITEMDEF.<LOCAL.LastMakeItem.Skill>.RESDISPDNHUE>
-	dcroppedtext +60 +0 220 25 0 Tekrar yap (<SERV.ITEMDEF.<LOCAL.LastMakeItem.Skill>.NAME>)
-ELSE
-	DCROPPEDTEXT +30 +0 200 25 0 Tekrar yap
-ENDIF
-DCROPPEDTEXT 10 -20 200 25 0 <SRC.CTAG0.DIALOG.CRAFTMENU.SKILLKEY>: <src.<SRC.CTAG0.DIALOG.CRAFTMENU.SKILLKEY>>
-
-
-// Sol Taraf
-DORIGIN 10 5
-FOR c 1 <dLOCAL.CategoryCount>
-	LOCAL.Category = <ARRAY <DEF.CRAFTMENU_<SRC.CTAG0.DIALOG.CRAFTMENU.SKILLKEY>_CATEGORIES>,<DLOCAL.C>>
-	RESIZEPIC +0 *25 3000 110 24
-	DCROPPEDTEXT +5 +3 200 25 0 <LOCAL.Category>
-	BUTTON +110 +0 4006 4007 0 <DLOCAL.C> <DLOCAL.C>
-ENDFOR
-
-FOR p 1 <dLOCAL.CategoryCount>
-	PAGE <DLOCAL.P>
-	DORIGIN 10 <eval <dLocal.MaxWidth>-30>
-	
-	DCROPPEDTEXT +0 +0 200 25 0 <ARRAY <DEF.CRAFTMENU_<SRC.CTAG0.DIALOG.CRAFTMENU.SKILLKEY>_CATEGORIES>,<DLOCAL.P>>
-	
-	DORIGIN 155 30
-	RESIZEPIC +0 +0	3000 350 <eval <Local.MaxWidth>-65>
-	
-	FOR i 1 <ARRAYCOUNT <DEF.CRAFTMENU_<SRC.CTAG0.DIALOG.CRAFTMENU.SKILLKEY>_CATEGORY_<DLOCAL.P>>>
-		LOCAL.Item = <ARRAY <DEF.CRAFTMENU_<SRC.CTAG0.DIALOG.CRAFTMENU.SKILLKEY>_CATEGORY_<DLOCAL.P>>,<DLOCAL.i>>
-		
-		IF (<SERV.ITEMDEF.<LOCAL.Item>.TYPE> == T_SCROLL)
-			LOCAL.iX=<EVAL ((<LOCAL.i>-1)%3)*113>
-			LOCAL.iY=<EVAL ((<LOCAL.i>-1)/3)*65>
-		ELSEIF (<SERV.ITEMDEF.<LOCAL.Item>.TYPE> == T_POTION)
-			LOCAL.iX=<EVAL ((<LOCAL.i>-1)%4)*83>
-			LOCAL.iY=<EVAL ((<LOCAL.i>-1)/4)*65>
-		ELSE
-			LOCAL.iX=<EVAL ((<LOCAL.i>-1)%4)*83>
-			LOCAL.iY=<EVAL ((<LOCAL.i>-1)/4)*65>
-		ENDIF
-		
-		IF (<LOCAL.ITEM> == <SRC.TAG0.CRAFT_LASTMAKE>)
-			LOCAL.ItemLabelHue = <def.tcolor_blue>
-		ELSEIF !(<SRC.CANMAKESKILL <LOCAL.ITEM>> || <SRC.CANMAKE <LOCAL.ITEM>>)
-			LOCAL.ItemLabelHue = <def.tcolor_red>
-		ELSEIF (STRMATCH(*T_SCROLL*,<SERV.ITEMDEF.<LOCAL.ITEM>.TYPE>)) && !(<SRC.ISCANCAST <LOCAL.ITEM>>)
-			LOCAL.ItemLabelHue = <def.tcolor_red>
-		ELSE
-			LOCAL.ItemLabelHue = 0
-		ENDIF
-
-		IF ((<SRC.account.priv>&<def.priv_gm>) && (<SRC.account.priv>&<DEF.priv_detail>))
-		    LOCAL.ItemName = <LOCAL.Item>
-            Local.Detail = 1
-
-		ELSEIF (<SERV.ITEMDEF.<LOCAL.Item>.TYPE> == T_POTION)
-		    LOCAL.ItemName = <SERV.ITEMDEF.<LOCAL.Item>.CATEGORY>
-
-		ELSEIF (<SERV.ITEMDEF.<LOCAL.Item>.TYPE> == T_SCROLL)
-		    LOCAL.ItemName = <SERV.ITEMDEF.<LOCAL.Item>.NAME>
-
-		ELSE
-            LOCAL.ItemName = <SERV.ITEMDEF.<LOCAL.Item>.NAME>
-		ENDIF
-
-        IF !(<DLocal.Detail>)
-	        dcroppedtext <EVAL <LOCAL.iX>+170> <EVAL <LOCAL.iY>+35> 80 25 <LOCAL.ItemLabelHue> <local.ItemName>
-        ELSE
-            dtextentrylimited <EVAL <LOCAL.iX>+170> <EVAL <LOCAL.iY>+35> 80 60 <LOCAL.ItemLabelHue> 0 100 <local.ItemName>
-        ENDIF
-
-
-		BUTTON <EVAL <LOCAL.iX>+170> <EVAL <LOCAL.iY>+55> 210 211 1 0 <EVAL (<DLOCAL.P> * 100) + <DLOCAL.i>>
-		BUTTON <EVAL <LOCAL.iX>+173> <EVAL <LOCAL.iY>+75> 2103 2104 1 0 <EVAL (<DLOCAL.P> * 100) + <DLOCAL.i> + 2000>
-
-		
-		IF (<SERV.ITEMDEF.<LOCAL.Item>.TYPE> == T_SCROLL)
-			LOCAL.ScrollRune = i_rune_<strsub 9 99 <LOCAL.Item>>
-			TILEPICHUE <EVAL <LOCAL.iX>+195> <EVAL <LOCAL.iY>+55> <serv.itemdef.<LOCAL.ScrollRune>.id> <SERV.ITEMDEF.<LOCAL.Item>.RESDISPDNHUE>
-		
-		ELSEIF (<serv.itemdef.<LOCAL.Item>.baseid> == i_runebook)
-			GUMPPIC <EVAL <LOCAL.iX>+195> <EVAL <LOCAL.iY>+55> 2234 <EVAL 045e>
-		
-		ELSEIF (<serv.itemdef.<LOCAL.Item>.baseid> == i_pouch_Trapped)
-			TILEPIC <EVAL <LOCAL.iX>+185> <EVAL <LOCAL.iY>+55> 14030 0
-			
-		ELSEIF (<serv.itemdef.<LOCAL.Item>.baseid> == I_DEED_FORGE)
-			TILEPIC <EVAL <LOCAL.iX>+185> <EVAL <LOCAL.iY>+55> <serv.itemdef.i_forge.id> 0
-		
-		ELSEIF (<serv.itemdef.<LOCAL.Item>.baseid> == I_DEED_ANVIL)
-			TILEPIC <EVAL <LOCAL.iX>+185> <EVAL <LOCAL.iY>+55> <serv.itemdef.i_anvil.id> 0
-					
-		ELSEIF (<serv.itemdef.<LOCAL.Item>.baseid> == I_DEED_DUMMYW)
-			TILEPIC <EVAL <LOCAL.iX>+185> <EVAL <LOCAL.iY>+55> 4208 0	
-			
-		ELSEIF (<serv.itemdef.<LOCAL.Item>.baseid> == I_DEED_PICKPOCK)
-			TILEPIC <EVAL <LOCAL.iX>+185> <EVAL <LOCAL.iY>+55> 7872 0
-						
-		ELSEIF (<serv.itemdef.<LOCAL.Item>.baseid> == I_DEED_SPINWHEEL)
-			TILEPIC <EVAL <LOCAL.iX>+185> <EVAL <LOCAL.iY>+55> 4117 	
-			
-		ELSEIF (<serv.itemdef.<LOCAL.Item>.baseid> == I_DEED_BBOARD)
-			TILEPIC <EVAL <LOCAL.iX>+185> <EVAL <LOCAL.iY>+55> 7775 0	
-			
-		ELSEIF (<serv.itemdef.<LOCAL.Item>.baseid> == I_DEED_BBOARDN)
-			TILEPIC <EVAL <LOCAL.iX>+185> <EVAL <LOCAL.iY>+55> 7774 0
-			
-		ELSE
-			TILEPICHUE <EVAL <LOCAL.iX>+185> <EVAL <LOCAL.iY>+55> <SERV.ITEMDEF.<LOCAL.Item>.ID> <dSERV.ITEMDEF.<LOCAL.Item>.RESDISPDNHUE>
-		ENDIF
-		
-	ENDFOR
-ENDFOR
-
-PAGE 999
-Local.ItemInfo = <Src.Ctag0.Dialog.Craftmenu.ItemInfo>
-
-IF (<RESOURCETYPE <LOCAL.ItemInfo>> == RES_ITEMDEF)
-
-	RESIZEPIC +0 +0	3000 350 <eval <Local.MaxWidth>-75>
-
-	// Item Picture
-	DORIGIN 170 50
-	RESIZEPIC +0 +0 2620 100 80
-	TILEPICHUE +25 +25 <SERV.ITEMDEF.<LOCAL.ItemInfo>.ID> <DSERV.ITEMDEF.<LOCAL.ItemInfo>.RESDISPDNHUE>
-
-	// Item Detay
-	DORIGIN 280 50
-	RESIZEPIC +0 +0 2620 210 80
-	DCROPPEDTEXT +10 +10 200 25 <def.tcolor_white> Eşya : <SERV.ITEMDEF.<LOCAL.ItemInfo>.NAME>
-	DCROPPEDTEXT +10 +30 200 25 <def.tcolor_white> Fiyatı : <SERV.ITEMDEF.<LOCAL.ItemInfo>.VALUE> gp
-	DCROPPEDTEXT +10 +50 200 25 <def.tcolor_white> Ağırlık : <SERV.ITEMDEF.<LOCAL.ItemInfo>.WEIGHT> kg
-
-
-	// Resources
-	DORIGIN 160 140
-	// RESIZEPIC +0 +0 2620 170 160
-	LOCAL.RESOURCES <SERV.ITEMDEF.<LOCAL.ItemInfo>.RESOURCES.0.KEY>
-	IF (<ARRAYCOUNT <LOCAL.RESOURCES>>)
-		DCROPPEDTEXT +10 +10 200 25 1000 Malzemeler (<ARRAYCOUNT <LOCAL.RESOURCES>>)
-		FOR r 1 <ARRAYCOUNT <LOCAL.RESOURCES>>
-			LOCAL.RESITEM <SERV.ITEMDEF.<LOCAL.ItemInfo>.RESOURCES.<DLOCAL.r>.KEY>
-			LOCAL.RESAMOUNT <SERV.ITEMDEF.<LOCAL.ItemInfo>.RESOURCES.<DLOCAL.r>.VAL>
-			IF (<SRC.RESTEST <DLOCAL.RESAMOUNT> <LOCAL.RESITEM>>)
-				DCROPPEDTEXT +40 <EVAL (<LOCAL.r>*25)+150> 115 25 <def.tcolor_green> <SRC.Pack_Counter <LOCAL.RESITEM>>/<DLOCAL.RESAMOUNT> <SERV.ITEMDEF.<LOCAL.RESITEM>.NAME>
-			ELSE
-				DCROPPEDTEXT +40 <EVAL (<LOCAL.r>*25)+150> 115 25 <def.tcolor_red> <SRC.Pack_Counter <LOCAL.RESITEM>>/<DLOCAL.RESAMOUNT> <SERV.ITEMDEF.<LOCAL.RESITEM>.NAME>
-			ENDIF
-			TILEPICHUE +5 <EVAL (<LOCAL.r>*25)+150> <SERV.ITEMDEF.<LOCAL.RESITEM>.ID> <dSERV.ITEMDEF.<LOCAL.RESITEM>.RESDISPDNHUE>
-		ENDFOR
-	ENDIF
-
-	// Skillmake
-	DORIGIN 320 140
-	// RESIZEPIC +0 +0 2620 140 160
-	LOCAL.SKILLMAKE=<SERV.ITEMDEF.<LOCAL.ItemInfo>.SKILLMAKE> // sapıtık çalışıyor
-	IF (<ARRAYCOUNT <LOCAL.SKILLMAKE>>)
-		// sadece becerileri göstermesi lazım beceriden sonra t_carpentry vs varsa göstermesin.
-		DCROPPEDTEXT +10 +10 200 25 1000 Beceriler (<ARRAYCOUNT <LOCAL.SKILLMAKE>>)
-		FOR s 1 <ARRAYCOUNT <SERV.ITEMDEF.<LOCAL.ItemInfo>.SKILLMAKE.0.KEY>>
-			LOCAL.SKILL_ID <SERV.ITEMDEF.<LOCAL.ItemInfo>.SKILLMAKE.<DLOCAL.s>.KEY>
-			LOCAL.SKILL_VAL <SERV.ITEMDEF.<LOCAL.ItemInfo>.SKILLMAKE.<DLOCAL.s>.VAL>	
-			
-			IF (STRMATCH('Skill_','<STRSUB 0 6 <LOCAL.SKILL_ID>>'))
-				IF (<SRC.<SERV.SKILL.<LOCAL.SKILL_ID>.NAME>> >= <DLOCAL.SKILL_VAL>)
-					DCROPPEDTEXT +10 <EVAL (<LOCAL.s>*25)+150> 135 25 <def.tcolor_green> <SRC.<SERV.SKILL.<LOCAL.SKILL_ID>.NAME>>/<FVAL <DLOCAL.SKILL_VAL>> <SERV.SKILL.<LOCAL.SKILL_ID>.NAME>
-				ELSE
-					DCROPPEDTEXT +10 <EVAL (<LOCAL.s>*25)+150> 135 25 0 <SRC.<SERV.SKILL.<LOCAL.SKILL_ID>.NAME>>/<FVAL <DLOCAL.SKILL_VAL>> <SERV.SKILL.<LOCAL.SKILL_ID>.NAME>
-				ENDIF
-			ELSEIF (STRMATCH('i_','<STRSUB 0 2 <LOCAL.SKILL_ID>>'))
-				IF (<SRC.RESTEST 1 <LOCAL.SKILL_ID>>)
-					DCROPPEDTEXT +10 <EVAL (<LOCAL.s>*25)+150> 135 25 <def.tcolor_green> <SERV.ITEMDEF.<LOCAL.SKILL_ID>.NAME>
-				ELSE
-					DCROPPEDTEXT +10 <EVAL (<LOCAL.s>*25)+150> 135 25 0 <SERV.ITEMDEF.<LOCAL.SKILL_ID>.NAME>
-				ENDIF
-				TILEPICHUE +0 <EVAL (<LOCAL.s>*25)+150> <SERV.ITEMDEF.<LOCAL.SKILL_ID>.ID> 0
-			ELSEIF (STRMATCH('t_','<STRSUB 0 2 <LOCAL.SKILL_ID>>'))
-			
-			ENDIF
-			
-		ENDFOR
-	ENDIF
-
-
-ENDIF
-
-
-[DIALOG d_craftmenu button]
-ON=1,1999
-LOCAL.Button = <ARGN1>
-LOCAL.Page = <EVAL <dLOCAL.Button> / 100>
-LOCAL.Id   = <EVAL <dLOCAL.Button> % 100>
-LOCAL.Item = <ARRAY <DEF.CRAFTMENU_<SRC.CTAG0.DIALOG.CRAFTMENU.SKILLKEY>_CATEGORY_<dLOCAL.Page>>,<dLOCAL.Id>>
-
-IF !(<SRC.CANMAKESKILL <LOCAL.ITEM>>)
-	SRC.SYSMESSAGE <SERV.ITEMDEF.<LOCAL.ITEM>.NAME> uretmek icin gerekli beceri: <SERV.ITEMDEF.<LOCAL.ITEM>.SKILLMAKE>
-
-ELSEIF !(<SRC.CANMAKE <LOCAL.ITEM>>)
-	SRC.SYSMESSAGE <SERV.ITEMDEF.<LOCAL.ITEM>.NAME> uretmek icin gerekli malzeme : <SERV.ITEMDEF.<LOCAL.ITEM>.RESMAKE>
-	
-ELSEIF (STRMATCH(*T_SCROLL*,<SERV.ITEMDEF.<LOCAL.ITEM>.TYPE>)) && !(<SRC.ISCANCAST <LOCAL.ITEM>>)
-	SRC.SYSMESSAGE Bu buyu spellbook'unuzda yer almiyor veya buyuyu uygulayacak nitelige sahip degilsin. Buyuyu uygulayabiliyor olmalisiniz.
-ELSE
-
-	IF (<LOCAL.ITEM> == i_pouch_trapped)
-		IF (<TINKERING> < 850)
-			LOCAL.Rand 4
-		ELSEIF (<TINKERING> < 1000)
-			LOCAL.Rand 3
-		ELSEIF (<TINKERING> >= 1000)
-			LOCAL.Rand 2
-		ELSE 
-			LOCAL.RAND 4
-		ENDIF
-		IF (RAND(<DLOCAL.RAND>)==1)
-			SRC.MAKEITEM i_pouch_trapped
-		ELSE
-			SRC.CONSUME 2 i_log
-			SRC.CONSUME 1 i_ingot_iron
-			SRC.EFFECT 3,i_fx_explode,3,25,1
-			SRC.SOUND snd_SPELL_EXPLOSION
-			SRC.DAMAGE 5
-			SRC.SYSMESSAGE Trapped pouch elinde patladi!
-		ENDIF
-	ELSE
-		SRC.MAKEITEM <LOCAL.ITEM>
-	ENDIF
-ENDIF
-Src.Ctag0.Dialog.Craftmenu.Lastpage=<Dlocal.Page>
-SRC.F_CRAFTMENU <SRC.DCTAG0.DIALOG.CRAFTMENU.SKILLID>, <DLOCAL.PAGE>
-
-
-ON=2000,9999
-LOCAL.Button = <ARGN1>
-LOCAL.RealButton = <EVAL <dLOCAL.Button> - 2000>
-LOCAL.Page = <EVAL <dLOCAL.RealButton> / 100>
-LOCAL.Id   = <EVAL <dLOCAL.RealButton> % 100>
-LOCAL.Item = <ARRAY <DEF.CRAFTMENU_<SRC.CTAG0.DIALOG.CRAFTMENU.SKILLKEY>_CATEGORY_<dLOCAL.Page>>,<dLOCAL.Id>>
-
-Src.Ctag0.Dialog.Craftmenu.Lastpage=<Dlocal.Page>
-Src.Ctag0.Dialog.Craftmenu.ItemInfo=<LOCAL.Item>
-dialogclose d_craftmenu
-dialog d_craftmenu , 999
-
-
-
-// PAGE ++
-ON=10000
-
-// PAGE --
-ON=10001
-
-
-
-
-// Makelast
-ON=10002
-LOCAL.LastMakeItem <SRC.TAG0.CRAFT_LASTMAKE.<SRC.CTAG0.DIALOG.CRAFTMENU.SKILLKEY>>
-
-IF (<ISBLANK <LOCAL.LastMakeItem>>)
-LOCAL.LastMakeItem=<SRC.TAG0.CRAFT_LASTMAKE>
-ENDIF
-
-IF (<ISBLANK <LOCAL.LastMakeItem>>)
-	SRC.SYSMESSAGE En son yaptiginiz esyayi hatirlamiyorsunuz.
-ELSE
-	LOCAL.ITEM <LOCAL.LastMakeItem>
-	IF !(<SRC.CANMAKESKILL <LOCAL.ITEM>>)
-		SRC.SYSMESSAGE Gerekli beceri : <SERV.ITEMDEF.<LOCAL.ITEM>.SKILLMAKE>
-	ELSEIF !(<SRC.CANMAKE <LOCAL.ITEM>>)
-		SRC.SYSMESSAGE Gerekli malzeme : <SERV.ITEMDEF.<LOCAL.ITEM>.RESMAKE>
-	ELSEIF (STRMATCH(*T_SCROLL*,<SERV.ITEMDEF.<LOCAL.ITEM>.TYPE>)) && !(<SRC.ISCANCAST <LOCAL.ITEM>>)
-		SRC.SYSMESSAGE Bu buyu spellbook'unuzda yer almiyor veya buyuyu uygulayacak nitelige sahip degilsin. Buyuyu uygulayabiliyor olmalisiniz.
-	ELSE
-		SRC.MAKEITEM <LOCAL.ITEM>
-	ENDIF
-ENDIF
-SRC.F_CRAFTMENU <SRC.DCTAG0.DIALOG.CRAFTMENU.SKILLID>, 0
-
-
-
-
-
-// SCROLL YAZMA GEREKSINIM KONTROLU
-[FUNCTION ISCANCAST]
-IF !(<ISEMPTY <ARGS>>)
-	IF (STRMATCH('I_SCROLL_PARALYZE_FIELD','<ARGS>'))
-		LOCAL.SPELL=S_PARALYZATION_FIELD
-	ELSE
-		LOCAL.SPELL=S_<STRSUB 9 99 <ARGS>>
-	ENDIF
-	IF (<CANCAST <LOCAL.SPELL>>)	
-		RETURN 1
-	ENDIF
+LDB.defs.QUERY "SELECT COUNT(*) AS n FROM crafts WHERE skill = <eval <ARGV[0]>>"
+IF (<dLDB.defs.ROW.NUMROWS> == 0)
 	RETURN 0
 ENDIF
+IF (<dLDB.defs.ROW.0.n> == 0)
+	RETURN 0
+ENDIF
+f_craft_open <ARGV[0]>,<ARGV[1]>
+RETURN 1
+
+// d_craft'ı açar. ARGV0 skill, ARGV1 (isteğe bağlı) menüyü açan eşyanın UID'i: malzemesi skill'in listesindeyse o
+//  malzeme seçilir. Aynı skill yeniden açılınca kategori ve sayfa korunur.
+[FUNCTION f_craft_open]
+LOCAL.Skill=<eval <ARGV[0]>>
+IF (<f_defs_connect>)
+	LDB.defs.QUERY "SELECT COUNT(*) AS n FROM crafts WHERE skill = <dLOCAL.Skill>"
+	IF (<dLDB.defs.ROW.0.n> == 0)
+		SYSMESSAGE Bu beceriyle üretilecek eşya yok.
+		RETURN 0
+	ENDIF
+ENDIF
+LOCAL.Key=<SERV.SKILL.<dLOCAL.Skill>.KEY>
+IF !(STRMATCH(<LOCAL.Key>,<CTAG.Craft.Key>))
+	CLEARCTAGS Craft
+	CTAG.Craft.Skill=<dLOCAL.Skill>
+ENDIF
+CTAG.Craft.Notice=
+CTAG.Craft.Sel=
+IF !(<ISEMPTY <DEF.craft_<LOCAL.Key>_materials>>) && (<eval 0<ARGV[1]>>)
+	LOCAL.Base=<STRTOLOWER <UID.<ARGV[1]>.BASEID>>
+	IF (<ARRAYINDEXOF <LOCAL.Base>,<DEF.craft_<LOCAL.Key>_materials>> != -1)
+		TAG.Craft.Mat.<LOCAL.Key>=<LOCAL.Base>
+		CTAG.Craft.Page=0
+	ENDIF
+ENDIF
+f_craft_reopen
+RETURN 1
+
+// Eski ad (56TX paketinin ilk craft menüsü): ARGV0 skill.
+[FUNCTION F_Craftmenu]
+f_craft_open <ARGV[0]>,0
+
+[FUNCTION f_craft_reopen]
+DIALOGCLOSE d_craft
+DIALOG d_craft
+
+// Durumu düzeltir: skill'in KEY'i, malzemeli mi (HasMats), seçili malzeme (yoksa ya da listede değilse listenin
+//  ilki), kategori sayısı ve seçili kategori (1..sayı+1; sayı+1 Diğer).
+[FUNCTION f_craft_state]
+CTAG.Craft.Key=<SERV.SKILL.<dCTAG0.Craft.Skill>.KEY>
+CTAG.Craft.HasMats=0
+CTAG.Craft.Mat=
+IF !(<ISEMPTY <DEF.craft_<CTAG.Craft.Key>_materials>>)
+	CTAG.Craft.HasMats=1
+	CTAG.Craft.Mat=<TAG.Craft.Mat.<CTAG.Craft.Key>>
+	IF (<ISEMPTY <CTAG.Craft.Mat>>)
+		CTAG.Craft.Mat=<ARRAY <DEF.craft_<CTAG.Craft.Key>_materials>,1>
+	ELIF (<ARRAYINDEXOF <CTAG.Craft.Mat>,<DEF.craft_<CTAG.Craft.Key>_materials>> == -1)
+		CTAG.Craft.Mat=<ARRAY <DEF.craft_<CTAG.Craft.Key>_materials>,1>
+	ENDIF
+ENDIF
+CTAG.Craft.CatCount=0
+IF !(<ISEMPTY <DEF.craft_<CTAG.Craft.Key>_cats>>)
+	CTAG.Craft.CatCount=<ARRAYCOUNT <DEF.craft_<CTAG.Craft.Key>_cats>>
+ENDIF
+IF (<dCTAG0.Craft.Cat> < 1) || (<dCTAG0.Craft.Cat> > <eval <dCTAG0.Craft.CatCount>+1>)
+	CTAG.Craft.Cat=1
+ENDIF
+
+// Seçili kategorinin (ya da Diğer'in) sayfası: LDB.defs'te def, disp; en çok 13 satır (13. satır sonraki sayfa var).
+//  Liste SQL'e virgüllü metin olarak gider, json_each satırlara böler (sırası pos). crafts'ın sütunları solda: NOCASE.
+[FUNCTION f_craft_query]
+LOCAL.Key=<CTAG.Craft.Key>
+LOCAL.Skill=<dCTAG0.Craft.Skill>
+LOCAL.Offset=<eval <dCTAG0.Craft.Page>*12>
+IF (<dCTAG0.Craft.Cat> <= <dCTAG0.Craft.CatCount>)
+	LOCAL.List=<STRSQLSAFE <DEF.craft_<LOCAL.Key>_cat_<dCTAG0.Craft.Cat>>>
+	IF !(<dCTAG0.Craft.HasMats>)
+		LDB.defs.QUERY "WITH e AS (SELECT key AS pos, trim(value) AS name FROM json_each('[' || char(34) || replace('<LOCAL.List>', ',', char(34) || ',' || char(34)) || char(34) || ']')) SELECT c.defname AS def, COALESCE(c.dispid, 0) AS disp, MIN(e.pos) AS p, c.skill_min AS sm FROM e JOIN crafts c ON c.defname = e.name WHERE c.skill = <dLOCAL.Skill> GROUP BY c.defname ORDER BY p, sm, def LIMIT 13 OFFSET <dLOCAL.Offset>"
+	ELSE
+		LDB.defs.QUERY "WITH e AS (SELECT key AS pos, trim(value) AS name FROM json_each('[' || char(34) || replace('<LOCAL.List>', ',', char(34) || ',' || char(34)) || char(34) || ']')) SELECT c.defname AS def, COALESCE(c.dispid, 0) AS disp, MIN(e.pos) AS p, c.skill_min AS sm FROM e JOIN crafts c ON (c.defname = e.name OR c.shape = e.name) WHERE c.skill = <dLOCAL.Skill> AND c.material = '<STRSQLSAFE <CTAG.Craft.Mat>>' GROUP BY c.defname ORDER BY p, sm, def LIMIT 13 OFFSET <dLOCAL.Offset>"
+	ENDIF
+	RETURN 1
+ENDIF
+// Diğer: hiçbir kategoride olmayanlar. Liste 0 ile başlar (eşya adı değil, bir şeyle eşleşmez).
+LOCAL.All=0
+IF (<dCTAG0.Craft.CatCount> > 0)
+	FOR c 1 <dCTAG0.Craft.CatCount>
+		LOCAL.All=<LOCAL.All>,<DEF.craft_<LOCAL.Key>_cat_<dLOCAL.c>>
+	ENDFOR
+ENDIF
+LOCAL.All=<STRSQLSAFE <LOCAL.All>>
+IF !(<dCTAG0.Craft.HasMats>)
+	LDB.defs.QUERY "WITH e AS (SELECT trim(value) AS name FROM json_each('[' || char(34) || replace('<LOCAL.All>', ',', char(34) || ',' || char(34)) || char(34) || ']')) SELECT c.defname AS def, COALESCE(c.dispid, 0) AS disp FROM crafts c WHERE c.skill = <dLOCAL.Skill> AND NOT EXISTS (SELECT 1 FROM e WHERE c.defname = e.name) ORDER BY c.skill_min, c.defname LIMIT 13 OFFSET <dLOCAL.Offset>"
+ELSE
+	LDB.defs.QUERY "WITH e AS (SELECT trim(value) AS name FROM json_each('[' || char(34) || replace('<LOCAL.All>', ',', char(34) || ',' || char(34)) || char(34) || ']')), m AS (SELECT trim(value) AS name FROM json_each('[' || char(34) || replace('<STRSQLSAFE <DEF.craft_<LOCAL.Key>_materials>>', ',', char(34) || ',' || char(34)) || char(34) || ']')) SELECT c.defname AS def, COALESCE(c.dispid, 0) AS disp FROM crafts c WHERE c.skill = <dLOCAL.Skill> AND (c.material = '<STRSQLSAFE <CTAG.Craft.Mat>>' OR c.material IS NULL OR c.material NOT IN (SELECT name FROM m)) AND NOT EXISTS (SELECT 1 FROM e WHERE c.defname = e.name OR c.shape = e.name) ORDER BY c.skill_min, c.defname LIMIT 13 OFFSET <dLOCAL.Offset>"
+ENDIF
+RETURN 1
 
 
+[DIALOG d_craft]
+<DEF.DlgStartPos>
+f_craft_draw
 
+[FUNCTION f_craft_draw]
+f_craft_state
+LOCAL.Key=<CTAG.Craft.Key>
+LOCAL.Skill=<dCTAG0.Craft.Skill>
+RESIZE 0,0,700,530,<SERV.SKILL.<dLOCAL.Skill>.NAME>
+IF !(<f_defs_connect>)
+	DTEXT 30 60 <DEF.tcolor_red> DefsDatabase kapalı ya da veritabanı açılamadı.
+	RETURN 0
+ENDIF
+DTEXT 540 22 0481 Beceri: <FVAL <<LOCAL.Key>>>
+
+// Malzeme şeridi: yedişerli satırlar; çantadaki miktar, olmayan gri, seçili yeşil.
+LOCAL.Top=55
+IF (<dCTAG0.Craft.HasMats>)
+	LOCAL.Mats=<DEF.craft_<LOCAL.Key>_materials>
+	LOCAL.MatCount=<ARRAYCOUNT <LOCAL.Mats>>
+	FOR i 1 <dLOCAL.MatCount>
+		LOCAL.M=<ARRAY <LOCAL.Mats>,<dLOCAL.i>>
+		LOCAL.X=<eval 20+(((<dLOCAL.i>-1)%7)*95)>
+		LOCAL.Y=<eval 55+(((<dLOCAL.i>-1)/7)*25)>
+		LOCAL.N=<PACKCOUNT <LOCAL.M>>
+		LOCAL.Hue=0481
+		IF (<dLOCAL.N> == 0)
+			LOCAL.Hue=<DEF.tcolor_grey>
+		ENDIF
+		IF (STRMATCH(<LOCAL.M>,<CTAG.Craft.Mat>))
+			LOCAL.Hue=<DEF.tcolor_green>
+		ENDIF
+		BUTTON <dLOCAL.X> <dLOCAL.Y> 4005 4007 1 0 <eval 100+<dLOCAL.i>>
+		DCROPPEDTEXT <eval <dLOCAL.X>+32> <eval <dLOCAL.Y>+2> 62 20 <LOCAL.Hue> <STRTITLE <STRBEFORE " ingot",<SERV.ITEMDEF.<LOCAL.M>.NAME>>> <dLOCAL.N>
+	ENDFOR
+	LOCAL.Top=<eval 60+(((<dLOCAL.MatCount>+6)/7)*25)>
+ENDIF
+
+// Sol sütun: kategoriler ve Diğer.
+FOR c 1 <eval <dCTAG0.Craft.CatCount>+1>
+	IF (<dLOCAL.c> > <dCTAG0.Craft.CatCount>)
+		LOCAL.Name=Diğer
+		IF (<dCTAG0.Craft.CatCount> == 0)
+			LOCAL.Name=Hepsi
+		ENDIF
+	ELSE
+		LOCAL.Name=<ARRAY <DEF.craft_<LOCAL.Key>_cats>,<dLOCAL.c>>
+	ENDIF
+	LOCAL.Hue=0481
+	IF (<dLOCAL.c> == <dCTAG0.Craft.Cat>)
+		LOCAL.Hue=<DEF.tcolor_green>
+	ENDIF
+	LOCAL.Y=<eval <dLOCAL.Top>+((<dLOCAL.c>-1)*22)>
+	BUTTON 20 <dLOCAL.Y> 4005 4007 1 0 <dLOCAL.c>
+	DCROPPEDTEXT 52 <eval <dLOCAL.Y>+2> 130 20 <LOCAL.Hue> <LOCAL.Name>
+ENDFOR
+
+// Eşyalar: 4 sütun, 3 satır. Yap (ok), seç (büyüteç). Ad: yapılabilir açık, beceri yetmiyor kırmızı, malzeme yok gri.
+f_craft_query
+LOCAL.Rows=<dLDB.defs.ROW.NUMROWS>
+CLEARCTAGS Craft.Row
+IF (<dLOCAL.Rows> == 0)
+	DTEXT 200 <eval <dLOCAL.Top>+5> <DEF.tcolor_grey> Bu kategoride eşya yok.
+ENDIF
+FOR 0 11
+	IF (<dLOCAL._FOR> >= <dLOCAL.Rows>)
+		BREAK
+	ENDIF
+	LOCAL.Def=<LDB.defs.ROW.<dLOCAL._FOR>.def>
+	LOCAL.Disp=<dLDB.defs.ROW.<dLOCAL._FOR>.disp>
+	CTAG.Craft.Row<dLOCAL._FOR>=<LOCAL.Def>
+	LOCAL.X=<eval 190+((<dLOCAL._FOR>%4)*125)>
+	LOCAL.Y=<eval <dLOCAL.Top>+((<dLOCAL._FOR>/4)*80)>
+	LOCAL.Hue=0481
+	IF !(<CANMAKESKILL <LOCAL.Def>>)
+		LOCAL.Hue=<DEF.tcolor_red>
+	ELIF !(<CANMAKE <LOCAL.Def>>)
+		LOCAL.Hue=<DEF.tcolor_grey>
+	ENDIF
+	BUTTON <dLOCAL.X> <eval <dLOCAL.Y>+8> 4005 4007 1 0 <eval 200+<dLOCAL._FOR>>
+	BUTTON <dLOCAL.X> <eval <dLOCAL.Y>+32> 4011 4012 1 0 <eval 300+<dLOCAL._FOR>>
+	TILEPICHUE <eval <dLOCAL.X>+40> <dLOCAL.Y> <dLOCAL.Disp> <dSERV.ITEMDEF.<LOCAL.Def>.RESDISPDNHUE>
+	DCROPPEDTEXT <dLOCAL.X> <eval <dLOCAL.Y>+56> 120 20 <LOCAL.Hue> <SERV.ITEMDEF.<LOCAL.Def>.NAME>
+ENDFOR
+LOCAL.Nav=<eval <dLOCAL.Top>+242>
+IF (<dCTAG0.Craft.Page> > 0)
+	BUTTON 190 <dLOCAL.Nav> 4014 4016 1 0 51
+ENDIF
+DTEXT 400 <eval <dLOCAL.Nav>+2> 0481 Sayfa <eval <dCTAG0.Craft.Page>+1>
+CTAG.Craft.HasNext=0
+IF (<dLOCAL.Rows> > 12)
+	CTAG.Craft.HasNext=1
+	BUTTON 655 <dLOCAL.Nav> 4005 4007 1 0 52
+ENDIF
+
+// Alt bölüm: bildirim, seçili (yoksa son yapılan) eşya, Yap, Tekrar yap, Tamir.
+LOCAL.Bottom=<eval <dLOCAL.Nav>+30>
+IF !(<ISEMPTY <CTAG.Craft.Notice>>)
+	DCROPPEDTEXT 30 <dLOCAL.Bottom> 640 20 <dCTAG0.Craft.NoticeHue> <CTAG.Craft.Notice>
+ENDIF
+f_craft_shown
+IF !(<ISEMPTY <CTAG.Craft.Show>>)
+	LOCAL.Y=<eval <dLOCAL.Bottom>+25>
+	TILEPICHUE 30 <dLOCAL.Y> <dSERV.ITEMDEF.<CTAG.Craft.Show>.DISPID> <dSERV.ITEMDEF.<CTAG.Craft.Show>.RESDISPDNHUE>
+	DTEXT 110 <dLOCAL.Y> <DEF.tcolor_green> <SERV.ITEMDEF.<CTAG.Craft.Show>.NAME>
+	DCROPPEDTEXT 110 <eval <dLOCAL.Y>+20> 330 20 0481 Malzeme: <SERV.ITEMDEF.<CTAG.Craft.Show>.RESMAKE>
+	DCROPPEDTEXT 110 <eval <dLOCAL.Y>+40> 330 20 0481 Beceri: <SERV.ITEMDEF.<CTAG.Craft.Show>.SKILLMAKE>
+	BUTTON 110 <eval <dLOCAL.Y>+62> 4005 4007 1 0 53
+	DTEXT 142 <eval <dLOCAL.Y>+64> 0481 Yap
+ENDIF
+LOCAL.Y=<eval <dLOCAL.Bottom>+45>
+IF !(<ISEMPTY <TAG.Craft.Last.<LOCAL.Key>>>)
+	BUTTON 460 <dLOCAL.Y> 4005 4007 1 0 54
+	DCROPPEDTEXT 492 <eval <dLOCAL.Y>+2> 190 20 0481 Tekrar yap: <SERV.ITEMDEF.<TAG.Craft.Last.<LOCAL.Key>>.NAME>
+ENDIF
+IF (<DEF0.craft_<LOCAL.Key>_repair>)
+	BUTTON 460 <eval <dLOCAL.Y>+25> 4005 4007 1 0 55
+	DTEXT 492 <eval <dLOCAL.Y>+27> 0481 Tamir
+ENDIF
+
+// Alt bölümde gösterilen eşya (CTAG.Craft.Show): seçili, yoksa bu skill'de son yapılmak istenen.
+[FUNCTION f_craft_shown]
+CTAG.Craft.Show=<CTAG.Craft.Sel>
+IF (<ISEMPTY <CTAG.Craft.Show>>)
+	CTAG.Craft.Show=<TAG.Craft.Last.<CTAG.Craft.Key>>
+ENDIF
+
+[DIALOG d_craft BUTTON]
+ON=0
+CTAG.Craft.Notice=
+RETURN 1
+
+// 1-50 kategori (sayı+1 Diğer), 51-52 sayfa, 53 alttaki eşyayı yap, 54 tekrar yap, 55 tamir, 101-150 malzeme,
+//  200-211 satırı yap, 300-311 satırı seç.
+ON=1 999
+f_craft_state
+LOCAL.Key=<CTAG.Craft.Key>
+LOCAL.Btn=<eval <ARGN>>
+IF (<dLOCAL.Btn> <= 50)
+	IF (<dLOCAL.Btn> <= <eval <dCTAG0.Craft.CatCount>+1>)
+		CTAG.Craft.Cat=<dLOCAL.Btn>
+		CTAG.Craft.Page=0
+	ENDIF
+ELIF (<dLOCAL.Btn> > 100) && (<dLOCAL.Btn> <= 150)
+	IF (<dCTAG0.Craft.HasMats>)
+		IF (<eval <dLOCAL.Btn>-100> <= <ARRAYCOUNT <DEF.craft_<LOCAL.Key>_materials>>)
+			TAG.Craft.Mat.<LOCAL.Key>=<ARRAY <DEF.craft_<LOCAL.Key>_materials>,<eval <dLOCAL.Btn>-100>>
+			CTAG.Craft.Page=0
+		ENDIF
+	ENDIF
+ELIF (<dLOCAL.Btn> >= 200) && (<dLOCAL.Btn> < 212)
+	f_craft_make <CTAG.Craft.Row<eval <dLOCAL.Btn>-200>>
+ELIF (<dLOCAL.Btn> >= 300) && (<dLOCAL.Btn> < 312)
+	CTAG.Craft.Sel=<CTAG.Craft.Row<eval <dLOCAL.Btn>-300>>
+ELIF (<dLOCAL.Btn> == 51)
+	IF (<dCTAG0.Craft.Page> > 0)
+		CTAG.Craft.Page=<eval <dCTAG0.Craft.Page>-1>
+	ENDIF
+ELIF (<dLOCAL.Btn> == 52)
+	IF (<dCTAG0.Craft.HasNext>)
+		CTAG.Craft.Page=<eval <dCTAG0.Craft.Page>+1>
+	ENDIF
+ELIF (<dLOCAL.Btn> == 53)
+	f_craft_shown
+	f_craft_make <CTAG.Craft.Show>
+ELIF (<dLOCAL.Btn> == 54)
+	f_craft_make <TAG.Craft.Last.<LOCAL.Key>>
+ELIF (<dLOCAL.Btn> == 55)
+	IF (<DEF0.craft_<LOCAL.Key>_repair>)
+		REPAIR
+	ENDIF
+ENDIF
+f_craft_reopen
+
+// Eşyayı yapar ya da neden yapılamadığını bildirime yazar. ARGS tanımın adı. Yapılmak istenen eşya "Tekrar yap"ta.
+[FUNCTION f_craft_make]
+IF (<ISEMPTY <ARGS>>)
+	RETURN 0
+ENDIF
+LOCAL.Item=<ARGS>
+CTAG.Craft.Sel=<LOCAL.Item>
+TAG.Craft.Last.<CTAG.Craft.Key>=<LOCAL.Item>
+IF !(<CANMAKESKILL <LOCAL.Item>>)
+	CTAG.Craft.NoticeHue=<DEF.tcolor_red>
+	CTAG.Craft.Notice=<SERV.ITEMDEF.<LOCAL.Item>.NAME>: beceri yetmiyor (<SERV.ITEMDEF.<LOCAL.Item>.SKILLMAKE>).
+	RETURN 0
+ENDIF
+IF !(<CANMAKE <LOCAL.Item>>)
+	CTAG.Craft.NoticeHue=<DEF.tcolor_red>
+	CTAG.Craft.Notice=<SERV.ITEMDEF.<LOCAL.Item>.NAME>: malzeme yetmiyor (<SERV.ITEMDEF.<LOCAL.Item>.RESMAKE>).
+	RETURN 0
+ENDIF
+CTAG.Craft.NoticeHue=<DEF.tcolor_green>
+CTAG.Craft.Notice=<SERV.ITEMDEF.<LOCAL.Item>.NAME> yapılıyor.
+MAKEITEM <LOCAL.Item>
+RETURN 1
 
 [EOF]

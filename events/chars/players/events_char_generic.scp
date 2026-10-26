@@ -524,9 +524,18 @@ IF (<ARRAYCOUNT <LOCAL.RESOURCES>>)
 	ENDFOR
 ENDIF
 
-// IF (<SRC.ISDIALOGOPEN D_CRAFTMENU> && <SRC.Dctag0.Dialog.Craftmenu.Skillid>)
-	// SRC.F_CRAFTMENU <Src.Dctag0.Dialog.Craftmenu.Skillid> , <Src.Dctag0.Dialog.Craftmenu.Lastpage>
-// ENDIF
+// Açık üretim dialog'u yenilenir: miktarlar ve son yapılan.
+IF (<SRC.ISDIALOGOPEN d_craft>)
+	SRC.f_craft_reopen
+ENDIF
+
+
+// Motor bir craft aletinde (ingot, havan, testere, dikiş kiti + kumaş ya da deri...) menüyü açmadan önce. Eşyası olan
+//  skill'de menü yerine üretim dialog'u (dialogs_craftmenu.scp); ARGO menüyü açan eşya, malzemesi seçilir.
+ON=@SkillMenu
+IF (<f_craft_skillmenu <LOCAL.Skill>,<ARGO.UID>>)
+	RETURN 1
+ENDIF
 
 
 
