@@ -1,6 +1,7 @@
 
 
-[events e_generic_npc_vendor_bankers]
+// sphere.ini EventsNpcBanker: sadece brain_banker NPC'lere verilir.
+[events e_generic_npc_bankers]
 // ON=@CLICK
 // MESSAGE @035 [<JOB>]
 // MESSAGE @058 <NAME>

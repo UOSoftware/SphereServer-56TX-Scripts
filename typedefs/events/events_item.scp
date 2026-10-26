@@ -1,5 +1,6 @@
 VERSION=0.56T
 
+// sphere.ini EventsItem: bütün eşyalara verilir.
 [TYPEDEF ei_generic_items]
 ON=@CLICK
 REF1=<CRAFTEDBY>

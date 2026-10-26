@@ -1222,20 +1222,20 @@ ENDIF
 
 IF (<ACCOUNT.PLEVEL> > 1) // Staff
 
-	IF !(<ISDSPEECH.spk_generic_chars_staff>)
-		DSPEECH +spk_generic_chars_staff
+	IF !(<ISDSPEECH.spk_generic_chars_staffs>)
+		DSPEECH +spk_generic_chars_staffs
 	ENDIF
-	IF (<ISDSPEECH.spk_generic_chars_player>)
-		DSPEECH -spk_generic_chars_player
+	IF (<ISDSPEECH.spk_generic_chars_players>)
+		DSPEECH -spk_generic_chars_players
 	ENDIF
 
 ELSE // Player
 
-	IF (<ISDSPEECH.spk_generic_chars_staff>)
-		DSPEECH -spk_generic_chars_staff
+	IF (<ISDSPEECH.spk_generic_chars_staffs>)
+		DSPEECH -spk_generic_chars_staffs
 	ENDIF
-	IF !(<ISDSPEECH.spk_generic_chars_player>)
-		DSPEECH +spk_generic_chars_player
+	IF !(<ISDSPEECH.spk_generic_chars_players>)
+		DSPEECH +spk_generic_chars_players
 	ENDIF
 
 ENDIF

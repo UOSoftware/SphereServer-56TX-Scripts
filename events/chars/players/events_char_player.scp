@@ -1,5 +1,6 @@
 VERSION=0.56T
 
+// sphere.ini EventsCharPlayer: sadece oyuncu karakterlere (plevel 1 ve altı) verilir.
 [events e_generic_char_players]
 
 

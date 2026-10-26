@@ -1,5 +1,6 @@
 
 
+// sphere.ini SpeechChar: oyuncu karakter (staff dahil) konuşunca çalışır.
 [SPEECH spk_generic_chars]
 
 // bu her zaman en altta ollmali.

@@ -49,9 +49,17 @@ SRC.SOUND={0e 10 0f 10 022 1 023 1 024 1 0267 1}
 // Generic Regions //
 /////////////////////
 
-// TUM REGIONLARA VERILEN REGIONTYPE
-// Sphere.ini içinden değişebilir.
+// sphere.ini EventsRegion: bütün bölgelere verilir.
 [REGIONTYPE r_regions]
+
+// sphere.ini EventsRegionGuarded: sadece korunan bölgelere (REGION_FLAG_GUARDED ve REGION_FLAG_SAFE değil) verilir.
+[REGIONTYPE r_regions_guarded]
+
+// sphere.ini EventsRegionSafe: sadece güvenli bölgelere (REGION_FLAG_SAFE) verilir.
+[REGIONTYPE r_regions_safe]
+
+// sphere.ini EventsRegionUnderground: sadece yer altı bölgelerine (REGION_FLAG_UNDERGROUND) verilir.
+[REGIONTYPE r_regions_underground]
 
 // DEFAULTS
 [REGIONTYPE r_default]

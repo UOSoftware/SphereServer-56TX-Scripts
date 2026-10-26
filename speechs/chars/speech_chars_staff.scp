@@ -1,6 +1,7 @@
 
 
-[SPEECH spk_generic_chars_staff]
+// sphere.ini SpeechCharStaff: staff karakter (plevel 1'in üstü) konuşunca çalışır.
+[SPEECH spk_generic_chars_staffs]
 ON=*
 IF (<SRC.FLAGS>&STATF_INSUBSTANTIAL)
 	SERV.ALLCLIENTS Func_Staff_To_Staff_Chat [Yetkili] <SRC.NAME> : <ARGS>

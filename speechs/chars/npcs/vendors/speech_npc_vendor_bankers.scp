@@ -1,5 +1,6 @@
 
-[SPEECH spk_generic_npc_vendor_bankers]
+// sphere.ini SpeechNpcBanker: sadece brain_banker NPC'lere verilir.
+[SPEECH spk_generic_npc_bankers]
 ON=*bank*
 SRC.OPENBANK
 

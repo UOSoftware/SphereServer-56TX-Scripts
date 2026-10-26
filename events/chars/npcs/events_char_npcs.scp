@@ -1,4 +1,5 @@
 
+// sphere.ini EventsNpc: bütün NPC'lere verilir.
 [events e_generic_npcs]
 // Argo = Corpsr
 ON=@CREATE

@@ -1,4 +1,5 @@
 
+// sphere.ini SpeechNpcAnimal: sadece brain_animal NPC'lere (binilebilenler de) verilir.
 [SPEECH spk_generic_npc_animals]
 ON=STOCK
 SRC.SYSMESSAGELOC <def.tcolor_red>,600095 // "Bu komut kapalı/kaldırılmıştır."

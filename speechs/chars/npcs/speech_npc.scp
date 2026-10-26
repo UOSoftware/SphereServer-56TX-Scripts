@@ -1,6 +1,7 @@
 
 
-[SPEECH spk_generic_npc]
+// sphere.ini SpeechNpc: oyuncuyu duyan her NPC'ye verilir.
+[SPEECH spk_generic_npcs]
 
 
 // silme

@@ -1,5 +1,6 @@
 VERSION=0.56T
 
+// sphere.ini EventsChar: oyuncu karakterlere (staff dahil) verilir.
 [events e_generic_chars]
 ON=@LOGIN
 ARGN1=1 // Girişteki sphereden gelen default mesajları yazmaz. 

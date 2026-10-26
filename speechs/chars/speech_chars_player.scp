@@ -1,6 +1,7 @@
 
 
-[SPEECH spk_generic_chars_player]
+// sphere.ini SpeechCharPlayer: oyuncu karakter (plevel 1 ve altı) konuşunca çalışır.
+[SPEECH spk_generic_chars_players]
 ON=*
 IF (<SRC.IsUseSkill Magery>)
 	IF !(<SRC.ACTARG1> == 32) // Recall degilse

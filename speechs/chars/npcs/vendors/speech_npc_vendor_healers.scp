@@ -1,5 +1,6 @@
 
-[SPEECH spk_generic_npc_vendor_healers]
+// sphere.ini SpeechNpcHealer: sadece brain_healer NPC'lere verilir.
+[SPEECH spk_generic_npc_healers]
 
 
 

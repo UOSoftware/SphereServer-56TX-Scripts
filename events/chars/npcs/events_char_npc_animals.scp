@@ -1,5 +1,6 @@
 
 
+// sphere.ini EventsNpcAnimal: sadece binilemeyen brain_animal NPC'lere verilir.
 [events e_generic_npc_animals]
 ON=@REGENSTAT
 // buna gerek yok spherenin kendi davranisini kullaniyoruz.

@@ -1,4 +1,5 @@
 
+// sphere.ini SpeechNpcVendor: sadece satış yapan NPC'lere (brain_vendor, brain_stable, brain_healer) verilir.
 [SPEECH spk_generic_npc_vendors]
 
 

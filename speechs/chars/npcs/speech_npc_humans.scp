@@ -1,0 +1,7 @@
+
+// sphere.ini SpeechNpcHuman: sadece brain_human NPC'lere verilir.
+[SPEECH spk_generic_npc_humans]
+
+
+
+[EOF]

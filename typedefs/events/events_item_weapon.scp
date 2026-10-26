@@ -1,5 +1,6 @@
 VERSION=0.56T
 
+// sphere.ini EventsItemWeapon: sadece silahlara (asalar dahil) verilir.
 [TYPEDEF ei_generic_item_weapons]
 On=@Click
 IF (<ATTR>&ATTR_IDENTIFIED)

@@ -1,5 +1,6 @@
 
-[events e_generic_npc_vendor_teachers]
+// sphere.ini EventsNpcTeacher: sadece brain_teacher NPC'lere verilir.
+[events e_generic_npc_teachers]
 // ON=@CLICK
 // MESSAGE @035 [<JOB>]
 // MESSAGE @058 <NAME>

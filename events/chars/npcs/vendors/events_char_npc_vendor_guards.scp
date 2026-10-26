@@ -1,5 +1,6 @@
 
-[events e_generic_npc_vendor_guards]
+// sphere.ini EventsNpcGuard: sadece brain_guard NPC'lere verilir.
+[events e_generic_npc_guards]
 ON=@CLICK
 // MESSAGE @0,3 [Guards Agency]
 Message [Guards Agency]

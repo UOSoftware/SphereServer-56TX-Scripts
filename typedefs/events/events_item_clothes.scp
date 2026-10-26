@@ -1,6 +1,7 @@
 VERSION=0.56T
 
-[TYPEDEF ei_generic_item_clothes]
+// sphere.ini EventsItemClothing: sadece kıyafetlere (t_clothing) verilir.
+[TYPEDEF ei_generic_item_clothings]
 
 
 

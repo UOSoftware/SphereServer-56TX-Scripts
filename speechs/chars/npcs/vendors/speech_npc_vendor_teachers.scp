@@ -1,5 +1,6 @@
 
-[SPEECH spk_generic_npc_vendor_teachers]
+// sphere.ini SpeechNpcTeacher: sadece brain_teacher NPC'lere verilir.
+[SPEECH spk_generic_npc_teachers]
 ON=*train*
 ON=*teach*
 IF (<SRC.ISDIFF 2,<UID>>)

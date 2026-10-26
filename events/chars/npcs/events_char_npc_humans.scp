@@ -1,4 +1,5 @@
 
+// sphere.ini EventsNpcHuman: sadece brain_human NPC'lere verilir.
 [events e_generic_npc_humans]
 
 ON=@CLICK

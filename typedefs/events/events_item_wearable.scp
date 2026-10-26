@@ -1,5 +1,6 @@
 VERSION=0.56T
 
+// sphere.ini EventsItemWearable: sadece giyilen eşyalara (zırh, kıyafet, takı, silah, büyü kitabı) verilir.
 [TYPEDEF ei_generic_item_wearables]
 ON=@CLICK
 LOCAL.DURABILITY = <EVAL 100 - <EVAL <HITPOINTS>*100>/<MAXHITS>>

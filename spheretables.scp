@@ -85,8 +85,9 @@ typedefs/events/
 ////////////////////////
 // Events folder
 ////////////////////////
-// events/chars/npcs/
-// events/chars/players/
+events/chars/npcs/
+events/chars/npcs/vendors/
+events/chars/players/
 // events/chars/bonuses/
 // events/chars/classes/
 events/regions/
@@ -145,6 +146,7 @@ itemdefs/treasures/
 ////////////////////////
 speechs/chars/
 speechs/chars/npcs/
+speechs/chars/npcs/vendors/
 // speechs/multis/
 
 ////////////////////////

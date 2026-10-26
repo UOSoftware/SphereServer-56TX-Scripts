@@ -1,4 +1,5 @@
 
+// sphere.ini EventsNpcVendor: sadece satış yapan NPC'lere (brain_vendor, brain_stable, brain_healer) verilir.
 [events e_generic_npc_vendors]
 ON=@NPCLOOKATCHAR
 // ÖYLESİNE 
