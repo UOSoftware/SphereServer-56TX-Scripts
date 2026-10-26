@@ -1,19 +1,10 @@
+VERSION=TX
 
-
+[COMMENT]
 
 
 [function f_oncommand]
-IF (<ARGN>)
-
-	// PLEVEL = General
-	IF (STRMATCH(*MySQL*,'<args>'))
-		SRC.SYSMESSAGELOC <def.tcolor_red>,600115 // "Hatalı komut."
-		RETURN 1
-	ENDIF
-				
-	IF (STRMATCH('where','<ARGS>'))
-		SRC.FUNC_WHERE
-	ENDIF
+IF (<ARGN>)	
 	
 	// PLEVEL = Player
 	IF (<SRC.ACCOUNT.PLEVEL> == 1)
@@ -60,8 +51,6 @@ IF (<ARGN>)
 	ENDIF
 
 ENDIF
-
-
 
 
 //  Custom Flip Function

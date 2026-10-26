@@ -270,6 +270,662 @@ src.dialog d_farm_book
 
 
 
+[function WorldSearch]
+// WorldSearchChar
+// WorldSearchItem
+
+
+[function WorldSearchChar]
+// args = <qval <isnum <args>> ? <args> : <resourceindex <args>>>
+// IF !(<RESOURCETYPE <ARGS>> == RES_CHARDEF)
+	// SYSMESSAGE Bulunamadi.
+	// RETURN 1
+// ENDIF
+FOR 0 <EVAL <SERV.DEFLIST.CHARDEF.COUNT>-1>
+	LOCAL.ITEM=<SERV.DEFLIST.CHARDEF.<DLOCAL._FOR>>
+	IF (<LOCAL.ITEM>)	
+		FORINSTANCES <LOCAL.ITEM>
+			IF (<TAG0.testchar>)
+				SERV.log Buldu: <UID>
+			ENDIF
+		ENDFOR
+	ENDIF
+ENDFOR
+
+
+[FUNCTION WorldSearchItem]
+// args = <qval <isnum <args>> ? <args> : <resourceindex <args>>>
+// IF !(<RESOURCETYPE <ARGS>> == RES_ITEMDEF)
+	// SYSMESSAGE Bulunamadi.
+	// RETURN 1
+// ENDIF
+FOR 0 <EVAL <SERV.DEFLIST.ITEMDEF.COUNT>-1>
+	LOCAL.ITEM=<SERV.DEFLIST.ITEMDEF.<DLOCAL._FOR>>
+	IF (<LOCAL.ITEM>)	
+		FORINSTANCES <LOCAL.ITEM>
+			IF (<TAG0.testitem>)
+				SERV.log Found: <UID>
+				break
+			ENDIF
+		ENDFOR
+	ENDIF
+ENDFOR
+
+
+
+
+[FUNCTION Fight_GetWeaponSkillID]
+REF1=<WEAPON>
+IF !(<REF1.ISVALID>)
+	RETURN 43
+ENDIF
+RETURN <REF1.Weapon_GetSkillID>
+
+[FUNCTION Weapon_GetSkillID]
+LOCAL.iSkillOverride = <TAG0.OVERRIDE_SKILL>
+if (<LOCAL.iSkillOverride> == -1)
+	LOCAL.iSkillOverride = <TAG0.OVERRIDE.SKILL>
+endif
+if ( (<LOCAL.iSkillOverride> > -1) && (<LOCAL.iSkillOverride> < 64) )
+	local.skill <LOCAL.iSkillOverride>
+endif
+if ( (<Skill> > -1) && (<Skill> < 64) )
+	local.skill <skill>
+endif
+if (<type> == T_WEAPON_MACE_CROOK)
+	local.skill 41
+elseif (<type> == T_WEAPON_MACE_PICK) 
+	local.skill 41
+elseif (<type> == T_WEAPON_MACE_SMITH) 
+	local.skill 41
+elseif (<type> == T_WEAPON_MACE_STAFF) 
+	local.skill 41
+elseif (<type> == T_WEAPON_MACE_SHARP) 
+	local.skill 41
+elseif (<type> == T_WEAPON_WHIP) 
+	local.skill 41
+	
+elseif (<type> == T_WEAPON_SWORD) 
+	local.skill 40
+	
+elseif (<type> == T_WEAPON_AXE) 
+	local.skill 40
+	
+elseif (<type> == T_WEAPON_FENCE) 
+	local.skill 42
+	
+elseif (<type> == T_WEAPON_BOW) 
+	local.skill 31
+	
+elseif (<type> == T_WEAPON_XBOW) 
+	local.skill 31
+	
+elseif (<type> == T_WEAPON_THROWING) 
+	local.skill 57
+else
+	local.skill 43
+endif
+
+return <dlocal.skill>
+
+
+
+
+
+
+[FUNCTION Fight_GetWeaponSkill]
+REF1=<WEAPON>
+IF !(<REF1.ISVALID>)
+	RETURN SKILL_WRESTLING
+ENDIF
+RETURN <REF1.Weapon_GetSkill>
+
+
+
+
+[FUNCTION Weapon_GetSkill]
+LOCAL.iSkillOverride = <TAG0.OVERRIDE_SKILL>
+
+if (<LOCAL.iSkillOverride> == -1)
+	LOCAL.iSkillOverride = <TAG0.OVERRIDE.SKILL>
+endif
+
+if ( (<LOCAL.iSkillOverride> > -1) && (<LOCAL.iSkillOverride> < 64) )
+	local.skill <LOCAL.iSkillOverride>
+endif
+
+if ( (<Skill> > -1) && (<Skill> < 64) )
+	local.skill <skill>
+endif
+
+if (<type> == T_WEAPON_MACE_CROOK)
+	local.skill SKILL_MACEFIGHTING
+elseif (<type> == T_WEAPON_MACE_PICK) 
+	local.skill SKILL_MACEFIGHTING
+elseif (<type> == T_WEAPON_MACE_SMITH) 
+	local.skill SKILL_MACEFIGHTING
+elseif (<type> == T_WEAPON_MACE_STAFF) 
+	local.skill SKILL_MACEFIGHTING
+elseif (<type> == T_WEAPON_MACE_SHARP) 
+	local.skill SKILL_MACEFIGHTING
+elseif (<type> == T_WEAPON_WHIP) 
+	local.skill SKILL_MACEFIGHTING
+	
+elseif (<type> == T_WEAPON_SWORD) 
+	local.skill SKILL_SWORDSMANSHIP
+	
+elseif (<type> == T_WEAPON_AXE) 
+	local.skill SKILL_SWORDSMANSHIP
+	
+elseif (<type> == T_WEAPON_FENCE) 
+	local.skill SKILL_FENCING
+	
+elseif (<type> == T_WEAPON_BOW) 
+	local.skill SKILL_ARCHERY
+	
+elseif (<type> == T_WEAPON_XBOW) 
+	local.skill SKILL_ARCHERY
+	
+elseif (<type> == T_WEAPON_THROWING) 
+	local.skill SKILL_THROWING
+else
+	local.skill SKILL_WRESTLING
+endif
+
+return <local.skill>
+
+
+[FUNCTION CHARWORLDMEMORYDEL]
+REF1=<UID>
+LOCAL.COLOR = <ARGV0>
+
+FORINSTANCES I_MEMORY
+	IF (<LINK.ISVALID> && <LINK.ISPLAYER> && <LINK> == <REF1> && <TOPOBJ.ISVALID> && <TOPOBJ.ISPLAYER>)
+		// serv.log [Memory] Color=<color>/<ARGV0>, Link=<LINK.NAME>, TopObj=<TOPOBJ.NAME>
+		IF !(<ISEMPTY <ARGV0>>)
+			IF (<DCOLOR> == <DLOCAL.COLOR>)
+				REMOVE
+				// serv.log [Memory] Color=<color>/<ARGV0>, Link=<LINK.NAME>, TopObj=<TOPOBJ.NAME> silindi.
+			ENDIF
+		ELSE
+			// serv.log [Memory] Color=<color>, Link=<LINK.NAME>, TopObj=<TOPOBJ.NAME> silindi.
+			REMOVE
+		ENDIF
+		// LINK.NOTOUPDATE
+	ENDIF
+ENDFOR
+
+FORCHARMEMORYTYPE memory_harmedby
+    // REF1.sayu memory_harmedby var 
+    REMOVE
+ENDFOR
+FORCHARMEMORYTYPE memory_sawcrime 
+    // REF1.sayu memory_sawcrime var 
+    REMOVE
+ENDFOR
+FORCHARMEMORYTYPE memory_fight 
+    // REF1.sayu memory_sawcrime var 
+    REMOVE
+	
+ENDFOR
+FORCHARMEMORYTYPE memory_iaggressor 
+    // REF1.sayu memory_iaggressor var 
+	REMOVE
+ENDFOR
+FORCHARMEMORYTYPE memory_irritatedby 
+    // REF1.sayu memory_irritatedby var 
+	REMOVE
+ENDFOR
+FORCHARMEMORYTYPE memory_aggreived 
+	
+    // REF1.sayu memory_aggreived var 
+	REMOVE
+ENDFOR
+// REF1.NOTOUPDATE
+sector.allclients notoupdate
+// REF1.sector.allclients notoupdate
+
+
+
+
+[FUNCTION TOOLS]
+consume 9999 I_MORTAR_PESTLE
+consume 9999 I_ARROW_SHAFT
+consume 9999 I_SAW
+consume 9999 I_MAP_BLANK
+consume 9999 I_SCROLL_BLANK
+consume 9999 I_SEWING_KIT
+consume 9999 I_TINKER_TOOLS
+consume 9999 I_BOTTLE_EMPTY
+consume 9999 I_HAMMER_SMITH
+consume 9999 i_magic_reg90
+consume 9999 i_bag
+
+FOR o 1 <ARRAYCOUNT <DEF.RESOURCE_INGOTS>>
+	LOCAL.ITEM <ARRAY <DEF.RESOURCE_INGOTS>,<DLOCAL.o>>
+	consume 9999 <LOCAL.ITEM>
+ENDFOR
+
+
+
+
+SERV.NEWITEM I_MORTAR_PESTLE,1,<FINDLAYER.21>,1
+SERV.NEWITEM I_ARROW_SHAFT,1,<FINDLAYER.21>,1
+SERV.NEWITEM I_SAW,1,<FINDLAYER.21>,1
+SERV.NEWITEM I_MAP_BLANK,100,<FINDLAYER.21>,1
+SERV.NEWITEM I_SCROLL_BLANK,100,<FINDLAYER.21>,1
+SERV.NEWITEM I_SEWING_KIT,1,<FINDLAYER.21>,1
+SERV.NEWITEM I_TINKER_TOOLS,1,<FINDLAYER.21>,1
+SERV.NEWITEM I_HAMMER_SMITH,1,<FINDLAYER.21>,1
+// SERV.NEWITEM i_magic_reg90,1,<FINDLAYER.21>,1
+
+// Ores
+SERV.NEWITEM I_BAG,1,<FINDLAYER.21>,1
+NEW.NAME .=" [Ingot Resources]"
+REF1=<NEW>
+FOR i 1 <ARRAYCOUNT <DEF.RESOURCE_INGOTS>>
+	LOCAL.ITEM <ARRAY <DEF.RESOURCE_INGOTS>,<DLOCAL.i>>
+	SERV.NEWITEM <LOCAL.ITEM>,100,<REF1>,1
+ENDFOR
+REF1.CONTP 0,0
+
+// Ores
+SERV.NEWITEM I_BAG,1,<FINDLAYER.21>,1
+NEW.NAME .=" [Ore Resources]"
+REF2=<NEW>
+FOR o 1 <ARRAYCOUNT <DEF.RESOURCE_ORES>>
+	LOCAL.ITEM <ARRAY <DEF.RESOURCE_ORES>,<DLOCAL.o>>
+	SERV.NEWITEM <LOCAL.ITEM>,100,<REF2>,1
+ENDFOR
+REF2.CONTP 60,65
+
+// Misc
+SERV.NEWITEM I_BAG,1,<FINDLAYER.21>,1
+NEW.NAME .=" [Misc Resources]"
+REF3=<NEW>
+SERV.NEWITEM i_log,250,<REF3>,1
+SERV.NEWITEM i_cloth,250,<REF3>,1
+SERV.NEWITEM I_BOTTLE_EMPTY,250,<REF3>,1
+REF3.CONTP 78,65
+
+// Reagents
+SERV.NEWITEM I_BAG,1,<FINDLAYER.21>,1
+NEW.NAME .=" [Reagent Resources]"
+REF4=<NEW>
+FOR r 1 <ARRAYCOUNT <DEF.RESOURCE_MAGERY_REAGENTS>>
+	LOCAL.ITEM <ARRAY <DEF.RESOURCE_MAGERY_REAGENTS>,<DLOCAL.r>>
+	SERV.NEWITEM <LOCAL.ITEM>,100,<REF4>,1
+ENDFOR
+REF4.CONTP 95,65
+
+
+
+[FUNCTION WIPER]
+FORINSTANCES <ARGS>
+LOCAL.X ++
+REMOVE
+ENDFOR
+SRC.SYSMESSAGE SUNUCUDAN <DLOCAL.X> adet <args> silindi.
+
+
+
+[FUNCTION GetLinear]
+LOCAL.iSkillPercent = <streat <args>>
+LOCAL.Spell = <strarg <args>>
+LOCAL.SpellEffect = <serv.spell.<dlocal.Spell>.effect>
+args = <LOCAL.SpellEffect>
+LOCAL.iSegSize = 0
+LOCAL.iLoIdx = 0
+LOCAL.iQty = <ARGV>
+
+IF (<DLOCAL.iQty> == 0)
+    RETURN 0
+ELSEIF (<DLOCAL.iQty> == 1)
+    RETURN <argv0>
+ELSEIF (<DLOCAL.iQty> == 2)
+    LOCAL.iLoIdx = 0
+    LOCAL.iSegSize = 1000
+ELSEIF (<DLOCAL.iQty> == 3)
+    IF (<DLOCAL.iSkillPercent> >= 500)
+        LOCAL.iLoIdx = 1
+        LOCAL.iSkillPercent -= 500
+    ELSE
+        LOCAL.iLoIdx = 0
+    ENDIF
+    LOCAL.iSegSize = 500
+ELSE
+    LOCAL.iLoIdx = <MULDIV <DLOCAL.iSkillPercent>, <DLOCAL.iQty>, 1000>
+    LOCAL.iQty --
+    IF (<DLOCAL.iLoIdx> < 0)
+        LOCAL.iLoIdx = 0
+    ENDIF
+    IF (<DLOCAL.iLoIdx> >= <DLOCAL.iQty>)
+        LOCAL.iLoIdx = <EVAL <DLOCAL.iQty> - 1>
+    ENDIF
+    LOCAL.iSegSize = <EVAL 1000 / <DLOCAL.iQty>>
+    LOCAL.iSkillPercent -= <EVAL <DLOCAL.iLoIdx> * <DLOCAL.iSegSize>>
+ENDIF
+
+LOCAL.iLoVal = <argv<dlocal.iLoIdx>>
+LOCAL.iHiVal = <argv<eval <dlocal.iLoIdx>+1>>
+LOCAL.iDiff = <EVAL <DLOCAL.iHiVal> - <DLOCAL.iLoVal>>
+LOCAL.iChance = <EVAL <DLOCAL.iLoVal> + <MULDIV <DLOCAL.iDiff>, <DLOCAL.iSkillPercent>, <DLOCAL.iSegSize>>>
+
+IF (<DLOCAL.iChance> <= 0)
+    RETURN 0
+ENDIF
+RETURN <DLOCAL.iChance>
+
+
+
+
+[FUNCTION Calc_GetRandVal]
+LOCAL.IQTY <ARGV0>
+IF (<DLOCAL.IQTY> <= 0)
+	RETURN 0
+ENDIF
+IF (<DLOCAL.IQTY> > 32767)
+	RETURN <MULDIV <R>, <DLOCAL.IQTY>, 327678 >
+ENDIF
+RETURN <EVAL (<R> % <DLOCAL.IQTY>)>
+
+
+
+
+[FUNCTION GetSpellEffect]
+// argv0 = spell
+// argv1 = iSkillVal
+// NOTE: Any randomizing of the effect must be done by varying the skill level .
+// iSkillVal = 0-1000
+IF !(<ARGV0>)
+	RETURN 0
+ENDIF
+IF !(<ARGV1>)
+	RETURN 0
+ENDIF
+RETURN <GetLinear <argv0> <argv1>>
+
+
+
+
+[FUNCTION fCalcBellCurve]
+LOCAL.iValDiff = <ARGV0>
+LOCAL.iVariance = <ARGV1>
+LOCAL.iChance = 500
+IF (<LOCAL.iVariance> <= 0)
+    RETURN 500
+ENDIF
+IF (<LOCAL.iValDiff> < 0)
+    LOCAL.iValDiff = <EVAL -<LOCAL.iValDiff>>
+ENDIF
+WHILE (<LOCAL.iValDiff> > <LOCAL.iVariance>) && (<LOCAL.iChance> > 0)
+    LOCAL.iValDiff = <EVAL <LOCAL.iValDiff> - <LOCAL.iVariance>>
+    LOCAL.iChance = <EVAL <LOCAL.iChance> / 2>
+ENDWHILE
+LOCAL.iHalfChance = <EVAL <LOCAL.iChance> / 2>
+LOCAL.iAdjust = <EVAL <LOCAL.iHalfChance> * <LOCAL.iValDiff>>
+IF (<LOCAL.iVariance> > 0)
+    LOCAL.iAdjust = <EVAL <LOCAL.iAdjust> / <LOCAL.iVariance>>
+ELSE
+    LOCAL.iAdjust = 0
+ENDIF
+RETURN <EVAL <LOCAL.iChance> - <LOCAL.iAdjust>>
+
+
+
+[FUNCTION fCalcSCurve]
+LOCAL.iValDiff = <ARGV0>
+LOCAL.iVariance = <ARGV1>
+LOCAL.iChance = <fCalcBellCurve <LOCAL.iValDiff>,<LOCAL.iVariance>>
+IF (<LOCAL.iValDiff> > 0)
+    RETURN <EVAL 1000 - <LOCAL.iChance>>
+ENDIF
+RETURN <LOCAL.iChance>
+
+
+
+
+
+[FUNCTION Calc_CombatChanceToHit]
+// basit usul miss hesap zimbirtisi
+IF (<ACTDIFF> <= 0) // sadece faile dusecekse
+    IF (RAND(45) <= <EVAL (<TACTICS> / 50)>)
+        //ACTDIFF +=<R250,500>
+        ACTDIFF = <R700,900>
+        //serv.b @044,,1,1 Set <ACTDIFF>
+    ENDIF
+ENDIF
+//serv.b @,,1,1 Name= <name> (Trigger:<ARGV0>, Actdiff:<actdiff>)
+
+
+
+
+
+[FUNCTION Calc_CombatChanceToHitV3]
+// IF (<ACTDIFF> <= 0) // EKSI YANI MISS ISE
+	// ACTDIFF = 1000
+	// SERV.B @044,,1,1 Actdiff Update (Eksi geldi.)
+	// ACTDIFF 1000
+	
+	// local.Chance <Calc_CombatChanceToHitV2>
+	// serv.b Chance = <dlocal.Chance>
+	
+	// ACTDIFF = <Dlocal.Chance>	
+// ENDIF
+// skillcheck <action>, <actdiff>, 0 
+
+
+
+
+[FUNCTION Calc_CombatChanceToHitV2]
+// serv.b action= <ACTION>
+// IF (<ACTION> == -1)
+    // RETURN
+// ENDIF
+// IF (<ACTION> > 59)
+    // RETURN
+// ENDIF
+
+IF !(<SERV.SKILL.<ACTION>.FLAGS>&SKF_FIGHT)
+   RETURN
+ENDIF
+
+IF (<IsUseSkill Parrying>)
+    RETURN
+ENDIF
+
+REF1 = <ATTACKER.LAST>
+IF !(<REF1.ISVALID>)
+	REF1= <ACT>
+ENDIF
+IF !(<REF1.ISVALID>)
+	LOCAL.iDiff <R31>
+ELSE
+
+	LOCAL.iSkillVal = <I.<ACTION>> // BENIM KULLANDIGIM SKILL DEGERI
+	LOCAL.iSkillAttack = <EVAL (<dLOCAL.iSkillVal> + <I.Tactics>) / 2>
+	// serv.b <LOCAL.iSkillVal>
+	// serv.b <dLOCAL.iSkillAttack>
+	
+	LOCAL._Carpan 10
+
+	IF (<REF1.ISVALID> && <REF1.ISCHAR>)
+		LOCAL.iSkillDefend = <REF1.Tactics> // HEDEFIN TACTICS
+		LOCAL.iStam = <REF1.DEX> // HEDEFIN STAM
+		
+		IF ((<ref1.action> != -1 && <ref1.action> == ARCHERY) && (<i.action> != -1 && <i.action> != ARCHERY))
+			LOCAL._Carpan 9	
+		ENDIF
+		
+	ENDIF
+
+	LOCAL.iSkillDefend = <EVAL ( <dLOCAL.iSkillDefend> + <dLOCAL.iStam> * <dlocal._Carpan>) / 2>
+	
+	LOCAL.iDiff = <EVAL (<dLOCAL.iSkillAttack> - <dLOCAL.iSkillDefend>) / 5>
+	LOCAL.iDiff = <EVAL (<dLOCAL.iSkillVal> - <dLOCAL.iDiff>) / 10>
+	
+	
+	// LOCAL.iDiff +=<R250,500> // BİRAZ AZ MİSS GEÇSİN.
+	// serv.b iDiff = <dlocal.iDiff>
+	// serv.b <ref1.name>
+
+	// IF (<LOCAL.iDiff> < 0)
+		// LOCAL.iDiff = 0 // just means it's very easy. Bu sadece çok kolay olduğu anlamına geliyor.
+	// ENDIF
+
+	// IF (<LOCAL.iDiff> > 100)
+		// LOCAL.iDiff = 100 // just means it's very hard. Bu sadece çok zor olduğu anlamına geliyor.
+	// ENDIF
+
+	Local.Result <R<dLOCAL.iDiff>> // always need to have some chance. Her zaman bir şansa ihtiyaç vardır.
+	// serv.b result = <dlocal.result>
+ENDIF
+
+RETURN <dlocal.result>
+
+
+
+
+
+
+[FUNCTION Calc_CombatChanceToHitV1]
+IF (<ACTION> == -1)
+    RETURN
+ENDIF
+
+IF (<ACTION> > 59)
+    RETURN
+ENDIF
+
+//IF !(<SERV.SKILL.<ACTION>.FLAGS>&SKF_FIGHT)
+  //  RETURN
+//ENDIF
+
+IF (<IsUseSkill Parrying>)
+    RETURN
+ENDIF
+
+REF1 = <ATTACKER.LAST>
+IF !(<REF1.ISVALID>)
+	REF1= <ACT>
+ENDIF
+
+IF !(<REF1.ISVALID>)
+	LOCAL.DIFF <R31>
+ENDIF
+
+LOCAL.iSkillVal = <I.<ACTION>> // BENIM KULLANDIGIM SKILL DEGERI
+LOCAL.iSkillAttack = <EVAL (<dLOCAL.iSkillVal> + <I.Tactics>) / 2>
+LOCAL._Carpan 10
+
+IF (<REF1.ISVALID> && <REF1.ISCHAR>)
+	LOCAL.iSkillDefend = <REF1.Tactics>
+	LOCAL.iStam = <REF1.DEX>
+	IF ((<ref1.action> != -1 && <ref1.action> == ARCHERY) && (<i.action> != -1 && <i.action> != ARCHERY))
+		LOCAL._Carpan 9	
+	ENDIF
+ENDIF
+
+LOCAL.iSkillDefend = <EVAL ( <dLOCAL.iSkillDefend> + <dLOCAL.iStam> * <dlocal._Carpan>) / 2>
+
+LOCAL.iDiff = <EVAL (<dLOCAL.iSkillAttack> - <dLOCAL.iSkillDefend>) / 5>
+LOCAL.iDiff = <EVAL (<dLOCAL.iSkillVal> - <dLOCAL.iDiff>) / 10>
+
+
+IF (<LOCAL.iDiff> < 0)
+    LOCAL.iDiff = 0 // just means it's very easy.
+ENDIF
+IF (<LOCAL.iDiff> > 100)
+    LOCAL.iDiff = 100 // just means it's very hard.
+ENDIF
+
+ACTDIFF = <R<dLOCAL.iDiff>>
+
+IF (<ISPLAYER>)
+    //SERV.LOG [Combat] iSkillVal=<LOCAL.iSkillVal>, Tactics=<I.Tactics>, Attack=<DLOCAL.iSkillAttack>, Defend=<DLOCAL.iSkillDefend>, Diff=<DLOCAL.iDiff>, ACTDIFF=<ACTDIFF>
+ENDIF
+
+RETURN <ACTDIFF>
+
+
+
+
+
+[FUNCTION Calc_CombatChanceToHitV0]
+IF (<ACTION> == -1)
+    RETURN
+ENDIF
+
+IF !(<SERV.SKILL.<ACTION>.FLAGS>&SKF_FIGHT)
+    RETURN
+ENDIF
+
+IF (<IsUseSkill Parrying>)
+    RETURN
+ENDIF
+
+LOCAL.iMyWeaponSkill = <I.<ACTION>>
+LOCAL.iMyTactics     = <I.Tactics>
+LOCAL.iSkillAttack   = <EVAL (<LOCAL.iMyWeaponSkill> + <LOCAL.iMyTactics>) / 2>
+
+REF1 = <ATTACKER.LAST>
+IF !(<REF1.ISVALID>)
+	REF1= <ACT>
+ENDIF
+
+LOCAL.iTargetTactics = 0
+LOCAL.iTargetDex     = 0
+
+IF (<REF1.ISVALID>)
+    LOCAL.iTargetTactics = <REF1.Tactics>
+    LOCAL.iTargetDex     = <REF1.DEX>
+ENDIF
+
+LOCAL.iSkillDefend = <EVAL (<LOCAL.iTargetTactics> + (<LOCAL.iTargetDex> * 10)) / 2>
+
+LOCAL.iDiff = <EVAL (<LOCAL.iSkillAttack> - <LOCAL.iSkillDefend>) / 5>
+LOCAL.iDiff = <EVAL (<LOCAL.iMyWeaponSkill> - <LOCAL.iDiff>) / 10>
+
+IF (<LOCAL.iDiff> < 0)
+    LOCAL.iDiff = 0
+ENDIF
+IF (<LOCAL.iDiff> > 100)
+    LOCAL.iDiff = 100
+ENDIF
+
+LOCAL.iDifficulty = 0
+IF (<LOCAL.iDiff> > 0)
+    LOCAL.iDifficulty = <r<dLOCAL.iDiff>>
+ENDIF
+
+
+LOCAL.iValDiff = <EVAL <LOCAL.iMyWeaponSkill> - (<LOCAL.iDifficulty> * 10)>
+LOCAL.iChance  = <fCalcSCurve <LOCAL.iValDiff>,100>
+LOCAL.iRoll    = <R1000>
+
+IF (<LOCAL.iRoll> <= <LOCAL.iChance>)
+    // Başarı: difficulty değerinin kendisi skill advance için kullanılır
+    ACTDIFF = <LOCAL.iDifficulty>
+ELSE
+    ACTDIFF = -1
+ENDIF
+
+
+// IF (<ISPLAYER>)
+    // SERV.B @,,1,1 [Combat] WeaponSkill=<LOCAL.iMyWeaponSkill> Tactics=<LOCAL.iMyTactics> Attack=<DLOCAL.iSkillAttack> Defend=<DLOCAL.iSkillDefend> Diff=<DLOCAL.iDiff> RandDiff=<DLOCAL.iDifficulty> Chance=<DLOCAL.iChance> Roll=<DLOCAL.iRoll> ACTDIFF=<ACTDIFF>
+    // SERV.LOG [Combat] WeaponSkill=<LOCAL.iMyWeaponSkill> Tactics=<LOCAL.iMyTactics> Attack=<DLOCAL.iSkillAttack> Defend=<DLOCAL.iSkillDefend> Diff=<DLOCAL.iDiff> RandDiff=<DLOCAL.iDifficulty> Chance=<DLOCAL.iChance> Roll=<DLOCAL.iRoll> ACTDIFF=<ACTDIFF>
+// ENDIF
+
+
+
+
+
+
+
+
+
+
+
 
 
 [eof]

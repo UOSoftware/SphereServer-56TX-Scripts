@@ -1,13 +1,8 @@
-VERSION=0.56T
 
-
-[COMMENT]
-
-///////////////////////
-// Generic templates //
-///////////////////////
+[COMMENT sphere_newb]
 
 [NEWBIE MALE_DEFAULT]
+// Male Generic Starting Clothes
 ITEMNEWBIE=i_shirt_plain
 COLOR=colors_all
 
@@ -17,13 +12,26 @@ COLOR=colors_neutral
 ITEMNEWBIE=random_shoes
 COLOR=colors_neutral
 
+ITEMNEWBIE=I_deed_tester
+ITEMNEWBIE=I_YOUNG_TICKET
+
 ITEMNEWBIE=i_dagger
+// ITEMNEWBIE=i_candle
 
-[NEWBIE MALE_DEFAULT ELF]
+// ITEMNEWBIE=i_book_sm
+// ITEMNEWBIE=I_SPELLBOOK
+// MORE1=0FFFFFFFF
 
-[NEWBIE MALE_DEFAULT GARG]
+
+// golds
+ITEMNEWBIE=i_gold,10000 // kademeli olarak dusurulecek.
+// ITEMNEWBIE=i_gold,5000 // kademeli olarak dusurulecek.
+// ITEMNEWBIE=i_gold,2500 // kademeli olarak dusurulecek.
+// ITEMNEWBIE=i_gold,1000 // kademeli olarak dusurulecek.
+
 
 [NEWBIE FEMALE_DEFAULT]
+// Female Generic Starting Clothes
 ITEMNEWBIE=i_shirt_plain
 COLOR=colors_all
 
@@ -33,213 +41,279 @@ COLOR=colors_neutral
 ITEMNEWBIE=random_shoes
 COLOR=colors_neutral
 
+ITEMNEWBIE=I_deed_tester
+ITEMNEWBIE=I_YOUNG_TICKET
+
 ITEMNEWBIE=i_dagger
+// ITEMNEWBIE=i_candle
+// ITEMNEWBIE=i_BOOK_SM
+
+// ITEMNEWBIE=I_SPELLBOOK
+// MORE1=0FFFFFFFF
 
 
-[NEWBIE FEMALE_DEFAULT ELF]
+// golds
+ITEMNEWBIE=i_gold,10000 // kademeli olarak dusurulecek.
+// ITEMNEWBIE=i_gold,5000 // kademeli olarak dusurulecek.
+// ITEMNEWBIE=i_gold,2500 // kademeli olarak dusurulecek.
+// ITEMNEWBIE=i_gold,1000 // kademeli olarak dusurulecek.
 
-[NEWBIE FEMALE_DEFAULT GARG]
-
-
-//////////////////////////
-// Profession templates //
-//////////////////////////
-
-// [NEWBIE PROFESSION_WARRIOR]
-
-// [NEWBIE PROFESSION_WARRIOR ELF]
-
-// [NEWBIE PROFESSION_WARRIOR GARG]
-
-// [NEWBIE PROFESSION_NECROMANCER]
-
-// [NEWBIE PROFESSION_NECROMANCER ELF]
-
-// [NEWBIE PROFESSION_NECROMANCER GARG]
-
-// [NEWBIE PROFESSION_PALADIN]
-
-// [NEWBIE PROFESSION_PALADIN ELF]
-
-// [NEWBIE PROFESSION_PALADIN GARG]
-
-// [NEWBIE PROFESSION_SAMURAI]
-
-// [NEWBIE PROFESSION_SAMURAI ELF]
-
-// [NEWBIE PROFESSION_SAMURAI GARG]
-
-// [NEWBIE PROFESSION_NINJA]
-
-// [NEWBIE PROFESSION_NINJA ELF]
-
-// [NEWBIE PROFESSION_NINJA GARG]
-
-/////////////////////
-// Skill templates //
-/////////////////////
 
 [NEWBIE ALCHEMY]
-
-[NEWBIE ALCHEMY ELF]
+// Alchemy 
+ITEMNEWBIE=i_mortar_pestle
+ITEMNEWBIE=i_BOTTLE_EMPTY,15
+ITEMNEWBIE=i_reag_black_pearl,15
+ITEMNEWBIE=i_reag_garlic,15
+ITEMNEWBIE=i_reag_ginseng,15
+ITEMNEWBIE=i_reag_spider_silk,15
+ITEMNEWBIE=i_robe
+COLOR={colors_red 1 colors_blue 5}
+// COLOR=colors_red
+// COLOR=colors_blue // BU RENK NEDENSE ASGARDDA BLUE
 
 [NEWBIE ANATOMY]
-
-[NEWBIE ANATOMY ELF]
+// Anatomy 
+ITEMNEWBIE=i_robe
+COLOR=colors_yellow
+ITEMNEWBIE=i_bandage,15
 
 [NEWBIE ANIMALLORE]
-
-[NEWBIE ANIMALLORE ELF]
-
-[NEWBIE ARCHERY]
-
-[NEWBIE ARCHERY ELF]
-
-[NEWBIE ARMSLORE]
-
-[NEWBIE ARMSLORE ELF]
-
-[NEWBIE ARMSLORE GARG]
-
-[NEWBIE BEGGING]
-
-[NEWBIE BEGGING ELF]
-
-[NEWBIE BEGGING GARG]
-
-[NEWBIE BLACKSMITHING]
-
-[NEWBIE BUSHIDO]
-
-[NEWBIE BOWCRAFT]
-
-[NEWBIE CAMPING]
-
-[NEWBIE CARPENTRY]
-
-[NEWBIE CARTOGRAPHY]
-
-[NEWBIE COOKING]
-
-[NEWBIE CHIVALRY]
-
-[NEWBIE DETECTINGHIDDEN]
-
-[NEWBIE ENTICEMENT]
-
-[NEWBIE EVALUATINGINTEL]
-
-[NEWBIE FENCING]
-
-[NEWBIE FENCING ELF]
-
-[NEWBIE FENCING GARG]
-
-[NEWBIE FISHING]
-
-[NEWBIE FISHING ELF]
-
-[NEWBIE FORENSICS]
-
-[NEWBIE HEALING]
-
-[NEWBIE HERDING]
-
-[NEWBIE HERDING ELF]
-
-[NEWBIE HIDING]
-
-[NEWBIE INSCRIPTION]
+// Animal Lore 
+ITEMNEWBIE=i_robe
+COLOR=colors_green
+ITEMNEWBIE=i_shepherds_crook
 
 [NEWBIE ITEMID]
+// Item Identification 
+ITEMNEWBIE=i_staff_gnarled
 
-[NEWBIE ITEMID ELF]
-
-[NEWBIE ITEMID GARG]
-
-[NEWBIE LOCKPICKING]
-
-[NEWBIE LUMBERJACKING]
-
-[NEWBIE LUMBERJACKING ELF]
-
-[NEWBIE LUMBERJACKING GARG]
-
-[NEWBIE MACEFIGHTING]
-
-[NEWBIE MACEFIGHTING ELF]
-
-[NEWBIE MACEFIGHTING GARG]
-
-[NEWBIE MAGERY]
-
-[NEWBIE MAGERY ELF]
-
-[NEWBIE MAGICRESISTANCE]
-
-[NEWBIE MINING]
-
-[NEWBIE MUSICIANSHIP]
-
-[NEWBIE NECROMANCY]
-
-[NEWBIE NINJITSU]
+[NEWBIE ARMSLORE]
+// Armslore 
+ITEMNEWBIE=i_tongs
 
 [NEWBIE PARRYING]
+// Parrying 
+ITEMNEWBIE=i_shield_wood
 
-[NEWBIE PARRYING ELF]
+[NEWBIE BEGGING]
+// Begging 
+ITEMNEWBIE=i_staff_gnarled
 
-[NEWBIE PARRYING GARG]
+[NEWBIE BLACKSMITHING]
+// Blacksmithing 
+ITEMNEWBIE=i_hammer_smith
+ITEMNEWBIE=i_apron_half
+COLOR=colors_brown
+
+[NEWBIE BOWCRAFT]
+// Bowcraft/Fletching 
+ITEMNEWBIE=i_log,14
+ITEMNEWBIE=i_feather,5
+ITEMNEWBIE=i_arrow_shaft,5
+ITEMNEWBIE=i_hatchet
 
 [NEWBIE PEACEMAKING]
+// Peacemaking 
+ITEMNEWBIE=random_instrument
 
-[NEWBIE POISONING]
+[NEWBIE CAMPING]
+// Camping 
+ITEMNEWBIE=i_kindling,5
+ITEMNEWBIE=i_bedroll
+
+[NEWBIE CARPENTRY]
+// Carpentry 
+ITEMNEWBIE=i_saw_dovetail
+ITEMNEWBIE=i_hammer
+ITEMNEWBIE=i_plane_moulding
+ITEMNEWBIE=i_nails
+ITEMNEWBIE=i_plane_jointing
+ITEMNEWBIE=i_plane_smoothing
+ITEMNEWBIE=i_saw
+ITEMNEWBIE=i_scorp
+ITEMNEWBIE=i_inshave
+ITEMNEWBIE=i_log,10
+ITEMNEWBIE=i_board,10
+ITEMNEWBIE=i_apron_half
+COLOR=colors_brown
+
+[NEWBIE CARTOGRAPHY]
+// Cartography 
+ITEMNEWBIE=i_map_blank,4
+ITEMNEWBIE=i_sextant
+
+[NEWBIE COOKING]
+// Cooking 
+ITEMNEWBIE=i_eggs_fresh
+ITEMNEWBIE=i_fish_big_2
+ITEMNEWBIE=i_dough
+ITEMNEWBIE=i_flour_sack
+ITEMNEWBIE=i_pitcher_water
+ITEMNEWBIE=i_kindling,2
+
+[NEWBIE DetectingHidden]
+// Detecting Hidden 
+ITEMNEWBIE=i_cape
+COLOR=colors_black
+
+[NEWBIE ENTICEMENT]
+// Enticement 
+ITEMNEWBIE=random_instrument
+
+[NEWBIE EvaluatingIntel]
+// Evaluate Intelligence 
+
+[NEWBIE HEALING]
+// Healing 
+ITEMNEWBIE=i_bandage,5
+ITEMNEWBIE=i_scissors
+
+[NEWBIE FISHING]
+// Fishing 
+ITEMNEWBIE=i_fishing_pole
+ITEMNEWBIE=i_hat_floppy
+COLOR=colors_brown
+
+[NEWBIE FORENSICS]
+// Forensics 
+
+[NEWBIE HERDING]
+// Herding 
+ITEMNEWBIE=i_shepherds_crook
+
+[NEWBIE HIDING]
+// Hiding 
+ITEMNEWBIE=i_cape
+COLOR=colors_black
 
 [NEWBIE PROVOCATION]
+// Provocation 
+ITEMNEWBIE=random_instrument
 
-[NEWBIE SNOOPING]
+[NEWBIE INSCRIPTION]
+// Inscription 
+ITEMNEWBIE=i_scroll_blank,2
+// ITEMNEWBIE=i_book_sm
 
-[NEWBIE SPIRITSPEAK]
+[NEWBIE LOCKPICKING]
+// Lockpicking 
+ITEMNEWBIE=i_lockpick,5
 
-[NEWBIE STEALING]
+[NEWBIE MAGERY]
+// Magery 
+ITEMNEWBIE=i_spellbook
+ITEMNEWBIE=i_magic_reg30
+ITEMNEWBIE=i_scroll_night_sight
+ITEMNEWBIE=i_scroll_clumsy
+ITEMNEWBIE=i_scroll_create_food
+ITEMNEWBIE=i_scroll_feeblemind
+ITEMNEWBIE=i_scroll_heal
+ITEMNEWBIE=i_scroll_magic_arrow
+ITEMNEWBIE=i_scroll_night_sight
+ITEMNEWBIE=i_scroll_weaken
 
-[NEWBIE SWORDSMANSHIP]
-
-[NEWBIE SWORDSMANSHIP ELF]
-
-[NEWBIE SWORDSMANSHIP GARG]
+[NEWBIE MAGICRESISTANCE]
+// Resisting Spells 
 
 [NEWBIE TACTICS]
+// Tactics 
 
-[NEWBIE TACTICS ELF]
+[NEWBIE SNOOPING]
+// Snooping 
+ITEMNEWBIE=i_lockpick,4
 
-[NEWBIE TACTICS GARG]
+[NEWBIE MUSICIANSHIP]
+// Musicianship 
+ITEMNEWBIE=random_instrument
+
+[NEWBIE POISONING]
+// Poisoning 
+ITEMNEWBIE=i_potion_poison,2
+
+[NEWBIE ARCHERY]
+// Archery 
+ITEMNEWBIE=i_bow
+ITEMNEWBIE=i_arrow,25
+
+[NEWBIE SPIRITSPEAK]
+// Spirit Speak 
+ITEMNEWBIE=i_cape
+COLOR=colors_black
+
+[NEWBIE STEALING]
+// Steal 
+// ITEMNEWBIE=i_lockpick,4
+// ITEMNEWBIE=i_cape
+// COLOR=colors_black
 
 [NEWBIE TAILORING]
+// Tailoring 
+ITEMNEWBIE=i_sewing_kit
+ITEMNEWBIE=i_CLOTH
+COLOR=colors_neutral
+ITEMNEWBIE=i_CLOTH
+COLOR=colors_neutral
+ITEMNEWBIE=i_CLOTH
+COLOR=colors_neutral
+ITEMNEWBIE=i_CLOTH
+COLOR=colors_neutral
+ITEMNEWBIE=i_knife_skinning
+ITEMNEWBIE=i_scissors
 
 [NEWBIE TAMING]
+// Animal Training 
+ITEMNEWBIE=i_shepherds_crook
+ITEMNEWBIE=i_staff_taming
 
 [NEWBIE TASTEID]
+// Taste Identification 
+ITEMNEWBIE=random_potion
+ITEMNEWBIE=random_potion
+ITEMNEWBIE=random_potion
 
 [NEWBIE TINKERING]
+// Tinkering 
+ITEMNEWBIE=i_clock_frame
+ITEMNEWBIE=i_springs
+ITEMNEWBIE=i_tinker_tools
+ITEMNEWBIE=i_apron_half
+COLOR=colors_brown
 
 [NEWBIE TRACKING]
-
-[NEWBIE TRACKING ELF]
-
-[NEWBIE TRACKING GARG]
+// Tracking 
+ITEMNEWBIE=i_knife_skinning
+ITEMNEWBIE=i_boots_calf
+COLOR=colors_brown
 
 [NEWBIE VETERINARY]
+// Veterinary 
+ITEMNEWBIE=i_bandage,5
+ITEMNEWBIE=i_scissors
+
+[NEWBIE SWORDSMANSHIP]
+// Swordsmanship 
+ITEMNEWBIE=i_sword_long
+
+[NEWBIE MACEFIGHTING]
+// Mace Fighting 
+ITEMNEWBIE=i_mace
+
+[NEWBIE FENCING]
+// Fencing 
+ITEMNEWBIE=i_spear
 
 [NEWBIE WRESTLING]
+// Wrestling 
+ITEMNEWBIE=i_leather_gloves
 
-[NEWBIE WRESTLING ELF]
+[NEWBIE LUMBERJACKING]
+// Lumberjacking 
+ITEMNEWBIE=i_hatchet
 
-[NEWBIE WRESTLING GARG]
-
-[NEWBIE THROWING]
-
-[NEWBIE THROWING GARG]
+[NEWBIE MINING]
+// Mining 
+ITEMNEWBIE=i_pickaxe
 
 
 [EOF]

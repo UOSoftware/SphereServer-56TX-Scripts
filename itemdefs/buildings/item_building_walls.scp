@@ -535,8 +535,8 @@ DUPEITEM=07a
 [ITEMDEF 080]
 //This is the hardcoded ITEMDEF used by Wall of Stone spell
 //It has been excluded from the i_wall_hugebrick DUPELIST on purpose
-TEVENTS=ei_field_stone
-TEVENTS=ei_field
+// TEVENTS=ei_field_stone
+// TEVENTS=ei_field
 
 ON=@CREATE
 DISPID=i_wall_stone_8

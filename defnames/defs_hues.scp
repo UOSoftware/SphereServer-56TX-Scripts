@@ -39,13 +39,43 @@ color_dragonscale_blue       08b0
 color_tigerpelt_orange       0f3
 color_tigerpelt_black        0497
 
-// Custom
-color_magic_weap             0
-color_magic_defense          0
-color_magic_guarding         0
-color_magic_hardening        0
-color_magic_fortification    0
-color_magic_invulnerability  0
+
+// weapons
+// colors
+color_magic_weap			0
+color_magic_weap_ruin		0 // 02bc
+color_magic_weap_might		0 // 0373
+color_magic_weap_force		0 // 070d
+color_magic_weap_power		0 // 075f
+color_magic_weap_vanq		0 // 0454
+
+// morey
+morey_magic_weap			0
+morey_magic_weap_ruin		200
+morey_magic_weap_might		400
+morey_magic_weap_force		600
+morey_magic_weap_power		800
+morey_magic_weap_vanq		1000
+
+
+
+
+// armors
+// colors
+color_magic_defense			1650
+color_magic_guarding		1430
+color_magic_hardening		1353
+color_magic_fortification	1805
+color_magic_invulnerability	1887
+
+// morey
+morey_magic_armor					0
+morey_magic_armor_defense			200
+morey_magic_armor_guarding			400
+morey_magic_armor_hardening			600
+morey_magic_armor_fortification		800
+morey_magic_armor_invulnerability		1000
+
 
 [DEFNAME hues_range]
 colors_all             {2 1001}

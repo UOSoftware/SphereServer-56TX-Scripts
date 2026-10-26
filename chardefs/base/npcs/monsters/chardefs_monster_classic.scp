@@ -3623,6 +3623,7 @@ ON=@Createloot
 
 [CHARDEF 08c]
 DEFNAME=c_orc_shaman
+DEFNAME2=c_orc_mage
 NAME=Orc shaman
 SOUND=snd_monster_orc2_1
 ICON=i_pet_orc_shaman

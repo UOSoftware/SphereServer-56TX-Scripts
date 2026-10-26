@@ -2,12 +2,12 @@
 
 
 
-[PLEVEL 1]
-PINIM
+// [PLEVEL 1]
+// PINIM
 
 
-[FUNCTION PINIM]
-Func_Pin
+// [FUNCTION PINIM]
+// Func_Pin
 
 // [FUNCTION Func_PinSet]
 // ACCOUNT.TAG0.PINMD5 = <MD5HASH <ARGS>>
@@ -50,7 +50,7 @@ ENDIF
 
 
 
-[DIALOG D_PIN_Login]
+[DIALOG D_ACCOUNT_PIN_Login]
 0,0
 
 IF (<SRC.dTAG0.SCREENSIZE.W> <= 0)

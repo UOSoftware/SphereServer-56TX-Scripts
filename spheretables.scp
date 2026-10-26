@@ -126,6 +126,7 @@ itemdefs/decos/
 itemdefs/holidays/
 itemdefs/miscs/
 
+
 // Multidefs folder (before the deeds in itemdefs/provs/)
 multidefs/
 itemdefs/ships/ // ship parts
@@ -140,6 +141,7 @@ itemdefs/provs/weapons/defaults/
 
 itemdefs/themes/
 itemdefs/magics/
+itemdefs/magics/weapons/
 itemdefs/treasures/
 // itemdefs/typedefs/
 
@@ -165,6 +167,7 @@ spells/
 // Chardefs folder
 ////////////////////////
 chardefs/
+chardefs/base/
 chardefs/base/npcs/
 chardefs/base/npcs/monsters/
 chardefs/base/npcs/vendors/
@@ -174,7 +177,13 @@ chardefs/base/npcs/vendors/
 ////////////////////////
 // Systems folder
 ////////////////////////
-// systems/
+systems/
+systems/multis/
+systems/multis/ship/
+systems/multis/house/
+systems/stones/
+systems/stones/towns/
+systems/stones/guilds/
 
 ////////////////////////
 // Templates folder
@@ -194,8 +203,8 @@ tests/
 ////////////////////////
 // Spawns folder
 ////////////////////////
-// spawns/
-// spawns/monsters/
+spawns/
+spawns/monsters/
 
 
 ////////////////////////
@@ -210,57 +219,60 @@ regions/regions_types.scp
 
 // Map0
 moongates/map0_moongates.scp
-areadefs/map0_areas.scp
-areadefs/map0_areas_ml.scp
-areadefs/map0_areas_sa.scp
-areadefs/map0_areas_hs.scp
+
+areadefs/map0/map0_areas.scp
+areadefs/map0/map0_areas_ml.scp
+areadefs/map0/map0_areas_sa.scp
+areadefs/map0/map0_areas_hs.scp
 roomdefs/map0_rooms.scp
-teleporters/map0_teleports.scp
-teleporters/map0_teleports_ml.scp
-teleporters/map0_teleports_hs.scp
+
+teleporters/map0/map0_teleports.scp
+teleporters/map0/map0_teleports_ml.scp
+teleporters/map0/map0_teleports_hs.scp
 
 // Map1
 moongates/map1_moongates.scp
-areadefs/map1_areas.scp
-//areadefs/map1_areas_aos_old_haven.scp
-areadefs/map1_areas_ml_new_haven.scp
-areadefs/map1_areas_ml.scp
-areadefs/map1_areas_sa.scp
-areadefs/map1_areas_hs.scp
-// areadefs/map1_areas_tol.scp
+areadefs/map1/map1_areas.scp
+//areadefsmap1//map1_areas_aos_old_haven.scp
+areadefs/map1/map1_areas_ml_new_haven.scp
+areadefs/map1/map1_areas_ml.scp
+areadefs/map1/map1_areas_sa.scp
+areadefs/map1/map1_areas_hs.scp
+// areadefs/map1/map1_areas_tol.scp
 roomdefs/map1_rooms.scp
-teleporters/map1_teleports.scp
-teleporters/map1_teleports_ml.scp
-teleporters/map1_teleports_ml_new_haven.scp
-teleporters/map1_teleports_hs.scp
-teleporters/map1_teleports_tol.scp
+teleporters/map1/map1_teleports.scp
+teleporters/map1/map1_teleports_ml.scp
+teleporters/map1/map1_teleports_ml_new_haven.scp
+teleporters/map1/map1_teleports_hs.scp
+teleporters/map1/map1_teleports_tol.scp
 
 // Map2
-areadefs/map2_areas.scp
-areadefs/map2_areas_ml.scp
-teleporters/map2_teleports.scp
-teleporters/map2_teleports_ml.scp
+areadefs/map2/map2_areas.scp
+areadefs/map2/map2_areas_ml.scp
+teleporters/map2/map2_teleports.scp
+teleporters/map2/map2_teleports_ml.scp
 moongates/map2_moongates.scp
 
 // Map3
-areadefs/map3_areas.scp
-areadefs/map3_areas_ml.scp
-areadefs/map3_areas_se.scp
-teleporters/map3_teleports.scp
-teleporters/map3_teleports_ml.scp
-teleporters/map3_teleports_se.scp
+areadefs/map3/map3_areas.scp
+areadefs/map3/map3_areas_ml.scp
+areadefs/map3/map3_areas_se.scp
+teleporters/map3/map3_teleports.scp
+teleporters/map3/map3_teleports_ml.scp
+teleporters/map3/map3_teleports_se.scp
 moongates/map3_moongates.scp
 
 // Map4
-areadefs/map4_areas.scp
-teleporters/map4_teleports.scp
+areadefs/map4/map4_areas.scp
+teleporters/map4/map4_teleports.scp
 moongates/map4_moongates.scp
 
 // Map5
-areadefs/map5_areas.scp
-areadefs/map5_areas_tol.scp
-teleporters/map5_teleports.scp
-teleporters/map5_teleports_tol.scp
+areadefs/map5/map5_areas.scp
+areadefs/map5/map5_areas_tol.scp
+
+teleporters/map5/map5_teleports.scp
+teleporters/map5/map5_teleports_tol.scp
 moongates/map5_moongates.scp
 // moongates/map5_moongates_tol.scp
 

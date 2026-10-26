@@ -2,7 +2,7 @@
 // SphereServer by: SphereServer development team and Menasoft.
 // www.sphereserver.net
 //****************************************************************************
-VERSION=T1
+VERSION=TX
 
 //[STARTS version] If version == 2, after the P there's a line for the cliloc
 
