@@ -185,5 +185,21 @@ HITPOINTS={100 250}
 //leafblade
 DUPEITEM=02d22
 
+// X'ten (Scripts-X items/weapons/i_weapons.scp): canavarların loot'unda.
+
+[ITEMDEF i_bola_ball]
+//The bola ball is used to craft a bola, is is not actually ammunition
+ID=i_cannon_ball
+NAME=bola ball%s
+TYPE=t_normal
+WEIGHT=4.0
+SKILLMAKE=Tinkering 45.0, t_tinker_tools
+RESOURCES=10 i_ingot_iron
+CATEGORY=Provisions - Weapons - Throwing
+SUBSECTION=Bolas
+DESCRIPTION=Bola Ball
+ON=@Create
+   COLOR=08ac
+
 
 [EOF]

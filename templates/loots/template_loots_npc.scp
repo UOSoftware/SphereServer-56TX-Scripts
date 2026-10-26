@@ -3566,5 +3566,714 @@ COLOR=colors_neutral
 ITEMNEWBIE={ i_obi 1 0 2 }
 ITEMNEWBIE={ i_jinbaori 1 0 2 }
 
+// X'ten (Scripts-X templates/tm_loot.scp): chardefs/npcs/'deki NPC'lerin loot şablonları.
+
+[TEMPLATE loot_bogle]
+CATEGORY=Item Templates
+SUBSECTION=Monster Loot Templates
+DESCRIPTION=Bogle
+ITEM=i_gold,{10 50}
+ITEM=random_jewel,R3
+ITEM=random_armor_all,1,R12
+
+[TEMPLATE loot_lich_ancient]
+CATEGORY=Item Templates
+SUBSECTION=Monster Loot Templates
+DESCRIPTION=Lich (ancient)
+ITEM=i_gold,{1000 1100}
+ITEM=random_jewel,{3 4}
+ITEM=random_scroll,{2 3}
+ITEM=random_reagent,{6 9}
+//ITEM=i_map_treasure,1,R20
+ITEM={ random_weapon_staff_normal 99 i_staff_lich 1 }
+ITEM={ random_magic_loot 1 0 20 }
+ITEM=monster_regbag_necromancy
+ITEM=random_weapon_all_normal
+ITEM=random_armor_all
+CONTAINER=i_bag
+ITEM=i_gold,{500 600}
+ITEM=random_jewel,{2 3}
+ITEM=random_reagent,{5 8}
+ITEM=random_wand_magery
+ITEM={ random_item_misc_rare 1 0 200 }
+
+[TEMPLATE loot_lich_primeval]
+CATEGORY=Item Templates
+SUBSECTION=Monster Loot Templates
+DESCRIPTION=Lich (primeval)
+ITEM=i_gold,{1000 1100}
+ITEM=random_jewel,{3 4}
+ITEM=random_scroll,{2 3}
+ITEM=random_reagent,{6 9}
+ITEM={ random_weapon_staff_normal 99 i_staff_lich 1 }
+ITEM=random_magic_loot,1,R20
+ITEM=monster_regbag_necromancy
+ITEM=random_weapon_all_normal
+ITEM=random_armor_all
+//ITEM=i_map_treasure,1,R20
+//ITEM=i_lich_dust,{2 3},R5 // X'te de tanımı yok: i_lich_dust
+ITEM=random_artifact,1,R10
+CONTAINER=i_bag
+ITEM=i_gold,{500 600}
+ITEM=random_jewel,{2 3}
+ITEM=random_reagent,{5 8}
+ITEM=random_wand_magery
+ITEM=random_item_misc_rare,1,R20
+
+[TEMPLATE loot_wyrm_shadow]
+CATEGORY=Item Templates
+SUBSECTION=Monster Loot Templates
+DESCRIPTION=Wyrm (shadow)
+ITEM=i_gold,{775 900}
+ITEM={ random_item_dragonscale 1 0 20 },{1 2}
+ITEM={ random_item_carcass 1 0 100 }
+ITEM=random_potion
+ITEM=random_scroll,{2 3}
+ITEM=random_wand_magery
+//ITEM=i_map_treasure,R25
+ITEM={ random_poor_magic_loot 3 random_meager_magic_loot 2 random_average_magic_loot 1 random_rich_magic_loot 1 random_loaded_magic_loot 1 0 8 }
+ITEM=random_armor_all
+ITEM=random_weapon_all
+CONTAINER=i_bag
+ITEM=i_gold,{775 900}
+ITEM=random_potion,R2
+ITEM=random_scroll,R2
+ITEM={ random_magic_custom_greater 1 random_magic_jewelry 1 random_item_misc_rare 1 0 100 }
+
+[TEMPLATE loot_wyrm_white]
+CATEGORY=Item Templates
+SUBSECTION=Monster Loot Templates
+DESCRIPTION=Wyrm (white)
+ITEM=i_gold,{600 700}
+ITEM={ random_item_dragonscale 1 0 20 },{1 2}
+ITEM={ random_item_carcass 1 0 100 }
+ITEM=random_potion
+ITEM=random_scroll,{2 3}
+//ITEM=i_map_treasure,1,R20
+ITEM=random_armor_all
+ITEM=random_weapon_all
+CONTAINER=i_bag
+ITEM=i_gold,{600 700}
+ITEM=random_scroll,{1 2},R2
+ITEM=random_potion,1,R2
+ITEM=random_wand_magery,1,R3
+ITEM={ random_magic_custom_greater 1 random_magic_jewelry 1 random_item_misc_rare 1 0 100 }
+
+[TEMPLATE loot_dragon_stygian]
+CATEGORY=Item Templates
+SUBSECTION=Monster Loot Templates
+DESCRIPTION=Stygian Dragon
+ITEM=i_gold,{1500 2000}
+ITEM=random_potion,{2 3}
+ITEM=random_scroll,{2 3}
+ITEM=random_wand_magery
+ITEM=random_loaded_magic_loot
+ITEM=random_armor_all
+ITEM=random_weapon_all
+ITEM=random_item_dragonscale,{3 5},R5
+ITEM=random_item_carcass,1,R20
+//ITEM=i_map_treasure,1,R20
+CONTAINER=i_bag
+ITEM=i_gold,{1000 2000}
+ITEM=random_potion,1,R2
+ITEM=random_scroll,1,R2
+ITEM=random_loaded_magic_loot,1,R2
+ITEM=random_armor_all,1,R2
+ITEM=random_weapon_all,1,R2
+ITEM=random_magic_custom_greater,1,R6
+ITEM=random_magic_jewelry,1,R10
+ITEM=random_item_misc_rare,1,R25
+
+[TEMPLATE loot_dragon_stygian_lord]
+CATEGORY=Item Templates
+SUBSECTION=Monster Loot Templates
+DESCRIPTION=Stygian Dragon Lord
+ITEM=i_gold,{3000 4000}
+ITEM=random_potion,{2 3}
+ITEM=random_potion,{2 3},R2
+ITEM=random_scroll,{2 3}
+ITEM=random_scroll,{2 3},R2
+ITEM=random_wand_magery
+ITEM=random_wand_magery,1,R2
+ITEM=random_loaded_magic_loot
+ITEM=random_armor_all
+ITEM=random_weapon_all
+ITEM=random_item_dragonscale,{5 8},R5
+ITEM=random_item_carcass,1,R25
+//ITEM=i_map_treasure,R10
+CONTAINER=i_bag
+ITEM=i_gold,{2000 3000}
+ITEM=random_potion,R2
+ITEM=random_scroll,R2
+ITEM=random_loaded_magic_loot
+ITEM=random_armor_all
+ITEM=random_weapon_all
+ITEM=random_magic_custom_greater,1,R4
+ITEM=random_magic_jewelry,1,R8
+ITEM=random_item_misc_rare,1,R16
+
+/////////////////////////////////////
+// Gargoyle, Devil, and Demon loot //
+
+[TEMPLATE loot_gargoyle_enslaved]
+CATEGORY=Item Templates
+SUBSECTION=Monster Loot Templates
+DESCRIPTION=Gargoyle (enslaved)
+ITEM=i_gold,{125 150}
+ITEM=random_jewel,{1 2}
+//ITEM=i_map_treasure,R99
+CONTAINER=i_bag
+ITEM=i_gold,{125 150}
+ITEM=random_jewel,R2
+ITEM=random_tool_digging
+
+[TEMPLATE loot_gargoyle_enforcer]
+CATEGORY=Item Templates
+SUBSECTION=Monster Loot Templates
+DESCRIPTION=Gargoyle (enforcer)
+ITEM=i_gold,{150 175}
+ITEM=random_jewel,{1 4}
+ITEM=random_potion,R2
+ITEM=random_scroll,R2
+ITEM=random_weapon_axe_normal
+CONTAINER=i_bag
+ITEM=i_gold,{125 150}
+ITEM=random_jewel,{1 2},R3
+ITEM=random_wand_magery,1,R15
+
+[TEMPLATE loot_mimic]
+CATEGORY=Item Templates
+SUBSECTION=Monster Loot Templates
+DESCRIPTION=Mimic
+ITEM=i_gold,{1000 1200}
+ITEM=random_jewel,{1 3}
+ITEM=random_scroll,{1 3}
+ITEM=random_reagent,{4 6}
+ITEM=random_magic_loot,1,R12
+CONTAINER=i_bag
+ITEM=i_gold,{400 600}
+ITEM=random_jewel,{1 3},R2
+ITEM=random_reagent,{4 6},R3
+ITEM=random_wand_magery,1,R5
+//ITEM=i_map_treasure,1,R80
+
+[TEMPLATE loot_steed_silver]
+CATEGORY=Item Templates
+SUBSECTION=Monster Loot Templates
+DESCRIPTION=Steed (silver)
+ITEM=i_gold,{400 500}
+ITEM=random_reagent,{2 4}
+ITEM=random_scroll,{1 2}
+ITEM=random_potion
+ITEM={ random_weapon_all 50 random_armor_all 100 random_magic_custom_lesser 1 }
+
+[TEMPLATE loot_steed_dark]
+CATEGORY=Item Templates
+SUBSECTION=Monster Loot Templates
+DESCRIPTION=Steed (dark)
+ITEM=i_gold,{400 500}
+ITEM=random_reagent,{2 4}
+ITEM=random_scroll,{1 2}
+ITEM=random_potion
+ITEM={ random_weapon_all 50 random_armor_all 100 random_magic_custom_lesser 1 }
+
+[TEMPLATE loot_nightmare]
+CATEGORY=Item Templates
+SUBSECTION=Monster Loot Templates
+DESCRIPTION=Nightmare
+ITEM=i_gold,{400 500}
+ITEM=i_reag_sulfur_ash,{2 4}
+ITEM=random_scroll,{1 2}
+ITEM=random_potion
+ITEM={ random_weapon_all 50 random_armor_all 50 random_magic_custom_lesser 1 }
+
+[TEMPLATE loot_warhorse_dread]
+CATEGORY=Item Templates
+SUBSECTION=Monster Loot Templates
+DESCRIPTION=Dread Warhorse
+ITEM=i_gold,{400 500}
+ITEM=i_reag_sulfur_ash,{2 4}
+ITEM=random_scroll,{1 2}
+ITEM=random_potion
+ITEM={ random_weapon_all 50 random_armor_all 50 random_magic_custom_lesser 1 }
+
+[TEMPLATE loot_steed_fire]
+CATEGORY=Item Templates
+SUBSECTION=Monster Loot Templates
+DESCRIPTION=Fire Steed
+ITEM=i_gold,{50 100}
+ITEM=random_jewel,{15 20}
+ITEM=i_reag_sulfur_ash,{6 9}
+
+[TEMPLATE loot_serpent_coil]
+CATEGORY=Item Templates
+SUBSECTION=Monster Loot Templates
+DESCRIPTION=Giant Serpent (Coil)
+ITEM=i_gold,{200 250}
+ITEM={ random_body_parts_1 1 random_body_parts_2 1 random_item_bone 1 }
+ITEM={ random_weapon_all_normal 1 random_armor_all 1 }
+
+
+/////////////////////////////////
+// Ogre, Ettin, and Giant loot //
+
+[TEMPLATE loot_juka_warrior]
+CATEGORY=Item Templates
+SUBSECTION=Monster Loot Templates
+DESCRIPTION=Juka Warrior
+ITEM=i_gold,{100 125}
+ITEM=random_jewel,{1 2}
+ITEM=random_armor_all
+CONTAINER=i_bag
+ITEM=i_gold,{75 100}
+ITEM=random_jewel,{1 2},R3
+
+[TEMPLATE loot_dawn]
+CATEGORY=Item Templates
+SUBSECTION=Monster Loot Templates
+DESCRIPTION=Dawn
+ITEM=i_gold,{800 900}
+ITEM=random_potion
+ITEM=random_scroll,{2 3}
+ITEM=random_wand_magery
+//ITEM=i_map_treasure,R25
+ITEM=random_armor_all
+ITEM=random_armor_all
+ITEM=random_weapon_all
+CONTAINER=i_bag
+ITEM=i_gold,{800 900}
+ITEM=random_potion,R2
+ITEM=random_scroll,R2
+ITEM=random_magic_custom_greater,1,R20
+ITEM=random_magic_jewelry,1,R30
+ITEM=random_item_misc_rare,1,R140
+//ITEM=i_gem_arcane,{1 2},R5 // arcane gem (t_gem_arcane) pakette yok: i_gem_arcane
+//ITEM=i_clockworks,1,R50
+ITEM=i_dawns_music_box,1,R999
+
+///////////////
+// Meer loot //
+
+[TEMPLATE loot_homunculus]
+CATEGORY=Item Templates
+SUBSECTION=Monster Loot Templates
+DESCRIPTION=Homunculus
+ITEM=i_gold,{100 125}
+ITEM=random_potion
+ITEM=random_scroll,{1 3}
+ITEM=i_reag_nightshade,{5 9}
+ITEM=random_scroll,{1 2},R2
+//ITEM=i_map_treasure,R99
+CONTAINER=i_bag
+ITEM=i_gold,{50 75}
+ITEM=random_potion,R2
+ITEM=random_reagent,{5 9},R2
+ITEM=random_scroll,{1 3},R3
+ITEM=random_wand_magery,R40
+
+[TEMPLATE loot_wisp_dark]
+CATEGORY=Item Templates
+SUBSECTION=Monster Loot Templates
+DESCRIPTION=Wisp (dark)
+ITEM=i_gold,{300 350}
+ITEM={ random_weapon_all 1 0 35 }
+CONTAINER=i_bag
+ITEM=i_gold,{100 150}
+ITEM=random_scroll
+
+[TEMPLATE loot_harrower_tentacles]
+CATEGORY=Item Templates
+SUBSECTION=Monster Loot Templates
+DESCRIPTION=Harrower (tentacles)
+ITEM=i_gold,{500 700}
+ITEM=random_jewel,{1 3}
+ITEM=random_scroll,{1 3}
+ITEM=random_reagent,{5 9}
+ITEM=monster_regbag_necromancy
+ITEM={ random_magic_jewelry_lesser 1 random_magic_custom_lesser 1 random_magic_custom_greater 1 random_item_misc_rare 1 0 200 }
+ITEM=random_weapon_all
+CONTAINER=i_bag
+ITEM=i_gold,{400 600}
+ITEM=random_scroll,{1 3}
+ITEM=random_reagent,{5 9}
+ITEM=random_wand_magery,1,R5
+ITEM=random_armor_all
+
+[TEMPLATE loot_bogling]
+CATEGORY=Item Templates
+SUBSECTION=Monster Loot Templates
+DESCRIPTION=Bogling
+ITEM=i_gold,{50 100}
+ITEM=random_log,{3 5}
+//FIXME: random_seed
+
+[TEMPLATE loot_ethereal_warrior]
+CATEGORY=Item Templates
+SUBSECTION=Monster Loot Templates
+DESCRIPTION=Ethereal Warrior
+ITEM=i_gold,{500 550}
+ITEM=random_jewel,{1 2}
+ITEM=random_armor_european
+ITEM=random_weapon_all
+CONTAINER=i_bag
+ITEM=i_gold,{250 400}
+ITEM=random_magic_loot,1,R50
+
+[TEMPLATE loot_werewolf]
+CATEGORY=Item Templates
+SUBSECTION=Monster Loot Templates
+DESCRIPTION=Werewolf
+ITEM=i_gold,{75 100}
+ITEM=random_jewel,{1 2}
+ITEM=random_body_parts_1,R2
+CONTAINER=i_bag
+ITEM=i_gold,{50 75}
+ITEM=random_jewel,R2
+ITEM=random_body_parts_2,R5
+
+///////////////////
+// Minotaur loot //
+
+[TEMPLATE loot_minotaur_lord]
+CATEGORY=Item Templates
+SUBSECTION=Monster Loot Templates
+DESCRIPTION=Minotaur (lord)
+ITEM=i_gold,{800 950}
+ITEM=random_magic_loot,1,R5
+//ITEM=i_map_treasure,R5
+
+
+/////////////////////////////
+// Champion Loot Templates //
+
+[TEMPLATE loot_champ_rikktor]
+CATEGORY=Item Templates
+SUBSECTION=Champion Loot Templates
+DESCRIPTION=Rikktor
+ITEM=i_gold,{3000 3500}
+ITEM=random_jewel,{3 5}
+ITEM={ random_item_dragonscale 1 0 20 },{1 2}
+ITEM={ random_item_carcass 1 0 100 }
+ITEM=random_armor_all
+CONTAINER=i_bag
+ITEM=i_gold,{1000 1500}
+ITEM=random_jewel,{3 5}
+ITEM=random_weapon_all
+ITEM={ random_body_parts_1 1 random_body_parts_2 1 0 5 }
+ITEM={ random_magic_custom_greater 1 random_magic_jewelry 1 random_item_misc_rare 1 0 100 }
+
+[TEMPLATE loot_champ_mephitis]
+CATEGORY=Item Templates
+SUBSECTION=Champion Loot Templates
+DESCRIPTION=Mephitis
+ITEM=i_gold,{1500 1750}
+ITEM=random_jewel,{3 5}
+ITEM={ random_item_carcass 1 0 100 }
+ITEM=random_armor_all
+CONTAINER=i_bag
+ITEM=i_gold,{1000 1250}
+ITEM=random_jewel,{1 3}
+ITEM=random_weapon_all
+ITEM={ random_body_parts_1 1 random_body_parts_2 1 0 5 }
+ITEM={ random_magic_custom_greater 1 random_magic_jewelry 1 random_item_misc_rare 1 0 100 }
+
+[TEMPLATE loot_champ_navrey]
+CATEGORY=Item Templates
+SUBSECTION=Champion Loot Templates
+DESCRIPTION=Navrey Night-Eyes
+ITEM=i_gold,{1500 1750}
+ITEM=random_jewel,{3 5}
+ITEM={ random_item_carcass 1 0 20 }
+ITEM=random_armor_all
+ITEM=random_weapon_all
+ITEM=i_spider_carapace,{1 3}
+ITEM=random_artifact,1,R10
+ITEM=random_scroll,{1 3}
+ITEM=random_reagent,{4 6}
+CONTAINER=i_bag
+ITEM=i_gold,{1000 1250}
+ITEM=random_jewel,{1 3}
+ITEM=random_scroll,{1 3},R2
+ITEM=random_reagent,{4 6},R2
+ITEM=random_weapon_all
+ITEM={ random_body_parts_1 1 random_body_parts_2 1 0 5 }
+ITEM={ random_magic_custom_greater 1 random_magic_jewelry 1 random_item_misc_rare 1 0 100 }
+ITEM=random_artifact,1,R10
+
+[TEMPLATE loot_champ_semidar]
+CATEGORY=Item Templates
+SUBSECTION=Champion Loot Templates
+DESCRIPTION=Semidar
+ITEM=i_gold,{2000 4000}
+ITEM=random_jewel,{3 5}
+ITEM=random_armor_all
+ITEM=random_weapon_all
+ITEM=random_scroll,{1 3}
+ITEM=random_reagent,{5 9}
+ITEM=random_wand_magery,1,R5
+CONTAINER=i_bag
+ITEM=i_gold,{1500 2000}
+ITEM=random_jewel,{1 3}
+//ITEM=i_map_treasure,1,R20
+ITEM={ random_magic_custom_greater 1 random_magic_jewelry 1 random_item_misc_rare 1 0 100 }
+
+[TEMPLATE loot_champ_lord_oaks]
+CATEGORY=Item Templates
+SUBSECTION=Champion Loot Templates
+DESCRIPTION=Lord Oaks
+ITEM=i_gold,{2000 4000}
+ITEM=random_jewel,{3 5}
+ITEM=random_armor_all
+ITEM=random_weapon_all
+ITEM=random_scroll,{1 3}
+ITEM=random_reagent,{5 9}
+ITEM=random_wand_magery,1,R5
+CONTAINER=i_bag
+ITEM=i_gold,{1500 2000}
+ITEM=random_jewel,{1 3}
+//ITEM=i_map_treasure,1,R20
+ITEM={ random_magic_custom_greater 1 random_magic_jewelry 1 random_item_misc_rare 1 0 100 }
+
+[TEMPLATE loot_champ_silvani]
+CATEGORY=Item Templates
+SUBSECTION=Champion Loot Templates
+DESCRIPTION=Silvani
+ITEM=i_gold,{1000 1500}
+ITEM=random_jewel,{3 5}
+ITEM=random_armor_all
+ITEM=random_scroll,{1 3}
+ITEM=random_reagent,{5 9}
+ITEM=random_wand_magery,1,R5
+CONTAINER=i_bag
+ITEM=i_gold,{1000 1500}
+ITEM=random_jewel,{1 3}
+ITEM=random_weapon_all
+//ITEM=i_map_treasure,1,R20
+ITEM={ random_magic_custom_greater 1 random_magic_jewelry 1 random_item_misc_rare 1 0 100 }
+
+[TEMPLATE loot_impaler]
+CATEGORY=Item Templates
+SUBSECTION=Champion Loot Templates
+DESCRIPTION=Impaler
+ITEM=i_gold,{1000 1000}
+ITEM=random_jewel,{3 5}
+ITEM={ random_item_carcass 1 0 100 }
+ITEM=random_armor_all
+ITEM=random_weapon_all
+CONTAINER=i_bag
+ITEM=i_gold,{600 1000}
+ITEM=random_jewel,{3 5}
+ITEM={ random_body_parts_1 1 random_body_parts_2 1 0 5 }
+ITEM={ random_magic_custom_greater 1 random_magic_jewelry 1 random_item_misc_rare 1 0 100 }
+
+[TEMPLATE loot_bone_demon]
+CATEGORY=Item Templates
+SUBSECTION=Champion Loot Templates
+DESCRIPTION=Bone Demon
+ITEM=i_gold,{2000 2500}
+ITEM=random_jewel,{3 5}
+ITEM=random_armor_all
+ITEM=random_weapon_all
+ITEM=random_item_carcass,1,R30
+CONTAINER=i_bag
+ITEM=i_gold,{2000 2500}
+ITEM=random_jewel,{3 5}
+ITEM={ random_body_parts_1 1 random_body_parts_2 1 0 5 }
+ITEM={ random_magic_custom_greater 1 random_magic_jewelry 1 random_item_misc_rare 1 0 100 }
+
+[TEMPLATE loot_shadow_knight]
+CATEGORY=Item Templates
+SUBSECTION=Champion Loot Templates
+DESCRIPTION=Shadow Knight
+ITEM=i_gold,{1000 1200}
+ITEM=random_jewel,{3 5}
+ITEM=random_armor_all
+ITEM=random_weapon_all
+CONTAINER=i_bag
+ITEM=i_gold,{600 800}
+ITEM=random_jewel,{3 5}
+ITEM={ random_magic_custom_greater 1 random_magic_jewelry 1 random_item_misc_rare 1 0 100 }
+
+[TEMPLATE loot_darknight_creeper]
+CATEGORY=Item Templates
+SUBSECTION=Champion Loot Templates
+DESCRIPTION=Darknight Creeper
+ITEM=i_gold,{1000 1200}
+ITEM=random_jewel,{3 5}
+ITEM=random_armor_all
+ITEM=random_weapon_all
+ITEM=monster_regbag_necromancy
+ITEM={ random_body_parts_1 1 random_body_parts_2 1 0 5 }
+CONTAINER=i_bag
+ITEM=i_gold,{600 800}
+ITEM=random_jewel,{3 5}
+ITEM=random_item_carcass,1,R30
+ITEM={ random_magic_custom_greater 1 random_magic_jewelry 1 random_item_misc_rare 1 0 100 }
+
+[TEMPLATE loot_flesh_renderer]
+CATEGORY=Item Templates
+SUBSECTION=Champion Loot Templates
+DESCRIPTION=Flesh Renderer
+ITEM=i_gold,{1600 2000}
+ITEM=random_jewel,{3 5}
+ITEM=random_weapon_all
+ITEM=random_body_parts_1,R2
+ITEM=random_body_parts_2,R5
+ITEM=random_item_bone,R15
+ITEM=random_item_carcass,1,R30
+
+[TEMPLATE loot_paroxysmus]
+CATEGORY=Item Templates
+SUBSECTION=Champion Loot Templates
+DESCRIPTION=Paroxysmus
+ITEM=i_gold,{1800 2500}
+ITEM=random_jewel,{3 5}
+ITEM=random_scroll,{5 10}
+ITEM=random_scroll,{5 10}
+ITEM=random_reagent,{5 10}
+ITEM=random_armor_all
+ITEM=random_weapon_all
+ITEM={i_pet_dragon_paroxysmus 10 i_lard_paroxysmus 1} // listeden çıkarıldı (X'te de tanımı yok): i_paroxysmus_dinner, i_paroxysmus_stein, i_paroxysmus_sweat, i_paroxysmus_victims, i_scepter_paroxysmus
+ITEM={i_blight 1 i_corruption 1 i_scourge 1 i_taint 1 i_putrefaction 1 i_muculent 1}
+ITEM={i_blight 1 i_corruption 1 i_scourge 1 i_taint 1 i_putrefaction 1 i_muculent 1}
+ITEM={i_blight 1 i_corruption 1 i_scourge 1 i_taint 1 i_putrefaction 1 i_muculent 1}
+ITEM={i_blight 1 i_corruption 1 i_scourge 1 i_taint 1 i_putrefaction 1 i_muculent 1}
+ITEM={i_blight 1 i_corruption 1 i_scourge 1 i_taint 1 i_putrefaction 1 i_muculent 1}
+ITEM={i_blight 1 i_corruption 1 i_scourge 1 i_taint 1 i_putrefaction 1 i_muculent 1}
+ITEM={i_blight 1 i_corruption 1 i_scourge 1 i_taint 1 i_putrefaction 1 i_muculent 1}
+ITEM={i_blight 1 i_corruption 1 i_scourge 1 i_taint 1 i_putrefaction 1 i_muculent 1}
+
+[TEMPLATE loot_dread_horn]
+CATEGORY=Item Templates
+SUBSECTION=Champion Loot Templates
+DESCRIPTION=Dread Horn
+ITEM=i_gold,{1800 2300}
+ITEM=random_jewel,{3 5}
+ITEM=random_scroll,{5 10}
+ITEM=random_scroll,{5 10}
+ITEM=random_reagent,{5 10}
+ITEM=random_armor_all
+ITEM=random_weapon_all
+ITEM={i_mangled_head_dread_horn 40 i_pristine_dread_horn 10 i_dread_revenge 1 i_mane_dread_horn 1} // listeden çıkarıldı (X'te de tanımı yok): i_horn_dread, i_dread_horn_heart, i_flute_dread
+ITEM={i_tainted_shroom1 15 i_tainted_shroom2 15 i_tainted_shroom3 15 i_tainted_shroom4 1}
+ITEM={i_blight 1 i_corruption 1 i_scourge 1 i_taint 1 i_putrefaction 1 i_muculent 1}
+ITEM={i_blight 1 i_corruption 1 i_scourge 1 i_taint 1 i_putrefaction 1 i_muculent 1}
+ITEM={i_blight 1 i_corruption 1 i_scourge 1 i_taint 1 i_putrefaction 1 i_muculent 1}
+ITEM={i_blight 1 i_corruption 1 i_scourge 1 i_taint 1 i_putrefaction 1 i_muculent 1}
+ITEM={i_blight 1 i_corruption 1 i_scourge 1 i_taint 1 i_putrefaction 1 i_muculent 1}
+ITEM={i_blight 1 i_corruption 1 i_scourge 1 i_taint 1 i_putrefaction 1 i_muculent 1}
+ITEM={i_blight 1 i_corruption 1 i_scourge 1 i_taint 1 i_putrefaction 1 i_muculent 1}
+ITEM={i_blight 1 i_corruption 1 i_scourge 1 i_taint 1 i_putrefaction 1 i_muculent 1}
+ITEM=random_artifact,1,R25
+
+[TEMPLATE loot_lady_melisande]
+CATEGORY=Item Templates
+SUBSECTION=Champion Loot Templates
+DESCRIPTION=Lady Melisande
+ITEM=random_jewel,{3 5}
+ITEM=random_scroll,{5 10}
+ITEM=random_scroll,{5 10}
+ITEM=random_reagent,{5 10}
+ITEM=monster_regbag_necromancy
+ITEM=random_armor_all
+ITEM=random_weapon_all
+ITEM=i_gold,{1500 2000}
+ITEM={i_crystal_squirrel 10 i_hatchet_melisande 1 i_bark_diseased 1}//i_tree_corrupt rare_hair_dyes // listeden çıkarıldı (X'te de tanımı yok): i_bottle_wine_melisande
+ITEM={i_blight 1 i_corruption 1 i_scourge 1 i_taint 1 i_putrefaction 1 i_muculent 1}
+ITEM={i_blight 1 i_corruption 1 i_scourge 1 i_taint 1 i_putrefaction 1 i_muculent 1}
+ITEM={i_blight 1 i_corruption 1 i_scourge 1 i_taint 1 i_putrefaction 1 i_muculent 1}
+ITEM={i_blight 1 i_corruption 1 i_scourge 1 i_taint 1 i_putrefaction 1 i_muculent 1}
+ITEM={i_blight 1 i_corruption 1 i_scourge 1 i_taint 1 i_putrefaction 1 i_muculent 1}
+ITEM={i_blight 1 i_corruption 1 i_scourge 1 i_taint 1 i_putrefaction 1 i_muculent 1}
+ITEM={i_blight 1 i_corruption 1 i_scourge 1 i_taint 1 i_putrefaction 1 i_muculent 1}
+ITEM={i_blight 1 i_corruption 1 i_scourge 1 i_taint 1 i_putrefaction 1 i_muculent 1}
+
+[TEMPLATE loot_shimmering_effusion]
+CATEGORY=Item Templates
+SUBSECTION=Champion Loot Templates
+DESCRIPTION=Shimmering Effusion
+ITEM=random_jewel,{3 5}
+ITEM=random_jewel,{3 5}
+ITEM=random_weapon_mace_normal
+ITEM=random_armor_all
+ITEM={i_captured_essence 100 i_prismatic_crystal 10 i_ring_crystalline 1}//other shimmering crystals?
+ITEM={i_blight 1 i_corruption 1 i_scourge 1 i_taint 1 i_putrefaction 1 i_muculent 1}
+ITEM={i_blight 1 i_corruption 1 i_scourge 1 i_taint 1 i_putrefaction 1 i_muculent 1}
+ITEM={i_blight 1 i_corruption 1 i_scourge 1 i_taint 1 i_putrefaction 1 i_muculent 1}
+ITEM={i_blight 1 i_corruption 1 i_scourge 1 i_taint 1 i_putrefaction 1 i_muculent 1}
+ITEM={i_blight 1 i_corruption 1 i_scourge 1 i_taint 1 i_putrefaction 1 i_muculent 1}
+ITEM={i_blight 1 i_corruption 1 i_scourge 1 i_taint 1 i_putrefaction 1 i_muculent 1}
+ITEM={i_blight 1 i_corruption 1 i_scourge 1 i_taint 1 i_putrefaction 1 i_muculent 1}
+ITEM={i_blight 1 i_corruption 1 i_scourge 1 i_taint 1 i_putrefaction 1 i_muculent 1}
+
+[TEMPLATE loot_medusa]
+CATEGORY=Item Templates
+SUBSECTION=Monster Loot Templates
+DESCRIPTION=Medusa
+ITEM=i_gold,{4000 5000}
+ITEM=random_potion,{2 3}
+ITEM=random_scroll,{2 3}
+ITEM=random_reagent,{4 6}
+ITEM=loaded_monster_goodie_4
+ITEM={ random_magic_custom_greater 1 random_magic_jewelry 1 random_item_misc_rare 1 0 100 }
+//ITEM=i_map_treasure,R99
+CONTAINER=i_bag
+ITEM=i_gold,{1000 1750}
+ITEM=random_weapon_all
+ITEM=random_armor_all
+ITEM=random_potion
+ITEM=random_wand_magery,R5
+ITEM=random_scroll,{1 2}
+ITEM=random_reagent,{3 5}
+
+[TEMPLATE loot_slasher_of_veils]
+CATEGORY=Item Templates
+SUBSECTION=Champion Loot Templates
+DESCRIPTION=Slasher of Veils
+ITEM=i_gold,{3200 4500}
+ITEM=random_jewel,{3 5}
+ITEM=random_scroll,{5 10}
+ITEM=random_scroll,{5 10}
+ITEM=random_reagent,{5 10}
+ITEM=random_reagent,{5 10}
+ITEM=monster_regbag_necromancy
+ITEM=random_armor_all
+ITEM=random_weapon_all
+ITEM=random_artifact,1,R5
+ITEM=random_body_parts_1,1,R5
+ITEM=random_item_carcass,1,R10
+ITEM=i_claw_slasher_of_veils,R5
+ITEM=random_loaded_magic_loot,1,R5
+CONTAINER=i_bag
+ITEM=i_gold,{2000 1500}
+ITEM=random_jewel,{3 5}
+ITEM=random_reagent,{5 10}
+ITEM=random_scroll,{5 10}
+ITEM=random_scroll,{5 10}
+ITEM=random_armor_all,R5
+ITEM=random_weapon_all,R5
+ITEM=random_body_parts_2,1,R5
+ITEM=random_magic_loot,1,R5
+ITEM=random_magic_custom_greater,R20
+ITEM=random_magic_jewelry,1,R30
+ITEM=random_item_misc_rare,1,R40
+ITEM=random_artifact,1,R5
+
+[TEMPLATE loot_champ_scalis]
+CATEGORY=Item Templates
+SUBSECTION=Champion Loot Templates
+DESCRIPTION=Scalis
+ITEM=i_gold,{3000 3500}
+ITEM=random_jewel,{3 5}
+ITEM={ random_item_dragonscale 1 0 20 },{1 2}
+ITEM={ random_item_carcass 1 0 100 }
+ITEM=random_armor_all
+CONTAINER=i_bag
+ITEM=i_gold,{1000 1500}
+ITEM=random_jewel,{3 5}
+ITEM=random_weapon_all
+ITEM={ random_body_parts_1 1 random_body_parts_2 1 0 5 }
+ITEM={ random_magic_custom_greater 1 random_magic_jewelry 1 random_item_misc_rare 1 0 100 }
+
 
 [EOF]

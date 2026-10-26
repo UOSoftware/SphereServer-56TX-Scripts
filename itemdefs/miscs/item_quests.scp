@@ -2184,4 +2184,90 @@ DESCRIPTION=Lute tuned to Stones
 ON=@Create
 UsesMax={350 450}
 
+// X'ten (Scripts-X items/i_quests.scp): chardefs/npcs/ ve loot şablonlarının kullandığı eşyalar.
+
+[ITEMDEF i_tainted_shroom1]
+ID=0222f
+NAME=dread horn tainted mushroom
+TYPE=t_normal
+WEIGHT=5.0
+VALUE=3
+CATEGORY=Quests
+SUBSECTION=Twisted Weald
+DESCRIPTION=Tainted Mushroom 1
+
+[ITEMDEF i_tainted_shroom2]
+ID=02231
+NAME=dread horn tainted mushroom
+TYPE=t_normal
+WEIGHT=5.0
+VALUE=3
+CATEGORY=Quests
+SUBSECTION=Twisted Weald
+DESCRIPTION=Tainted Mushroom 2
+
+[ITEMDEF i_tainted_shroom3]
+ID=02230
+NAME=dread horn tainted mushroom
+TYPE=t_normal
+WEIGHT=5.0
+VALUE=3
+CATEGORY=Quests
+SUBSECTION=Twisted Weald
+DESCRIPTION=Tainted Mushroom 3
+
+[ITEMDEF i_tainted_shroom4]
+ID=0222e
+NAME=dread horn tainted mushroom
+TYPE=t_normal
+WEIGHT=5.0
+VALUE=3
+CATEGORY=Quests
+SUBSECTION=Twisted Weald
+DESCRIPTION=Tainted Mushroom 4
+
+[ITEMDEF i_salivas_feather]
+ID=0fc2
+NAME=Saliva's feather
+TYPE=t_normal
+VALUE=2
+WEIGHT=.1
+CATEGORY=Quests
+SUBSECTION=Quest Items
+DESCRIPTION=Saliva's Feather
+ON=@Create
+   COLOR=colors_yellow
+
+[ITEMDEF i_hydra_scale]
+ID=i_dragonscale
+NAME=hydra's scales
+TYPE=T_INGOT
+VALUE=3
+PILE=1
+WEIGHT=.1
+CATEGORY=Quests
+SUBSECTION=Hydra
+DESCRIPTION=Hydra Scales
+
+ON=@Create
+ COLOR=002B4
+
+[ITEMDEF i_thrashers_tail]
+ID=i_hide
+NAME=Thrasher's tail
+TYPE=t_hide
+CATEGORY=Quests
+SUBSECTION=Thrasher
+DESCRIPTION=Thrasher's tail
+
+[ITEMDEF i_resolves_bridle]
+ID=i_bridle_horse
+NAME=Resolve's bridle
+WEIGHT=5
+RESOURCES=2 i_hide, 1 i_ingot_iron
+CATEGORY=Quests
+SUBSECTION=Resolve
+DESCRIPTION=Resolve's Bridle
+
+
 [EOF]

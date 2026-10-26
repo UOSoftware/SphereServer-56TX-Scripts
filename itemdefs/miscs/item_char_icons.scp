@@ -4268,5 +4268,50 @@ CATEGORY=Miscellaneous
 SUBSECTION=Character Icons
 DESCRIPTION=Horse (gray)
 
+// X'ten (Scripts-X items/i_char_icons.scp): chardefs/npcs/'deki NPC'lerin ikonları.
+
+[ITEMDEF 02634]
+DEFNAME=i_pet_dragon_crimson
+NAME=Crimson Dragon
+TYPE=t_figurine
+TDATA3=c_dragon_crimson
+CATEGORY=Miscellaneous
+SUBSECTION=Character Icons
+DESCRIPTION=Crimson Dragon
+
+[ITEMDEF 02635]
+DEFNAME=i_pet_dragon_platinum
+NAME=Platinum Dragon
+TYPE=t_figurine
+TDATA3=c_dragon_platinum
+CATEGORY=Miscellaneous
+SUBSECTION=Character Icons
+DESCRIPTION=Platinum Dragon
+
+[ITEMDEF i_pet_dragon_paroxysmus]
+DEFNAME=i_pet_dragon_paroxysmus
+ID=i_pet_dragon_swamp
+NAME=Paroxysmus' Swamp Dragon
+TYPE=t_figurine
+TDATA3=c_pet_dragon_paroxysmus
+VALUE={1050 1100}
+CATEGORY=Miscellaneous
+SUBSECTION=Character Icons
+DESCRIPTION=Paroxysmus' Swamp Dragon
+
+[ITEMDEF i_crystal_squirrel]
+DEFNAME=i_crystal_squirrel
+ID=i_pet_squirrel
+NAME=Albinos Squirrel
+TYPE=t_figurine
+TDATA3=c_squirrel_albino
+VALUE={25 50}
+CATEGORY=Miscellaneous
+SUBSECTION=Character Icons
+DESCRIPTION=Albinos Squirrel
+
+ON=@Create
+   COLOR=047e
+
 
 [EOF]

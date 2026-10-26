@@ -149,5 +149,19 @@ ENDIF
 
 [EVENTS e_Minotaurs]
 
+// X'in NPC etiket event'leri (Scripts-X events/e_npcs_pack_instincts.scp): boş event'ler;
+// NPC'lerin DESIRES ve AVERSIONS satırları bunlara bakar (AVERSIONS=e_carnivores3...).
+
+[EVENTS e_Carnivores]
+// weak carnivores.
+
+[EVENTS e_Carnivores2]
+// normal carnivores.
+
+[EVENTS e_Carnivores3]
+// strong carnivores.
+
+[EVENTS e_Notoriety]
+
 
 [eof]

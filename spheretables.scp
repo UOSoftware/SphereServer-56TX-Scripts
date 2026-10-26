@@ -163,10 +163,10 @@ spells/
 // Chardefs folder
 ////////////////////////
 chardefs/
-// chardefs/npcs/
-// chardefs/npcs/monsters/
+chardefs/npcs/
+chardefs/npcs/monsters/
 // chardefs/npcs/mounts/
-// chardefs/npcs/vendors/
+chardefs/npcs/vendors/
 
 ////////////////////////
 // Systems folder
