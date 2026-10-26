@@ -1,13 +1,15 @@
-VERSION=0.56T
+VERSION=TX
 
 // sphere.ini EventsChar: oyuncu karakterlere (staff dahil) verilir.
 [events e_generic_chars]
 ON=@LOGIN
-ARGN1=1 // Girişteki sphereden gelen default mesajları yazmaz. 
+ARGN1=1 // fNoMessages
+ARGN2=1 // fQuickLogIn
+
 IF (<EVAL <SERV.CLIENTS>> > <DVAR.MAXPLAYERS>)
 	VAR0.MAXPLAYERS <EVAL <SERV.CLIENTS>>
 ENDIF
-SRC.ACCOUNT.RESDISP=<SERV.AutoResDisp>
+
 IF (<SRC.ACCOUNT.PLEVEL> == 1)
 	SRC.SKILLCLASS Class_Player
 ELSE
@@ -31,7 +33,7 @@ SRC.MODMAXWEIGHT 35 // 55R DE maks ağırlik kapasitesi 390 deil 425 olduğu iç
 // SRC.DETAIL=1
 SRC.SCROLL scroll_motd
 SRC.ACCOUNT.CHATNAME=<SRC.NAME>
-SRC.ACCOUNT.RESDISP=<SERV.AutoResDisp>
+
 SERV.ALLCLIENTS F_STAFFPANEL_REFRESH
 
 
@@ -39,7 +41,7 @@ SERV.ALLCLIENTS F_STAFFPANEL_REFRESH
 ON=@LOGOUT
 SRC.TAG0.PINGIRDI=0
 SRC.ACCOUNT.CHATNAME=<SRC.NAME>
-SRC.ACCOUNT.RESDISP=<SERV.AutoResDisp>
+
 SERV.ALLCLIENTS F_STAFFPANEL_REFRESH
 IF (<SRC.ACCOUNT.PLEVEL> == 1)
 	SRC.SKILLCLASS Class_Player
@@ -141,8 +143,6 @@ ENDIF
 
 	
 ON=@GETHIT
-fMakeBloodEffect <ARGN1>,<ARGN2>
-
 // IF (<argn2>&00004) // Magic Resistance
 	// SKILLGAIN 26
 // ENDIF
@@ -549,10 +549,6 @@ IF !(<SRC.ISGM>)
 		ENDIF
 	ENDIF
 
-	IF ((<FLAGS>&STATF_FREEZE) || (<FLAGS>&STATF_STONE))
-		SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu durumda büyü kullanamazsınız.
-		RETURN 1
-	ENDIF
 
 	IF !((<ARGN1> == 32) || (<ARGN1> == 52))
 		IF  (<SRC.IsEquipTypeArmors>)
@@ -582,270 +578,6 @@ IF !(<SRC.ISGM>)
 			ENDIF
 		ENDIF
 	ENDIF
-
-	// SPELL FREEZE TIME
-	IF (<ARGN> == 1)	// CLUMSY
-		MG1
-		
-	ELSEIF (<ARGN> == 2)	// CREATE FOOD
-		MG1
-		
-	ELSEIF (<ARGN> == 3)	// FEEBLEMIND
-		MG1
-		
-	ELSEIF (<ARGN> == 4)	// HEAL
-		SD 1
-		MG1
-		
-	ELSEIF (<ARGN> == 5)	// MAGIC ARROW
-		MG1
-		
-	ELSEIF (<ARGN> == 6)	// NIGHT SIGHT
-		MG1
-		
-	ELSEIF (<ARGN> == 7)	// REACTIVE ARMOR
-		SD 1
-		MG1
-		
-	ELSEIF (<ARGN> == 8)	// WEAKEN
-		MG1
-		
-	ELSEIF (<ARGN> == 9)	// AGILITY
-		MG2
-		
-	ELSEIF (<ARGN> == 10)	// CUNNING
-		MG2
-		
-	ELSEIF (<ARGN> == 11)	// CURE
-		SD 1	
-		MG2
-		
-	ELSEIF (<ARGN> == 12)	// HARM
-		SD 1
-		MG2
-		
-	ELSEIF (<ARGN> == 13)	// TRAP
-		// kapali
-		
-	ELSEIF (<ARGN> == 14)	// UNTRAP
-		// kapali
-		
-	ELSEIF (<ARGN> == 15)	// PROTECTION
-		SD 1
-		MG2
-		
-	ELSEIF (<ARGN> == 16)	// STRENGTH
-		SD 1
-		MG2
-		
-	ELSEIF (<ARGN> == 17)	// BLESS
-		SD 1
-		MG3
-		
-	ELSEIF (<ARGN> == 18)	// FIREBALL
-		SD 1
-		MG3
-		
-	ELSEIF (<ARGN> == 19)	// LOCK
-		// kapali
-		
-	ELSEIF (<ARGN> == 20)	// POISON
-		PSG
-		SD 1
-		
-	ELSEIF (<ARGN> == 21)	// TELEKINESIS
-		SD 1
-		MG3
-		
-	ELSEIF (<ARGN> == 22)	// TELEPORT
-		MG3
-		
-	ELSEIF (<ARGN> == 23)	// UNLOCK
-		// kapali
-		
-	ELSEIF (<ARGN> == 24)	// WALL
-		SD 1
-		MG3
-		
-	ELSEIF (<ARGN> == 25)	// ARCH CURE
-		SD 2
-		MG4
-		
-	ELSEIF (<ARGN> == 26)	// ARCH PROTECTION
-		SD 2
-		MG4
-		
-	ELSEIF (<ARGN> == 27)	// CURSE
-		SD 2
-		MG4
-		
-	ELSEIF (<ARGN> == 28)	// FIRE FIELD
-		SD 2
-		MG4
-		
-	ELSEIF (<ARGN> == 29)	// GREATER HEAL
-		SD 2
-		MG4
-		
-	ELSEIF (<ARGN> == 30)	// LIGHTNING
-		SD 2
-		MG4
-		
-	ELSEIF (<ARGN> == 31)	// MANA DRAIN
-		// kapali
-		
-	ELSEIF (<ARGN> == 32)	// RECALL
-		SD 2
-		MG4
-		
-	ELSEIF (<ARGN> == 33)	// BLADE SPIRITS
-		SD 2
-		MG5
-		
-	ELSEIF (<ARGN> == 34)	// DISPEL FIELD
-		SD 2
-		MG5
-		
-	ELSEIF (<ARGN> == 35)	// INCOGNITO
-		SD 2
-		MG5
-		
-	ELSEIF (<ARGN> == 36)	// MAGIC REFLECT
-		SD 2
-		MG5
-		
-	ELSEIF (<ARGN> == 37)	// MIND BLAST
-		SD 2
-		MG5
-		
-	ELSEIF (<ARGN> == 38)	// PARALYZE
-		SD 2
-		MG5
-		
-	ELSEIF (<ARGN> == 39)	// POISON FIELD		
-		SD 2
-		MG5
-		
-	ELSEIF (<ARGN> == 40)	// SUMMON CREATURE
-		SD 2
-		MG5
-		
-	ELSEIF (<ARGN> == 41)	// DISPEL
-		SD 2
-		MG6
-		
-	ELSEIF (<ARGN> == 42)	// ENERGY BOLT
-		SD 2
-		MG6
-		
-	ELSEIF (<ARGN> == 43)	// EXPLOSION
-		SD 2
-		MG6
-		
-	ELSEIF (<ARGN> == 44)	// INVISIBILITY
-		SD 2
-		MG6
-		
-	ELSEIF (<ARGN> == 45)	// MARK
-		SD 2
-		MG6
-		
-	ELSEIF (<ARGN> == 46)	// MASS CURSE
-		SD 2
-		MG6
-		
-	ELSEIF (<ARGN> == 47)	// PARALYZE FIELD
-		SD 3
-		MG6
-		
-	ELSEIF (<ARGN> == 48)	// REVEAL
-		SD 2
-		MG6
-		
-	ELSEIF (<ARGN> == 49)	// CHAIN LIGHTNING
-		SD 3
-		MG7
-		
-	ELSEIF (<ARGN> == 50)	// ENERGY FIELD
-		SD 3
-		MG7
-		
-	ELSEIF (<ARGN> == 51)	// FLAME STRIKE
-		SD 3
-		MG7
-		
-	ELSEIF (<ARGN> == 52)	// GATE TRAVEL
-		SD 3
-		MG7
-		
-	ELSEIF (<ARGN> == 53)	// MANA VAMPIRE
-		// kapali
-		
-	ELSEIF (<ARGN> == 54)	// MASS DISPEL
-		SD 3	
-		MG7
-		
-	ELSEIF (<ARGN> == 55)	// METEOR SWARM
-		SD 3
-		MG7
-		
-	ELSEIF (<ARGN> == 56)	// POLYMORPH
-		SD 3
-		MG3
-		
-	ELSEIF (<ARGN> == 57)	// EARTHQUAKE
-		SD 3
-		MG8
-		
-	ELSEIF (<ARGN> == 58)	// ENERGY VORTEX
-		IF (<REGION.GUARDED>)
-			CRIMINAL 1
-		ENDIF
-		SD 3
-		MG8
-		
-	ELSEIF (<ARGN> == 59)	// RESURRECT
-		SD 3
-		MG8
-		
-	ELSEIF (<ARGN> == 60)	// AIR ELEMENTAL
-		IF (<REGION.GUARDED>)
-			CRIMINAL 1
-		ENDIF
-		SD 3
-		MG8
-		
-	ELSEIF (<ARGN> == 61)	// SUMMON DEAMON
-		IF (<REGION.GUARDED>)
-			CRIMINAL 1
-		ENDIF
-		SD 3
-		MG8
-		
-	ELSEIF (<ARGN> == 62)	// EARTH ELEMENTAL
-		IF (<REGION.GUARDED>)
-			CRIMINAL 1
-		ENDIF
-		SD 3
-		MG8
-		
-	ELSEIF (<ARGN> == 63)	// FIRE ELEMENTAL
-		IF (<REGION.GUARDED>)
-			CRIMINAL 1
-		ENDIF
-		SD 3
-		MG8
-		
-	ELSEIF (<ARGN> == 64)	// WATER ELEMENTAL
-		IF (<REGION.GUARDED>)
-			CRIMINAL 1
-		ENDIF
-		SD 3
-		MG8
-		
-	ENDIF
-	
-ENDIF
 
 
 // ClasscUO clientte büyü atarken attığı yöne dönmesi durumunda bazen atlama yapıyor,
@@ -881,68 +613,6 @@ ENDIF
 
 
 
-
-// I = Karakterin hapse gönderilmesi veya hapishaneden serbest bırakılması .
-// SRC = Hapis cezasından veya serbest bırakılmadan sorumlu karakter .
-// ARGN1 = Karakterin hapse gönderilip gönderilmediğini gösterir (1 = hapse gönderildi, 0 = hapisten serbest bırakıldı)
-// ARGN2 = 	Karakterin gönderileceği hücre numarası.
-// Jail 0 (min) = belirsiz 
-// Jail 10 (max) = 10. hücre
-ON=@Jailed
-IF (<ISPLAYER>)
-	DIALOGCLOSEALL d_staff_panel,d_pin_login	
-	IF (<ARGN1> >= 1)
-		IF (<ACCOUNT.PRIV>&PRIV_JAILED)
-		// IF (<ACCOUNT.TAG0.JailCell>)
-			SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, <NAME> zaten hapis cezasi almis. Cezayi degistirmek icin önce forgive edip tekrar hapise gonderin
-			RETURN 1
-		ENDIF
-		CONSUME 9999 i_memory_helppage_stuck
-		ACCOUNT.TAG0.JailCount<dARGN2> +=1
-		AccountAllCharsEventToggle e_jailed
-		ARGS = <def.JAILCELL_<DARGN2>>
-		IF (<ACCOUNT.dTAG0.JailCount<dARGN2>> > 1)
-			LOCAL.TIME <EVAL <ARGV1> * <ACCOUNT.dTAG0.JailCount<dARGN2>>>
-			SYSMESSAGELOC <def.tcolor_red>,<DEF.empty_cliloc2>, Cezanız <ACCOUNT.dTAG0.JailCount<dARGN2>> katına çıktı!
-		ELSE
-			LOCAL.TIME = <ARGV1>
-		ENDIF
-		SYSMESSAGELOC <def.tcolor_red>,<DEF.empty_cliloc2>, <ARGV0> sucundan jail cezasi aldiniz.
-		ACCOUNT.TAG0.JailTime = <EVAL <SERV.TIME> + <DLOCAL.TIME>>
-		
-	ELSE
-		IF !(<ACCOUNT.PRIV>&PRIV_JAILED)
-			SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, <NAME> zaten hapis cezasi almamis.
-			RETURN 1
-		ENDIF
-		ACCOUNT.TAG0.JailTime =
-		AccountAllCharsGo Britain Moongate
-		AccountAllCharsEventToggle e_jailed
-	ENDIF
-ENDIF
-
-
-// I: Partiye katılan oyuncu.
-// SRC: Davet eden oyuncu.
-// Return 1: Eylemi iptal eder.
-ON=@PartyAdd
-SRC.EVENTS +e_party
-EVENTS +e_party
-
-// SRC: Partiyi dağıtan karakter
-// I: Partiyi dağıtan karakter
-ON=@PARTYDISBAND
-
-
-// SRC: Partiden ayrılan karakter.
-// I: Partiden ayrılan karakter.
-ON=@PARTYLEAVE
-SRC.EVENTS -e_party
-
-// I: Partiden çıkarılan karakter.
-// SRC: Partiden başka bir karakteri çıkaran karakter (master).
-ON=@PARTYREMOVE
-EVENTS -e_party
 
 
 

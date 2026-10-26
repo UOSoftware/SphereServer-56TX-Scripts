@@ -2,19 +2,6 @@
 // sphere.ini EventsNpcHuman: sadece brain_human NPC'lere verilir.
 [events e_generic_npc_humans]
 
-ON=@CLICK
-
-
-// MESSAGE @0,3 [<JOB>]
-// MESSAGE @<DEF.NOTO.<NOTOGETFLAG>> <NAME>
-// IF (<NOTOGETFLAG> == 1)
-	// MESSAGE @058 <NAME>
-	// RETURN 1
-// ENDIF
-
-// MESSAGE @<DEF.NOTO.<NOTOGETFLAG>> <NAME> The <job>
-// MESSAGE @058 <NAME> the <job>
-// RETURN 1
 
 
 [eof]

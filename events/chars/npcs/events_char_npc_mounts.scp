@@ -13,6 +13,7 @@ IF (<ISONLINE>)
 		ENDIF
 	ENDIF
 ENDIF
+
 // food
 IF (<DLOCAL.StatID> == 3)
 	// REF1.SYSMESSAGE <NAME> food level: <FOOD>/<MAXFOOD> ( Regeneration time: <REGENFOOD> [<REGENFOODD>] )

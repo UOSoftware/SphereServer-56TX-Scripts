@@ -2,16 +2,7 @@
 
 // sphere.ini EventsNpcAnimal: sadece binilemeyen brain_animal NPC'lere verilir.
 [events e_generic_npc_animals]
-ON=@REGENSTAT
-// buna gerek yok spherenin kendi davranisini kullaniyoruz.
-// REF1=<OWNER>
-// food
-// IF (<DLOCAL.StatID> == 3)
-	// IF (<REF1.ISVALID>) && (<REF1.ISONLINE>)
-	// local.HitsHungerLoss=1 // bu veya serv.HitsHungerLoss npcnin food sıfır oldğnda tameden cikmasini sagliyor.
-		// REF1.SYSMESSAGELOC <def.tcolor_grey>,<def.empty_cliloc2>, <NAME> food level: <FOOD>/<MAXFOOD> ( Regeneration time: <REGENFOOD> [<REGENFOODD>] )
-	// ENDIF
-// ENDIF
+
 
 
 [eof]

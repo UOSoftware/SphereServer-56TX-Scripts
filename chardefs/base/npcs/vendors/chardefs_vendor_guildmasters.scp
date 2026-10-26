@@ -55,6 +55,8 @@ AVERSIONS=t_trap
 CATEGORY=Civilized
 SUBSECTION=Guildmasters
 DESCRIPTION=Mage (human female)
+// 56TX: emulator tarafindan eklendi (26-10-2026): CAN yoktu; varsayilan CAN verildi
+CAN=mt_walk|mt_equip|mt_usehands|mt_mount|mt_run
 ON=@Create
    TAG.OVERRIDE.TRAINSKILLMAX=500
    TAG.OVERRIDE.TRAINSKILLMAXPERCENT=50
@@ -160,6 +162,8 @@ AVERSIONS=t_trap
 CATEGORY=Civilized
 SUBSECTION=Guildmasters
 DESCRIPTION=Bard (human male)
+// 56TX: emulator tarafindan eklendi (26-10-2026): CAN yoktu; varsayilan CAN verildi
+CAN=mt_walk|mt_equip|mt_usehands|mt_mount|mt_run
 ON=@Create
    TAG.OVERRIDE.TRAINSKILLMAX=500
    TAG.OVERRIDE.TRAINSKILLMAXPERCENT=50
@@ -241,6 +245,8 @@ AVERSIONS=t_trap
 CATEGORY=Civilized
 SUBSECTION=Guildmasters
 DESCRIPTION=Engineer (human male)
+// 56TX: emulator tarafindan eklendi (26-10-2026): CAN yoktu; varsayilan CAN verildi
+CAN=mt_walk|mt_equip|mt_usehands|mt_mount|mt_run
 ON=@Create
    TAG.OVERRIDE.TRAINSKILLMAX=500
    TAG.OVERRIDE.TRAINSKILLMAXPERCENT=50
@@ -278,6 +284,8 @@ AVERSIONS=t_trap
 CATEGORY=Civilized
 SUBSECTION=Guildmasters
 DESCRIPTION=Engineer (human female)
+// 56TX: emulator tarafindan eklendi (26-10-2026): CAN yoktu; varsayilan CAN verildi
+CAN=mt_walk|mt_equip|mt_usehands|mt_mount|mt_run
 ON=@Create
    TAG.OVERRIDE.TRAINSKILLMAX=500
    TAG.OVERRIDE.TRAINSKILLMAXPERCENT=50
@@ -558,6 +566,8 @@ AVERSIONS=t_trap
 CATEGORY=Civilized
 SUBSECTION=Guildmasters
 DESCRIPTION=Ranger (human female)
+// 56TX: emulator tarafindan eklendi (26-10-2026): CAN yoktu; varsayilan CAN verildi
+CAN=mt_walk|mt_equip|mt_usehands|mt_mount|mt_run
 ON=@Create
    TAG.OVERRIDE.TRAINSKILLMAX=500
    TAG.OVERRIDE.TRAINSKILLMAXPERCENT=50
@@ -601,6 +611,8 @@ AVERSIONS=t_trap
 CATEGORY=Civilized
 SUBSECTION=Guildmasters
 DESCRIPTION=Miner (human male)
+// 56TX: emulator tarafindan eklendi (26-10-2026): CAN yoktu; varsayilan CAN verildi
+CAN=mt_walk|mt_equip|mt_usehands|mt_mount|mt_run
 ON=@Create
    TAG.OVERRIDE.TRAINSKILLMAX=500
    TAG.OVERRIDE.TRAINSKILLMAXPERCENT=50

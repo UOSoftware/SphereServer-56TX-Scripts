@@ -1,25 +1,12 @@
 
 // sphere.ini EventsNpc: bütün NPC'lere verilir.
 [events e_generic_npcs]
-// Argo = Corpsr
-ON=@CREATE
-TAG0.UUID <BCRYPTHASH 2, 4, <SERV.TIMEHIRES>_<SERV.TIME>_<SERV.RTICKS>_<SERV.BUILD>_<SERV.SAVECOUNT>_<UID>>
-TAG0.CREATED_TICK = <SERV.RTICKS>
-TAG0.CREATED_AT = <SERV.RTIMESQL>
-// TAG0.CREATED_RTIME = <SERV.RTIME>
-EVENTS +e_generic_actdiff
-
-
-
-
-
 ON=@DEATHCORPSE
 ARGO.TAG0.DEATHCORPSE.BASEID=<SRC.BASEID>
 ARGO.TAG0.DEATHCORPSE.TIME <SERV.RTIME>
 IF (<OWNER>)
 	ARGO.TAG0.DEATHCORPSE.OWNER <OWNER>
 ENDIF
-
 
 
 ON=@CLICK
@@ -29,14 +16,6 @@ IF (<SRC.ISGM>) && (<NPC> == brain_animal)
 		MESSAGE @1,1 (<REF1.NAME>)
 	ENDIF
 ENDIF
-
-
-
-
-// Uid = Saldiran
-// Src = Hasar Alan
-ON=@GETHIT
-fMakeBloodEffect <ARGN1>,<ARGN2>
 
 
 

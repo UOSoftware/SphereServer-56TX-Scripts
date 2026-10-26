@@ -1,4 +1,4 @@
-VERSION=0.56T
+VERSION=TX
 
 // sphere.ini EventsCharStaff: sadece staff karakterlere (plevel 1'in üstü) verilir.
 [events e_generic_char_staffs]

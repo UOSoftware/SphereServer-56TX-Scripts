@@ -117,6 +117,7 @@ dialogs/
 ////////////////////////
 // Itemdefs folder
 ////////////////////////
+itemdefs/
 itemdefs/artifacts/
 itemdefs/buildings/
 itemdefs/customs/
@@ -134,7 +135,7 @@ itemdefs/provs/
 itemdefs/provs/armors/
 itemdefs/provs/clothes/
 itemdefs/provs/weapons/defaults/
-itemdefs/provs/weapons/customs/
+// itemdefs/provs/weapons/customs/
 
 itemdefs/themes/
 itemdefs/magics/
@@ -163,10 +164,11 @@ spells/
 // Chardefs folder
 ////////////////////////
 chardefs/
-chardefs/npcs/
-chardefs/npcs/monsters/
+chardefs/base/npcs/
+chardefs/base/npcs/monsters/
+chardefs/base/npcs/vendors/
 // chardefs/npcs/mounts/
-chardefs/npcs/vendors/
+chardefs/base/npcs/vendors/
 
 ////////////////////////
 // Systems folder
@@ -216,7 +218,6 @@ roomdefs/map0_rooms.scp
 teleporters/map0_teleports.scp
 teleporters/map0_teleports_ml.scp
 teleporters/map0_teleports_hs.scp
-teleporters/map0_teleports_tol.scp
 
 // Map1
 moongates/map1_moongates.scp
@@ -261,7 +262,7 @@ areadefs/map5_areas_tol.scp
 teleporters/map5_teleports.scp
 teleporters/map5_teleports_tol.scp
 moongates/map5_moongates.scp
-moongates/map5_moongates_tol.scp
+// moongates/map5_moongates_tol.scp
 
 
 [OBSCENE]

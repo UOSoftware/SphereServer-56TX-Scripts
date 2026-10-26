@@ -1794,6 +1794,8 @@ NAME=#NAMES_HUMANMALE the brigand
 CATEGORY=Evil NPC
 SUBSECTION=Outlaws & Rogues
 DESCRIPTION=Brigand (male)
+// 56TX: emulator tarafindan eklendi (26-10-2026): CAN yoktu; varsayilan CAN verildi
+CAN=mt_walk|mt_equip|mt_usehands|mt_mount|mt_run
 ON=@Create
    COLOR=colors_skin
    NPC=brain_human
@@ -1839,6 +1841,8 @@ NAME=#NAMES_HUMANFEMALE the brigand
 CATEGORY=Evil NPC
 SUBSECTION=Outlaws & Rogues
 DESCRIPTION=Brigand (female)
+// 56TX: emulator tarafindan eklendi (26-10-2026): CAN yoktu; varsayilan CAN verildi
+CAN=mt_walk|mt_equip|mt_usehands|mt_mount|mt_run
 ON=@Create
    COLOR=colors_skin
    NPC=brain_human
@@ -1961,6 +1965,8 @@ DAM=6,18
 CATEGORY=Evil NPC
 SUBSECTION=Outlaws & Rogues
 DESCRIPTION=Pirate (male)
+// 56TX: emulator tarafindan eklendi (26-10-2026): CAN yoktu; varsayilan CAN verildi
+CAN=mt_walk|mt_equip|mt_usehands|mt_mount|mt_run
 ON=@Create
    COLOR=colors_skin
    NPC=brain_human
@@ -2004,6 +2010,8 @@ DAM=6,18
 CATEGORY=Evil NPC
 SUBSECTION=Outlaws & Rogues
 DESCRIPTION=Pirate (female)
+// 56TX: emulator tarafindan eklendi (26-10-2026): CAN yoktu; varsayilan CAN verildi
+CAN=mt_walk|mt_equip|mt_usehands|mt_mount|mt_run
 ON=@Create
    COLOR=colors_skin
    NPC=brain_human
@@ -2052,6 +2060,8 @@ AVERSIONS=t_trap,r_civilization
 CATEGORY=Evil NPC
 SUBSECTION=Dread Lords
 DESCRIPTION=Dread Lord
+// 56TX: emulator tarafindan eklendi (26-10-2026): CAN yoktu; varsayilan CAN verildi
+CAN=mt_walk|mt_equip|mt_usehands|mt_mount|mt_run
 ON=@Create
    COLOR=colors_skin
    NPC=brain_monster
@@ -2088,6 +2098,8 @@ AVERSIONS=t_trap,r_civilization
 CATEGORY=Evil NPC
 SUBSECTION=Dread Lords
 DESCRIPTION=Dread Lord Captain
+// 56TX: emulator tarafindan eklendi (26-10-2026): CAN yoktu; varsayilan CAN verildi
+CAN=mt_walk|mt_equip|mt_usehands|mt_mount|mt_run
 ON=@Create
    COLOR=colors_skin
    NPC=brain_monster

@@ -2,22 +2,6 @@
 
 // sphere.ini EventsNpcMonster: sadece canavar NPC'lere (brain_monster, brain_berserk, brain_undead, brain_dragon) verilir.
 [events e_generic_npc_monsters]
-// Bu bir kişiye attacklı halde peşliyorken
-//  attacklı olduğu için ekranında değil ama attacklı ve dolaştığında tetikleniyor
-
-ON=@NPCACTFOLLOW
-IF (<R10>)
-// serv.b NPCACTFOLLOW
-	UzaktakiHedefEndCombatForNPC
-ENDIF
-
-
-ON=@NPCACTWANDER
-IF (<R1>)
-// serv.b NPCACTWANDER
-	UzaktakiHedefEndCombatForNPC
-ENDIF
-
 ON=@REGIONENTER
 IF !(<NPC> == brain_guard)
 	IF (<ARGO.FLAGS>&REGION_FLAG_SHIP|REGION_FLAG_SAFE|REGION_FLAG_GUARDED)
@@ -32,26 +16,7 @@ IF !(<NPC> == brain_guard)
 ENDIF
 
 
-
-[FUNCTION UzaktakiHedefEndCombatForNPC]
-IF (<ATTACKER>)
-	FOR 0 <EVAL <ATTACKER>-1>
-		REF1=<ATTACKER.<DLOCAL._FOR>>
-		IF (<REF1.ISVALIDE>) && (<REF1.ISPLAYER>) && (<DISTANCE <REF1>> >= <serv.DistanceYell>)
-			REF1.SYSMESSAGELOC <def.tcolor_grey>,<def.empty_cliloc2>, <NAME> savastan cekildi.
-			// SERV.B <NAME>, <REF1.NAME> ile savasindan ayrildi. (Dist: <REF1.DISTANCE <UID>>)
-			// ATTACKER.DELETE <REF1>
-			
-			ATTACKER.<DLOCAL._FOR>.DELETE 
-			// RETURN 1
-		ENDIF
-	ENDFOR
-ENDIF
-
-
-
 [EVENTS e_monster_resist_field]
-
 ON=@SPELLEFFECT
 IF (<ARGN> == 28) || (<ARGN> == 39) || (<ARGN> == 47)
 	FUNC_EMOTE_HELPFUL büyüden etkilenmez
@@ -62,7 +27,6 @@ ENDIF
 
 
 [EVENTS e_monster_resist_poison_reflect]
-
 ON=@SPELLEFFECT
 IF (<ARGN> == 20)
 	IF (RAND(5) == 1)

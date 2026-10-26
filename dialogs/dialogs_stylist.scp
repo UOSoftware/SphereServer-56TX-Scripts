@@ -1,6 +1,110 @@
 VERSION=0.56T
 
 
+[DEFNAME HairStylistMenu]
+HairStylist.Menu.1		Saç,		5000,	d_hair_style
+HairStylist.Menu.2		Sakal,		2500,	d_beard_style
+HairStylist.Menu.3		Normal Saç & Sakal Boyası,	1000,	d_hair_dye, 1, 1
+HairStylist.Menu.4		Parlak Saç & Sakal Boyası,	150000,	d_hair_dye, 1, 1
+HairStylist.Menu.5		Sadece Saç boyası,		30000,	d_hair_dye, 1, 0
+HairStylist.Menu.6		Sadece Sakal Boyası,		30000,	d_hair_dye, 0, 1
+HairStylist.Menu.7		Sadece Parlak Saç Boyası,	100000,	d_hair_dye, 1, 0
+HairStylist.Menu.8		Sadece Parlak Sakal Boyası,	85000,	d_hair_dye, 0, 1
+HairStylist.Menu.9		Ten Rengi,	400000,	d_body_dye
+HairStylist.Menu.10		Cinsiyet,	400000,	d_sex_change
+
+
+[DEFNAME HairStyles]
+Hair.Style.Human.1.Male		i_hair_short,		0c60c,	-67,	-40
+Hair.Style.Human.1.Female	i_hair_short,		0ed1c,	-67,	-40
+Hair.Style.Human.2.Male		i_hair_pageboy,		0ed26,	-67,	-42
+Hair.Style.Human.2.Female	i_hair_pageboy,		0ed26,	-67,	-42
+Hair.Style.Human.3.Male		i_hair_mohawk,		0c60f,	-67,	-35
+Hair.Style.Human.3.Female	i_hair_mohawk,		0ed27,	-67,	-35
+Hair.Style.Human.4.Male		i_hair_long,		0c60d,	-67,	-50
+Hair.Style.Human.4.Female	i_hair_long,		0ed1d,	-67,	-50
+Hair.Style.Human.5.Male		i_hair_afro,		0c618,	-67,	-40
+Hair.Style.Human.5.Female	i_hair_afro,		0ed25,	-67,	-40
+Hair.Style.Human.6.Male		i_hair_topknot,		0ed29,	-63,	-40
+Hair.Style.Human.6.Female	i_hair_topknot,		0ed29,	-63,	-40
+Hair.Style.Human.7.Male		i_hair_ponytail,	0c60e,	-67,	-50
+Hair.Style.Human.7.Female	i_hair_ponytail,	0ed1e,	-67,	-50
+Hair.Style.Human.8.Male		i_hair_2_pigtails,	0c612,	-67,	-50
+Hair.Style.Human.8.Female	i_hair_2_pigtails,	0ede6,	-67,	-50
+Hair.Style.Human.9.Male		i_hair_receding,	0ede5,	-68,	-40
+Hair.Style.Human.9.Female	i_hair_buns,		0ed28,	-68,	-40
+
+Hair.Style.Human.10.Male		i_hair_long_feather,	0c6e5,	-67,	-42
+Hair.Style.Human.10.Female		i_hair_long_feather,	0edf5,	-65,	-42
+Hair.Style.Human.11.Male		i_hair_short1,		0c6e6,	-67,	-40
+Hair.Style.Human.11.Female		i_hair_short1,		0edf6,	-67,	-42
+Hair.Style.Human.12.Male		i_hair_elven_mullet_2,	0c6e7,	-67,	-42
+Hair.Style.Human.12.Female		i_hair_elven_mullet_2,	0edf7,	-67,	-45
+Hair.Style.Human.13.Male		i_hair_elven_topknot,	0c6cc,	-67,	-40
+Hair.Style.Human.13.Female		i_hair_elven_topknot,	0eddc,	-67,	-42
+Hair.Style.Human.14.Male		i_hair_elven_braid,	0c6cd,	-67,	-42
+Hair.Style.Human.14.Female		i_hair_elven_braid,	0eddd,	-67,	-45
+Hair.Style.Human.15.Male		i_hair_elven_spike,	0c6cf,	-67,	-40
+Hair.Style.Human.15.Female		i_hair_elven_spike,	0eddf,	-65,	-40
+Hair.Style.Human.16.Male		i_hair_elven_ml,	0c6e4,	-67,	-42
+Hair.Style.Human.16.Female		i_hair_elven_flower,	0edda,	-65,	-45
+Hair.Style.Human.17.Male		i_hair_elven_long,	0c6cb,	-67,	-45
+Hair.Style.Human.17.Female		i_hair_elven_buns,	0edde,	-65,	-45
+
+Hair.Style.Elf.1.Male		i_hair_long_feather,	0c6e5,	-67,	-42
+Hair.Style.Elf.1.Female		i_hair_long_feather,	0edf5,	-65,	-42
+Hair.Style.Elf.2.Male		i_hair_short1,		0c6e6,	-67,	-40
+Hair.Style.Elf.2.Female		i_hair_short1,		0edf6,	-67,	-42
+Hair.Style.Elf.3.Male		i_hair_elven_mullet_2,	0c6e7,	-67,	-42
+Hair.Style.Elf.3.Female		i_hair_elven_mullet_2,	0edf7,	-67,	-45
+Hair.Style.Elf.4.Male		i_hair_elven_topknot,	0c6cc,	-67,	-40
+Hair.Style.Elf.4.Female		i_hair_elven_topknot,	0eddc,	-67,	-42
+Hair.Style.Elf.5.Male		i_hair_elven_braid,	0c6cd,	-67,	-42
+Hair.Style.Elf.5.Female		i_hair_elven_braid,	0eddd,	-67,	-45
+Hair.Style.Elf.6.Male		i_hair_elven_spike,	0c6cf,	-67,	-40
+Hair.Style.Elf.6.Female		i_hair_elven_spike,	0eddf,	-65,	-40
+Hair.Style.Elf.7.Male		i_hair_elven_ml,	0c6e4,	-67,	-42
+Hair.Style.Elf.7.Female		i_hair_elven_flower,	0edda,	-65,	-45
+Hair.Style.Elf.8.Male		i_hair_elven_long,	0c6cb,	-67,	-45
+Hair.Style.Elf.8.Female		i_hair_elven_buns,	0edde,	-65,	-45
+
+
+
+
+
+[DEFNAME BeardStyles]
+Beard.Style.Human.1		i_beard_goatee,		0c670,	-67,	-50
+Beard.Style.Human.2		i_beard_short_med,	0c6d8,	-67,	-47
+Beard.Style.Human.3		i_beard_vandyke,	0c6da,	-67,	-50
+Beard.Style.Human.4		i_beard_long,		0c671,	-67,	-55
+Beard.Style.Human.5		i_beard_short,		0c672,	-67,	-47
+Beard.Style.Human.6		i_beard_long_med,	0c6d9,	-67,	-55
+Beard.Style.Human.7		i_beard_mustache,	0c678,	-67,	-48
+
+
+
+[DEFNAME HairDyes]
+Hair.Dye.Normal.1		1602, 1627	//Brown
+Hair.Dye.Normal.2		1628, 1654	//Chestnut
+Hair.Dye.Normal.3		1502, 1533	//Auburn
+Hair.Dye.Normal.4		1302, 1333	//Blue
+Hair.Dye.Normal.5		1402, 1433	//Green
+Hair.Dye.Normal.6		1202, 1225	//Red
+Hair.Dye.Normal.7		2402, 2430	//Light
+Hair.Dye.Normal.8		2213, 2218	//Blonde
+Hair.Dye.Normal.9		1102, 1109	//Black
+Hair.Dye.Normal.10		1110, 1117	//Beige
+Hair.Dye.Normal.11		1118, 1133	//Golden
+Hair.Dye.Normal.12		1134, 1149	//Dark Brown
+
+Hair.Dye.Parlak.1		12, 21		//Purple
+Hair.Dye.Parlak.2		32, 36		//Red
+Hair.Dye.Parlak.3		38, 45		//Orange
+Hair.Dye.Parlak.4		54, 56		//Yellow
+Hair.Dye.Parlak.5		62, 71		//Green
+Hair.Dye.Parlak.6		81, 82		//Light Green
+Hair.Dye.Parlak.7		89, 90		//Blue
+Hair.Dye.Parlak.8		1153, 1154	//White
 
 [DIALOG d_hairstylist]
 50,50
@@ -31,15 +135,6 @@ SRC.CTAG.Hairstylist.Dye.Hair=<ARGV[3]>
 SRC.CTAG.Hairstylist.Dye.Beard=<ARGV[4]>
 SDIALOG <ARGV[2]>
 
-[DEFNAME HairStylistMenu]
-HairStylist.Menu.1		New Hair,		50000,	d_hair_style
-HairStylist.Menu.2		New Beard,		50000,	d_beard_style
-HairStylist.Menu.3		Normal Hair Dye,	50,	d_hair_dye, 1, 1
-HairStylist.Menu.4		Bright Hair Dye,	500000,	d_hair_dye, 1, 1
-HairStylist.Menu.5		Hair Only Dye,		30000,	d_hair_dye, 1, 0
-HairStylist.Menu.6		Beard Only Dye,		30000,	d_hair_dye, 0, 1
-HairStylist.Menu.7		Bright Hair Only Dye,	500000,	d_hair_dye, 1, 0
-HairStylist.Menu.8		Bright Beard Only Dye,	500000,	d_hair_dye, 0, 1
 
 
 [DIALOG d_hair_style]
@@ -94,44 +189,6 @@ IF !(<isempty <ARGV[0]>>)
  NEW.EQUIP <SRC>
 ENDIF
 
-[DEFNAME HairStyles]
-Hair.Style.Human.1.Male		i_hair_short,		0c60c,	-67,	-40
-Hair.Style.Human.1.Female	i_hair_short,		0ed1c,	-67,	-40
-Hair.Style.Human.2.Male		i_hair_pageboy,		0ed26,	-67,	-42
-Hair.Style.Human.2.Female	i_hair_pageboy,		0ed26,	-67,	-42
-Hair.Style.Human.3.Male		i_hair_mohawk,		0c60f,	-67,	-35
-Hair.Style.Human.3.Female	i_hair_mohawk,		0ed27,	-67,	-35
-Hair.Style.Human.4.Male		i_hair_long,		0c60d,	-67,	-50
-Hair.Style.Human.4.Female	i_hair_long,		0ed1d,	-67,	-50
-Hair.Style.Human.5.Male		i_hair_curly,		0c618,	-67,	-40
-Hair.Style.Human.5.Female	i_hair_curly,		0ed25,	-67,	-40
-Hair.Style.Human.6.Male		i_hair_topknot,		0ed29,	-63,	-40
-Hair.Style.Human.6.Female	i_hair_topknot,		0ed29,	-63,	-40
-Hair.Style.Human.7.Male		i_hair_ponytail,	0c60e,	-67,	-50
-Hair.Style.Human.7.Female	i_hair_ponytail,	0ed1e,	-67,	-50
-Hair.Style.Human.8.Male		i_hair_2_pigtails,	0c612,	-67,	-50
-Hair.Style.Human.8.Female	i_hair_2_pigtails,	0ede6,	-67,	-50
-Hair.Style.Human.9.Male		i_hair_receding,	0ede5,	-68,	-40
-Hair.Style.Human.9.Female	i_hair_buns,		0ed28,	-68,	-40
-
-Hair.Style.Elf.1.Male		i_hair_long_feather,	0c6e5,	-67,	-42
-Hair.Style.Elf.1.Female		i_hair_long_feather,	0edf5,	-65,	-42
-Hair.Style.Elf.2.Male		i_hair_short1,		0c6e6,	-67,	-40
-Hair.Style.Elf.2.Female		i_hair_short1,		0edf6,	-67,	-42
-Hair.Style.Elf.3.Male		i_hair_elven_mullet,	0c6e7,	-67,	-42
-Hair.Style.Elf.3.Female		i_hair_elven_mullet,	0edf7,	-67,	-45
-Hair.Style.Elf.4.Male		i_hair_elven_topknot,	0c6cc,	-67,	-40
-Hair.Style.Elf.4.Female		i_hair_elven_topknot,	0eddc,	-67,	-42
-Hair.Style.Elf.5.Male		i_hair_elven_braid,	0c6cd,	-67,	-42
-Hair.Style.Elf.5.Female		i_hair_elven_braid,	0eddd,	-67,	-45
-Hair.Style.Elf.6.Male		i_hair_elven_spike,	0c6cf,	-67,	-40
-Hair.Style.Elf.6.Female		i_hair_elven_spike,	0eddf,	-65,	-40
-Hair.Style.Elf.7.Male		i_hair_elven_ml,	0c6e4,	-67,	-42
-Hair.Style.Elf.7.Female		i_hair_elven_flower,	0edda,	-65,	-45
-Hair.Style.Elf.8.Male		i_hair_elven_long,	0c6cb,	-67,	-45
-Hair.Style.Elf.8.Female		i_hair_elven_buns,	0edde,	-65,	-45
-
-
 [DIALOG d_beard_style]
 50,50
 
@@ -177,15 +234,6 @@ IF !(<isempty <ARGV[0]>>)
  NEW.COLOR=<LOCAL.Color>
  NEW.EQUIP <SRC>
 ENDIF
-
-[DEFNAME BeardStyles]
-Beard.Style.Human.1		i_beard_goatee,		0c670,	-67,	-50
-Beard.Style.Human.2		i_beard_short_med,	0c6d8,	-67,	-47
-Beard.Style.Human.3		i_beard_vandyke,	0c6da,	-67,	-50
-Beard.Style.Human.4		i_beard_long,		0c671,	-67,	-55
-Beard.Style.Human.5		i_beard_short,		0c672,	-67,	-47
-Beard.Style.Human.6		i_beard_long_med,	0c6d9,	-67,	-55
-Beard.Style.Human.7		i_beard_mustache,	0c678,	-67,	-48
 
 
 [DIALOG d_hair_dye]
@@ -240,29 +288,5 @@ WHILE !(<isempty <DEF.Hair.Dye.<SRC.CTAG0.Hairstylist.Dye.Palette>.<eval <LOCAL.
   return 1
  ENDIF
 ENDWHILE
-
-[DEFNAME HairDyes]
-Hair.Dye.Normal.1		1602, 1627	//Brown
-Hair.Dye.Normal.2		1628, 1654	//Chestnut
-Hair.Dye.Normal.3		1502, 1533	//Auburn
-Hair.Dye.Normal.4		1302, 1333	//Blue
-Hair.Dye.Normal.5		1402, 1433	//Green
-Hair.Dye.Normal.6		1202, 1225	//Red
-Hair.Dye.Normal.7		2402, 2430	//Light
-Hair.Dye.Normal.8		2213, 2218	//Blonde
-Hair.Dye.Normal.9		1102, 1109	//Black
-Hair.Dye.Normal.10		1110, 1117	//Beige
-Hair.Dye.Normal.11		1118, 1133	//Golden
-Hair.Dye.Normal.12		1134, 1149	//Dark Brown
-
-Hair.Dye.Bright.1		12, 21		//Purple
-Hair.Dye.Bright.2		32, 36		//Red
-Hair.Dye.Bright.3		38, 45		//Orange
-Hair.Dye.Bright.4		54, 56		//Yellow
-Hair.Dye.Bright.5		62, 71		//Green
-Hair.Dye.Bright.6		81, 82		//Light Green
-Hair.Dye.Bright.7		89, 90		//Blue
-Hair.Dye.Bright.8		1153, 1154	//White
-
 
 [eof]
