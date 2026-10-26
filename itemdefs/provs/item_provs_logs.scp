@@ -4,8 +4,8 @@ In order to actually chop logs, a REGIONRESOURCE needs to exist for it, and a
 REGIONTYPE needs a REGION= entry to that REGIONRESOURCE... also that same
 REGIONTYPE must be associated to the t_tree Terrain TYPEDEF.
 
-Formore information on how wood is choped, check the COMMENT section of the
-sphere_region.scp file.
+Formore information on how wood is choped, check the COMMENT section of
+regions/regions_resources.scp.
 
 [ITEMDEF 01bd7]
 DEFNAME=i_board

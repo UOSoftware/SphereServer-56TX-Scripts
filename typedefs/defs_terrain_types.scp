@@ -6,7 +6,7 @@ NOTE: The TERRAIN numbers below (if there are two of them, its a range of
 numbers) are not item tiles.
 
 Formore information on how these special TYPEDEFs are used in the harvesting
-of resources, check the COMMENT section of the sphere_region.scp file.
+of resources, check the COMMENT section of regions/regions_resources.scp.
 
 
 [TYPEDEF t_water]

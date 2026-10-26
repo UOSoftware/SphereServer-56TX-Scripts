@@ -28,9 +28,10 @@ resource.
 A terrain TYPEDEF (usually named t_something) is linked to terrain through
 it's TERRAIN= property.
 
-* REGIONRESOURCE and REGIONTYPE are defined in the sphere_region.scp file.
-* Terrain TYPEDEFs are defined in the sphere_terrain_types.scp file.
-* Regions (AREADEF and ROOMDEF) are defined in sphere_map*.scp files.
+* REGIONRESOURCE and REGIONTYPE are defined in this file and in
+  regions/regions_types.scp.
+* Terrain TYPEDEFs are defined in typedefs/defs_terrain_types.scp.
+* Regions (AREADEF and ROOMDEF) are defined in the areadefs/ and roomdefs/ files.
 
 
 ////////////////////////////////

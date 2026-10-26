@@ -19,7 +19,7 @@ EN: The server calls these functions on events. A function that is not defined
     - Functions defined in other files of the pack: f_onclient_helppage (the
       client's Help button; 56b and X name it HelpPage) in
       dialogs/dialogs_helppage.scp, f_multi_setup and f_multi_onplacement_check
-      in systems/multis/sphere_system_multi_functions.scp.
+      in systems/multis/multi_functions.scp.
 TR: Sunucu bu fonksiyonları olaylarda çağırır. Tanımlı olmayan fonksiyon hiçbir
     şeyi değiştirmez, boş fonksiyon varsayılan davranışı korur.
     - Aksi yazmadıkça fonksiyon sunucunun (SERV) üzerinde çalışır, SRC sunucudur.
@@ -35,7 +35,7 @@ TR: Sunucu bu fonksiyonları olaylarda çağırır. Tanımlı olmayan fonksiyon 
     - Paketin başka dosyalarında tanımlı olanlar: f_onclient_helppage (client'ın
       Help düğmesi; 56b ve X'te adı HelpPage) dialogs/dialogs_helppage.scp'de,
       f_multi_setup ve f_multi_onplacement_check
-      systems/multis/sphere_system_multi_functions.scp'de.
+      systems/multis/multi_functions.scp'de.
 
 [PLEVEL 7]
 // Account / Hesap

@@ -2062,12 +2062,12 @@ DUPEITEM=048a4
 //Shipwreck (east)
 DUPEITEM=048a4
 
-// sphere_item_building_floors.scp içinde zaten var: duplicate
+// item_building_floors.scp içinde zaten var: duplicate
 //[ITEMDEF 048f6]
 //Shipwreck (east)
 //DUPEITEM=048a4
 
-// sphere_item_building_floors.scp içinde zaten var: duplicate
+// item_building_floors.scp içinde zaten var: duplicate
 //[ITEMDEF 048f7]
 //Shipwreck (east)
 //DUPEITEM=048a4

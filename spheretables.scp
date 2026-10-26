@@ -198,7 +198,7 @@ tests/
 ////////////////////////
 regions/regions_resources.scp
 regions/regions_types.scp
-// regions/sphere_region.scp
+// regions/regions_x.scp // the X pack's original region file
 
 ////////////////////////
 // Maps: moongates, areadefs, roomdefs and teleporters folders

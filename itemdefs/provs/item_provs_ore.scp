@@ -5,8 +5,8 @@ In order to actually mine ore, a REGIONRESOURCE needs to exist for it, and a
 REGIONTYPE needs a REGION= entry to that REGIONRESOURCE... also that same
 REGIONTYPE must be associated to the t_rock Terrain TYPEDEF.
 
-Formore information on how ore is mined, check the COMMENT section of the
-sphere_region.scp file.
+Formore information on how ore is mined, check the COMMENT section of
+regions/regions_resources.scp.
 
 [DEFNAME COLOR_ORE]
 color_o_iron			0    //option: 0763
