@@ -1421,21 +1421,6 @@ ENDIF
 
 
 
-[FUNCTION UpdateAllForce]
-NOTOCLEAR
-NOTOUPDATE
-UPDATE
-UPDATEX
-FIXWEIGHT
-FIX
-IF (<ISONLINE>)
-	RESEND
-	FLUSH // network flush
-ENDIF
-
-
-
-			
 [FUNCTION SPELLCIRCLE] // Büyülerin kaçıncı circle olduğunu döndürür.
 //ARGN1=SPELL NUMBER
 IF (<ARGN1> >= 1) && (<ARGN1> <= 64) //ONLY WITH DEFAULT (MAGE) SPELLS

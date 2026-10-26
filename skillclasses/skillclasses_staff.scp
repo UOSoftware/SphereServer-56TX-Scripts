@@ -112,7 +112,7 @@ IF (<DARGN1> == 207)
 	IF (<ARGV0> == 1)
 		SRC.PG
 	ELSEIF (<ARGV0> == 2)
-		SRC.HAZIRLA
+		SRC.STAFFSETUP
 	ENDIF
 ENDIF
 // Gm Char Worldmap üzerinde ALT + mouse click yaparsa tıkladığı yere gider.
