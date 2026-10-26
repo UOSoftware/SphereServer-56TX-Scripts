@@ -186,7 +186,7 @@ ACCOUNT.TAG.PIN_COMMAND=<ARGCHK[4]>
 
 ON=2
 // ACCOUNT.PIN=
-DIALOGCLOSEALL
+DIALOGCLOSEALL d_staff_panel,d_pin_login
 SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Pin sisteminden faylanmıyorsunuz. Karakteriniz ile ilgili herhangi bir güvenlik ihlalinden, kayıp vs. gibi şeylerden <serv.name> sunucusu sorumlu değildir.
 EVENTS -E_PIN
 

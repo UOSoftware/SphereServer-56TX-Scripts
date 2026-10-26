@@ -889,7 +889,7 @@ ENDIF
 // Jail 10 (max) = 10. hücre
 ON=@Jailed
 IF (<ISPLAYER>)
-	DIALOGCLOSEALL	
+	DIALOGCLOSEALL d_staff_panel,d_pin_login	
 	IF (<ARGN1> >= 1)
 		IF (<ACCOUNT.PRIV>&PRIV_JAILED)
 		// IF (<ACCOUNT.TAG0.JailCell>)

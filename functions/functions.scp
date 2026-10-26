@@ -4,17 +4,6 @@
 
 
 
-[FUNCTION fNomoveTill]
-IF !(<ARGV>)
-    TAG0.NOMOVETILL =
-ELSEIF (<ISEMPTY <ARGV0>> || <ARGV0> <= 0)
-    TAG0.NOMOVETILL =
-ELSE
-    TAG0.NOMOVETILL = <EVAL <SERV.TIME> + <ARGS> >
-ENDIF
-
-
-
 [function WorldSearch]
 // WorldSearchChar
 // WorldSearchItem
@@ -1753,17 +1742,6 @@ ENDIF
 
 
 
-[FUNCTION max]
-RETURN <QVAL <ARGN2> < <ARGN1>? <ARGN1> : <ARGN2>>
-
-
-[FUNCTION min]
-RETURN <QVAL <ARGN2> < <ARGN1>? <ARGN2> : <ARGN1>>
-
-
-
-
-
 [FUNCTION FUNC_ORDERSET]
 LOCAL.TAG=<ARGV[0]>
 IF (<ISCHAR>)
@@ -1872,51 +1850,6 @@ ENDIF
 
 
 
-[FUNCTION FlagSil]
-FLAGS &= ~<args>
-
-[FUNCTION FlagEkle]
-FLAGS |= <args>
-
-[FUNCTION FlagToggle]
-IF (<FLAGS>&<ARGS>)
-	FLAGS &= ~<args>
-ELSE
-	FLAGS |= <args>
-ENDIF
-
-
-
-[FUNCTION CanSil]
-CAN &= ~<args>
-
-[FUNCTION CanEkle]
-CAN |= <args>
-
-[FUNCTION CanToggle]
-IF (<CAN>&<ARGS>)
-	CAN &= ~<args>
-ELSE
-	CAN |= <args>
-ENDIF
-
-
-
-
-[FUNCTION CanMaskSil]
-CANMASK &= ~<args>
-
-[FUNCTION CanMaskEkle]
-CANMASK |= <args>
-
-[FUNCTION CanMaskToggle]
-IF (<CANMASK>&<ARGS>)
-	CANMASK &= ~<args>
-ELSE
-	CANMASK |= <args>
-ENDIF
-
-
 // X DE ZATEN VAR.
 // [FUNCTION ISDIALOGOPEN]
 // FOR 0 <EVAL <DIALOGLIST.COUNT>-1>
@@ -1925,103 +1858,6 @@ ENDIF
 	// ENDIF
 // ENDFOR
 // RETURN 0
-
-
-
-
-
-//
-[FUNCTION Pack_Counter]
-IF (<FINDLAYER.LAYER_PACK>)
-	FORCONT <FINDLAYER.LAYER_PACK.UID> 9999
-		IF (<BASEID> == <ARGV0>)
-			LOCAL.ADET +=<AMOUNT>
-		ENDIF
-	ENDFOR
-ENDIF
-RETURN <DLOCAL.ADET>
-
-
-[FUNCTION Bank_Counter]
-IF (<FINDLAYER.layer_bankbox>)
-	FORCONT <FINDLAYER.layer_bankbox.UID> 9999
-		IF (<BASEID> == <ARGV0>)
-			LOCAL.ADET +=<AMOUNT>
-		ENDIF
-	ENDFOR
-
-ENDIF
-RETURN <DLOCAL.ADET>
-
-
-[FUNCTION PackBank_Counter]
-IF (<FINDLAYER.layer_bankbox>)
-	FORCONT <FINDLAYER.layer_bankbox.UID> 9999
-		IF (<BASEID> == <ARGV0>)
-			LOCAL.ADET +=<AMOUNT>
-		ENDIF
-	ENDFOR
-ENDIF
-IF (<FINDLAYER.LAYER_PACK>)
-	FORCONT <FINDLAYER.LAYER_PACK.UID> 9999
-		IF (<BASEID> == <ARGV0>)
-			LOCAL.ADET +=<AMOUNT>
-		ENDIF
-	ENDFOR
-ENDIF
-RETURN <DLOCAL.ADET>
-
-
-
-
-// Pack & Bank Item Remover
-// Use I.PACKBANK_REMOVER i_gold
-[FUNCTION PACKBANK_REMOVER]
-// Pack
-Pack_Remover <args>
-
-// Bank
-Bank_Remover <args>
-
-// Layers
-Layer_Remover <args>
-
-
-
-// Layer Item Remover
-// Use I.Layer_Remover i_robe
-[FUNCTION Layer_Remover]
-// Layers
-FOR 1 54
-	IF (<FINDLAYER.<DLOCAL._FOR>>)
-	REF3=<FINDLAYER.<DLOCAL._FOR>.UID>
-		IF (<REF3.DISPID>==<ARGS>) || (<REF3.BASEID>==<ARGS>)
-			REF3.REMOVE
-		ENDIF
-	ENDIF
-ENDFOR
-
-
-// Pack & Bank Item Remover
-// Use I.PACKBANK_REMOVER i_gold
-[FUNCTION Pack_Remover]
-// Pack
-FORCONT <FINDLAYER.21> 9999
-REF1=<UID>
-	IF (<REF1.DISPID>==<ARGS>) || (<REF1.BASEID>==<ARGS>)
-		REF1.REMOVE
-	ENDIF
-ENDFOR
-
-
-[FUNCTION Bank_Remover]
-// Bank
-FORCONT <FINDLAYER.29> 9999
-REF2=<UID>
-	IF (<REF2.DISPID>==<ARGS>) || (<REF2.BASEID>==<ARGS>)
-		REF2.REMOVE
-	ENDIF
-ENDFOR
 
 
 
@@ -2140,90 +1976,6 @@ ENDIF
 DIALOG d_bank_depo
 
 
-[FUNCTION OPENBANK]
-IF (<ISDEATH>)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,600027 // "Ölü durumdayken bu işlemi yapamazsınız."
-	RETURN 1
-ELSEIF (<FLAGS>&statf_freeze)
-	SYSMESSAGELOC <def.tcolor_red>,600029 // "Freeze durumdayken bu işlemi yapamazsınız."
-	RETURN 1
-ELSEIF (<FLAGS>&statf_stone)
-	SYSMESSAGELOC <def.tcolor_red>,600028 // "Stone durumdayken bu işlemi yapamazsınız."
-	RETURN 1
-ENDIF
-IF !(<SERV.BANKMAXWEIGHT> == -1)
-	IF (<EVAL (<FINDLAYER(LAYER_BANKBOX).WEIGHT> / 10)> >= <SERV.BANKMAXWEIGHT>)
-		SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Dikkat! Banka kasanızın toplam ağırlığı <SERV.BANKMAXWEIGHT> eşyayı geçmiş, hareket ettirdiğiniz bir eşyayı geri koyamazsınız.
-		SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Lütfen dikkatli olunuz! Kaybolan eşyalarınızın sorumluluğu size aittir.
-		LOGGER Banka agirligi maximum seviyede.
-	ENDIF
-ENDIF
-IF !(<SERV.BankMaxItems> == -1)
-	IF (<FINDLAYER(LAYER_BANKBOX).RESCOUNT> >= <SERV.BankMaxItems>)
-		SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Dikkat! Banka kasanızın toplam esya kapasitesi <SERV.BankMaxItems> eşyayı geçmiş, hareket ettirdiğiniz bir eşyayı geri koyamazsınız.
-		SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Lütfen dikkatli olunuz! Kaybolan eşyalarınızın sorumluluğu size aittir.
-		LOGGER Banka esya kapasitesi maximum seviyede.
-	ENDIF
-ENDIF
-FORCONT <FINDLAYER.29> 9999
-	LOCAL.BANKITEMS ++
-	LOCAL.BANKWEIGHT +=<WEIGHT>
-ENDFOR
-SYSMESSAGELOC <def.tcolor_grey>,<def.empty_cliloc2>, Banka ağırlığı : <FVAL <DLOCAL.BANKWEIGHT>>/<QVAL (<SERV.BANKMAXWEIGHT> == -1)?Sinirsiz:<SERV.BANKMAXWEIGHT>>
-SYSMESSAGELOC <def.tcolor_grey>,<def.empty_cliloc2>, Eşya sayısı : <NumberFormat <DLOCAL.BANKITEMS>>/<QVAL (<SERV.BankMaxItems> == -1)?Sinirsiz:<SERV.BankMaxItems>>
-// SYSMESSAGELOC <def.tcolor_yellow>,<def.empty_cliloc2>, Banka hesabınıza ulaşmak için 'hesap' yazınız.
-
-BANKSELF
-RETURN 1
-
-
-
-
-// Item Unequip All Function
-// 1 = unequip bank 
-// 0 / empty = unequip pack
-[FUNCTION UnEquipAll]
-FOR 1 24
-	IF (<FINDLAYER(<DLOCAL._FOR>)>)
-	   IF (<DLOCAL._FOR> != 11) && (<DLOCAL._FOR> != 15) && (<DLOCAL._FOR> != 16) && (<DLOCAL._FOR> != 21)
-			REF1=<FINDLAYER.<DLOCAL._FOR>>
-			
-			IF (<ISEMPTY <ARGS>> || <ARGS> <= 0 || !<args>)
-				fUnequip <REF1>
-			ELSE
-				REF1.CONT = <FINDLAYER.29>
-			ENDIF
-			
-	   ENDIF
-	ENDIF
-ENDFOR
-
-IF (<FINDLAYER.32>)
-	FINDLAYER.32.REMOVE
-ENDIF
-IF (<FINDLAYER.44>)
-	FINDLAYER.44.REMOVE
-ENDIF
-IF (<FINDLAYER.47>)
-	FINDLAYER.47.REMOVE
-ENDIF
-UPDATE
-
-
-
-
-
-
-
-// Array function
-[FUNCTION ARRAY]
-LOCAL.TEMP = <ARGV[<EVAL <ARGV> - 1>]> -1
-RETURN <ARGV[<DLOCAL.TEMP>]>
-
-// Arraycount item function
-[FUNCTION ARRAYCOUNT]
-RETURN <EVAL <ARGV>>
-
 [FUNCTION GETARGVX]
 IF <ARGV[0]> == -1
  RETURN <EVAL <ARGV>-1>
@@ -2231,18 +1983,6 @@ ELSE
  RETURN <ARGV[<ARGV[0]>]>
 ENDIF
 
-
-
-[FUNCTION DIALOGCLOSEALL]
-IF (<ISONLINE>)
-	IF (<DIALOGLIST.COUNT>)
-		FOR 0 <EVAL <DIALOGLIST.COUNT>-1>
-			IF !((STRMATCH('D_STAFF_PANEL','<DIALOGLIST.<dLOCAL._FOR>.ID>')) || (STRMATCH('d_pin_login','<DIALOGLIST.<dLOCAL._FOR>.ID>')))
-				DIALOGCLOSE <DIALOGLIST.<dLOCAL._FOR>.ID> // <ARGN2>
-			ENDIF
-		ENDFOR
-	ENDIF
-ENDIF
 
 
 [FUNCTION dialoglarilistele]
@@ -2314,35 +2054,6 @@ REVEAL STATF_INVISIBLE
 
 
 
-//Kullanımı = <FUNC_PERCENT 10,222>  222 = %si alınacak rakam 10 = % değeri.
-[FUNCTION FUNC_PERCENT]
-RETURN <EVAL (<DARGV[1]>*<DARGV[0]>)/100>
-
-
-
-
-
-[Function SetProcessDelay]
-// IF !(<ISGM>)
-IF (<ISONLINE>)
-	IF (<CTAG0.Delay.<ARGV0>> > <SERV.TIME>)
-		SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, You must wait to perform another action. (<f_stonesys_determine_timeleft <CTAG0.DELAY.<ARGV0>>>)
-		RETURN 1
-	ENDIF
-	CTAG0.Delay.<ARGV0> = <EVAL <SERV.TIME> + <ARGV1>>
-ENDIF
-// ENDIF
-
-
-
-
-
-
-
-
-
-
-
 [FUNCTION SpawnBitFix]
 // bullettin boardlari temizle
 FORINSTANCES i_worldgem_bit
@@ -2397,15 +2108,6 @@ IF (<DLOCAL.I> > 0)
 ELSE
 	SRC.SYSMESSAGE World uzerinde ici dolu container yok.
 ENDIF
-
-
-
-// ABSOLUTE VALUE: <ABS X>
-[FUNCTION ABS] 
-IF <ARGN1> < 0
-	RETURN <EVAL (<ARGN1> * -1)>
-ENDIF
-RETURN <ARGN1>
 
 
 

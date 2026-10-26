@@ -87,7 +87,7 @@ ELIF (<IsInHouse>)
 	SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu bölgede recall / gate / mark işlemi yapamazsınız.
 	RETURN 0
 
-ELIF (<IsInShip>) || (<IsOnSea>)
+ELIF (<IsInShip>) || (<ISINWATER>)
 	SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu bölgede recall / gate / mark işlemi yapamazsınız.
 	RETURN 0
 
