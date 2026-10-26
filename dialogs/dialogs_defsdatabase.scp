@@ -1,0 +1,489 @@
+VERSION=0.56TX
+
+[COMMENT]
+Emulatörün tanım veritabanını (sphere.ini: DefsDatabase) okuyan iki dialog:
+ .ADD (argümansız; emulatör d_add'ı açar): oluşturulabilen tanımlar, eşyalar (ITEMDEF ve MULTIDEF) ve NPC'ler (CHARDEF).
+     Kategori ve alt kategoriye göre (CATEGORY, SUBSECTION) ya da ada ve defname'e göre arama; seçilen tanım eklenir
+     ya da yerine spawn konur.
+ .RESTYPES: kayıtlı bütün kaynaklar türlerine göre (AREADEF, ROOMDEF, SPAWN, TEMPLATE, SPELL, FUNCTION...) ve
+     haritalar; tanımın dosyası, satırı, tetikleyicileri ve script'teki değerleri; bölgeye ve haritaya gitme.
+Tabloları emulatör yazar (açılışta ve değişen dosyada), dialog'lar sadece okur; elle bir şey kurmak gerekmez.
+Bağlantı isimli: LDB.defs (paketin LDB'sine dokunulmaz). Durum client'ın CTAG'lerinde (DefsAdd.*, DefsList.*).
+
+[PLEVEL 4]
+RESTYPES
+
+// Tanım veritabanına bağlanır (açıksa bir şey yapmaz). 0: DefsDatabase boş ya da dosya açılamadı.
+[FUNCTION f_defs_connect]
+IF (<LDB.defs.CONNECTED>)
+	RETURN 1
+ENDIF
+IF (<ISEMPTY <SERV.DEFSDATABASE>>)
+	RETURN 0
+ENDIF
+LDB.defs.CONNECT <SERV.DEFSDATABASE>
+RETURN <LDB.defs.CONNECTED>
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// .ADD
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// Sorguların parçaları: tür, seçili kategori ve alt kategori. Kategori ve alt kategori metin olarak değil sırasıyla
+//  seçilir (adlarında tırnak olabilir): seçili olanın adı alt sorguyla bulunur. Kategorisiz tanımlar (NULL) ilk grup.
+[FUNCTION f_defs_add_state]
+IF (<CTAG0.DefsAdd.Mode>)
+	CTAG.DefsAdd.Where=restype='CHARDEF'
+ELSE
+	CTAG.DefsAdd.Where=restype IN ('ITEMDEF','MULTIDEF')
+ENDIF
+CTAG.DefsAdd.CatSql=SELECT category FROM defs WHERE <CTAG.DefsAdd.Where> GROUP BY category ORDER BY category LIMIT 1 OFFSET <dCTAG0.DefsAdd.Cat>
+CTAG.DefsAdd.SubSql=SELECT subsection FROM defs WHERE <CTAG.DefsAdd.Where> AND category IS (<CTAG.DefsAdd.CatSql>) GROUP BY subsection ORDER BY subsection LIMIT 1 OFFSET <dCTAG0.DefsAdd.Sub>
+
+[DIALOG d_add]
+<DEF.DlgStartPos>
+IF !(<f_defs_connect>)
+	RESIZE 0,0,440,110,Tanım veritabanı
+	DTEXT 25 55 <DEF.tcolor_red> DefsDatabase kapalı ya da veritabanı açılamadı.
+ELSE
+	f_defs_add_state
+	LOCAL.Title=Eşyalar
+	IF (<CTAG0.DefsAdd.Mode>)
+		LOCAL.Title=NPC'ler
+	ENDIF
+	RESIZE 0,0,840,560,<LOCAL.Title>
+	f_defs_add_top
+	f_defs_add_categories
+	f_defs_add_subsections
+	f_defs_add_list
+	f_defs_add_detail
+ENDIF
+
+[FUNCTION f_defs_add_top]
+BUTTON 20 20 <QVAL <CTAG0.DefsAdd.Mode>?4005:4006> 4007 1 0 1
+DTEXT 52 22 <QVAL <CTAG0.DefsAdd.Mode>?0481:<DEF.tcolor_green>> Eşyalar
+BUTTON 130 20 <QVAL <CTAG0.DefsAdd.Mode>?4006:4005> 4007 1 0 2
+DTEXT 162 22 <QVAL <CTAG0.DefsAdd.Mode>?<DEF.tcolor_green>:0481> NPC'ler
+RESIZEPIC 540 18 3000 200 26
+DTEXTENTRYLIMITED 545 21 190 20 0 1 40 <CTAG.DefsAdd.Search>
+BUTTON 745 20 4011 4012 1 0 3
+BUTTON 778 20 4017 4018 1 0 4
+DTEXT 470 22 0481 Ara:
+
+// Sol sütun: kategoriler, sayfada 14.
+[FUNCTION f_defs_add_categories]
+DHTMLGUMP 20 55 230 25 1 0 <DEF.CENTER>KATEGORİ
+// Takma ad sütunun adı değil: sıra CatSql'inkiyle aynı (ORDER BY önce takma ada bakar).
+LDB.defs.QUERY "SELECT COALESCE(category, '(kategorisiz)') AS cat, COUNT(*) AS n FROM defs WHERE <CTAG.DefsAdd.Where> GROUP BY category ORDER BY category LIMIT 15 OFFSET <eval <CTAG0.DefsAdd.CatPage>*14>"
+LOCAL.Rows=<dLDB.defs.ROW.NUMROWS>
+FOR 0 13
+	IF (<dLOCAL._FOR> >= <dLOCAL.Rows>)
+		BREAK
+	ENDIF
+	LOCAL.Index=<eval (<CTAG0.DefsAdd.CatPage>*14)+<dLOCAL._FOR>>
+	LOCAL.Y=<eval 85+(<dLOCAL._FOR>*22)>
+	LOCAL.Hue=0481
+	IF (!<ISEMPTY <CTAG.DefsAdd.Cat>> && <ISEMPTY <CTAG.DefsAdd.Search>> && (<dCTAG0.DefsAdd.Cat> == <dLOCAL.Index>))
+		LOCAL.Hue=<DEF.tcolor_green>
+	ENDIF
+	BUTTON 20 <dLOCAL.Y> 4005 4007 1 0 <eval 100+<dLOCAL._FOR>>
+	DCROPPEDTEXT 52 <eval <dLOCAL.Y>+2> 200 20 <LOCAL.Hue> <LDB.defs.ROW.<dLOCAL._FOR>.cat> (<dLDB.defs.ROW.<dLOCAL._FOR>.n>)
+ENDFOR
+IF (<CTAG0.DefsAdd.CatPage> > 0)
+	BUTTON 20 400 4014 4016 1 0 11
+ENDIF
+IF (<dLOCAL.Rows> > 14)
+	BUTTON 220 400 4005 4007 1 0 12
+ENDIF
+
+// Orta sütun: seçili kategorinin alt kategorileri.
+[FUNCTION f_defs_add_subsections]
+DHTMLGUMP 260 55 230 25 1 0 <DEF.CENTER>ALT KATEGORİ
+IF (<ISEMPTY <CTAG.DefsAdd.Cat>>) || !(<ISEMPTY <CTAG.DefsAdd.Search>>)
+	RETURN 0
+ENDIF
+// Boş alt kategori (NULL) "(genel)": LDB NULL'u 0 diye verir, adı SQL'de konur. Sıra SubSql'inkiyle aynı olsun diye
+//  takma ad sütunun adı değil (ORDER BY önce takma ada bakar).
+LDB.defs.QUERY "SELECT COALESCE(subsection, '(genel)') AS sub, COUNT(*) AS n FROM defs WHERE <CTAG.DefsAdd.Where> AND category IS (<CTAG.DefsAdd.CatSql>) GROUP BY subsection ORDER BY subsection LIMIT 15 OFFSET <eval <CTAG0.DefsAdd.SubPage>*14>"
+LOCAL.Rows=<dLDB.defs.ROW.NUMROWS>
+FOR 0 13
+	IF (<dLOCAL._FOR> >= <dLOCAL.Rows>)
+		BREAK
+	ENDIF
+	LOCAL.Index=<eval (<CTAG0.DefsAdd.SubPage>*14)+<dLOCAL._FOR>>
+	LOCAL.Y=<eval 85+(<dLOCAL._FOR>*22)>
+	LOCAL.Hue=0481
+	IF (!<ISEMPTY <CTAG.DefsAdd.Sub>> && (<dCTAG0.DefsAdd.Sub> == <dLOCAL.Index>))
+		LOCAL.Hue=<DEF.tcolor_green>
+	ENDIF
+	BUTTON 260 <dLOCAL.Y> 4005 4007 1 0 <eval 200+<dLOCAL._FOR>>
+	DCROPPEDTEXT 292 <eval <dLOCAL.Y>+2> 200 20 <LOCAL.Hue> <LDB.defs.ROW.<dLOCAL._FOR>.sub> (<dLDB.defs.ROW.<dLOCAL._FOR>.n>)
+ENDFOR
+IF (<CTAG0.DefsAdd.SubPage> > 0)
+	BUTTON 260 400 4014 4016 1 0 13
+ENDIF
+IF (<dLOCAL.Rows> > 14)
+	BUTTON 460 400 4005 4007 1 0 14
+ENDIF
+
+// Sağ sütun: kategorinin (alt kategori seçildiyse onun) ya da aramanın tanımları. Satırların defname'i CTAG'de: buton
+//  satırın sırası.
+[FUNCTION f_defs_add_list]
+DHTMLGUMP 500 55 320 25 1 0 <DEF.CENTER><QVAL <ISEMPTY <CTAG.DefsAdd.Search>>?TANIMLAR:ARAMA>
+CLEARCTAGS DefsAdd.Row
+IF !(<ISEMPTY <CTAG.DefsAdd.Search>>)
+	LOCAL.Filter=(name LIKE '%<CTAG.DefsAdd.Search>%' OR defname LIKE '%<CTAG.DefsAdd.Search>%')
+ELIF !(<ISEMPTY <CTAG.DefsAdd.Cat>>)
+	LOCAL.Filter=category IS (<CTAG.DefsAdd.CatSql>)
+	IF !(<ISEMPTY <CTAG.DefsAdd.Sub>>)
+		LOCAL.Filter=<LOCAL.Filter> AND subsection IS (<CTAG.DefsAdd.SubSql>)
+	ENDIF
+ELSE
+	RETURN 0
+ENDIF
+LDB.defs.QUERY "SELECT defname, name FROM defs WHERE <CTAG.DefsAdd.Where> AND <LOCAL.Filter> ORDER BY name, defname LIMIT 15 OFFSET <eval <CTAG0.DefsAdd.Page>*14>"
+LOCAL.Rows=<dLDB.defs.ROW.NUMROWS>
+IF (<dLOCAL.Rows> == 0)
+	DTEXT 510 90 <DEF.tcolor_red> Bulunamadı.
+	RETURN 0
+ENDIF
+FOR 0 13
+	IF (<dLOCAL._FOR> >= <dLOCAL.Rows>)
+		BREAK
+	ENDIF
+	LOCAL.Y=<eval 85+(<dLOCAL._FOR>*22)>
+	LOCAL.Def=<LDB.defs.ROW.<dLOCAL._FOR>.defname>
+	CTAG.DefsAdd.Row<dLOCAL._FOR>=<LOCAL.Def>
+	LOCAL.Hue=0481
+	IF (STRMATCH(<LOCAL.Def>,<CTAG.DefsAdd.Sel>))
+		LOCAL.Hue=<DEF.tcolor_green>
+	ENDIF
+	BUTTON 500 <dLOCAL.Y> 4011 4012 1 0 <eval 300+<dLOCAL._FOR>>
+	BUTTON 532 <dLOCAL.Y> 4005 4007 1 0 <eval 400+<dLOCAL._FOR>>
+	DCROPPEDTEXT 565 <eval <dLOCAL.Y>+2> 255 20 <LOCAL.Hue> <LDB.defs.ROW.<dLOCAL._FOR>.name> [<LOCAL.Def>]
+ENDFOR
+IF (<CTAG0.DefsAdd.Page> > 0)
+	BUTTON 500 400 4014 4016 1 0 15
+ENDIF
+DTEXT 640 402 0481 Sayfa <eval <CTAG0.DefsAdd.Page>+1>
+IF (<dLOCAL.Rows> > 14)
+	BUTTON 790 400 4005 4007 1 0 16
+ENDIF
+
+// Alt bölüm: seçili tanım; ekle ve spawn.
+[FUNCTION f_defs_add_detail]
+IF (<ISEMPTY <CTAG.DefsAdd.Sel>>)
+	DTEXT 30 440 0481 Bir tanım seçin (büyüteç) ya da doğrudan ekleyin (ok).
+	RETURN 0
+ENDIF
+LDB.defs.QUERY "SELECT restype, defname, name, dispid, ltrim(COALESCE(category, '') || COALESCE(' / ' || subsection, '') || COALESCE(' / ' || description, ''), ' /') AS cat, file, line FROM defs WHERE <CTAG.DefsAdd.Where> AND defname = '<STRSQLSAFE <CTAG.DefsAdd.Sel>>' LIMIT 1"
+IF (<dLDB.defs.ROW.NUMROWS> == 0)
+	CTAG.DefsAdd.Sel=
+	RETURN 0
+ENDIF
+IF !(<ISEMPTY <LDB.defs.ROW.0.dispid>>)
+	TILEPIC 30 445 <dLDB.defs.ROW.0.dispid>
+ENDIF
+DTEXT 120 435 <DEF.tcolor_green> <LDB.defs.ROW.0.name>
+DTEXT 120 455 0481 <LDB.defs.ROW.0.restype> <LDB.defs.ROW.0.defname>
+DCROPPEDTEXT 120 475 380 20 0481 <LDB.defs.ROW.0.cat>
+DCROPPEDTEXT 120 495 380 20 0389 <LDB.defs.ROW.0.file>:<dLDB.defs.ROW.0.line>
+BUTTON 120 520 4005 4007 1 0 20
+DTEXT 152 522 0481 Ekle
+
+DTEXT 520 435 0481 Spawn: adet
+RESIZEPIC 640 433 3000 50 22
+DTEXTENTRYLIMITED 645 435 40 20 0 2 3 <QVAL <ISEMPTY <CTAG.DefsAdd.Amount>>?1:<dCTAG0.DefsAdd.Amount>>
+DTEXT 520 460 0481 Süre (dk) en az
+RESIZEPIC 640 458 3000 50 22
+DTEXTENTRYLIMITED 645 460 40 20 0 3 4 <QVAL <ISEMPTY <CTAG.DefsAdd.TimeLo>>?5:<dCTAG0.DefsAdd.TimeLo>>
+DTEXT 700 460 0481 en çok
+RESIZEPIC 760 458 3000 50 22
+DTEXTENTRYLIMITED 765 460 40 20 0 4 4 <QVAL <ISEMPTY <CTAG.DefsAdd.TimeHi>>?15:<dCTAG0.DefsAdd.TimeHi>>
+DTEXT 520 485 0481 Uzaklık
+RESIZEPIC 640 483 3000 50 22
+DTEXTENTRYLIMITED 645 485 40 20 0 5 3 <QVAL <ISEMPTY <CTAG.DefsAdd.Dist>>?10:<dCTAG0.DefsAdd.Dist>>
+BUTTON 520 520 4005 4007 1 0 21
+DTEXT 552 522 0481 Spawn koy
+
+[DIALOG d_add BUTTON]
+ON=0
+RETURN 1
+
+ON=1 999
+IF (<SRC.ACCOUNT.PLEVEL> < 4)
+	RETURN 1
+ENDIF
+LOCAL.Reopen=1
+IF (<ARGN> == 1) || (<ARGN> == 2)
+	// Tür değişince seçimler sıfırlanır.
+	CLEARCTAGS DefsAdd
+	CTAG.DefsAdd.Mode=<eval <ARGN>-1>
+ELIF (<ARGN> == 3)
+	CTAG.DefsAdd.Search=<STRSQLSAFE <ARGTXT[1]>>
+	CTAG.DefsAdd.Page=0
+	CTAG.DefsAdd.Sel=
+ELIF (<ARGN> == 4)
+	CTAG.DefsAdd.Search=
+	CTAG.DefsAdd.Page=0
+ELIF (<ARGN> == 11)
+	CTAG.DefsAdd.CatPage=<eval <CTAG0.DefsAdd.CatPage>-1>
+ELIF (<ARGN> == 12)
+	CTAG.DefsAdd.CatPage=<eval <CTAG0.DefsAdd.CatPage>+1>
+ELIF (<ARGN> == 13)
+	CTAG.DefsAdd.SubPage=<eval <CTAG0.DefsAdd.SubPage>-1>
+ELIF (<ARGN> == 14)
+	CTAG.DefsAdd.SubPage=<eval <CTAG0.DefsAdd.SubPage>+1>
+ELIF (<ARGN> == 15)
+	CTAG.DefsAdd.Page=<eval <CTAG0.DefsAdd.Page>-1>
+ELIF (<ARGN> == 16)
+	CTAG.DefsAdd.Page=<eval <CTAG0.DefsAdd.Page>+1>
+ELIF (<ARGN> >= 100) && (<ARGN> <= 113)
+	CTAG.DefsAdd.Cat=<eval (<CTAG0.DefsAdd.CatPage>*14)+<ARGN>-100>
+	CTAG.DefsAdd.Sub=
+	CTAG.DefsAdd.SubPage=0
+	CTAG.DefsAdd.Page=0
+	CTAG.DefsAdd.Search=
+ELIF (<ARGN> >= 200) && (<ARGN> <= 213)
+	CTAG.DefsAdd.Sub=<eval (<CTAG0.DefsAdd.SubPage>*14)+<ARGN>-200>
+	CTAG.DefsAdd.Page=0
+ELIF (<ARGN> >= 300) && (<ARGN> <= 313)
+	CTAG.DefsAdd.Sel=<CTAG.DefsAdd.Row<eval <ARGN>-300>>
+ELIF (<ARGN> >= 400) && (<ARGN> <= 413)
+	CTAG.DefsAdd.Sel=<CTAG.DefsAdd.Row<eval <ARGN>-400>>
+	f_defs_add_create
+	LOCAL.Reopen=0
+ELIF (<ARGN> == 20)
+	f_defs_add_create
+	LOCAL.Reopen=0
+ELIF (<ARGN> == 21)
+	CTAG.DefsAdd.Amount=<eval <ARGTXT[2]>>
+	CTAG.DefsAdd.TimeLo=<eval <ARGTXT[3]>>
+	CTAG.DefsAdd.TimeHi=<eval <ARGTXT[4]>>
+	CTAG.DefsAdd.Dist=<eval <ARGTXT[5]>>
+	f_defs_add_spawn
+	LOCAL.Reopen=0
+ENDIF
+IF (<dLOCAL.Reopen>)
+	DIALOG d_add
+ENDIF
+RETURN 1
+
+// Seçili tanım hedefe eklenir (eşya ADDITEM, NPC ADDCHAR; ikisi de hedef ister).
+[FUNCTION f_defs_add_create]
+IF (<ISEMPTY <CTAG.DefsAdd.Sel>>)
+	RETURN 0
+ENDIF
+IF (<CTAG0.DefsAdd.Mode>)
+	ADDCHAR <CTAG.DefsAdd.Sel>
+ELSE
+	ADDITEM <CTAG.DefsAdd.Sel>
+ENDIF
+
+// Seçili tanımın spawn'ı hedeflenen yere (t_spawn_char ya da t_spawn_item).
+[FUNCTION f_defs_add_spawn]
+IF (<ISEMPTY <CTAG.DefsAdd.Sel>>)
+	RETURN 0
+ENDIF
+IF (<CTAG0.DefsAdd.Amount> < 1) || (<CTAG0.DefsAdd.TimeLo> < 1) || (<CTAG0.DefsAdd.TimeHi> < <CTAG0.DefsAdd.TimeLo>)
+	SYSMESSAGE @<DEF.tcolor_red>,,1 Spawn: adet ve süreler 1 ya da büyük olmalı, en çok süre en azdan küçük olamaz.
+	DIALOG d_add
+	RETURN 0
+ENDIF
+SYSMESSAGE @<DEF.tcolor_green>,,1 Spawn'ın yerini seçin.
+TARGETFG f_defs_add_spawn_place <QVAL <CTAG0.DefsAdd.Mode>?t_spawn_char:t_spawn_item>,<CTAG.DefsAdd.Sel>,<dCTAG0.DefsAdd.Amount>,<dCTAG0.DefsAdd.TimeLo>,<dCTAG0.DefsAdd.TimeHi>,<dCTAG0.DefsAdd.Dist>
+
+[FUNCTION f_defs_add_spawn_place]
+// ARGV: tür, tanım, adet, en az, en çok, uzaklık
+SERV.NEWITEM i_worldgem_bit
+NEW.TYPE=<ARGV[0]>
+NEW.MORE1=<ARGV[1]>
+NEW.AMOUNT=<ARGV[2]>
+NEW.MOREX=<ARGV[3]>
+NEW.MOREY=<ARGV[4]>
+NEW.MOREZ=<ARGV[5]>
+NEW.ATTR=0b0
+NEW.P=<TARGP>
+NEW.TIMER=1
+SYSMESSAGE @<DEF.tcolor_green>,,1 Spawn konuldu: <ARGV[1]> (<NEW.UID>).
+DIALOG d_add
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// .RESTYPES
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+[FUNCTION RESTYPES]
+DIALOGCLOSE d_restypes
+DIALOG d_restypes
+
+[DIALOG d_restypes]
+<DEF.DlgStartPos>
+IF !(<f_defs_connect>)
+	RESIZE 0,0,440,110,Tanım veritabanı
+	DTEXT 25 55 <DEF.tcolor_red> DefsDatabase kapalı ya da veritabanı açılamadı.
+ELSE
+	IF (<ISEMPTY <CTAG.DefsList.Type>>)
+		CTAG.DefsList.Type=AREADEF
+	ENDIF
+	RESIZE 0,0,880,560,Kayıtlı kaynaklar: <CTAG.DefsList.Type>
+	f_defs_list_types
+	IF (STRMATCH(MAPS,<CTAG.DefsList.Type>))
+		f_defs_list_maps
+	ELSE
+		f_defs_list_entries
+		f_defs_list_detail
+	ENDIF
+ENDIF
+
+// Sol sütun: türler ve sayıları, en sonda haritalar.
+[FUNCTION f_defs_list_types]
+DHTMLGUMP 20 55 170 25 1 0 <DEF.CENTER>TÜR
+LDB.defs.QUERY "SELECT restype, COUNT(*) AS n FROM defs GROUP BY restype ORDER BY restype"
+LOCAL.Rows=<dLDB.defs.ROW.NUMROWS>
+IF (<dLOCAL.Rows> > 21)
+	LOCAL.Rows=21
+ENDIF
+CLEARCTAGS DefsList.TypeRow
+FOR 0 20
+	IF (<dLOCAL._FOR> >= <dLOCAL.Rows>)
+		BREAK
+	ENDIF
+	LOCAL.Y=<eval 85+(<dLOCAL._FOR>*20)>
+	LOCAL.Type=<LDB.defs.ROW.<dLOCAL._FOR>.restype>
+	CTAG.DefsList.TypeRow<dLOCAL._FOR>=<LOCAL.Type>
+	BUTTON 20 <dLOCAL.Y> 4005 4007 1 0 <eval 100+<dLOCAL._FOR>>
+	DTEXT 52 <eval <dLOCAL.Y>+2> <QVAL STRMATCH(<LOCAL.Type>,<CTAG.DefsList.Type>)?<DEF.tcolor_green>:0481> <LOCAL.Type> (<dLDB.defs.ROW.<dLOCAL._FOR>.n>)
+ENDFOR
+LDB.defs.QUERY "SELECT COUNT(*) AS n FROM maps"
+LOCAL.Y=<eval 85+(<dLOCAL.Rows>*20)+5>
+BUTTON 20 <dLOCAL.Y> 4005 4007 1 0 99
+DTEXT 52 <eval <dLOCAL.Y>+2> <QVAL STRMATCH(MAPS,<CTAG.DefsList.Type>)?<DEF.tcolor_green>:0481> Haritalar (<dLDB.defs.ROW.0.n>)
+
+// Orta sütun: türün tanımları, aranabilir, sayfada 15.
+[FUNCTION f_defs_list_entries]
+RESIZEPIC 200 18 3000 200 26
+DTEXTENTRYLIMITED 205 21 190 20 0 1 40 <CTAG.DefsList.Search>
+BUTTON 405 20 4011 4012 1 0 3
+BUTTON 438 20 4017 4018 1 0 4
+DHTMLGUMP 200 55 330 25 1 0 <DEF.CENTER>TANIM
+CLEARCTAGS DefsList.Row
+LOCAL.Filter=restype = '<STRSQLSAFE <CTAG.DefsList.Type>>'
+IF !(<ISEMPTY <CTAG.DefsList.Search>>)
+	LOCAL.Filter=<LOCAL.Filter> AND (defname LIKE '%<CTAG.DefsList.Search>%' OR name LIKE '%<CTAG.DefsList.Search>%' OR description LIKE '%<CTAG.DefsList.Search>%')
+ENDIF
+LDB.defs.QUERY "SELECT defname, name, description FROM defs WHERE <LOCAL.Filter> ORDER BY defname LIMIT 16 OFFSET <eval <CTAG0.DefsList.Page>*15>"
+LOCAL.Rows=<dLDB.defs.ROW.NUMROWS>
+IF (<dLOCAL.Rows> == 0)
+	DTEXT 210 90 <DEF.tcolor_red> Bulunamadı.
+	RETURN 0
+ENDIF
+FOR 0 14
+	IF (<dLOCAL._FOR> >= <dLOCAL.Rows>)
+		BREAK
+	ENDIF
+	LOCAL.Y=<eval 85+(<dLOCAL._FOR>*21)>
+	LOCAL.Def=<LDB.defs.ROW.<dLOCAL._FOR>.defname>
+	CTAG.DefsList.Row<dLOCAL._FOR>=<LOCAL.Def>
+	LOCAL.Text=<LDB.defs.ROW.<dLOCAL._FOR>.name>
+	IF (<ISEMPTY <LOCAL.Text>>)
+		LOCAL.Text=<LDB.defs.ROW.<dLOCAL._FOR>.description>
+	ENDIF
+	BUTTON 200 <dLOCAL.Y> 4011 4012 1 0 <eval 200+<dLOCAL._FOR>>
+	DCROPPEDTEXT 232 <eval <dLOCAL.Y>+2> 300 20 <QVAL STRMATCH(<LOCAL.Def>,<CTAG.DefsList.Sel>)?<DEF.tcolor_green>:0481> <LOCAL.Def> <LOCAL.Text>
+ENDFOR
+IF (<CTAG0.DefsList.Page> > 0)
+	BUTTON 200 410 4014 4016 1 0 15
+ENDIF
+DTEXT 330 412 0481 Sayfa <eval <CTAG0.DefsList.Page>+1>
+IF (<dLOCAL.Rows> > 15)
+	BUTTON 500 410 4005 4007 1 0 16
+ENDIF
+
+// Sağ sütun: seçili tanımın bilgileri ve script'teki değerleri.
+[FUNCTION f_defs_list_detail]
+IF (<ISEMPTY <CTAG.DefsList.Sel>>)
+	RETURN 0
+ENDIF
+LDB.defs.QUERY "SELECT restype, defname, COALESCE(num, '') AS num, name, ltrim(COALESCE(category, '') || COALESCE(' / ' || subsection, ''), ' /') AS cat, dispid, p, map, triggers, file, line, substr(replace(replace(replace(data,'&','&amp;'),char(60),'&lt;'),char(62),'&gt;'),1,2500) AS data FROM defs WHERE restype = '<STRSQLSAFE <CTAG.DefsList.Type>>' AND defname = '<STRSQLSAFE <CTAG.DefsList.Sel>>' LIMIT 1"
+IF (<dLDB.defs.ROW.NUMROWS> == 0)
+	CTAG.DefsList.Sel=
+	RETURN 0
+ENDIF
+DHTMLGUMP 545 55 315 25 1 0 <DEF.CENTER><LDB.defs.ROW.0.defname>
+IF !(<ISEMPTY <LDB.defs.ROW.0.dispid>>)
+	TILEPIC 550 90 <dLDB.defs.ROW.0.dispid>
+ENDIF
+DCROPPEDTEXT 620 85 240 20 <DEF.tcolor_green> <LDB.defs.ROW.0.name>
+DCROPPEDTEXT 620 105 240 20 0481 <LDB.defs.ROW.0.restype> <QVAL <ISEMPTY <LDB.defs.ROW.0.num>>?:#<LDB.defs.ROW.0.num>>
+DCROPPEDTEXT 620 125 240 20 0481 <LDB.defs.ROW.0.cat>
+DCROPPEDTEXT 550 150 310 20 0389 <LDB.defs.ROW.0.file>:<dLDB.defs.ROW.0.line>
+IF !(<ISEMPTY <LDB.defs.ROW.0.p>>)
+	CTAG.DefsList.SelP=<LDB.defs.ROW.0.p>
+	DTEXT 550 172 0481 P: <LDB.defs.ROW.0.p>
+	BUTTON 780 170 4005 4007 1 0 30
+	DTEXT 812 172 0481 Git
+ELSE
+	CTAG.DefsList.SelP=
+ENDIF
+IF !(<ISEMPTY <LDB.defs.ROW.0.triggers>>)
+	DCROPPEDTEXT 550 194 310 20 0389 <LDB.defs.ROW.0.triggers>
+ENDIF
+DHTMLGUMP 545 220 315 315 1 1 <LDB.defs.ROW.0.data>
+
+// Haritalar: boyutlar; haritanın ortasına gitme.
+[FUNCTION f_defs_list_maps]
+DHTMLGUMP 200 55 660 25 1 0 <DEF.CENTER>HARİTA
+LDB.defs.QUERY "SELECT map, file_num, client_id, size_x, size_y, center_x, center_y FROM maps ORDER BY map LIMIT 15"
+LOCAL.Rows=<dLDB.defs.ROW.NUMROWS>
+CLEARCTAGS DefsList.MapRow
+FOR 0 14
+	IF (<dLOCAL._FOR> >= <dLOCAL.Rows>)
+		BREAK
+	ENDIF
+	LOCAL.Y=<eval 85+(<dLOCAL._FOR>*22)>
+	CTAG.DefsList.MapRow<dLOCAL._FOR>=<dLDB.defs.ROW.<dLOCAL._FOR>.center_x>,<dLDB.defs.ROW.<dLOCAL._FOR>.center_y>,0,<dLDB.defs.ROW.<dLOCAL._FOR>.map>
+	BUTTON 200 <dLOCAL.Y> 4005 4007 1 0 <eval 300+<dLOCAL._FOR>>
+	DTEXT 232 <eval <dLOCAL.Y>+2> 0481 Harita <dLDB.defs.ROW.<dLOCAL._FOR>.map>: <dLDB.defs.ROW.<dLOCAL._FOR>.size_x> x <dLDB.defs.ROW.<dLOCAL._FOR>.size_y>, dosya <dLDB.defs.ROW.<dLOCAL._FOR>.file_num>, client <dLDB.defs.ROW.<dLOCAL._FOR>.client_id>
+ENDFOR
+
+[DIALOG d_restypes BUTTON]
+ON=0
+RETURN 1
+
+ON=1 999
+IF (<SRC.ACCOUNT.PLEVEL> < 4)
+	RETURN 1
+ENDIF
+IF (<ARGN> == 3)
+	CTAG.DefsList.Search=<STRSQLSAFE <ARGTXT[1]>>
+	CTAG.DefsList.Page=0
+	CTAG.DefsList.Sel=
+ELIF (<ARGN> == 4)
+	CTAG.DefsList.Search=
+	CTAG.DefsList.Page=0
+ELIF (<ARGN> == 15)
+	CTAG.DefsList.Page=<eval <CTAG0.DefsList.Page>-1>
+ELIF (<ARGN> == 16)
+	CTAG.DefsList.Page=<eval <CTAG0.DefsList.Page>+1>
+ELIF (<ARGN> == 30)
+	IF !(<ISEMPTY <CTAG.DefsList.SelP>>)
+		GO <CTAG.DefsList.SelP>
+	ENDIF
+ELIF (<ARGN> == 99)
+	CTAG.DefsList.Type=MAPS
+	CTAG.DefsList.Sel=
+ELIF (<ARGN> >= 100) && (<ARGN> <= 120)
+	CTAG.DefsList.Type=<CTAG.DefsList.TypeRow<eval <ARGN>-100>>
+	CTAG.DefsList.Page=0
+	CTAG.DefsList.Search=
+	CTAG.DefsList.Sel=
+ELIF (<ARGN> >= 200) && (<ARGN> <= 214)
+	CTAG.DefsList.Sel=<CTAG.DefsList.Row<eval <ARGN>-200>>
+ELIF (<ARGN> >= 300) && (<ARGN> <= 314)
+	GO <CTAG.DefsList.MapRow<eval <ARGN>-300>>
+ENDIF
+DIALOG d_restypes
+RETURN 1
+
+[EOF]
