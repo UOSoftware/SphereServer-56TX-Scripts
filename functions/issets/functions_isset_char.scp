@@ -123,28 +123,11 @@ RETURN 0
 RETURN <dTAG0.REWARDCOINS>
 
 
-[FUNCTION KILLSPLAYER]
-RETURN <dTAG0.KILLS.PLAYER>
-
-[FUNCTION KILLSNPC]
-RETURN <DTAG0.KILLS.NPC>
-
-[FUNCTION DEATHSPLAYER]
-RETURN <DTAG0.DEATHS.PLAYER>
-
-
-[FUNCTION DEATHSNPC]
-RETURN <DTAG0.DEATHS.NPC>
-
-
-
 [FUNCTION IsVipMember]
 RETURN <IsPreMember>
 
 [FUNCTION IsPreMember]
 RETURN <ACCOUNT.TAG0.PREMIUM>
-
-
 
 
 
@@ -327,22 +310,6 @@ RETURN 0
 [FUNCTION IsNoFullSp]
 IF !(<ISDEATH>) && (<stam> < <dex>)
 RETURN 1
-ENDIF
-RETURN 0
-
-
-
-[FUNCTION IsMonsters]
-IF (<ISCHAR>)
-	IF (<NPC> == brain_monster || <NPC> == brain_berserk  || <NPC> == brain_dragon) 
-		RETURN 1
-	ENDIF
-ENDIF
-RETURN 0
-
-[FUNCTION IsVendors]
-IF (<NPC> == brain_healer || <NPC> == brain_banker || <NPC> == brain_vendor || <NPC> == brain_animal_trainer) 
-	RETURN 1
 ENDIF
 RETURN 0
 
