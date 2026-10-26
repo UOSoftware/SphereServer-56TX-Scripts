@@ -152,7 +152,6 @@ f_onserver_db_tick
 //       0 --> şifre her zamanki gibi denetlenir (varsayılan)
 //       1 --> şifre yanlışmış gibi bağlantı kesilir
 //       6 --> şifre denetlenmez (script kendisi denetler)
-// SERV.LOG f_onaccount_connect: <LOCAL.ACCOUNT>
 
 
 [FUNCTION f_onaccount_login]
@@ -176,8 +175,6 @@ f_onserver_db_tick
 //     Dönüş:
 //       0 --> giriş kabul edilir (varsayılan)
 //       1 --> giriş reddedilir
-// LOCAL.ACCOUNT=<ARGS>
-// SERV.LOG f_onaccount_login: <LOCAL.ACCOUNT> (<ARGN1>)
 
 
 [FUNCTION f_onaccount_login_fail]
@@ -271,7 +268,6 @@ f_onserver_db_tick
 //     Dönüş:
 //       0 --> kabul (varsayılan)
 //       1 --> ret: şifre değişmez
-// SERV.LOG <args> isimli hesabin sifresi degisti. (Eski=<local.oldpassword>, Yeni=<LOCAL.PASSWORD>)
 
 
 [FUNCTION f_onaccount_pinchange]
@@ -381,7 +377,6 @@ f_onserver_db_tick
 // Char / Karakter
 //****************************************************************************
 
-// Karakter olusturulurken once burasi cagrilir.
 [FUNCTION f_onchar_create_init]
 // EN: Called on the client when it sends the new character, before it is created. The 0.56T name
 //     f_onchar_create_player_init also works (do not define both).
@@ -411,15 +406,11 @@ f_onserver_db_tick
 //     Dönüş:
 //       0 --> kabul (varsayılan)
 //       1 --> yaratma reddedilir
-// serv.log f_onchar_create_init
 
-ARGO.TAG0.CharCreateInitRace=<dargn1>
-ARGO.TAG0.CharCreateInitProf=<dargn2>
-ARGN3=1 // her zaman human
+// EN: Every new character is human (56b/T); delete the line to keep the race chosen in the client.
+// TR: Her yeni karakter insan olur (56b/T); client'ta seçilen ırk kalsın diye satırı silin.
+ARGN3=1
 
-
-
-// Karakter olusturulurken sonra burasi cagrilir.
 
 [FUNCTION f_onchar_create]
 // EN: Called on the client after the new character was created; SRC the character. The 0.56T name
@@ -446,16 +437,16 @@ ARGN3=1 // her zaman human
 //     Dönüş:
 //       0 --> kabul (varsayılan)
 //       1 --> ret: karakter silinir
-// serv.log f_onchar_create
-ARGN3=1  // her zamam human
 
-SRC.TAG0.CharCreateFeature=<ARGN1>
+// EN: Creation data of the character: profession and race.
+// TR: Karakterin yaratılma bilgisi: meslek ve ırk.
 SRC.TAG0.CharCreateProf=<DARGN2>
 SRC.TAG0.CharCreateRace=<DARGN3>
 
+// EN: Body, hair and beard the character was created with (the stylist deed restores them).
+// TR: Karakterin yaratıldığı ten, saç ve sakal (stylist deed geri getirir).
 SRC.TAG.BODY_DEFAULT_COLOR=<SRC.COLOR>
 SRC.TAG.BODY_DEFAULT_OSKIN=<SRC.OSKIN>
-
 IF (<SRC.FINDLAYER(LAYER_HAIR)>)
 	SRC.TAG.HAIR_DEFAULT_COLOR=<SRC.FINDLAYER(LAYER_HAIR).COLOR>
 	SRC.TAG.HAIR_DEFAULT_BASEID=<SRC.FINDLAYER(LAYER_HAIR).BASEID>
@@ -464,23 +455,6 @@ IF (<SRC.FINDLAYER(LAYER_BEARD)>)
 	SRC.TAG.BEARD_DEFAULT_COLOR=<SRC.FINDLAYER(LAYER_BEARD).COLOR>
 	SRC.TAG.BEARD_DEFAULT_BASEID=<SRC.FINDLAYER(LAYER_BEARD).BASEID>
 ENDIF
-
-IF (<SRC.ACCOUNT.PLEVEL> > 1)
-	SRC.Func_Char_Start_Staff
-ELSEIF (<SRC.ACCOUNT.PLEVEL> <= 1)
-	SRC.Func_Char_Start_Player
-ENDIF
-
-
-
-// [FUNCTION Func_Char_Start_Player]
-// Func_Char_Default_Set
-
-// bunu yapma herkes istedigi gibi isim koysun.
-// NAME <STRARG <STRTOUPPER(<STRSUB 0 1 <NAME>>)><STRTOLOWER(<STRSUB 1 16 <NAME>>)>>
-// ONAME = <NAME>
-
-// FUNC_ISIM_KONTROL <NAME>
 
 
 [FUNCTION f_onchar_setup_player]
@@ -605,9 +579,8 @@ ENDIF
 //       0 --> mesajsız ret
 //       1 --> mesajla ret
 //       2 --> kabul (varsayılan)
-SERV.LOGGER f_axis_preload: Giris reddedildi. Account=<LOCAL.Account>, IP=<LOCAL.IP>
-RETURN 1
-
+// EN: To turn Axis off completely use UseAxis=0 in sphere.ini.
+// TR: Axis'i tamamen kapatmak için sphere.ini'de UseAxis=0.
 
 
 [FUNCTION f_onclient_exceed_network_quota]
@@ -635,9 +608,6 @@ RETURN 1
 //       0 --> bir şey yapılmaz, log satırı yazılır
 //       1 --> bir şey yapılmaz, log satırı da yazılmaz
 //       2 --> bağlantı kesilir, log satırı yazılır (varsayılan)
-SERV.LOGGER Exceed Network Quota : Char:<SRC.NAME>[<SRC>] Account:<local.account> IP:<local.ip> Info: (<ARGN1>)<ARGN2> [<ARGN3>]
-// RETURN 2
-
 
 
 [FUNCTION f_onclient_ping_flood]
@@ -787,7 +757,10 @@ SERV.LOGGER Exceed Network Quota : Char:<SRC.NAME>[<SRC>] Account:<local.account
 [FUNCTION f_onserver_start]
 // EN: Called once when the server has started ("Startup complete").
 // TR: Sunucu açılınca ("Startup complete") bir kez çağrılır.
-//SERV.ServIP=xxx.xxx.xxx.xxx	//Add your public IP here (not domain) if you are behind a router
+
+// EN: Behind a router: write the server's public IP address here (not a domain name).
+// TR: Router arkasındaysa: sunucunun dış IP adresini buraya yazın (alan adı değil).
+//SERV.SERVIP=xxx.xxx.xxx.xxx
 
 
 [FUNCTION f_onserver_exit]
@@ -1011,8 +984,12 @@ SERV.LOGGER Exceed Network Quota : Char:<SRC.NAME>[<SRC>] Account:<local.account
 //     Dönüş:
 //       0 --> kaydedilir (varsayılan)
 //       1 --> kaydedilmez
-SERV.SaveStatics // Uncomment this line if you are building your server, so static items are saved also with normal saves, or comment it again in live servers to speed up the save proccess (if commented, you MUST type manually .serv.savestatics to save static items)
 
+// EN: Uncomment while building the world, so static items are saved with every save too; comment it again on a live
+//     server to keep saves fast (then save static items with .SERV.SAVESTATICS).
+// TR: Dünyayı kurarken açın, statik eşyalar da her save'de kaydedilsin; canlı sunucuda save'ler hızlı kalsın diye yeniden
+//     kapatın (o zaman statik eşyaları .SERV.SAVESTATICS ile kaydedin).
+//SERV.SAVESTATICS
 
 
 [FUNCTION f_onserver_save_try]
@@ -1055,8 +1032,6 @@ SERV.SaveStatics // Uncomment this line if you are building your server, so stat
 //     Değişkenler:
 //       ARGN1 --> 1: hemen kaydedildi
 //       ARGN2 --> save aşaması
-// serv.allclients F_STAFFPANEL_REFRESH
-
 
 
 [FUNCTION f_onserver_save_fail]
@@ -1079,13 +1054,12 @@ SERV.SaveStatics // Uncomment this line if you are building your server, so stat
 // TR: Dünya save'i tamamen bitince çağrılır (arka plan save'inin sonunda da).
 //     Değişkenler:
 //       ARGS --> sürdüğü zaman (saniye, 4 ondalık)
-VAR0.SAVE_LAST_TIME <SERV.RTIME.FORMAT %H:%S>
-// VAR0.SAVE_LAST_DATE <SERV.RTIME.FORMAT %y.%m.%d>
-// VAR0.SAVE_LAST_DATETIME <SERV.RTIME>
-// VAR0.SAVE_PERIOD <SERV.SAVEPERIOD>
-VAR0.SAVE_TIME_TOOK <STRSUB 0 3 <ARGS>>
-// SERV.B @0,3 Kayit islemi <STRSUB 0 3 <args>> saniyede tamamlandi.
 
+// EN: Time of the last save and how long it took, for dialogs and the staff.
+// TR: Son save'in saati ve ne kadar sürdüğü, dialog'lar ve staff için.
+VAR0.SAVE_LAST_TIME=<SERV.RTIME.FORMAT %H:%M>
+VAR0.SAVE_TIME_TOOK=<ARGS>
+// SERV.B @0,3 Kayit islemi <ARGS> saniyede tamamlandi.
 
 
 [FUNCTION f_onserver_lowdisk]
