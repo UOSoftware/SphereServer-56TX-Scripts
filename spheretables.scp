@@ -73,6 +73,7 @@ defnames/defs_types_name.scp
 core/names.scp
 core/skills.scp // once skills yukle
 core/newbies.scp // sonra newbies yukle.
+core/starts.scp
 
 // Server functions (f_on*)
 functions/serv_triggers.scp
@@ -208,7 +209,6 @@ regions/regions_types.scp
 ////////////////////////
 
 // Map0
-core/map0_starts.scp
 moongates/map0_moongates.scp
 areadefs/map0_areas.scp
 areadefs/map0_areas_ml.scp
