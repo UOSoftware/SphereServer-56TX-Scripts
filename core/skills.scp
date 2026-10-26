@@ -24,7 +24,14 @@ VALUES=0,100
 // The amount of value an item created with the skill gets at skill levels.
 EFFECT=0,100
 // Healing: Effect of bandages
+// 56TX: BandageMode=0'da (gömülü bandaj) bandajın canı EFFECT'ten değil emulatörün hesabından (@Start'ta LOCAL.Effect).
 // Crafting Skills: Percentage of resources lost on failure.
+FREEZE_TIME=0
+// 56TX: skill başlayınca karakterin kıpırdayamadığı süre (saniye; büyünün FREEZE_TIME'ı gibi, skill'e göre
+//  değer verilebilir). Skill bitince ya da kesilince donma da biter. @Start'ta LOCAL.FreezeTime.
+COOLDOWN=8.0
+// 56TX: BandageMode=0'da Healing ve Veterinary'de bandaj bittikten sonra yenisine kadar bekleme (saniye). Yazılmazsa
+//  emulatörün değeri: kendine 8, başkasına 4 saniye, DEX 35'in altında 14 ve 6. @Start'ta LOCAL.Cooldown.
 STAT_STR=80
 // You will tend toward these stat vals if you use this skill a lot.
 BONUS_STATS=10
@@ -396,7 +403,7 @@ DEFNAME=Skill_Healing
 KEY=Healing
 TITLE=Healer
 PROMPT_MSG=Who will you use the bandages on?
-DELAY=3.0,1.0
+DELAY=3.0 //Old value=3.0,1.0
 EFFECT=2.0,20.0
 STAT_STR=10
 STAT_DEX=10
@@ -406,6 +413,53 @@ BONUS_DEX=30
 BONUS_INT=70
 BONUS_STATS=20
 ADV_RATE=10.0,100.0,250.0
+
+// 56TX: bandaj emulatörde (BandageMode=0): süre DELAY, can, zehir, diriltme, bekleme, vuruşta ve büyüde yırtılma
+//  motorun. ARGO hedef (char ya da ceset), LOCAL.Resurrect ve LOCAL.Cure bilgi; değiştirilebilenler sphere.ini'de
+//  (BandageMode). Burada sadece paketin kuralları: faction ve Order/Chaos üyeleri dışarıdan tedavi edilemez.
+ON=@Start
+IF (<SERV.BANDAGEMODE> != 0)
+	RETURN 0
+ELSEIF (<LOCAL.Resurrect>) || !(<ARGO.ISCHAR>)
+	RETURN 0
+ENDIF
+IF (<ARGO.MEMORYFINDTYPE.MEMORY_TOWN>) && !(<SRC.MEMORYFINDTYPE.MEMORY_TOWN>)
+	SRC.SYSMESSAGE Faction üyelerini iyileştiremezsiniz.
+	RETURN 1
+ENDIF
+IF (<ARGO.MEMORYFINDTYPE.MEMORY_GUILD>) && (<ARGO.MEMORYFINDTYPE.MEMORY_GUILD.LINK.ALIGN> > 0)
+	IF !(<SRC.MEMORYFINDTYPE.MEMORY_GUILD>)
+		SRC.SYSMESSAGE Order/Chaos üyelerini iyileştiremezsiniz.
+		RETURN 1
+	ELSEIF (<SRC.MEMORYFINDTYPE.MEMORY_GUILD.LINK.ALIGN> > 0) && (<SRC.MEMORYFINDTYPE.MEMORY_GUILD.LINK.ALIGN> != <ARGO.MEMORYFINDTYPE.MEMORY_GUILD.LINK.ALIGN>)
+		SRC.SYSMESSAGE Order/Chaos üyelerini iyileştiremezsiniz.
+		RETURN 1
+	ENDIF
+ENDIF
+
+// 56TX: diriltmede başka faction'dan ya da karşı hizadan olanı dirilten criminal olur. Katili ve suçluyu diriltmek
+//  emulatörde (HelpingCriminalsIsACrime).
+ON=@Success
+IF (<SERV.BANDAGEMODE> != 0)
+	RETURN 0
+ELSEIF (<ARGO.ISCHAR>)
+	REF1=<ARGO>
+ELSE
+	REF1=<ARGO.LINK>
+ENDIF
+IF !(<REF1.FLAGS>&statf_dead)
+	RETURN 0
+ENDIF
+IF (<SRC.MEMORYFINDTYPE.MEMORY_TOWN>) && (<REF1.MEMORYFINDTYPE.MEMORY_TOWN>) && (<SRC.MEMORYFINDTYPE.MEMORY_TOWN.LINK> != <REF1.MEMORYFINDTYPE.MEMORY_TOWN.LINK>)
+	SRC.CRIMINAL 1
+ELSEIF (<REF1.MEMORYFINDTYPE.MEMORY_GUILD>) && (<REF1.MEMORYFINDTYPE.MEMORY_GUILD.LINK.ALIGN> > 0)
+	IF !(<SRC.MEMORYFINDTYPE.MEMORY_GUILD>)
+		SRC.CRIMINAL 1
+	ELSEIF (<SRC.MEMORYFINDTYPE.MEMORY_GUILD.LINK.ALIGN> > 0) && (<SRC.MEMORYFINDTYPE.MEMORY_GUILD.LINK.ALIGN> != <REF1.MEMORYFINDTYPE.MEMORY_GUILD.LINK.ALIGN>)
+		SRC.CRIMINAL 1
+		SRC.SAYUA 048,0,0,0 * <REF1.NAME> isimli düşmanı diriltir *
+	ENDIF
+ENDIF
 
 [SKILL 18]
 DEFNAME=Skill_Fishing
@@ -939,7 +993,7 @@ SRC.ARROWQUEST 0,0,38
 DEFNAME=Skill_Vet
 KEY=Veterinary
 TITLE=Veterinarian
-DELAY=2.0
+DELAY=3.0 //Old value=2.0
 STAT_STR=30
 STAT_DEX=40
 STAT_INT=50
