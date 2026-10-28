@@ -1,0 +1,169 @@
+VERSION=TX
+
+// Bonuslar: saldırıda şansla çalışan ek etkiler. Emulatörün [BONUS] bölümü (0.56TX): etkiler emulatörde; hangi silahın
+//  ya da karakterin hangi bonusu alacağı, şans ve değerler burada.
+// Paketteki bonuslar kapalıdır (ENABLED=0): açmak için bonusun ENABLED satırını 1 yapın ya da oyunda
+//  SERV.BONUS.<bonus>.ENABLED=1 (resync'te dosyadaki değer geçerli olur). Bütün sistemi sphere.ini'de BonusSystem=0
+//  kapatır. Bu dosya ITEMDEF ve CHARDEF'lerden önce yüklenir (spheretables.scp): BONUSES= satırları bonusu adıyla bulur.
+//
+// Anahtarlar (hepsi isteğe bağlı):
+// - NAME, DESCRIPTION, GUMPID: dialog için. DEBUFFICON: süreli etkide hedefin buff çubuğundaki ikon.
+// - ENABLED: 0 bonusu kapatır, tanım yüklü kalır.
+// - EFFECT: DAMAGE (ek hasar), DRAIN (hedefin mana, stamina ya da canını düşürür), SCRIPT (etki @Start'ta yazılır).
+// - WHEN: HIT (yakın dövüş ve okçuluk vuruşu; varsayılan).
+// - Hangi saldırıda: WEAPONS= (ITEMDEF listesi; ID= ile türetilen silah tabanınınkini alır), TYPES= (t_weapon_axe...),
+//   WEAPONSKILL= (silahın skill'i; silahsız dövüş Wrestling). Ayrıca silahın ve karakterin BONUSES='i (aşağıda).
+// - USEDBY: kim kullanır; TARGETS: kime tutar. PLAYER, NPC ya da ikisi (varsayılan ikisi).
+// - CHANCE: yüzde, bir ondalık hane (7.8; varsayılan 100). CHANCESKILL=<skill>: şans saldıranın o skill'iyle orantılı
+//   (100.0'da CHANCE'in kendisi).
+// - DAMAGE=a,b: ek hasar, aralıktan rastgele. DAMAGEPERCENT: vuruşun hasarının yüzdesi kadar daha. DAMAGESKILL=<skill>:
+//   ek hasar saldıranın o skill'iyle orantılı. DAMAGEMAX: üst sınır. DAMAGETYPE: hasar türü (varsayılan dam_god).
+// - DRAIN=MANA|STAM|HITS, DRAINAMOUNT=a,b, DRAINPERCENT (vuruşun hasarının yüzdesi).
+// - MINHITS, MINMANA, MINSTAM: tutması için hedefin değeri bundan büyük olmalı.
+// - MESSAGE: [DEFMESSAGE] anahtarı (her oyuncu kendi dilinde görür) ya da metin; hedefin üstünde emote. MESSAGEHUE, SOUND.
+// - Silaha göre değer: <ANAHTAR>.<itemdef|tür>=değer (CHANCE.t_weapon_axe=23.3, DAMAGE.i_kryss=5,10). İtemdef türü ezer.
+//
+// Silahta ve karakterde (ITEMDEF, tek eşya, CHARDEF, karakter):
+// - BONUSES=b_x,b_y: o silahla ya da o karakterin saldırısında bonus denenir (bonusun WEAPONS/TYPES'ına ek; bonus bir
+//   vuruşta bir kez). EVENTS gibi: BONUSES=+b_x ekler, BONUSES=-b_x çıkarır, BONUSES=-0 temizler.
+// - BONUS.<bonus>.<ANAHTAR>=değer: o silahta ya da karakterde bonusun değeri. Öncelik (sonraki kazanır): bonusun
+//   değeri, CHARDEF, karakter, ITEMDEF, eşya.
+// - Eşyanın ve karakterin BONUSES'ı ve BONUS.* değerleri save'e yazılır.
+// Örnek, kritik mana vuran ve kritik vuruş şansı yüksek bir balta:
+//   ITEMDEF i_axe_double_kanli: ID=i_axe_double, BONUSES=b_critical_mana, BONUS.b_critical_hits.CHANCE=30
+// Örnek, oyunda tek bir silaha: .xBONUSES +b_critical_stam
+//
+// Trigger'lar:
+// - Karakterde @Bonus: saldıranda, her bonustan önce, şans atılmadan. ARGS bonusun adı, ARGO silah (silahsızsa yok),
+//   ARGN1 vuruşun hasarı, SRC hedef. LOCAL.Chance (binde: 1000 = %100), LOCAL.Damage, LOCAL.Drain değiştirilebilir;
+//   RETURN 1 o bonus çalışmaz (ör. bonusların kapalı olduğu bir etkinlik alanı).
+// - Bonusta @Start: şans tuttu, etki uygulanmadan önce; saldıranda, SRC hedef; aynı ARGS, ARGO, ARGN1 ve LOCAL'ler.
+//   RETURN 1 iptal eder.
+// Hedef taşsa ya da safe bölgedeyse bonus tutmaz.
+// Script'ten: <SERV.BONUS.COUNT>, <SERV.BONUS.<n|ad>.<ANAHTAR>>, SERV.BONUS.<ad>.<ANAHTAR>=değer.
+
+
+// Baltayla vuruşa Lumberjacking'le artan ek hasar: 100.0'da vuruşun %25'i, en çok 10.
+[BONUS b_axe]
+NAME=Axe
+DESCRIPTION=Baltayla vuruşunuz odunculuğunuzla artan ek hasar verir
+ENABLED=0
+EFFECT=DAMAGE
+TYPES=t_weapon_axe
+DAMAGEPERCENT=25
+DAMAGESKILL=Lumberjacking
+DAMAGEMAX=10
+DAMAGETYPE=dam_physical|dam_god
+
+// 98.0 Lumberjacking'le baltaya vuruşun %10'u kadar ek hasar daha, en çok 10.
+[BONUS b_axe_master]
+NAME=Axe Master
+DESCRIPTION=Usta oduncunun baltası vuruşun onda biri kadar ek hasar verir
+ENABLED=0
+EFFECT=DAMAGE
+TYPES=t_weapon_axe
+DAMAGEPERCENT=10
+DAMAGEMAX=10
+DAMAGETYPE=dam_physical|dam_god
+
+ON=@Start
+IF (<LUMBERJACKING> < 98.0)
+	RETURN 1
+ENDIF
+
+// Kritik vuruş: baltada %23.3 ile 15-20, kryss'te %11.7 ile 5-10, BONUSES= ile verilen öteki silahlarda %14 ile 6-12.
+[BONUS b_critical_hits]
+NAME=Critical Hits
+DESCRIPTION=Rakibinize kritik hasar vermenizi sağlar
+ENABLED=0
+EFFECT=DAMAGE
+WEAPONS=i_kryss,i_axe_battle_large,i_axe_battle,i_axe_two_hand,i_axe,i_axe_double
+CHANCE=14
+DAMAGE=6,12
+CHANCE.t_weapon_axe=23.3
+DAMAGE.t_weapon_axe=15,20
+CHANCE.i_kryss=11.7
+DAMAGE.i_kryss=5,10
+MINHITS=30
+MESSAGE=bonus_critical_hits
+
+// Kritik stamina vuruşu: 5 hasar ve 10-20 stamina.
+[BONUS b_critical_stam]
+NAME=Critical Stam
+DESCRIPTION=Rakibinize kritik stamina hasarı vermenizi sağlar
+ENABLED=0
+EFFECT=DRAIN
+WEAPONS=i_staff_black,i_staff_quarter,i_club
+TARGETS=PLAYER
+CHANCE=14.3
+DAMAGE=5
+DRAIN=STAM
+DRAINAMOUNT=10,20
+MESSAGE=bonus_critical_stam
+
+// Kritik mana vuruşu: vuruşun hasarı kadar mana; hedefin manası 30'dan çoksa. Silahı yok: BONUSES= ile verilir.
+[BONUS b_critical_mana]
+NAME=Critical Mana
+DESCRIPTION=Rakibinize kritik mana hasarı vermenizi sağlar
+ENABLED=0
+EFFECT=DRAIN
+TARGETS=PLAYER
+CHANCE=6.7
+DRAIN=MANA
+DRAINPERCENT=100
+MINMANA=30
+MESSAGE=bonus_critical_mana
+
+// Topuzun her vuruşu 3-5 stamina düşürür (gnarled staff hariç).
+[BONUS b_mace_stam]
+NAME=Mace Stamina
+DESCRIPTION=Topuz vuruşunuz rakibin staminasını düşürür
+ENABLED=0
+EFFECT=DRAIN
+TYPES=t_weapon_mace_smith,t_weapon_mace_sharp,t_weapon_mace_staff,t_weapon_mace_pick
+DRAIN=STAM
+DRAINAMOUNT=3,5
+CHANCE.i_staff_gnarled=0
+
+// Özel bonus örneği (EFFECT=SCRIPT): motor şansa ve koşullara bakar, etkiyi @Start yapar. Hedefin giydiği zırh
+//  parçalarından ya da kalkanından (giysiler değil) rastgele biri parçalanır. Şans Anatomy'yle, 100.0'da %6.5.
+[BONUS b_armor_destroy]
+NAME=Armor Destroy
+DESCRIPTION=Rakibinizin zırhını parçalamanızı sağlar
+ENABLED=0
+EFFECT=SCRIPT
+WEAPONS=i_mace_war,i_maul
+TARGETS=PLAYER
+CHANCE=6.5
+CHANCESKILL=Anatomy
+MESSAGE=*zırhı parçalandı*
+
+ON=@Start
+LOCAL.Count=0
+FOR Layer 1 24
+	REF1=<SRC.FINDLAYER.<dLOCAL.Layer>>
+	IF (<REF1.ISVALID>)
+		IF (<REF1.ISARMOR>) && (<REF1.TYPE> != t_clothing)
+			LOCAL.Count += 1
+		ENDIF
+	ENDIF
+ENDFOR
+IF (<dLOCAL.Count> == 0)
+	RETURN 1
+ENDIF
+LOCAL.Pick=<R<dLOCAL.Count>>
+FOR Layer 1 24
+	REF1=<SRC.FINDLAYER.<dLOCAL.Layer>>
+	IF (<REF1.ISVALID>)
+		IF (<REF1.ISARMOR>) && (<REF1.TYPE> != t_clothing)
+			IF (<dLOCAL.Pick> == 0)
+				REF1.REMOVE
+				RETURN 0
+			ENDIF
+			LOCAL.Pick -= 1
+		ENDIF
+	ENDIF
+ENDFOR
+
+
+[EOF]

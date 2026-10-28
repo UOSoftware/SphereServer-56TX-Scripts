@@ -240,61 +240,7 @@ ENDIF
 TAG0.NPC=<SRC.TARG.UID>
 
 
-
-[TYPEDEF t_weapon_mace_smith]
-
-ON=@EQUIP
-IF !(<SRC.ISEVENT.e_bonus_shoot_stam>)
-	SRC.EVENTS +e_bonus_shoot_stam
-ENDIF
-
-ON=@UNEQUIP
-IF (<SRC.ISEVENT.e_bonus_shoot_stam>)
-	SRC.EVENTS -e_bonus_shoot_stam
-ENDIF
-
-
-[TYPEDEF t_weapon_mace_sharp]
-
-ON=@EQUIP
-IF !(<SRC.ISEVENT.e_bonus_shoot_stam>)
-	SRC.EVENTS +e_bonus_shoot_stam
-ENDIF
-
-ON=@UNEQUIP
-IF (<SRC.ISEVENT.e_bonus_shoot_stam>)
-	SRC.EVENTS -e_bonus_shoot_stam
-ENDIF
-
-
-[TYPEDEF t_weapon_mace_staff]
-
-ON=@EQUIP
-IF !((<BASEID> = i_staff_taming || <baseid> == i_staff_gnarled))
-	IF !(<SRC.ISEVENT.e_bonus_shoot_stam>)
-		SRC.EVENTS +e_bonus_shoot_stam
-	ENDIF
-ENDIF
-
-ON=@UNEQUIP
-IF (<SRC.ISEVENT.e_bonus_shoot_stam>)
-	SRC.EVENTS -e_bonus_shoot_stam
-ENDIF
-
-
-
-[TYPEDEF t_weapon_mace_pick]
-
-ON=@EQUIP
-IF !(<SRC.ISEVENT.e_bonus_shoot_stam>)
-	SRC.EVENTS +e_bonus_shoot_stam
-ENDIF
-
-ON=@UNEQUIP
-IF (<SRC.ISEVENT.e_bonus_shoot_stam>)
-	SRC.EVENTS -e_bonus_shoot_stam
-ENDIF
-
+// Topuzların stamina düşürmesi: core/bonuses.scp, b_mace_stam.
 
 
 [EOF]
