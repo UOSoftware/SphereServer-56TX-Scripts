@@ -188,9 +188,6 @@ RETURN 0
 [FUNCTION oStatTotal]
 RETURN <EVAL <OSTR>+<ODEX>+<OINT>>
 
-[FUNCTION StatTotal]
-RETURN <EVAL <STR>+<DEX>+<INT>>
-
 
 
 // Class

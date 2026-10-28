@@ -72,12 +72,16 @@ defnames/defs_types_name.scp
 ////////////////////////
 core/names.scp
 core/skills.scp // once skills yukle
+core/skillmenus.scp 
 core/newbies.scp // sonra newbies yukle.
 core/starts.scp
 core/bonuses.scp // [BONUS]: ITEMDEF ve CHARDEF'lerin BONUSES='inden önce
 
 // Server functions (f_on*)
-functions/serv_triggers.scp
+functions/functions_serv_triggers.scp
+functions/
+functions/issets/
+
 
 ////////////////////////
 // Typedefs folder: item events (TEVENTS)

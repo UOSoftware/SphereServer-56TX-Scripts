@@ -1,0 +1,944 @@
+VERSION=TX
+
+
+[FUNCTION GETUID]
+IF (<ISEMPTY <ARGS>>)
+	SRC.SYSMESSAGE Bir serial (uid) giriniz.
+	RETURN 1
+ENDIF
+REF1=<ARGS>
+IF (<REF1.ISVALID>)
+	IF (<REF1.ISITEM>)
+		REF1.P <SRC.P>
+	ELSEIF (<REF1.ISCHAR>)
+		// REF1.MOVETO <SRC.P>
+		REF1.GO <SRC.P>
+		REF1.UPDATE
+	ELSE
+		SRC.SYSMESSAGE @38,,1,1 Bu seri numarasında herhangi bir nesne/obje yok.
+	ENDIF
+ELSE
+	SRC.SYSMESSAGE @38,,1,1 Bu seri numarasında herhangi bir nesne/obje yok.
+ENDIF
+
+
+// Bir guilde gider (isim ile)
+[FUNCTION GOGUILD]
+IF (<ISEMPTY <ARGS>>)
+	SRC.SYSMESSAGE Bir guild adi giriniz.
+	RETURN 1
+ENDIF
+FORINSTANCES i_guild_stone
+	IF (STRMATCH('<ARGS>','<NAME>'))
+		REF1=<UID>
+		SRC.GOUID <REF1>
+	ELSE
+		SRC.SYSMESSAGE @38,,1,1 Bu isimde guild bulunamadı!
+		RETURN 1
+	ENDIF
+ENDFOR
+
+
+
+
+// Player adından oyuncuya gitme
+[FUNCTION GoPlayerForName]
+FOR 0 <EVAL <SERV.ACCOUNTS>-1>
+IF (<SERV.ACCOUNT.<DLOCAL._for>>)
+	LOCAL.ACCOUNT <SERV.ACCOUNT.<DLOCAL._for>.NAME>
+		IF (<SERV.ACCOUNT.<LOCAL.ACCOUNT>.CHARS>)
+			FOR CHARS 0 <EVAL <SERV.ACCOUNT.<LOCAL.ACCOUNT>.CHARS>-1>
+				REF1=<SERV.ACCOUNT.<LOCAL.ACCOUNT>.CHAR.<DLOCAL.CHARS>.UID>
+				IF (STRMATCH('<ARGS>','<REF1.NAME>'))
+					SRC.GO <REF1.P>
+				ENDIF
+			ENDFOR
+		ENDIF
+	ENDIF
+ENDFOR
+
+
+// Player adından oyunucuyu getirme
+[FUNCTION GetPlayerForName]
+FOR 0 <EVAL <SERV.ACCOUNTS>-1>
+	IF (<SERV.ACCOUNT.<DLOCAL._FOR>>)
+		LOCAL.ACCOUNT <SERV.ACCOUNT.<DLOCAL._FOR>.NAME>
+		IF (<SERV.ACCOUNT.<LOCAL.ACCOUNT>.CHARS> > 1)
+			FOR CHARS 0 <EVAL <SERV.ACCOUNT.<LOCAL.ACCOUNT>.CHARS>-1>
+				REF1=<SERV.ACCOUNT.<LOCAL.ACCOUNT>.CHAR.<DLOCAL.CHARS>.UID>
+				IF (STRMATCH('<ARGS>','<REF1.NAME>'))
+					//REF1.MOVETO <SRC.P>
+					REF1.GO <SRC.P>
+					SRC.UPDATE
+				ENDIF
+			ENDFOR
+		ENDIF
+	ENDIF
+ENDFOR
+
+
+
+
+
+[function badspawnlistele]
+serv.list.badspawns.clear
+clearctags Dialog.BadSpawn
+
+FORITEMS 7168
+	IF (<TYPE> == T_SPAWN_CHAR)
+		IF (<MORE1> <= 0)
+			SRC.CTAG0.Dialog.BadSpawn.Chars ++
+			SRC.CTAG0.Dialog.BadSpawn.C<SRC.dCTAG0.Dialog.BadSpawn.Chars> = <UID>
+		ENDIF
+	ENDIF
+ENDFOR
+
+
+CTAG.Dialog.BadSpawn.Page=1
+CTAG.Dialog.BadSpawn.PageLength=31
+CTAG.Dialog.BadSpawn.MaxPage=<eval (((<CTAG0.Dialog.BadSpawn.Chars>-1)/<dCTAG.Dialog.BadSpawn.PageLength>)+1)>
+
+dialogclose d_badspawnlist
+dialog d_badspawnlist
+
+[DIALOG d_badspawnlist]
+<DEF.DSP>
+resize 0,0,300,700,badspawns (<SRC.dCTAG0.Dialog.BadSpawn.Chars>)
+
+IF (<CTAG0.Dialog.BadSpawn.Page> > 1)
+	BUTTON 10 660 015a1 015a3 1 0 5000 // --
+ENDIF
+IF (<CTAG0.Dialog.BadSpawn.Page> < <CTAG0.Dialog.BadSpawn.MaxPage>)
+	BUTTON 150 660 015a4 015a6 1 0 5001 // ++
+ENDIF
+
+LOCAL.Y=40
+
+FOR <eval ((<CTAG0.Dialog.BadSpawn.Page> - 1) * <dCTAG.Dialog.BadSpawn.PageLength>) + 1> <eval (<CTAG0.Dialog.BadSpawn.Page> * <dCTAG.Dialog.BadSpawn.PageLength>>
+	REF1=<CTAG0.Dialog.BadSpawn.C<dLOCAL._FOR>>
+	
+	BUTTON 20 <LOCAL.Y> 4006 4007 1 0 <dLOCAL._FOR>
+	BUTTON 50 <LOCAL.Y> 4012 4011 1 0 <eval <dLOCAL._FOR>+2000>
+	DTEXT 80 <LOCAL.Y> 0 <ref1> <ref1.NAME> 
+	TILEPICHUE 200 <LOCAL.Y> <ref1.DISPIDDEC> <EVAL <ref1.COLOR> &~ 08000|04000>
+	LOCAL.Y += 20	
+ENDFOR
+
+[DIALOG d_badspawnlist button]
+on=1,1999
+ref1=<CTAG.Dialog.BadSpawn.C<dARGN>>
+src.gouid <ref1>
+src.badspawnlistele
+// DIALOG d_badspawnlist
+
+
+on=2000,2999
+local.currentid <eval <dARGN>-2000>
+local.nextid <eval (<dARGN>-2000)+1>
+ref1=<CTAG.Dialog.BadSpawn.C<dlocal.currentid>>
+ref2=<CTAG.Dialog.BadSpawn.C<dlocal.nextid>>
+
+// src.gouid <ref1>
+ref1.more1 spawn_Animals
+src.badspawnlistele
+// src.timerf 1,gouid <ref2>
+
+ON=5000
+IF (<CTAG0.Dialog.BadSpawn.Page> > 1)
+	CTAG0.Dialog.BadSpawn.Page --
+ENDIF
+DIALOG d_badspawnlist
+
+ON=5001
+IF (<CTAG0.Dialog.BadSpawn.Page> < <CTAG0.Dialog.BadSpawn.MaxPage>)
+	CTAG0.Dialog.BadSpawn.Page ++
+ENDIF
+DIALOG d_badspawnlist
+
+
+
+
+
+
+
+[plevel 6]
+attrsec
+
+
+[function attrsec]
+if !(<isitem>)
+src.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu bir item degil.
+return 1
+ENDIF
+dialogclose d_attrsec
+dialog d_attrsec
+
+
+[dialog d_attrsec]
+<def.dsp>
+
+resize 0,0,190,620,Attrs (<attr>)
+
+DORIGIN 30 50
+RESIZEPIC +0 +0 2620 100 120
+TILEPICHUE +25 +20 <DISPIDDEC> <eval <COLOR> &~ 08000|04000>
+
+// Attr
+
+DORIGIN 20 180
+
+CHECKBOX +0 +0 210 211 <QVAL <EVAL <ATTR>&01 > 0 ? 1:0> 0 // Identified
+DTEXT +20 +0 <def.tcolor_black> Identified
+
+CHECKBOX +0 +20 210 211 <QVAL <EVAL <ATTR>&02 > 0 ? 1:0> 1 // Decay
+DTEXT +20 +20 <def.tcolor_black> Decay
+
+CHECKBOX +0 +40 210 211 <QVAL <EVAL <ATTR>&04 > 0 ? 1:0> 2 // Newbie
+DTEXT +20 +40 <def.tcolor_black> Newbie
+
+CHECKBOX +0 +60 210 211 <QVAL <EVAL <ATTR>&08 > 0 ? 1:0> 3 // Always Moveable
+DTEXT +20 +60 <def.tcolor_black> Always Moveable
+
+CHECKBOX +0 +80 210 211 <QVAL <EVAL <ATTR>&010 > 0 ? 1:0> 4 // Never Moveable
+DTEXT +20 +80 <def.tcolor_black> Never Moveable
+
+CHECKBOX +0 +100 210 211 <QVAL <EVAL <ATTR>&020 > 0 ? 1:0> 5 // Magic
+DTEXT +20 +100 <def.tcolor_black> Magic
+
+CHECKBOX +0 +120 210 211 <QVAL <EVAL <ATTR>&040 > 0 ? 1:0> 6 // Town Owned
+DTEXT +20 +120 <def.tcolor_black> Town Owned
+
+CHECKBOX +0 +140 210 211 <QVAL <EVAL <ATTR>&080 > 0 ? 1:0> 7 // Invisible
+DTEXT +20 +140 <def.tcolor_black> Invisible
+
+CHECKBOX +0 +160 210 211 <QVAL <EVAL <ATTR>&0100 > 0 ? 1:0> 8 // Cursed
+DTEXT +20 +160 <def.tcolor_black> Cursed
+
+CHECKBOX +0 +180 210 211 <QVAL <EVAL <ATTR>&0200 > 0 ? 1:0> 9 // Damned
+DTEXT +20 +180 <def.tcolor_black> Damned
+
+CHECKBOX +0 +200 210 211 <QVAL <EVAL <ATTR>&0400 > 0 ? 1:0> 10 // Blessed
+DTEXT +20 +200 <def.tcolor_black> Blessed
+
+CHECKBOX +0 +220 210 211 <QVAL <EVAL <ATTR>&0800 > 0 ? 1:0> 11 // Sacred
+DTEXT +20 +220 <def.tcolor_black> Sacred
+
+CHECKBOX +0 +240 210 211 <QVAL <EVAL <ATTR>&01000 > 0 ? 1:0> 12 // For Sale
+DTEXT +20 +240 <def.tcolor_black> For Sale
+
+CHECKBOX +0 +260 210 211 <QVAL <EVAL <ATTR>&02000 > 0 ? 1:0> 13 // Stolen
+DTEXT +20 +260 <def.tcolor_black> Stolen
+
+CHECKBOX +0 +280 210 211 <QVAL <EVAL <ATTR>&04000 > 0 ? 1:0> 14 // Can Decay
+DTEXT +20 +280 <def.tcolor_black> Can Decay
+
+CHECKBOX +0 +300 210 211 <QVAL <EVAL <ATTR>&08000 > 0 ? 1:0> 15 // Static
+DTEXT +20 +300 <def.tcolor_black> Static
+
+CHECKBOX +0 +320 210 211 <QVAL <EVAL <ATTR>&080000000 > 0 ? 1:0> 16 // CanUse Paralyse
+DTEXT +20 +320 <def.tcolor_black> Canuse Paralyzed
+
+CHECKBOX +0 +340 210 211 <QVAL <EVAL <ATTR>&080000	 > 0 ? 1:0> 17 // Quest Item
+DTEXT +20 +340 <def.tcolor_black> Quest Item
+
+CHECKBOX +0 +360 210 211 <QVAL <EVAL <ATTR>&0400000000000 > 0 ? 1:0> 18 // Cannot repair
+DTEXT +20 +360 <def.tcolor_black> Cannot Repair
+
+BUTTON +0 +400 4006 4007 1 0 1
+DTEXT +30 +400 <def.tcolor_blue> Uygula
+
+
+[dialog d_attrsec button]
+ON=1
+IF (<ARGCHK[0]>)
+	ATTR |= 01
+ELSE
+	ATTR &=~01
+ENDIF
+IF (<ARGCHK[1]>)
+	ATTR |= 02
+ELSE
+	ATTR &=~ 02
+ENDIF
+IF (<ARGCHK[2]>)
+	ATTR |= 4
+ELSE
+	ATTR &=~ 04
+ENDIF
+IF (<ARGCHK[3]>)
+	ATTR |= 08
+ELSE
+	ATTR &=~ 08
+ENDIF
+IF (<ARGCHK[4]>)
+	ATTR |= 010
+ELSE
+	ATTR &=~ 010
+ENDIF
+IF (<ARGCHK[5]>)
+	ATTR |= 020
+ELSE
+	ATTR &=~ 020
+ENDIF
+IF (<ARGCHK[6]>)
+	ATTR |= 040
+ELSE
+	ATTR &=~ 040
+ENDIF
+IF (<ARGCHK[7]>)
+	ATTR |= 080
+ELSE
+	ATTR &=~ 080
+ENDIF
+IF (<ARGCHK[8]>)
+	ATTR |= 0100
+ELSE
+	ATTR &=~ 0100
+ENDIF
+IF (<ARGCHK[9]>)
+	ATTR |= 0200
+ELSE
+	ATTR &=~ 0200
+ENDIF
+IF (<ARGCHK[10]>)
+	ATTR |= 0400
+ELSE
+	ATTR &=~ 0400
+ENDIF
+IF (<ARGCHK[11]>)
+	ATTR |= 0800
+ELSE
+	ATTR &=~ 0800
+ENDIF
+IF (<ARGCHK[12]>)
+	ATTR |= 01000
+ELSE
+	ATTR &=~ 01000
+ENDIF
+IF (<ARGCHK[13]>)
+	ATTR |= 02000
+ELSE
+	ATTR &=~ 02000
+ENDIF
+IF (<ARGCHK[14]>)
+	ATTR |= 04000
+ELSE
+	ATTR &=~ 04000
+ENDIF
+IF (<ARGCHK[15]>)
+	ATTR |= 08000
+ELSE
+	ATTR &=~ 08000
+ENDIF
+IF (<ARGCHK[16]>)
+	ATTR |= 080000000 
+ELSE
+	ATTR &=~ 080000000 
+ENDIF
+IF (<ARGCHK[17]>)
+	ATTR |= 080000
+ELSE
+	ATTR &=~ 080000
+ENDIF
+IF (<ARGCHK[18]>)
+	ATTR |= 0400000000000
+ELSE
+	ATTR &=~ 0400000000000
+ENDIF
+UPDATE
+SRC.sysmessageloc <def.tcolor_text>, <def.empty_cliloc2>, <NAME> Attr Update
+DIALOG d_Attrsec
+
+
+
+
+
+// wall of stone
+[function wFieldPaket]
+FOR 1 4
+	SERV.NEWITEM 080
+	NEW.MOREP 24,1080
+	NEW.LINK <UID>
+	NEW.TYPE t_spell
+	NEW.ATTR attr_magic
+	NEW.COLOR=0
+	NEW.P=<P>
+	NEW.MOVE S <dlocal._for>
+ENDFOR
+
+	SERV.NEWITEM 080
+	NEW.MOREP 24,1080
+	NEW.LINK <UID>
+	NEW.TYPE t_spell
+	NEW.ATTR attr_magic
+	NEW.COLOR=0
+	NEW.P=<P>
+
+FOR 1 3
+	SERV.NEWITEM 080
+	NEW.MOREP 24,1080
+	NEW.LINK <UID>
+	NEW.TYPE t_spell
+	NEW.ATTR attr_magic
+	NEW.COLOR=0
+	NEW.P=<P>
+	NEW.MOVE n <dlocal._for>
+ENDFOR
+
+//
+FOR 1 4
+	SERV.NEWITEM 080
+	NEW.MOREP 24,1080
+	NEW.LINK <UID>
+	NEW.TYPE t_spell
+	NEW.ATTR attr_magic
+	NEW.COLOR=0
+	NEW.P=<P>
+	NEW.MOVE w <dlocal._for>
+ENDFOR
+
+	// SERV.NEWITEM 080
+	// NEW.MOREP 24,1080
+	// NEW.LINK <UID>
+	// NEW.TYPE t_spell
+	// NEW.ATTR attr_magic
+	// NEW.COLOR=0
+	// NEW.P=<P>
+
+FOR 1 3
+	SERV.NEWITEM 080
+	NEW.MOREP 24,1080
+	NEW.LINK <UID>
+	NEW.TYPE t_spell
+	NEW.ATTR attr_magic
+	NEW.COLOR=0
+	NEW.P=<P>
+	NEW.MOVE e <dlocal._for>
+ENDFOR
+
+
+// poison field
+[function pFieldPaket]
+wFieldPaket  // wall of stone
+
+// poison
+FOR 1 4
+	SERV.NEWITEM i_fx_poison_field
+	NEW.MOREP 39,1080
+	NEW.LINK <UID>
+	NEW.TYPE t_spell
+	NEW.ATTR attr_magic
+	NEW.COLOR=0
+	NEW.P=<P>
+	NEW.MOVE w <dlocal._for>
+ENDFOR
+
+	SERV.NEWITEM i_fx_poison_field
+	NEW.MOREP 39,1080
+	NEW.LINK <UID>
+	NEW.TYPE t_spell
+	NEW.ATTR attr_magic
+	NEW.COLOR=0
+	NEW.P=<P>
+
+FOR 1 3
+	SERV.NEWITEM i_fx_poison_field
+	NEW.MOREP 39,1080
+	NEW.LINK <UID>
+	NEW.TYPE t_spell
+	NEW.ATTR attr_magic
+	NEW.COLOR=0
+	NEW.P=<P>
+	NEW.MOVE e <dlocal._for>
+ENDFOR
+
+
+
+
+// fire field
+[function fFieldPaket]
+wFieldPaket // wall of stone
+
+// fire
+FOR 1 4
+	SERV.NEWITEM i_fx_field_fire
+	NEW.MOREP 28,1080
+	NEW.LINK <UID>
+	NEW.TYPE t_spell
+	NEW.ATTR attr_magic
+	NEW.COLOR=0
+	NEW.P=<P>
+	NEW.MOVE w <dlocal._for>
+ENDFOR
+
+	SERV.NEWITEM i_fx_field_fire
+	NEW.MOREP 28,1080
+	NEW.LINK <UID>
+	NEW.TYPE t_spell
+	NEW.ATTR attr_magic
+	NEW.COLOR=0
+	NEW.P=<P>
+
+FOR 1 3
+	SERV.NEWITEM i_fx_field_fire
+	NEW.MOREP 28,1080
+	NEW.LINK <UID>
+	NEW.TYPE t_spell
+	NEW.ATTR attr_magic
+	NEW.COLOR=0
+	NEW.P=<P>
+	NEW.MOVE e <dlocal._for>
+ENDFOR
+
+
+
+
+
+
+
+
+
+
+[function herkesidiz]
+// Başlangıç koordinatları
+// LOCAL.StartX = 6449
+// LOCAL.StartY = 1851
+LOCAL.StartX = <SRC.P.X>
+LOCAL.StartY = <SRC.P.Y>
+LOCAL.StartZ = 0
+
+// Grid ayarları
+LOCAL.ColumnsPerRow = 5      // Her satırda kaç kişi olacak
+LOCAL.SpacingY = 2            // Karakterler arası Y (güney) mesafesi
+LOCAL.SpacingX = 2            // Sütunlar arası X (doğu) mesafesi
+
+LOCAL.CurrentColumn = 0
+LOCAL.CurrentRow = 0
+
+FOR a 0 <EVAL <SERV.ACCOUNTS>-1>
+    IF (<SERV.ACCOUNT.<DLOCAL.a>>)
+        LOCAL.ACCOUNT = <SERV.ACCOUNT.<DLOCAL.a>.NAME>
+		
+        IF (<SERV.ACCOUNT.<LOCAL.ACCOUNT>>) && (<SERV.ACCOUNT.<LOCAL.ACCOUNT>.CHARS> > 0)
+        
+            FOR c 0 <EVAL <SERV.ACCOUNT.<LOCAL.ACCOUNT>.CHARS>-1>
+                REF1 = <SERV.ACCOUNT.<LOCAL.ACCOUNT>.CHAR.<DLOCAL.c>.UID>
+                // serv.log <ref1.name>
+                // Yeni pozisyon hesapla
+                LOCAL.NewX = <EVAL <LOCAL.StartX> + (<LOCAL.CurrentColumn> * <LOCAL.SpacingX>)>
+                LOCAL.NewY = <EVAL <LOCAL.StartY> + (<LOCAL.CurrentRow> * <LOCAL.SpacingY>)>
+                
+                // Karakteri taşı
+                REF1.GO <dLOCAL.NewX>,<dLOCAL.NewY>,<dLOCAL.StartZ>,0
+                REF1.MOVE S
+				IF (<REF1.FLAGS>&STATF_DEAD)
+					REF1.RESURRECT 2
+				ENDIF
+				REF1.DIR 4
+				REF1.UPDATE
+                
+                // Sıradaki pozisyona geç
+                LOCAL.CurrentRow += 1
+                
+                // Eğer satır dolmuşsa
+                IF (<LOCAL.CurrentRow> >= <LOCAL.ColumnsPerRow>)
+                    LOCAL.CurrentRow = 0
+                    LOCAL.CurrentColumn += 1
+                ENDIF
+                
+            ENDFOR
+            
+        ENDIF
+    ENDIF
+ENDFOR
+
+
+
+
+
+[FUNCTION RESKILL]
+SRC.TARGETF F_RESKILL
+
+[FUNCTION F_RESKILL]
+IF !(<ARGO>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Hatalı seçim.
+	SRC.TARGETF F_RESKILL
+	RETURN 1
+ELSEIF !(<ARGO.ISCHAR>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Hatalı seçim.
+	SRC.TARGETF F_RESKILL
+	RETURN 1
+ENDIF
+IF (<ARGO.FLAGS>&STATF_DEAD)
+	ARGO.RESURRECT 1
+	ARGO.HITS=<ARGO.STR>
+	SRC.RESKILL
+ELSE
+	ARGO.DAMAGE 9999
+	// ARGO.HITS=0
+	SRC.RESKILL
+ENDIF
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+[PLEVEL 2]
+S
+SC
+
+
+[FUNCTION S]
+FUNC_Staff_Chat <ARGS>
+
+[FUNCTION SC]
+FUNC_Staff_Chat <ARGS>
+
+
+[FUNCTION FUNC_Staff_Chat]
+IF (<ISEMPTY <ARGS>>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,600011 // "Boş giriş yapamazsınız."
+	RETURN 1
+ENDIF
+IF (0<ACCOUNT.PLEVEL> > 1)
+	SERV.ALLCLIENTS Func_Staff_To_Staff_Chat [Yetkili] <SRC.NAME> : <ARGS>
+ENDIF
+
+
+[FUNCTION Func_Staff_To_Staff_Chat]
+IF (<ACCOUNT.PLEVEL> > 1)
+	SYSMESSAGE @<def.tcolor_yellow>,,1,1 <ARGS>
+ENDIF
+
+
+
+
+
+
+[PLEVEL 6]
+RY
+
+[FUNCTION RY]
+SERV.RESYNC
+
+
+
+
+
+
+
+
+
+
+
+
+
+[FUNCTION MARKLA]
+SERV.NEWITEM I_RUNE_MARKER
+NEW.MOREP <SRC.P>
+IF !(STRMATCH('','<ARGS>'))
+	NEW.NAME <ARGS>
+ELSE
+	NEW.NAME <SRC.REGION.NAME>
+ENDIF
+NEW.BOUNCE
+CALL Func_Map_Colors <NEW.MOREX>,<NEW.MOREY>,<NEW.MOREZ>,<NEW.MOREM>
+NEW.COLOR <DLOCAL.REGIONCOLOR_MARK>
+SRC.SYSMESSAGELOC <def.tcolor_grey>,<def.empty_cliloc2>, [GM] Marklanan alan : <NEW.NAME>
+	
+
+
+
+
+
+
+[FUNCTION ANKH]
+IF (<DIR> == 2) || (<DIR> == 6)
+	SERV.NEWITEM 7576
+	NEW.P <P>
+	NEW.TYPE T_SHRINE
+	NEW.NAME Ankh
+	NEW.ATTR ATTR_STATIC|ATTR_MOVE_NEVER
+
+	SERV.NEWITEM 7575
+	NEW.P <P>
+	NEW.MOVE S
+	NEW.TYPE T_SHRINE
+	NEW.NAME Ankh
+	NEW.ATTR ATTR_STATIC|ATTR_MOVE_NEVER
+ENDIF
+
+IF (<DIR> == 4) || (<DIR> == 0)
+	SERV.NEWITEM 7773
+	NEW.P <P>
+	NEW.TYPE T_SHRINE
+	NEW.NAME Ankh
+	NEW.ATTR ATTR_STATIC|ATTR_MOVE_NEVER
+
+	SERV.NEWITEM 7772
+	NEW.P <P>
+	NEW.MOVE E
+	NEW.TYPE T_SHRINE
+	NEW.NAME Ankh
+	NEW.ATTR ATTR_STATIC|ATTR_MOVE_NEVER
+ENDIF
+
+
+
+[PLEVEL 2]
+GOTUR
+
+[FUNCTION GOTUR]
+SRC.TARGETF FUNC_GOTUR_SELECT_OBJ
+SRC.SYSMESSAGELOC <def.tcolor_grey>,<def.empty_cliloc2>, Başka yere götürmek istediğiniz varlığı veya eşyayı seçiniz.
+RETURN 1
+
+[FUNCTION FUNC_GOTUR_SELECT_OBJ]
+REF1=<ARGO>
+
+IF !(<ARGO>)
+SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bir eşya veya varlık seçiniz.
+SRC.TARGETFG FUNC_GOTUR_SELECT_OBJ
+RETURN 1
+ENDIF
+
+SRC.CTAG0.GOTUR_OBJ <REF1>
+SRC.TARGETFG FUNC_GOTUR_SELECT_P
+SRC.SYSMESSAGELOC <def.tcolor_grey>,<def.empty_cliloc2>, Götürmek istediğiniz <qval (<ref1.isitem>)?eşya:varlık> seçildi. Şimdi götürmek istediğiniz yeri seçiniz.
+ 
+
+[FUNCTION FUNC_GOTUR_SELECT_P]
+REF1=<SRC.CTAG0.GOTUR_OBJ>
+
+IF !(<REF1>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,SYSMESSAGELOC <def.tcolor_red>,600022 // Bir hata oluştu!
+	SRC.SYSMESSAGELOC <def.tcolor_red>,SYSMESSAGELOC <def.tcolor_red>,600052 // Nesne sunucuda kayıtlı değil/bulunamadı!
+	SRC.TARGETFG FUNC_GOTUR_SELECT_OBJ
+RETURN 1
+ENDIF
+
+IF (<REF1>)
+
+	IF (<REF1.ISITEM>)
+		REF1.P <SRC.TARGP>
+		IF (<ref1.TYPE> == T_SPAWN_CHAR)
+			ref1.RESET
+		ENDIF
+	ELSE
+		REF1.GO <SRC.TARGP>
+	ENDIF
+
+	SRC.SYSMESSAGELOC <def.tcolor_grey>,<def.empty_cliloc2>, <REF1.NAME>: <SRC.TARGP.X>-<SRC.TARGP.Y>-<SRC.TARGP.Z>-<SRC.TARGP.M> yerine götürüldü!
+	SRC.CTAG0.GOTUR_OBJ=
+	SRC.TARGETFG FUNC_GOTUR_SELECT_OBJ
+ELSE
+SRC.SYSMESSAGELOC <def.tcolor_red>,600021 // Hatalı seçim/hedef.
+ENDIF
+
+
+
+[PLEVEL 2]
+GETIR
+
+[FUNCTION GETIR]
+SRC.TARGETF F_SUMMONTO
+src.SYSMESSAGELOC <def.tcolor_grey>,<def.empty_cliloc2>, Yanınıza getirmek istediğiniz varlığı veya eşyayı seçiniz.
+
+[FUNCTION F_SUMMONTO]
+IF (<ARGO>)
+	IF (<ARGO.UID> == <SRC.UID>)
+		SRC.SYSMESSAGELOC <def.tcolor_red>,600088 // "Kendinizi seçemezsiniz."
+		SRC.TARGETF F_SUMMONTO
+	ENDIF
+
+	IF (<ARGO.ISITEM>)
+		ARGO.P <SRC.P>
+		SRC.TARGETF F_SUMMONTO
+		IF (<ARGO.TYPE> == T_SPAWN_CHAR)
+			ARGO.RESET
+		ENDIF
+		SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, <argo.name> isimli esya yaniniza geldi.
+	ENDIF
+
+	IF (<ARGO.ISCHAR>)
+		ARGO.GO <SRC.P>
+		SRC.TARGETF F_SUMMONTO
+		SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, <argo.name> isimli varlik yaniniza geldi.
+	ENDIF
+ENDIF
+
+
+
+
+
+
+[FUNCTION SpawnReset]
+DIALOGCLOSE D_SpawnReset
+DIALOG D_SpawnReset
+
+
+[DIALOG D_SpawnReset]
+<DEF.DSP>
+
+RESIZE 0,0,330,210,Spawn RESET
+
+DORIGIN 20 50
+
+BUTTON +0 +0 4006 4007 1 0 1
+DTEXT +30 +0 0 Tüm spawnlar (Chars, Items)
+
+BUTTON +0 +20 4006 4007 1 0 2
+DTEXT +30 +20 0 Char spawnları
+
+BUTTON +0 +40 4006 4007 1 0 3
+DTEXT +30 +40 0 Item spawnları
+
+BUTTON +0 +60 4006 4007 1 0 4
+DTEXT +30 +60 0 Bulunduğum bölgedeki spawnlar
+
+BUTTON +0 +80 4006 4007 1 0 5
+DTEXT +30 +80 0 Bulunduğum bölgedeki char spawnları
+
+BUTTON +0 +100 4006 4007 1 0 6
+DTEXT +30 +100 0 Bulunduğum bölgedeki item spawnları
+
+BUTTON +0 +120 4006 4007 1 0 7
+DTEXT +30 +120 0 Seçili object spawnları
+
+
+[DIALOG D_SpawnReset BUTTON]
+// TÜM SPAWNLAR
+ON=1
+FORINSTANCES i_worldgem_bit
+	IF (<MAP> == <SRC.MAP>)
+		IF (<TYPE> == T_SPAWN_CHAR) && !(<CONT>)
+			RESET
+			LOCAL.I ++
+		ENDIF
+	ENDIF
+ENDFOR
+SRC.sysmessageloc <def.tcolor_text>, <def.empty_cliloc2>, <DLOCAL.I> adet spawn resetlendi.
+DIALOGCLOSE D_SpawnReset 
+DIALOG D_SpawnReset 
+
+
+// CHAR SPAWNLARı
+ON=2 
+FORINSTANCES i_worldgem_bit
+	IF (<MAP> == <SRC.MAP>)
+		IF (<TYPE> == T_SPAWN_CHAR) && !(<CONT>)
+			RESET
+			LOCAL.I ++
+		ENDIF
+	ENDIF
+ENDFOR
+SRC.sysmessageloc <def.tcolor_text>, <def.empty_cliloc2>, <DLOCAL.I> adet spawn resetlendi.
+DIALOGCLOSE D_SpawnReset 
+DIALOG D_SpawnReset 
+
+
+// ITEM SPAWNLARı
+ON=3
+FORINSTANCES i_worldgem_bit
+	IF (<MAP> == <SRC.MAP>)
+		IF (<TYPE> == T_SPAWN_ITEM) && !(<CONT>)
+			RESET
+			LOCAL.I ++
+		ENDIF
+	ENDIF
+ENDFOR
+SRC.sysmessageloc <def.tcolor_text>, <def.empty_cliloc2>, <DLOCAL.I> adet spawn resetlendi.
+DIALOGCLOSE D_SpawnReset 
+DIALOG D_SpawnReset 
+
+
+
+// BULUNDUĞUM BÖLGELDEKİ SPAWNLAR
+ON=4
+FORINSTANCES i_worldgem_bit
+	IF (<MAP> == <SRC.MAP>)
+		IF (<REGION>) && (<REGION.DEFNAME> == <SRC.REGION.DEFNAME>)
+			RESET
+			LOCAL.I ++
+		ENDIF
+	ENDIF
+ENDFOR
+SRC.sysmessageloc <def.tcolor_text>, <def.empty_cliloc2>, <DLOCAL.I> adet spawn resetlendi.
+DIALOGCLOSE D_SpawnReset 
+DIALOG D_SpawnReset 
+
+
+
+// BULUNDUĞUM BÖLGEDEKİ CHAR SPAWNLARI
+ON=5
+FORINSTANCES i_worldgem_bit
+	IF (<MAP> == <SRC.MAP>)
+		IF (<TYPE> == T_SPAWN_CHAR) && !(<CONT>)
+			IF (<REGION>) && (<REGION.DEFNAME> == <SRC.REGION.DEFNAME>)
+				RESET
+				LOCAL.I ++
+			ENDIF
+		ENDIF
+	ENDIF
+ENDFOR
+SRC.sysmessageloc <def.tcolor_text>, <def.empty_cliloc2>, <DLOCAL.I> adet spawn resetlendi.
+DIALOGCLOSE D_SpawnReset 
+DIALOG D_SpawnReset 
+
+
+// BULUNDUĞUM BÖLGEDEKİ ITEM SPAWNLARI
+ON=6
+FORINSTANCES i_worldgem_bit
+	IF (<MAP> == <SRC.MAP>)
+		IF (<REGION.DEFNAME> == <SRC.REGION.DEFNAME>)
+			IF (<TYPE> == T_SPAWN_ITEM) && !(<CONT>)
+				RESET
+				LOCAL.I ++
+			ENDIF
+		ENDIF
+	ENDIF
+ENDFOR
+SRC.sysmessageloc <def.tcolor_text>, <def.empty_cliloc2>, <DLOCAL.I> adet spawn resetlendi.
+DIALOGCLOSE D_SpawnReset 
+DIALOG D_SpawnReset 
+
+
+
+// Seçili obje spawnları
+ON=7
+SRC.TARGETF FUNC_SPAWNRESET_TARGET_OBJ
+DIALOGCLOSE D_SpawnReset 
+DIALOG D_SpawnReset 
+
+
+[FUNCTION FUNC_SPAWNRESET_TARGET_OBJ]
+IF !(<ARGO>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Birşey seçiniz.
+	RETURN 1
+ELSEIF !((<ARGO.ISITEM>) || (<ARGO.ISCHAR>))
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Seçtiğiniz şey item veya char olmalı.
+	RETURN 1
+ENDIF
+
+FORINSTANCES i_worldgem_bit
+	IF (<MORE1> == <ARGO.BASEID>)
+		RESET
+		LOCAL.I ++
+	ENDIF
+ENDFOR
+SRC.sysmessageloc <def.tcolor_text>, <def.empty_cliloc2>, <DLOCAL.I> adet spawn resetlendi.
+
+
+
+
+
+[eof]

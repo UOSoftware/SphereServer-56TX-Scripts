@@ -99,6 +99,7 @@ spellflag_bless            010000000  // Benefitial spells like Bless,Agility,et
 spellflag_curse            020000000  // Curses just like Weaken,Purge Magic,Curse,etc.
 spellflag_heal             040000000  // spell used to heal hitpoints
 spellflag_tick			   080000000  // A spell is going to tick and causing an effect.
+spellflag_targ_onlyself    0100000000
 
 [DEFNAME mem_flags]
 memory_sawcrime      00001   // i saw them commit a crime or i was attacked criminally. i can call the guards on them.

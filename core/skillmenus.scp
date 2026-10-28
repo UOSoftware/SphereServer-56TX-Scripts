@@ -1,0 +1,62 @@
+
+
+
+[SKILLMENU sm_summon]
+What do you want to summon ?
+
+// Sadece bu npc ölünce sphereyi frozen ettiriyor, diğerleri fixlendi ama o fixler scorpionda işe yaramıyor.
+ON=I_PET_SCORP <NAME>
+TEST=MAGERY 50.0
+SUMMON=C_SCORPION_GIANT_SUMMON
+
+ON=I_PET_CHICKEN <NAME>
+TEST=MAGERY 50.0
+SUMMON=C_CHICKEN_SUMMON
+
+ON=I_PET_HORSE_BROWN_LT_SUMMON <NAME>
+TEST=MAGERY 50.0
+SUMMON=C_HORSE_BROWN_LT_SUMMON
+
+ON=I_PET_HORSE_GRAY_SUMMON <NAME>
+TEST=MAGERY 50.0
+SUMMON=C_HORSE_GRAY_SUMMON
+
+
+[SKILLMENU sm_polymorph]
+What do you want to polymorph into?
+
+ON=I_PET_CHICKEN <NAME>
+TEST=MAGERY 40.0
+POLY C_CHICKEN
+
+ON=I_PET_DOG <NAME>
+TEST=MAGERY 45.0
+POLY C_DOG
+
+ON=i_pet_panther_2 <name>
+TEST=MAGERY 50.0
+POLY c_cougar
+
+ON=i_pet_wolf_2 <name>
+TEST=MAGERY 55.0
+POLY c_wolf
+
+ON=i_pet_TROLL <name>
+TEST=MAGERY 65.0
+POLY c_troll
+
+ON=i_pet_snake <name>
+TEST=MAGERY 70.0
+POLY c_snake_giant
+
+ON=I_PET_DEMON <NAME>
+TEST=MAGERY 85.0
+POLY C_DEMON
+
+ON=I_PET_DRAGON <NAME>
+TEST=MAGERY 98.0
+POLY  { c_dragon 1 c_dragon_red 1 }
+
+
+
+[eof]

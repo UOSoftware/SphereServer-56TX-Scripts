@@ -162,10 +162,10 @@ BONUS_INT=0
 BONUS_STATS=10
 ADV_RATE=10.0,150.0,600.0
 
-ON=@UseQuick
-IF (<ARGN3>)
-SRC.EFFECT 3,i_fx_glow,10,16
-ENDIF
+// ON=@UseQuick
+// IF (<ARGN3>)
+// SRC.EFFECT 3,i_fx_glow,10,16
+// ENDIF
 
 [SKILL 6]
 DEFNAME=Skill_Begging
@@ -1094,11 +1094,11 @@ SRC.SYSMESSAGE You decide not to mine for now.
 
 ON=@Stroke
 IF (<SRC.FLAGS> & STATF_ONHORSE|STATF_HOVERING)
-SRC.SYSMESSAGE Binek uzerinde kazi yapamazsiniz.
-RETURN 1
+	SRC.SYSMESSAGE Binek uzerinde kazi yapamazsiniz.
+	RETURN 1
 ELIF (<SRC.FLAGS> & STATF_POLYMORPH)
-SRC.SYSMESSAGE Farkli bir bedendeyken kazi yapamazsiniz.
-RETURN 1
+	SRC.SYSMESSAGE Farkli bir bedendeyken kazi yapamazsiniz.
+	RETURN 1
 ENDIF
 
 [SKILL 46]
@@ -1119,7 +1119,8 @@ ON=@Fail
 SRC.SYSMESSAGE You lose your concentration.
 
 ON=@Abort
-SRC.SYSMESSAGE You stop concentrating.
+// SRC.SYSMESSAGE You stop concentrating.
+SRC.SYSMESSAGELOC <def.tcolor_grey>,<def.empty_cliloc2>, 500134 // "You stop meditating."
 
 [SKILL 47]
 DEFNAME=Skill_Stealth
@@ -1137,16 +1138,16 @@ ADV_RATE=10.0,200.0,800.0
 
 ON=@PRESTART
 IF (<EVAL (<SRC.AR> * 100)> > <EVAL (<SRC.STEALTH> + 200)>)
-SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>,Asiri zirhlisiniz.
-RETURN 1
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>,Asiri zirhlisiniz.
+	RETURN 1
 
 ELSEIF (<SRC.HIDING> < 80.0)
-SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Stealth olabilmek için 80.0 Hiding becerisine ihtiyacınız var.
-RETURN 1
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Stealth olabilmek için 80.0 Hiding becerisine ihtiyacınız var.
+	RETURN 1
 
 ELSEIF (<SRC.IsOnRide>)
-SRC.SYSMESSAGELOC <def.tcolor_red>,600043 // "Binek üzerindeyken bu işlemi yapamazsınız."
-RETURN 1
+	SRC.SYSMESSAGELOC <def.tcolor_red>,600043 // "Binek üzerindeyken bu işlemi yapamazsınız."
+	RETURN 1
 ENDIF
 
 ON=@Success

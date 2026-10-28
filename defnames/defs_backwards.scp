@@ -225,13 +225,19 @@ i_bed_ruined_6					0c2b
 i_BED_DOUBLE_2					011d2
 i_cot_sw						i_cot
 
+//////////////////
 // Definitions
+//////////////////
+
+// Brains
 brain_beserk					brain_berserk
 brain_towncrier					brain_human
 brain_beggar					brain_human
 brain_thief						brain_human
 brain_vendor_offduty			brain_vendor
 brain_undead					brain_monster
+
+// Sounds
 // loot_orge_lord					loot_ogre_lord
 snd_rune_beetle					snd_monster_rune_beetle1
 snd_yomotsu						snd_monster_yomotsu1
@@ -283,7 +289,7 @@ NAMES_SAVAGE={ NAMES_SAVAGE_MALE 1 NAMES_SAVAGE_FEMALE 1 }
 
 
 // 56d
-/ Miscellaneous
+// Miscellaneous
 i_map							i_map_blank
 i_banner_serpent				i_banner_order
 i_portrait_horror				i_portrait_gargish
@@ -426,11 +432,12 @@ i_CHECKERS_PILE_RED i_checkers_red
 i_BRUSH_HORSE_3 i_brush_horse_2
 i_bench_5 i_bench_stone
 
-// 
+//////////////////
+// Chardefs 
+//////////////////
 
-// monsters
+// MONSTERS
 c_dragon_small_red c_drake_red
-
 c_m_wyvern c_wyvern
 c_m_swamp_tentacles c_swamp_tentacles
 c_m_mongbat_arboreal c_mongbat
@@ -489,7 +496,6 @@ c_ettin_w_axe c_ettin_w_hammer
 //c_m_phoenix c_phoenix
 c_m_phoenix c_phoenix_aos
 c_swarm c_gazer_larva
-
 c_lady_m c_lady_melisande
 c_horde_minion c_demon_horde_minion
 c_fire_ant_queen c_solen_queen

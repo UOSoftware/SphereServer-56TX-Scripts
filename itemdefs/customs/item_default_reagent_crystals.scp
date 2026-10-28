@@ -169,13 +169,13 @@ ENDIF
 FOR 1 <ARRAYCOUNT <LOCAL.REAGENTS>>
 	LOCAL.REAGENT <ARRAY <LOCAL.REAGENTS>,<DLOCAL._FOR>>
 	SERV.NEWITEM <LOCAL.REAGENT>,<DLOCAL.AMOUNT>,<SRC>
-	// NEW.AMOUNT <DLOCAL.AMOUNT>
-	// NEW.CONT = <SRC.FINDLAYER.21>
-	// NEW.BOUNCE
-	//NEW.CONTP <CONTP> // Bad CONTP usage (item is not in a container) hatasi veriyor.
+	NEW.AMOUNT <DLOCAL.AMOUNT>
+	NEW.CONT = <SRC.FINDLAYER.21>
+	NEW.BOUNCE
+	NEW.CONTP <CONTP> // Bad CONTP usage (item is not in a container) hatasi veriyor.
 ENDFOR
 
-IF !(<SRC.IsUseSkill Magery>)
+IF (<SRC.ACTION> != Magery)
 	IF (<DLOCAL.AMOUNT> == 30)
 		SRC.EMOTE use lesser reagent crystal
 	ELSEIF (<DLOCAL.AMOUNT> == 60)
