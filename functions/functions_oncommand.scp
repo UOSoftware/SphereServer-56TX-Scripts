@@ -11,8 +11,8 @@ IF (<ARGN>)
 		IF (<SRC.CTAG0.COMMAND.DELAY> > <SERV.TIME>)
 			SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu kadar hızlı komut giremezsiniz.
 			RETURN 1
-		ELSEIF !(STRMATCH('pinim','<ARGS>')) && !(<SRC.ISPINLOGIN>)
-			SRC.PINIM
+		ELSEIF !(STRMATCH('pin','<ARGS>')) && !(<SRC.ISPINVERIFIED>)
+			SRC.f_pin_login
 			RETURN 1
 		ENDIF
 		SRC.CTAG0.COMMAND.DELAY=<EVAL <SERV.TIME>+20>
@@ -21,8 +21,8 @@ IF (<ARGN>)
 	
 	// PLEVEL =STAFF
 	IF (<SRC.ACCOUNT.PLEVEL> > 1)
-		IF !(<SRC.ISPINLOGIN>)
-			SRC.PINIM
+		IF !(STRMATCH('pin','<ARGS>')) && !(<SRC.ISPINVERIFIED>)
+			SRC.f_pin_login
 			RETURN 1
 		ENDIF
 		IF (<SRC.ACCOUNT.PLEVEL> < 6)
