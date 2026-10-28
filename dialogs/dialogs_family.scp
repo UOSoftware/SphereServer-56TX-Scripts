@@ -10,6 +10,15 @@ VERSION=TX
 //   MASTER=<uid> bir üyeye devreder), MEMBERCOUNT (reis dahil), MEMBER.n (0 reis, sonra katılma sırasıyla),
 //   ISMEMBER <uid>, CREATEDAT (kuruluş), MEMBERADD <uid>, MEMBERREMOVE <uid>, DISBAND; ailenin TAG'leri.
 // Aile i_deed_family ile kurulur (itemdefs/provs/item_provs_deed.scp); .fs <metin> aile sohbeti.
+// Örnekler:
+// - Staff, .x ile seçilen oyuncunun ailesinde: .xfamily.dialog d_family ailesini gösterir (DIALOG'un seviyesiyle, bu
+//   pakette 6; butonlar sadece ailenin üyelerine çalışır), .xfamily.name <soyad> yeniden adlandırır, .xfamily.disband
+//   dağıtır, .xfamilyleave aileden çıkarır (kendisi ayrılmış sayılır). Aile reisi çıkarılamaz: önce
+//   .xfamily.master <yeni reisin uid'si> ile devredilir. Bunların seviyesi sphere.ini'nin DefaultCommandLevel'i.
+// - Aynı ailedeler mi: IF (<FAMILY>) && (<FAMILY> == <ARGO.FAMILY>). Ailenin kendi değerleri FAMILY.TAG.<ad>: devirde
+//   kalır, aile dağılınca silinir. Üyeler: FOR 0 <EVAL <FAMILY.MEMBERCOUNT>-1>, <FAMILY.MEMBER.<dLOCAL._FOR>.UID> (.fs).
+// - Kurallar (katiller giremez, ayrılan bir gün başka aileye giremez): @FamilyJoin ve @FamilyLeave,
+//   events/chars/players/events_char_generic.scp.
 // Dialog butonları client'ın gönderdiği nesneye güvenmez: her butonda SRC'nin bu ailede, gerekiyorsa reisi olduğu
 //  denetlenir.
 

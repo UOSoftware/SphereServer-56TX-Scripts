@@ -406,6 +406,46 @@ ARGO.ATTACKER.CLEAR
 
 
 //*****************************************
+// Aile Triggers
+//*****************************************
+// Emulatörün gömülü ailesi (dialogs/dialogs_family.scp); ikisi de sadece oyuncu karakterde çalışır.
+// Aşağıdaki kurallar örnektir ve kapalıdır: açmak için satırların başındaki // silinir.
+
+// Aileye girmeden önce, aile kurulurken de. I aileye giren, SRC işi yapan (daveti kabul eden, aile reisi ya da staff).
+// ARGN1 1 aile kuruluyor (ARGO boş), 0 var olan bir aileye giriliyor (ARGO aile: <ARGO.NAME>, <ARGO.MASTER>,
+// <ARGO.MEMBERCOUNT>). ARGS ailenin soyadı. RETURN 1 engeller; nedenini script'in mesajı söyler. SRC sunucu da olabilir
+// (konsol, script): mesaj IF (<SRC>) ile sadece karaktere gider.
+ON=@FamilyJoin
+// Örnek: katiller (kırmızılar) aile kuramaz, aileye giremez.
+//IF (<KILLS> > <SERV.MURDERMINCOUNT>)
+//	IF (<SRC>)
+//		SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Katiller aileye giremez.
+//	ENDIF
+//	RETURN 1
+//ENDIF
+// Örnek: aileden kendisi ayrılan bir gün başka bir aileye giremez (ayrılma zamanı aşağıda, @FamilyLeave'de yazılır).
+//IF (<TAG0.FamilyLeftAt>)
+//	IF (<EVAL <SERV.RTICKS>-<TAG0.FamilyLeftAt>> < 86400)
+//		IF (<SRC>)
+//			SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, <NAME> yakın zamanda bir aileden ayrıldı; <DURATIONFORHUMANS <EVAL <TAG0.FamilyLeftAt>+86400-<SERV.RTICKS>>,2> sonra başka bir aileye girebilir.
+//		ENDIF
+//		RETURN 1
+//	ENDIF
+//	TAG.FamilyLeftAt=
+//ENDIF
+
+// Aileden çıktıktan sonra. ARGN1 0 kendisi ayrıldı, 1 aile reisi ya da staff çıkardı (MEMBERREMOVE), 2 aile dağıldı
+// (aile reisi de alır). ARGS ailenin soyadı, ARGO aile (dağıldıysa boş). Dönüş değeri yok sayılır. Karakter ya da hesap
+// silinirken ve aile memory'si script'le silinince çağrılmaz.
+ON=@FamilyLeave
+// Örnek (yukarıdaki bekleme süresi için): kendisi ayrılanın ayrılma zamanı.
+//IF (<ARGN1> == 0)
+//	TAG.FamilyLeftAt=<SERV.RTICKS>
+//ENDIF
+
+
+
+//*****************************************
 // Items Triggers
 //*****************************************
 ON=@ITEMTARGON_ITEM
