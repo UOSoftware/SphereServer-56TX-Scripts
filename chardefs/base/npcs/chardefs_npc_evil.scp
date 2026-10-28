@@ -1667,7 +1667,7 @@ ON=@CreateLoot
 
 [CHARDEF c_black_cat]
 ID=c_cat
-NAME=black cat
+NAME=Black Cat
 CAN=MT_WALK|MT_RUN
 DAM=2,10
 ARMOR=4

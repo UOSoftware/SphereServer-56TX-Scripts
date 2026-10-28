@@ -7,7 +7,7 @@ VERSION=TX
 [CHARDEF 0c5]
 //FIXME: No Stratics data
 DEFNAME=c_dragon_crimson
-NAME=crimson dragon
+NAME=Crimson Dragon
 SOUND=snd_monster_stygian_dragon1
 ICON=i_pet_dragon_crimson
 CAN=mt_walk|mt_nonhum
@@ -56,7 +56,7 @@ ON=@Createloot
 [CHARDEF 0c6]
 //FIXME: No Stratics data
 DEFNAME=c_dragon_platinum
-NAME=platinum dragon
+NAME=Platinum Dragon
 SOUND=snd_monster_stygian_dragon1
 ICON=i_pet_dragon_platinum
 CAN=mt_walk|mt_nonhum
@@ -107,7 +107,7 @@ ON=@Createloot
 [CHARDEF 011d]
 //Stratics indicates this is just a new reaper animation
 DEFNAME=c_reaper_redux
-NAME=elder reaper
+NAME=Elder Reaper
 ICON=i_pet_reaper
 SOUND=snd_monster_reaper1
 CAN=MT_WALK|MT_NONHUM
@@ -162,7 +162,7 @@ ON=@CreateLoot
 
 [CHARDEF 011f]
 DEFNAME=c_BloodWorm
-NAME=bloodworm
+NAME=Bloodworm
 SOUND=1503
 CAN=mt_walk|mt_run|mt_equip|mt_usehands
 
@@ -202,7 +202,7 @@ ON=@create
 
 [CHARDEF 0125]
 DEFNAME=c_vollem
-NAME=vollem
+NAME=Vollem
 ICON=i_pet_vollem
 //SOUND=snd_monster_vollem
 CAN=mt_walk|mt_run|mt_nonhum
@@ -269,7 +269,7 @@ ON=@CreateLoot
 
 [CHARDEF 014e]
 DEFNAME=c_goblin_gray
-NAME=gray goblin
+NAME=Gray Goblin
 SOUND=snd_monster_goblin_gray1
 ICON=i_pet_goblin_gray
 CAN=mt_walk|mt_run|mt_usehands
@@ -323,7 +323,7 @@ ON=@CreateLoot
 [CHARDEF 01b0]
 //FIXME: Stun attack
 DEFNAME=c_boura_armoured
-NAME=armoured boura
+NAME=Armoured Boura
 SOUND=snd_monster_boura1
 ICON=i_pet_boura_armoured
 CAN=mt_walk|mt_run|mt_nonhum
@@ -489,7 +489,7 @@ DESCRIPTION=Gargoyle Ghost, Male
 
 [CHARDEF 02c1]
 DEFNAME=c_stone_form
-NAME=stone form
+NAME=Stone Form
 SOUND=snd_monster_stoneform1
 ICON=i_pet_stone_form
 CAN=mt_walk|mt_run|mt_usehands|mt_equip
@@ -591,7 +591,7 @@ ON=@Create
 
 [CHARDEF 02ca]
 DEFNAME=c_beetle_iron
-NAME=iron beetle
+NAME=Iron Beetle
 SOUND=397
 CAN=mt_walk|mt_run|mt_equip|mt_usehands
 
@@ -634,7 +634,7 @@ ON=@create
 
 [CHARDEF 02cb]
 DEFNAME=c_boura
-NAME=ruddy boura
+NAME=Ruddy Boura
 SOUND=1507
 RESOURCES=10 i_ribs_raw, 8 i_reag_dragon_blood    //todo: 22 i_hide_spined
 CAN=mt_walk|mt_run
@@ -679,7 +679,7 @@ ON=@create
 
 [CHARDEF 02cc]
 DEFNAME=c_Chicken_Lizard
-NAME=chicken lizard
+NAME=Chicken Lizard
 SOUND=1508
 RESOURCES=3 i_bird_raw, 4 i_reag_dragon_blood    //todo:1 i_chicken_lizard_egg
 CAN=mt_walk|mt_run
@@ -717,7 +717,7 @@ ON=@create
 
 [CHARDEF 02cd]
 DEFNAME=c_scorpion_clockwork
-NAME=clockwork scorpion
+NAME=Clockwork Scorpion
 ID=717
 SOUND=541
 CAN=mt_walk|mt_run|mt_equip|mt_usehands
@@ -807,7 +807,7 @@ ON=@CreateLoot
 
 [CHARDEF 02cf]
 DEFNAME=c_dragon_wolf
-NAME=dragon wolf
+NAME=Dragon Wolf
 ICON=i_pet_dragon_wolf
 SOUND=snd_monster_dragon_wolf1
 CAN=mt_walk|mt_run|mt_usehands|mt_equip
@@ -867,7 +867,7 @@ ON=@CreateLoot
 
 [CHARDEF 02d0]
 DEFNAME=c_elemental_lava
-NAME=lava elemental
+NAME=Lava Elemental
 SOUND=060A
 CAN=mt_walk|mt_run|mt_equip|mt_usehands
 
@@ -918,7 +918,7 @@ ON=@CreateLoot
 
 [CHARDEF 02d1]
 DEFNAME=c_Maddening_Horror
-NAME=maddening horror
+NAME=Maddening Horror
 SOUND=1553
 CAN=mt_walk|mt_run|mt_equip|mt_usehands
 DAM=15,27
@@ -963,7 +963,7 @@ ON=@create
 
 [CHARDEF 02d2]
 DEFNAME=c_gargoyle_undead
-NAME=undead gargoyle
+NAME=Undead Gargoyle
 SOUND=1606
 CAN=mt_walk|mt_run|mt_equip|mt_usehands
 
@@ -1013,7 +1013,7 @@ ON=@CreateLoot
 
 [CHARDEF 02d3]
 DEFNAME=c_goblin_green
-NAME=green goblin
+NAME=Green Goblin
 SOUND=045A
 CAN=mt_walk|mt_run|mt_usehands
 
@@ -1068,7 +1068,7 @@ ON=@CreateLoot
 //This is the goblin grey mage
 [CHARDEF 02d4]
 DEFNAME=c_gremlin
-NAME=gremlin
+NAME=Gremlin
 SOUND=05fe
 CAN=mt_walk|mt_run|mt_usehands
 
@@ -1180,7 +1180,7 @@ ON=@CreateLoot
 
 [CHARDEF 02d6]
 DEFNAME=c_Kepetch
-NAME=kepetch
+NAME=Kepetch
 SOUND=1545
 CAN=mt_walk|mt_run|mt_equip|mt_usehands
 
@@ -1227,7 +1227,7 @@ ON=@CreateLoot
 
 [CHARDEF 02d7]
 DEFNAME=c_kepetch_shorn
-NAME=kepetch
+NAME=Kepetch
 ICON=i_pet_kepetch
 SOUND=snd_monster_kepetch1
 CAN=mt_walk|mt_run|mt_nonhum
@@ -1358,7 +1358,7 @@ ON=@CreateLoot
 [CHARDEF 02d9]
 //FIXME: Incomplete Stratics data
 DEFNAME=c_mimic
-NAME=mimic
+NAME=Mimic
 SOUND=snd_monster_mimic1
 ICON=i_pet_mimic
 CAN=mt_walk|mt_run|mt_nonhum
@@ -1412,7 +1412,7 @@ ON=@Createloot
 
 [CHARDEF 02da]
 DEFNAME=c_raptor
-NAME=raptor
+NAME=Raptor
 SOUND=1573
 CAN=mt_walk|mt_run|mt_equip|mt_usehands
 
@@ -1462,7 +1462,7 @@ ON=@CreateLoot
 
 [CHARDEF 02dc]
 DEFNAME=c_rotworm
-NAME=rotworm
+NAME=Rotworm
 SOUND=062D
 CAN=mt_walk|mt_run
 DAM=1,5
@@ -1502,7 +1502,7 @@ ON=@create
 
 [CHARDEF 02dd]
 DEFNAME=c_skree
-NAME=skree
+NAME=Skree
 SOUND=1585
 CAN=mt_walk|mt_run|mt_fly|mt_usehands
 
@@ -1554,7 +1554,7 @@ ON=@CreateLoot
 
 [CHARDEF 02de]
 DEFNAME=c_slith
-NAME=slith
+NAME=Slith
 CAN=mt_walk|mt_run
 SOUND=219
 
@@ -1601,7 +1601,7 @@ ON=@CreateLoot
 
 [CHARDEF c_slith_toxic]
 ID=c_slith
-NAME=toxic slith
+NAME=Toxic Slith
 ICON=i_pet_slith
 SOUND=snd_monster_slith1
 CAN=MT_WALK|MT_RUN|MT_NONHUM
@@ -1770,7 +1770,7 @@ ON=@CreateLoot
 
 [CHARDEF 02e1]
 DEFNAME=c_spider_trapdoor
-NAME=trapdoor spider
+NAME=Trapdoor Spider
 SOUND=1605
 CAN=mt_walk|mt_run|mt_equip|mt_usehands
 
@@ -1823,7 +1823,7 @@ ON=@CreateLoot
 
 [CHARDEF 02e2]
 DEFNAME=c_fire_Ant
-NAME=fire ant
+NAME=Fire Ant
 ICON=i_pet_fire_ant
 SOUND=846
 CAN=mt_walk|mt_run|mt_equip|mt_usehands
@@ -1869,7 +1869,7 @@ ON=@CreateLoot
 
 [CHARDEF 02e3]
 DEFNAME=c_wolf_leather
-NAME=leather wolf
+NAME=Leather Wolf
 ICON=i_pet_wolf_leather
 SOUND=snd_animals_wolf1
 CAN=mt_walk|mt_run|mt_nonhum
@@ -1930,7 +1930,7 @@ ON=@CreateLoot
 
 [CHARDEF 02e4]
 DEFNAME=c_dream_wraith
-NAME=dream wraith
+NAME=Dream Wraith
 ICON=i_pet_dream_wraith
 SOUND=snd_monster_shadows1
 CAN=mt_walk|mt_run|mt_usehands|mt_equip
@@ -2071,12 +2071,12 @@ argn1 /= 10 //BAD BAD BAD fix, maxhits should be 100k but we divided it to 10k, 
 [CHARDEF 02e6] // Can't find
 //FIXME: Needs to be scripted
 DEFNAME=c_tunnel_spirit
-NAME=tunnel spirit
+NAME=Tunnel Spirit
 CAN=MT_NONMOVER|MT_NONHUM
 
 [CHARDEF 033a]
 DEFNAME=c_dragon_stygian
-NAME=stygian dragon
+NAME=Stygian Dragon
 ICON=i_pet_dragon_stygian
 SOUND=snd_monster_stygian_dragon1
 CAN=mt_walk|mt_nonhum
@@ -2142,7 +2142,7 @@ ON=@CreateLoot
 //"The Rising Colossus stats, skills, and duration are determined by the
 // Casters Focus or Imbuing (whichever is greater), and Mysticism skills"
 DEFNAME=c_rising_colossus
-NAME=rising colossus
+NAME=Rising Colossus
 SOUND=snd_monster_rising_colossus1
 ICON=i_pet_rising_colossus
 
@@ -2182,7 +2182,7 @@ ON=@Create
 [CHARDEF 02e7]
 //FIXME: Needs to be scripted
 DEFNAME=c_tunnel_spirit_tentacle
-NAME=tunnel spirit tentacle
+NAME=Tunnel Spirit Tentacle
 CAN=MT_NONMOVER|MT_NONHUM
 
 [CHARDEF 02e8]
@@ -2321,7 +2321,7 @@ ON=@Createloot
 
 [CHARDEF 02ea] //FIXME Die on spawn
 DEFNAME=c_horrific_beast
-NAME=horrific beast
+NAME=Horrific Beast
 ICON=i_pet_demon_moloch
 SOUND=snd_monster_daemon1
 CAN=MT_WALK|MT_RUN|MT_USEHANDS|MT_EQUIP
@@ -2342,7 +2342,7 @@ endif
 
 [CHARDEF 02eb]  //FIXME Die on spawn
 DEFNAME=c_vampire_form
-NAME=vampire
+NAME=Vampire
 ICON=i_pet_harrower//FIXME: This is probably not right
 SOUND=snd_monster_shadowlord1
 CAN=MT_WALK|MT_RUN|MT_USEHANDS|MT_EQUIP
@@ -2359,7 +2359,7 @@ DESCRIPTION=Vampiric Embrace
 
 [CHARDEF 02ed]
 DEFNAME=c_lich_form
-NAME=lich form
+NAME=Lich Form
 ICON=i_pet_lich
 SOUND=snd_monster_lich1
 CAN=MT_WALK|MT_RUN|MT_USEHANDS|MT_EQUIP
@@ -2382,7 +2382,7 @@ DESCRIPTION=Lich Form
 //FIXME: Cannot be provoked.
 //FIXME: Cannot be peaced.
 DEFNAME=c_revenant_summoned
-NAME=summoned revenant
+NAME=Summoned Revenant
 ICON=i_pet_man
 SOUND=snd_monster_ghost1
 CAN=MT_WALK|MT_RUN|MT_GHOST|MT_USEHANDS|MT_EQUIP//|MT_PASSWALLS
@@ -2429,7 +2429,7 @@ CAN=MT_NONMOVER|MT_NONHUM
 
 [CHARDEF 033e]
 DEFNAME=c_lich_primeval
-NAME=primeval lich
+NAME=Primeval Lich
 ICON=i_pet_lich_primeval
 SOUND=snd_monster_primeval_lich1
 CAN=mt_walk|mt_run|mt_usehands|mt_equip
@@ -2561,7 +2561,7 @@ ON=@CreateLoot
 [CHARDEF 03ca]
 //FIXME: This may be a better summoned revenant
 DEFNAME=c_phantom
-NAME=phantom
+NAME=Phantom
 ICON=i_pet_lich
 SOUND=snd_monster_ghost1
 CAN=MT_WALK|MT_GHOST|MT_USEHANDS|MT_EQUIP//|MT_PASSWALLS
@@ -2629,7 +2629,7 @@ DESCRIPTION=GM Body
 //FIXME: No Stratics data
 //FIXME: Bad animation in 3d client
 DEFNAME=c_daemon_horde_colored
-NAME=multi colored horde demon
+NAME=Multi Colored Horde Demon
 ICON=i_pet_demon_horde
 SOUND=snd_monster_daemon1
 CAN=MT_WALK|MT_RUN|MT_USEHANDS|MT_EQUIP

@@ -982,7 +982,7 @@ ON=@Create
 
 [CHARDEF 0580]
 DEFNAME=c_horse_palomino
-NAME=horse
+NAME=Horse
 ICON=i_pet_horse_palomino
 SOUND=snd_animals_horse1
 CAN=mt_walk|mt_run

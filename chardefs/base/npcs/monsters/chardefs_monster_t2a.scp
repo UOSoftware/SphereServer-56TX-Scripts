@@ -1421,7 +1421,7 @@ ON=@Createloot
 //FIXME: Fireball attack based on their hitpoints
 //FIXME: Fight in packs
 DEFNAME=c_hellhound
-NAME=hell hound
+NAME=Hell Hound
 ICON=i_pet_hellhound
 SOUND=snd_animals_wolf1
 CAN=mt_walk|mt_run
@@ -1575,7 +1575,7 @@ ON=@CreateLoot
 
 [CHARDEF 074]
 DEFNAME=c_nightmare
-NAME=nightmare
+NAME=Nightmare
 SOUND=snd_animals_horse1
 ICON=i_pet_horse_nightmare
 CAN=mt_walk|mt_run|mt_nonhum
@@ -1631,7 +1631,7 @@ ON=@Createloot
 
 [CHARDEF 07f]
 DEFNAME=c_hellcat
-NAME=hellcat
+NAME=Hellcat
 ICON=i_pet_hellcat
 SOUND=snd_animals_panther1
 CAN=mt_walk|mt_run|mt_nonhum
@@ -1676,7 +1676,7 @@ ON=@Createloot
 
 [CHARDEF 083]
 DEFNAME=c_efreet
-NAME=efreet
+NAME=Efreet
 SOUND=snd_monster_efreet1
 ICON=i_pet_efreet
 CAN=mt_walk|mt_run|mt_usehands
@@ -1727,7 +1727,7 @@ ON=@CreateLoot
 [CHARDEF 086]
 //FIXME: No Stratics data yet
 DEFNAME=c_dragon_komodo
-NAME=komodo dragon
+NAME=Komodo Dragon
 SOUND=snd_animal_kirin1
 ICON=i_pet_dragon_komodo
 
@@ -1775,7 +1775,7 @@ ON=@Create
 [CHARDEF 087]
 //FIXME: Immune to low level poison
 DEFNAME=c_ogre_lord_arctic
-NAME=arctic ogre lord
+NAME=Arctic Ogre Lord
 SOUND=snd_monster_ogre1
 ICON=i_pet_ogre_lord
 CAN=MT_WALK|MT_USEHANDS|MT_EQUIP
@@ -1831,7 +1831,7 @@ ON=@CreateLoot
 
 [CHARDEF 088]
 DEFNAME=c_ophidian_archmage
-NAME=ophidian justicar
+NAME=Ophidian Justicar
 ICON=i_pet_ophidian_archmage
 SOUND=snd_monster_ophidian_mage1
 CAN=mt_walk|mt_run|mt_usehands|mt_equip|mt_nonhum
@@ -1877,7 +1877,7 @@ ON=@Createloot
 
 [CHARDEF 089]
 DEFNAME=c_ophidian_knight
-NAME=ophidian knight
+NAME=Ophidian Knight
 SOUND=snd_monster_ophidian_warrior1
 ICON=i_pet_ophidian_knight
 CAN=mt_walk|mt_run|mt_usehands|mt_nonhum
@@ -1930,7 +1930,7 @@ ON=@Createloot
 
 [CHARDEF 09e]
 DEFNAME=c_elemental_acid
-NAME=acid elemental
+NAME=Acid Elemental
 SOUND=snd_elementl_watrel1
 ICON=i_pet_elem_acid
 CAN=mt_walk|mt_swim|mt_nonhum
@@ -1981,7 +1981,7 @@ ON=@Createloot
 
 [CHARDEF 09f]
 DEFNAME=c_elemental_blood
-NAME=blood elemental
+NAME=Blood Elemental
 SOUND=snd_elementl_watrel1
 ICON=i_pet_elem_blood
 CAN=MT_WALK|MT_SWIM|MT_NONHUM
@@ -2031,7 +2031,7 @@ ON=@Createloot
 
 [CHARDEF 0a1]
 DEFNAME=c_elemental_ice
-NAME=ice elemental
+NAME=Ice Elemental
 SOUND=snd_elementl_erthel1
 ICON=i_pet_elem_ice
 CAN=mt_walk|mt_usehands|mt_equip
@@ -2089,7 +2089,7 @@ ON=@GetHit
 
 [CHARDEF 0a2]
 DEFNAME=c_elemental_poison
-NAME=poison elemental
+NAME=Poison Elemental
 SOUND=snd_elementl_airelem1
 ICON=i_pet_elem_poison
 CAN=mt_walk|mt_run|mt_nonhum
@@ -2143,7 +2143,7 @@ ON=@Createloot
 
 [CHARDEF 0a3]
 DEFNAME=c_elemental_snow
-NAME=snow elemental
+NAME=Snow Elemental
 SOUND=snd_elementl_airelem1
 ICON=i_pet_elem_snow
 CAN=mt_walk|mt_run|mt_nonhum

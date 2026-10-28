@@ -1160,7 +1160,7 @@ WRESTLING={45.0 55.0}
 
 [CHARDEF c_rat_sewer]
 ID=c_rat_giant
-NAME=sewer rat
+NAME=Sewer Rat
 CAN=MT_WALK|MT_RUN
 DAM=3,9
 ARMOR=9
@@ -1188,7 +1188,7 @@ RESPOISON=0
 
 [CHARDEF c_bird_magpie]
 ID=c_bird
-NAME=magpie
+NAME=Magpie
 CAN=MT_WALK|MT_FLY
 DAM=1,2
 ARMOR=2
@@ -1217,7 +1217,7 @@ RESPOISON=0
 
 [CHARDEF c_bird_tropical]
 ID=c_bird
-NAME=bird
+NAME=Bird
 CAN=MT_WALK|MT_FLY
 DAM=1,2
 ARMOR=1
@@ -1246,7 +1246,7 @@ RESPOISON=0
 
 [CHARDEF c_bird_raven]
 ID=c_bird
-NAME=raven
+NAME=Raven
 CAN=MT_WALK|MT_FLY
 DAM=1,2
 ARMOR=3
@@ -1273,7 +1273,7 @@ RESPOISON=0
 
 [CHARDEF c_bird_jungle]
 ID=c_bird
-NAME=jungle bird
+NAME=Jungle Bird
 CAN=MT_WALK|MT_FLY
 DAM=1,2
 ARMOR=1
@@ -1301,7 +1301,7 @@ RESPOISON=0
 
 [CHARDEF c_horse_mustang]
 ID=c_horse_brown_dk
-NAME=mustang
+NAME=Mustang
 ICON=i_pet_horse_brown_dk
 SOUND=snd_animals_horse1
 CAN=MT_WALK|MT_RUN
@@ -1337,7 +1337,7 @@ RESPOISON=0
 
 [CHARDEF c_jackrabbit]
 ID=c_rabbit
-NAME=jackrabbit
+NAME=Jackrabbit
 CAN=MT_WALK
 DAM=1,2
 ARMOR=2
@@ -1365,7 +1365,7 @@ RESPOISON=0
 
 [CHARDEF c_ice_snake]
 ID=c_snake
-NAME=ice snake
+NAME=Ice Snake
 CAN=MT_WALK
 DAM=2,14
 ARMOR=15
@@ -1394,7 +1394,7 @@ ITEM=loot_ice_snake
 
 [CHARDEF c_lava_snake]
 ID=c_snake
-NAME=lava snake
+NAME=Lava Snake
 CAN=MT_WALK|MT_FIRE_IMMUNE
 DAM=1,8
 ARMOR=12
@@ -1423,7 +1423,7 @@ ITEM=loot_ice_snake
 
 [CHARDEF c_mongbat_arboreal]
 ID=c_mongbat
-NAME=arboreal mongbat
+NAME=Arboreal Mongbat
 CAN=MT_WALK|MT_FLY
 DAM=1,2
 ARMOR=5
@@ -1452,7 +1452,7 @@ ITEM=loot_mongbat
 
 [CHARDEF c_hellcat_pred]
 ID=c_hellcat
-NAME=predator hellcat
+NAME=Predator Hellcat
 DAM=20,40
 ARMOR=33
 FollowerSlots=2
@@ -1486,7 +1486,7 @@ ITEM=loot_hellcat
 
 [CHARDEF c_ophidian_apprentice]
 ID=c_ophidian_shaman
-NAME=ophidian apprentice
+NAME=Ophidian Apprentice
 DAM=13,32
 ARMOR=22
 TAG.SlayerGroup=OPHIDIAN,REPTILE
@@ -1520,7 +1520,7 @@ ITEM=loot_ophidian_archmage
 
 [CHARDEF c_ophidian_soldier]
 ID=c_ophidian_warrior
-NAME=ophidian soldier
+NAME=Ophidian Soldier
 CAN=MT_WALK|MT_EQUIP|MT_USEHANDS
 DAM=19,40
 ARMOR=40
@@ -1556,7 +1556,7 @@ ITEM=loot_ophidian_warrior
 
 [CHARDEF c_terathan_assassin]
 ID=c_terathan_warrior
-NAME=terathan assassin
+NAME=Terathan Assassin
 CAN=MT_WALK|MT_RUN|MT_USEHANDS|MT_EQUIP
 DAM=27,42
 ARMOR=52
@@ -1597,7 +1597,7 @@ ITEM=loot_terathan_avenger
 
 [CHARDEF c_skeletonarcher]
 ID=c_skeleton_w_axe
-NAME=skeleton archer
+NAME=Skeleton Archer
 CAN=MT_WALK|MT_RUN|MT_USEHANDS|MT_EQUIP
 DAM=4,8
 ARMOR=12
@@ -1629,7 +1629,7 @@ ITEM={ random_armor_bone 1 0 15 }
 
 [CHARDEF c_ghost]
 ID=c_phantom
-NAME=ghost
+NAME=Ghost
 CAN=MT_GHOST|MT_WALK//|MT_PASSWALLS
 DAM=12,20
 ARMOR=20
@@ -1668,7 +1668,7 @@ ITEM=average_undead_backpack
 
 [CHARDEF c_frost_ettin]
 ID=c_ettin
-NAME=frost ettin
+NAME=Frost Ettin
 CAN=MT_WALK|MT_RUN|MT_EQUIP|MT_USEHANDS
 DAM=13,35
 ARMOR=37
@@ -1700,7 +1700,7 @@ ITEM=loot_ettin
 
 [CHARDEF c_ettin_lord]
 ID=c_ettin_w_hammer
-NAME=ettin lord
+NAME=Ettin Lord
 CAN=MT_WALK|MT_EQUIP|MT_USEHANDS
 DAM=25,40
 ARMOR=32
@@ -1737,7 +1737,7 @@ ITEM=loot_ettin_lord
 
 [CHARDEF c_cyclops_king]
 ID=c_cyclops
-NAME=cyclops king
+NAME=Cyclops King
 CAN=MT_WALK|MT_RUN|MT_EQUIP|MT_USEHANDS
 DAM=36,50
 ARMOR=58
@@ -1776,7 +1776,7 @@ ITEM=loot_ogre
 
 [CHARDEF c_goblin_chief]
 ID=c_goblin_green
-NAME=goblin chief
+NAME=Goblin Chief
 CAN=MT_WALK|MT_RUN|MT_EQUIP
 DAM=5,12
 ARMOR=13
@@ -1812,7 +1812,7 @@ ITEM=random_weapon_all_normal
 
 [CHARDEF c_goblin_shaman]
 ID=c_goblin_green
-NAME=goblin shaman
+NAME=Goblin Shaman
 DAM=5,13
 ARMOR=14
 BLOODCOLOR=colors_green
@@ -1850,7 +1850,7 @@ ITEM={ random_first_circle 4 random_second_circle 8 0 16 }
 
 [CHARDEF c_goblin_lord]
 ID=c_goblin_green
-NAME=goblin lord
+NAME=Goblin Lord
 CAN=MT_WALK|MT_RUN|MT_EQUIP|MT_USEHANDS
 DAM=5,10
 ARMOR=14
@@ -1893,7 +1893,7 @@ ITEM=random_weapon_all_normal
 
 [CHARDEF c_dragon_ice]
 ID=c_dragon_red
-NAME=ice dragon
+NAME=Ice Dragon
 CAN=MT_WALK|MT_FLY|MT_FIRE_IMMUNE|MT_EQUIP|MT_USEHANDS
 DAM=74,98
 ARMOR=55
@@ -1935,7 +1935,7 @@ ITEM=loot_dragon
 
 [CHARDEF c_slime_crystal]
 ID=c_slime
-NAME=crystaline slime
+NAME=Crystaline Slime
 CAN=MT_WALK
 DAM=8,16
 ARMOR=12
@@ -1981,7 +1981,7 @@ ENDIF
 
 [CHARDEF c_wisp_crystal]
 ID=c_wisp
-NAME=crystal wisp
+NAME=Crystal Wisp
 CAN=MT_WALK|MT_RUN|MT_FIRE_IMMUNE|MT_USEHANDS
 DAM=30,50
 ARMOR=50
@@ -2016,7 +2016,7 @@ ITEM=rich_gold_pile
 
 [CHARDEF c_dragon_crystal]
 ID=c_dragon_red
-NAME=crystal dragon
+NAME=Crystal Dragon
 CAN=MT_WALK|MT_FLY|MT_FIRE_IMMUNE|MT_EQUIP|MT_USEHANDS
 DAM=79,95
 ARMOR=58
@@ -2054,7 +2054,7 @@ ITEM=loot_dragon
 
 [CHARDEF c_dragon_greendrake]
 ID=c_drake_gray
-NAME=green drake
+NAME=Green Drake
 CAN=MT_WALK|MT_FLY|MT_FIRE_IMMUNE|MT_EQUIP|MT_USEHANDS
 DAM=42,64
 ARMOR=43
@@ -2090,7 +2090,7 @@ ITEM=loot_drake
 
 [CHARDEF c_dragon_copperdrake]
 ID=c_drake_gray
-NAME=copper drake
+NAME=Copper Drake
 CAN=MT_WALK|MT_FLY|MT_FIRE_IMMUNE|MT_EQUIP|MT_USEHANDS
 DAM=32,64
 ARMOR=43
@@ -2127,7 +2127,7 @@ ITEM=loot_drake
 
 [CHARDEF c_dragon_bluedrake]
 ID=c_drake_gray
-NAME=blue drake
+NAME=Blue Drake
 CAN=MT_WALK|MT_FLY|MT_FIRE_IMMUNE
 DAM=32,64
 ARMOR=43
@@ -2164,7 +2164,7 @@ ITEM=loot_drake
 
 [CHARDEF c_dragon_golddrake]
 ID=c_drake_gray
-NAME=gold drake
+NAME=Gold Drake
 CAN=MT_WALK|MT_FLY|MT_FIRE_IMMUNE|MT_EQUIP|MT_USEHANDS
 DAM=32,64
 ARMOR=43
@@ -2201,7 +2201,7 @@ ITEM=loot_drake
 
 [CHARDEF c_dragon_blackdrake]
 ID=c_drake_gray
-NAME=black drake
+NAME=Black Drake
 CAN=MT_WALK|MT_FLY|MT_FIRE_IMMUNE|MT_EQUIP|MT_USEHANDS
 DAM=35,65
 ARMOR=40
@@ -2239,7 +2239,7 @@ ITEM=loot_drake
 
 [CHARDEF c_dragon_silverdrake]
 ID=c_drake_red
-NAME=silver drake
+NAME=Silver Drake
 CAN=MT_WALK|MT_FLY|MT_FIRE_IMMUNE
 DAM=32,64
 ARMOR=33
@@ -2277,7 +2277,7 @@ ITEM=loot_drake
 
 [CHARDEF c_dragon_crystaldrake]
 ID=c_drake_red
-NAME=crystal drake
+NAME=Crystal Drake
 CAN=MT_WALK|MT_FLY|MT_FIRE_IMMUNE
 DAM=32,64
 ARMOR=53
@@ -2320,7 +2320,7 @@ ITEM=loot_drake
 
 [CHARDEF c_scorpion_prince]
 ID=c_scorpion_giant
-NAME=scorpion prince
+NAME=Scorpion Prince
 CAN=MT_WALK|MT_RUN
 DAM=16,25
 ARMOR=30
@@ -2353,7 +2353,7 @@ ITEM={ meager_backpack 1 average_backpack 2 }
 
 [CHARDEF c_scorpion_king]
 ID=c_scorpion_giant
-NAME=king scorpion
+NAME=King Scorpion
 CAN=MT_WALK|MT_RUN|MT_EQUIP|MT_USEHANDS
 DAM=20,38
 ARMOR=40
@@ -2390,7 +2390,7 @@ ITEM={ rich_backpack 1 average_backpack 2 }
 
 [CHARDEF c_scorpion_queen]
 ID=c_scorpion_giant
-NAME=queen scorpion
+NAME=Queen Scorpion
 CAN=MT_WALK|MT_RUN|MT_FIRE_IMMUNE|MT_EQUIP|MT_USEHANDS
 DAM=30,50
 ARMOR=50
@@ -2434,7 +2434,7 @@ ITEM={ rich_backpack 1 average_backpack 2 }
 
 [CHARDEF c_scorpion_thrall]
 ID=c_spider_giant
-NAME=scorpion thrall
+NAME=Scorpion Thrall
 CAN=MT_WALK|MT_RUN
 DAM=15,25
 ARMOR=22
@@ -2856,7 +2856,7 @@ ENDIF
 [CHARDEF c_crystal_lattice_seeker]
 //"The Crystal Lattice Seeker is one of the crystaline inhabitants of the Prism of Light dungeon."
 ID=c_champ_lord_oaks
-NAME=crystal lattice seeker
+NAME=Crystal Lattice Seeker
 ICON=i_pet_forestlord
 SOUND=snd_monster_pixie
 CAN=MT_WALK|MT_RUN|MT_USEHANDS|MT_EQUIP
@@ -2908,7 +2908,7 @@ ENDIF
 //"The Crystal Hydra is one of the crystaline inhabitants of the Prism
 // of Light dungeon."
 ID=c_hydra
-NAME=crystal hydra
+NAME=Crystal Hydra
 ICON=i_pet_hydra
 //SOUND=
 CAN=MT_WALK|MT_RUN
@@ -2949,7 +2949,7 @@ ITEM=loot_demon_elder
 //"The Crystal Daemon is one of the crystaline inhabitants of the Prism
 // of Light dungeon."
 ID=c_daemon_arcane
-NAME=crystal demon
+NAME=Crystal Demon
 ICON=i_pet_demon_arcane
 SOUND=snd_monster_dragon1
 CAN=MT_WALK|MT_RUN|MT_USEHANDS|MT_EQUIP
@@ -3383,7 +3383,7 @@ ITEM=random_artifact,1,R30
 [CHARDEF c_squirrel_albino]
 //FIXME: Can not be shrunk
 ID=c_squirrel
-NAME=albino squirrel
+NAME=Albino Squirrel
 ICON=i_crystal_squirrel
 CAN=MT_WALK|MT_RUN
 DAM=5,6

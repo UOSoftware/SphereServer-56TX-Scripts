@@ -76,7 +76,7 @@ ON=@CreateLoot
 //FIXME: Fireball attack based on their hitpoints
 //FIXME: Fight in packs
 DEFNAME=c_hellhound_ancient
-NAME=ancient hellhound
+NAME=Ancient Hellhound
 ICON=i_pet_hellhound_ancient
 SOUND=snd_animals_wolf1
 CAN=mt_walk|mt_run|mt_nonhum
@@ -136,7 +136,7 @@ ON=@CreateLoot
 
 [CHARDEF 042e]
 DEFNAME=c_werewolf
-NAME=were wolf
+NAME=Were Wolf
 SOUND=snd_animals_wolf1
 CAN=mt_walk|mt_run
 
@@ -192,7 +192,7 @@ ON=@CreateLoot
 
 [CHARDEF 042f]
 DEFNAME=c_minotaur_lord
-NAME=minotaur lord
+NAME=Minotaur Lord
 ICON=i_pet_minotaur_lord
 SOUND=snd_monster_minotaur1
 CAN=mt_walk|mt_run|mt_usehands|mt_equip
@@ -359,7 +359,7 @@ ON=@Create
 
 [CHARDEF 04de]
 DEFNAME=c_pumpkin_demon
-NAME=killer pumpkin
+NAME=Killer Pumpkin
 ICON=i_jack_o_lantern
 SOUND=snd_monster_gargyl1
 CAN=mt_nonmover|mt_nonhum
@@ -421,7 +421,7 @@ ON=@CreateLoot
 
 [CHARDEF 04df]
 DEFNAME=c_pumpkin_fright
-NAME=killer pumpkin
+NAME=Killer Pumpkin
 ICON=i_jack_o_lantern2
 SOUND=snd_monster_gargyl1
 CAN=mt_nonmover|mt_nonhum

@@ -50,7 +50,7 @@ ON=@Create
 
 [CHARDEF 052]
 DEFNAME=c_dark_guardian
-NAME=dark guardian
+NAME=Dark Guardian
 ICON=i_pet_lich
 SOUND=snd_monster_lich1
 CAN=mt_walk|mt_run|mt_usehands|mt_equip
@@ -219,7 +219,7 @@ ITEM=i_log,{10 20}
 
 [CHARDEF 012e]
 DEFNAME=c_skittering_hopper
-NAME=skittering hopper
+NAME=Skittering Hopper
 SOUND=959
 ICON=i_pet_skithopper
 CAN=mt_walk|mt_run
@@ -751,7 +751,7 @@ ITEM=i_gold,{50 100}
 //FIXME: Cannot be first target of a provoke attempt.
 //FIXME: Cannot be area peaced.
 DEFNAME=c_shadow_knight
-NAME=shadow knight
+NAME=Shadow Knight
 SOUND=snd_monster_ghost1
 ICON=i_pet_knight_shadow
 CAN=MT_WALK|MT_RUN|MT_USEHANDS|MT_EQUIP
@@ -893,7 +893,7 @@ ITEM=i_gold,{1600 2000}
 //FIXME: Cannot be first target of a provoke attempt.
 //FIXME: Cannot be area peaced.
 DEFNAME=c_darknight_creeper
-NAME=darknight creeper
+NAME=Darknight Creeper
 SOUND=snd_monster_daemon1
 ICON=i_pet_darknight_creeper
 CAN=mt_walk|mt_run|mt_usehands|mt_equip
@@ -1037,7 +1037,7 @@ ITEM=i_gold,{275 325}
 //FIXME: Cannot be first target of a provoke attempt.
 //FIXME: Cannot be area peaced.
 DEFNAME=c_flesh_renderer
-NAME=flesh renderer
+NAME=Flesh Renderer
 SOUND=snd_monster_insect1
 ICON=i_pet_flesh_renderer
 CAN=MT_WALK|MT_RUN|MT_NONHUM

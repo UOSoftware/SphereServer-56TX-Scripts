@@ -1066,7 +1066,7 @@ ON=@CreateLoot
 //FIXME: Incomplete Stratics data
 //FIXME: Steals loot and runs away...
 DEFNAME=c_grubber
-NAME=grubber
+NAME=Grubber
 SOUND=snd_monster_daemon1
 //ICON=i_pet_fixme
 CAN=MT_WALK|MT_RUN|MT_NONHUM
@@ -1161,7 +1161,7 @@ ON=@CreateLoot
 //Spawned by Shimmering Effusions
 //FIXME: Has an area attack of some sort
 DEFNAME=c_corporeal_brume
-NAME=corporeal brume
+NAME=Corporeal Brume
 SOUND=snd_monster_corporealbrume1
 ICON=i_pet_corporeal_brume
 CAN=mt_walk|mt_run|mt_nonhum
@@ -1832,7 +1832,7 @@ DESCRIPTION=Elf Ghost, Female
 //FIXME: Area attack spell that only works when not tamed
 //FIXME: Special command 'Trick' that creates a black cloud
 DEFNAME=c_warhorse_dread
-NAME=dread warhorse
+NAME=Dread Warhorse
 ICON=i_pet_horse_nightmare
 SOUND=snd_animals_horse1
 CAN=MT_WALK|MT_RUN|MT_NONHUM
@@ -1881,7 +1881,7 @@ ON=@NPCRestock
 [CHARDEF 027d]
 //Spectral Armor (floating sword)
 defname=c_spectral_armor
-name=spectral armor
+name=Spectral Armor
 soundidle=0200
 sounddie=376A
 soundhit=056

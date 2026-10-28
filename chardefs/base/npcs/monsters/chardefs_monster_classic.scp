@@ -460,7 +460,7 @@ ON=@CreateLoot
 
 [CHARDEF 0a4]
 DEFNAME=c_energy_vortex
-NAME=energy vortex
+NAME=Energy Vortex
 ICON=i_fx_blade_spirit_1
 SOUND=snd_elementl_airelem1
 CAN=MT_WALK|MT_RUN|MT_NONHUM
@@ -496,7 +496,7 @@ ON=@Create
 
 [CHARDEF 05d]
 DEFNAME=c_serpent_arrow
-NAME=serpent arrow
+NAME=Serpent Arrow
 ICON=i_pet_snake_giant
 SOUND=snd_animals_snake1
 CAN=MT_WALK|MT_RUN|MT_NONHUM
@@ -534,7 +534,7 @@ ON=@Create
 
 [CHARDEF 0e6]
 DEFNAME=c_reaper_form
-NAME=reaper form
+NAME=Reaper Form
 ICON=i_pet_reaper
 SOUND=snd_monster_reaper1
 CAN=MT_WALK|MT_NONHUM
@@ -582,7 +582,7 @@ ON=@CreateLoot
 
 [CHARDEF 023e]
 DEFNAME=c_blade_spirit
-NAME=blade spirit
+NAME=Blade Spirit
 ICON=i_fx_blade_spirit_1
 //SOUND=0 //snd_weapons_sword1
 SOUNDIDLE=snd_weapons_sword1
@@ -1091,7 +1091,7 @@ ON=@CreateLoot
 
 [CHARDEF 017]
 DEFNAME=c_wolf_dire
-NAME=dire wolf
+NAME=Dire Wolf
 ICON=i_pet_wolf_dire
 SOUND=snd_animals_wolf1
 CAN=mt_walk|mt_run|mt_nonhum
@@ -1196,7 +1196,7 @@ ON=@CreateLoot
 
 [CHARDEF 019]
 DEFNAME=c_wolf_grey
-NAME=grey wolf
+NAME=Grey Wolf
 ICON=i_pet_wolf_grey
 SOUND=snd_animals_wolf1
 CAN=mt_walk|mt_run|mt_nonhum
@@ -1635,7 +1635,7 @@ ON=@CreateLoot
 
 [CHARDEF 025]
 DEFNAME=c_wolf_white
-NAME=white wolf
+NAME=White Wolf
 ICON=i_pet_wolf_silver
 SOUND=snd_animals_wolf1
 CAN=mt_walk|mt_run|mt_nonhum
@@ -2680,7 +2680,7 @@ ON=@Create
 
 [CHARDEF 040]
 DEFNAME=c_leopard
-NAME=leopard
+NAME=Leopard
 ICON=i_pet_panther
 SOUND=snd_animals_cougar1
 CAN=mt_walk|mt_run|mt_nonhum
@@ -2782,7 +2782,7 @@ ON=@CreateLoot
 
 [CHARDEF 04f]
 DEFNAME=c_lich_lord
-NAME=lich lord
+NAME=Lich Lord
 ICON=i_pet_lich
 SOUND=snd_monster_lich1
 CAN=mt_walk|mt_run|mt_usehands|mt_equip
@@ -2845,7 +2845,7 @@ ON=@CreateLoot
 
 [CHARDEF 053]
 DEFNAME=c_ogre_lord
-NAME=ogre lord
+NAME=Ogre Lord
 ICON=i_pet_ogre
 SOUND=snd_monster_ogre1
 CAN=mt_walk|mt_usehands|mt_equip
@@ -2934,7 +2934,7 @@ ON=@Create
 
 [CHARDEF 05b]
 DEFNAME=c_serpent_silver
-NAME=silver serpent
+NAME=Silver Serpent
 ICON=i_pet_serpent_silver
 SOUND=snd_animals_snake1
 CAN=mt_walk|mt_run|mt_nonhum
@@ -2987,7 +2987,7 @@ ON=@CreateLoot
 
 [CHARDEF 063]
 DEFNAME=c_wolf_dark
-NAME=dark wolf
+NAME=Dark Wolf
 ICON=i_pet_wolf_dire
 SOUND=snd_animals_wolf1
 CAN=mt_walk|mt_run|mt_nonhum
@@ -3038,7 +3038,7 @@ ON=@Create
 
 [CHARDEF 064]
 DEFNAME=c_wolf_silver
-NAME=silver wolf
+NAME=Silver Wolf
 ICON=i_pet_wolf_silver
 SOUND=snd_animals_wolf1
 CAN=mt_walk|mt_run|mt_nonhum
@@ -3098,7 +3098,7 @@ ON=@Create
 // (Copper) to almost invincible (Valorite)."
 [CHARDEF 06b]
 DEFNAME=c_elemental_ore_agapite
-NAME=agapite elemental
+NAME=Agapite Elemental
 SOUND=snd_elementl_erthel1
 ICON=i_pet_elem_earth
 CAN=MT_WALK|MT_USEHANDS
@@ -3150,7 +3150,7 @@ ON=@CreateLoot
 [CHARDEF 06c]
 //FIXME: Bronze Elemental has a gas attack that can hit nearby characters.
 DEFNAME=c_elemental_ore_bronze
-NAME=bronze elemental
+NAME=Bronze Elemental
 SOUND=snd_elementl_erthel1
 ICON=i_pet_elem_earth
 CAN=MT_WALK|MT_USEHANDS
@@ -3203,7 +3203,7 @@ ON=@CreateLoot
 [CHARDEF 06d]
 //FIXME: "Reflects 50% damage done by spells OR melee."
 DEFNAME=c_elemental_ore_copper
-NAME=copper elemental
+NAME=Copper Elemental
 SOUND=snd_elementl_erthel1
 ICON=i_pet_elem_earth
 CAN=MT_WALK|MT_USEHANDS
@@ -3256,7 +3256,7 @@ ON=@CreateLoot
 
 [CHARDEF 06e]
 DEFNAME=c_elemental_ore_copper_dull
-NAME=dull copper elemental
+NAME=Dull Copper Elemental
 SOUND=snd_elementl_erthel1
 ICON=i_pet_elem_earth
 CAN=MT_WALK|MT_USEHANDS
@@ -3321,7 +3321,7 @@ ON=@Death
 //FIXME: "Immune to most damage done by pets and provoked creatures."
 //FIXME: Immune to spell damage
 DEFNAME=c_elemental_ore_shadow
-NAME=shadow iron elemental
+NAME=Shadow Iron Elemental
 SOUND=snd_elementl_erthel1
 ICON=i_pet_elem_earth
 CAN=MT_WALK|MT_USEHANDS
@@ -3377,7 +3377,7 @@ ON=@CreateLoot
 //FIXME: Reflects all magic damage.
 //FIXME: Gas Attack.
 DEFNAME=c_elemental_ore_valorite
-NAME=valorite elemental
+NAME=Valorite Elemental
 SOUND=snd_elementl_erthel1
 ICON=i_pet_elem_earth
 CAN=MT_WALK|MT_USEHANDS
@@ -3431,7 +3431,7 @@ ON=@CreateLoot
 
 [CHARDEF 071]
 DEFNAME=c_elemental_ore_verite
-NAME=verite elemental
+NAME=Verite Elemental
 SOUND=snd_elementl_erthel1
 ICON=i_pet_elem_earth
 CAN=MT_WALK|MT_USEHANDS
@@ -3525,7 +3525,7 @@ ON=@Create
 
 [CHARDEF 0a6]
 DEFNAME=c_elemental_ore_gold
-NAME=golden elemental
+NAME=Golden Elemental
 ICON=i_pet_elem_earth
 SOUND=snd_elementl_erthel1
 CAN=MT_WALK|MT_USEHANDS
@@ -3856,7 +3856,7 @@ ON=@Create
 
 [CHARDEF 093]
 DEFNAME=c_skeleton_knight
-NAME=skeletal knight
+NAME=Skeletal Knight
 SOUND=snd_monster_skletn1
 ICON=i_pet_skeleton_knight
 CAN=mt_walk|mt_run|mt_usehands|mt_equip
@@ -4203,7 +4203,7 @@ ON=@Create
 
 [CHARDEF 0be]
 DEFNAME=c_steed_fire
-NAME=fire steed
+NAME=Fire Steed
 ICON=i_pet_steed_fire
 SOUND=snd_animals_horse1
 CAN=mt_walk|mt_run|mt_nonhum
@@ -4728,7 +4728,7 @@ ON=@Create
 
 [CHARDEF 0d7]
 DEFNAME=c_rat_giant
-NAME=giant rat
+NAME=Giant Rat
 ICON=i_pet_rat_2
 SOUND=snd_monster_grat1
 CAN=mt_walk|mt_run|mt_nonhum

@@ -6,7 +6,7 @@ VERSION=TX
 
 [CHARDEF 0b]
 DEFNAME=c_spider_dread
-NAME=dread spider
+NAME=Dread Spider
 ICON=i_pet_spider_dread
 SOUND=snd_monster_gispidr1
 CAN=mt_walk|mt_run|mt_nonhum
@@ -559,7 +559,7 @@ ON=@CreateLoot
 //FIXME: Incomplete Stratics data
 //FIXME: Bleed attack
 DEFNAME=c_dragon_greater
-NAME=greater dragon
+NAME=Greater Dragon
 ICON=i_pet_dragon
 SOUND=snd_monster_dragon1
 CAN=MT_WALK|MT_FLY|MT_NONHUM
@@ -608,7 +608,7 @@ ON=@CreateLoot
 [CHARDEF 072]
 //FIXME: No Stratics data
 DEFNAME=c_steed_dark
-NAME=dark steed
+NAME=Dark Steed
 SOUND=snd_animals_horse1
 ICON=i_pet_horse_nightmare
 CAN=MT_WALK|MT_RUN|MT_NONHUM
@@ -664,7 +664,7 @@ ON=@CreateLoot
 
 [CHARDEF 073]
 DEFNAME=c_steed_ethereal
-NAME=ethereal steed
+NAME=Ethereal Steed
 //fixme ICON=i_steed_ethereal
 CAN=MT_WALK
 
@@ -680,7 +680,7 @@ ON=@Create
 //FIXME: No Stratics data
 //FIXME: Attacks evil creatures on sight
 DEFNAME=c_steed_silver
-NAME=silver steed
+NAME=Silver Steed
 SOUND=snd_animals_horse1
 ICON=i_pet_steed_silver
 CAN=MT_WALK|MT_RUN|MT_NONHUM
@@ -982,7 +982,7 @@ ON=@Create
 
 [CHARDEF 07b]
 DEFNAME=c_ethereal_warrior
-NAME=ethereal warrior
+NAME=Ethereal Warrior
 //SOUND=0 //snd_monster_pixie1 // the sound IDs aren't sequential, we need to set them manually
 SOUNDIDLE=046C
 SOUNDNOTICE=046A
@@ -1419,7 +1419,7 @@ ON=@Create
 //FIXME: Can hit multiple targets with one attack.
 //They were introduced in 2001, LBR Expansion
 DEFNAME=c_orc_chopper
-NAME=orc chopper
+NAME=Orc Chopper
 SOUND=snd_monster_orc2_1
 ICON=i_pet_orc_lord
 CAN=MT_WALK|MT_RUN|MT_USEHANDS|MT_EQUIP
@@ -1532,7 +1532,7 @@ ON=@CreateLoot
 
 [CHARDEF 092]
 DEFNAME=c_harrower
-NAME=nameless one
+NAME=Nameless One
 SOUND=snd_monster_shadowlord1
 ICON=i_pet_harrower
 
@@ -1956,7 +1956,7 @@ ON=@createloot
 [CHARDEF 0a8]
 //FIXME: attracted by hidden players and will reveal them when they are close enough.
 DEFNAME=c_shadow_fiend
-NAME=shadow fiend
+NAME=Shadow Fiend
 ICON=i_pet_imp
 SOUND=snd_animal_ostard_desert1
 CAN=MT_WALK|MT_RUN|MT_USEHANDS|MT_NONHUM
@@ -2003,7 +2003,7 @@ ON=@Createloot
 
 [CHARDEF 0a9]
 DEFNAME=c_beetle_fire
-NAME=fire beetle
+NAME=Fire Beetle
 CAN=mt_walk|mt_run|mt_equip|mt_usehands
 SOUNDIDLE=021d
 SOUNDNOTICE=021d
@@ -2056,7 +2056,7 @@ ON=@CreateLoot
 
 [CHARDEF 0aa]
 DEFNAME=c_llama_ethereal
-NAME=ethereal llama
+NAME=Ethereal Llama
 ICON=i_pet_llama
 SOUND=snd_animals_llama3
 CAN=MT_WALK|MT_RUN|MT_NONHUM
@@ -2091,7 +2091,7 @@ ON=@Create
 
 [CHARDEF 0ab]
 DEFNAME=c_ostard_ethereal
-NAME=ethereal ostard
+NAME=Ethereal Ostard
 ICON=i_pet_ostard_desert
 SOUND=snd_animal_ostard_desert1
 CAN=MT_WALK|MT_RUN|MT_NONHUM
@@ -2494,7 +2494,7 @@ ON=@GetHit
 //FIXME: Stealth walks when hidden
 //FIXME: Heals using bandages
 DEFNAME=c_orc_scout
-NAME=orc scout
+NAME=Orc Scout
 ICON=i_pet_orc
 SOUND=snd_monster_orc2_1
 CAN=MT_WALK|MT_USEHANDS|MT_EQUIP
@@ -2541,7 +2541,7 @@ ON=@CreateLoot
 
 [CHARDEF 0b6]
 DEFNAME=c_orc_bomber
-NAME=orc bomber
+NAME=Orc Bomber
 SOUND=045A
 CAN=mt_walk|mt_run|mt_equip|mt_usehands
 
@@ -3004,7 +3004,7 @@ ON=@CreateLoot
 
 [CHARDEF 0bf]
 DEFNAME=c_kirin_ethereal
-NAME=ethereal ki-rin
+NAME=Ethereal Ki-Rin
 ICON=i_pet_kirin
 SOUND=snd_animal_kirin1
 CAN=MT_WALK|MT_RUN|MT_NONHUM
@@ -3039,7 +3039,7 @@ ON=@Create
 
 [CHARDEF 0c0]
 DEFNAME=c_unicorn_ethereal
-NAME=ethereal unicorn
+NAME=Ethereal Unicorn
 ICON=i_pet_unicorn
 SOUND=snd_animals_horse1
 CAN=MT_WALK|MT_RUN|MT_NONHUM
@@ -3074,7 +3074,7 @@ ON=@Create
 
 [CHARDEF 0c1]
 DEFNAME=c_ridgeback_ethereal
-NAME=ethereal ridgeback
+NAME=Ethereal Ridgeback
 ICON=i_pet_ridgeback
 SOUND=snd_animal_ostard_desert1
 CAN=MT_WALK|MT_RUN|MT_NONHUM
@@ -3109,7 +3109,7 @@ ON=@Create
 
 [CHARDEF 0c2]
 DEFNAME=c_swamp_dragon_ethereal
-NAME=ethereal swamp dragon
+NAME=Ethereal Swamp Dragon
 ICON=i_pet_dragon_swamp
 SOUND=snd_monster_dragon1
 CAN=MT_WALK|MT_RUN|MT_NONHUM
@@ -3144,7 +3144,7 @@ ON=@Create
 
 [CHARDEF 0c3]
 DEFNAME=c_giant_beetle_ethereal
-NAME=ethereal giant beetle
+NAME=Ethereal Giant Beetle
 ICON=i_pet_beetle_giant
 SOUND=snd_monster_rune_beetle1
 CAN=MT_WALK|MT_RUN|MT_NONHUM
@@ -3286,7 +3286,7 @@ ON=@CreateLoot
 [CHARDEF 02f1]
 //FIXME: Incomplete Stratics data
 DEFNAME=c_gargoyle_enslaved
-NAME=enslaved gargoyle
+NAME=Enslaved Gargoyle
 ICON=i_pet_gargoyle_fire
 SOUND=snd_monster_gargyl1
 CAN=MT_WALK|MT_RUN|MT_FLY|MT_USEHANDS|MT_EQUIP
@@ -3326,7 +3326,7 @@ ON=@Createloot
 
 [CHARDEF 02f2]
 DEFNAME=c_gargoyle_enforcer
-NAME=gargoyle enforcer
+NAME=Gargoyle Enforcer
 ICON=i_pet_gargoyle_fire
 SOUND=snd_monster_gargyl1
 DAM=7,13
@@ -3597,7 +3597,7 @@ ON=@CreateLoot
 
 [CHARDEF 02fc]
 DEFNAME=c_juka_warrior
-NAME=juka warrior
+NAME=Juka Warrior
 ICON=i_pet_juka_warrior
 CAN=mt_walk|mt_run|mt_usehands|mt_equip
 
@@ -3651,7 +3651,7 @@ ON=@Createloot
 
 [CHARDEF 02fd]
 DEFNAME=c_juka_mage
-NAME=juka mage
+NAME=Juka Mage
 CAN=mt_walk|mt_run|mt_usehands|mt_equip
 SOUNDIDLE=01ac
 SOUNDNOTICE=01cd
@@ -4253,7 +4253,7 @@ ON=@CreateLoot
 
 [CHARDEF c_plague_beast_lord]
 id=c_plague_beast
-NAME=plague beast lord
+NAME=Plague Beast Lord
 SOUND=679
 CAN=mt_walk|mt_run|mt_equip|mt_usehands
 
@@ -4291,7 +4291,7 @@ ON=@create
 
 [CHARDEF c_bogle]
 ID=c_ghoul
-NAME=bogle
+NAME=Bogle
 ICON=i_pet_ghoul
 SOUND=snd_monster_shadows1
 CAN=MT_WALK|MT_USEHANDS|MT_EQUIP
@@ -4334,7 +4334,7 @@ ON=@CreateLoot
 [CHARDEF 0308]
 DEFNAME=c_daemon_horde_minion
 DEFNAME2=c_horde_minion_small
-NAME=horde minion
+NAME=Horde Minion
 SOUND=357
 ICON=i_pet_demon_horde
 CAN=mt_walk|mt_run|mt_usehands
@@ -4480,7 +4480,7 @@ ON=@CreateLoot
 
 [CHARDEF 030b]
 DEFNAME=c_bogling
-NAME=bogling
+NAME=Bogling
 SOUND=snd_monster_headls1
 ICON=i_pet_bogling
 CAN=mt_walk|mt_run|mt_usehands|mt_equip
@@ -4734,7 +4734,7 @@ ON=@CreateLoot
 
 [chardef 805]
 defname=c_solen_worker_black
-name=black solen worker
+name=Black Solen Worker
 sound=959
 can=mt_walk|mt_run
 dam={5, 7}
@@ -4764,7 +4764,7 @@ on=@createloot
 
 [chardef 806]
 defname=c_solen_warrior_black
-name=black solen warrior
+name=Black Solen Warrior
 sound=959
 can=mt_walk|mt_run|
 dam={5, 15}
@@ -4798,7 +4798,7 @@ on=@createloot
 
 [chardef 807]
 defname=c_solen_queen_black
-name=black solen queen
+name=Black Solen Queen
 sound=959
 can=mt_walk|mt_run
 dam={10, 15}
@@ -5043,7 +5043,7 @@ ON=@CreateLoot
 [CHARDEF 0316]
 //FIXME: Throws sand
 DEFNAME=c_elemental_sand_vortex
-NAME=sand vortex
+NAME=Sand Vortex
 SOUND=snd_elementl_airelem1
 ICON=i_pet_vortex_sand
 CAN=mt_walk|mt_run|mt_usehands|mt_nonhum
@@ -5304,7 +5304,7 @@ ON=@Create
 [CHARDEF 031c]
 //FIXME: No Stratics entry
 DEFNAME=c_daemon_horde_large
-NAME=horde daemon lord
+NAME=Horde Daemon Lord
 ICON=i_pet_demon_horde
 SOUND=snd_monster_ogre1
 CAN=MT_WALK|MT_RUN|MT_USEHANDS
@@ -5354,7 +5354,7 @@ ON=@CreateLoot
 [CHARDEF 031d]
 //FIXME: No Stratics entry
 DEFNAME=c_reptile_lord
-NAME=reptile lord
+NAME=Reptile Lord
 ICON=i_pet_dragon
 SOUND=snd_monster_dragon1
 DAM=150,163
@@ -5407,7 +5407,7 @@ ON=@CreateLoot
 
 [CHARDEF 031e]
 DEFNAME=c_ancient_wyrm_unknown // c_ancient_wyrm defnames/defs_backwards.scp'de c_wyrm_ancient'in (02e) eski adı
-NAME=unknown ancient wyrm
+NAME=Unknown Ancient Wyrm
 ICON=i_pet_dragon
 SOUND=snd_monster_dragon1
 CAN=MT_WALK|MT_RUN|MT_NONHUM
@@ -5505,7 +5505,7 @@ ON=@Create
 
 [CHARDEF 0ce]
 DEFNAME=c_lava_lizard
-NAME=lava lizard
+NAME=Lava Lizard
 ICON=i_pet_croc
 SOUND=snd_monster_lavalizard1
 CAN=mt_walk|mt_run|mt_nonhum
