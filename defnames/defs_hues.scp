@@ -141,6 +141,18 @@ CTCOL_BLUE      4
 CTCOL_MAGENTA   5
 CTCOL_CYAN      6
 CTCOL_WHITE     7
-CTCOL_QTY       8
+CTCOL_ORANGE    8   // 56TX: WARNING etiketinin rengi
+CTCOL_QTY       9
+
+[DEFNAME staffrobe_colors]
+// GM robe'un rengi plevel'e göre (STAFFSETUP ve PRIVSET). Değerler emulatörün gömülü değerleri.
+staffrobe_color_counsel  03     // lacivert
+staffrobe_color_seer     03
+staffrobe_color_gm       022    // kırmızı
+staffrobe_color_dev      022
+staffrobe_color_admin    022
+staffrobe_color_owner    022
+staffrobe_color_founder  022
+staffrobe_color_root     022
 
 [EOF]

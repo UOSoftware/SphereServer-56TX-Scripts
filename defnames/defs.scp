@@ -676,6 +676,8 @@ LOGL_CRIT  = 02 // critical. might not continue.
 LOGL_ERROR = 03 // non-fatal errors. can continue.
 LOGL_WARN  = 04 // strange.
 LOGL_EVENT = 05 // Misc major events.
+LOGL_INFO    = 06 // 56TX: "INFO:" etiketi (mavi)
+LOGL_SUCCESS = 07 // 56TX: "SUCCESS:" etiketi (yeşil)
 LOGL_QTY   = 0F // first 4 bits = binary 1111 = dec 15 = hex 0xF
 
 // --log Flags
