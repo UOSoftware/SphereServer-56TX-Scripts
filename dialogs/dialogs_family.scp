@@ -1,0 +1,309 @@
+VERSION=TX
+
+// Aile sistemi: arayüz. Aileler emulatöre gömülüdür (0.56TX): bir aile reisi ve üyeler, noto, savaş ve ünvan yok;
+//  üyelerin adının arkasında ailenin soyadı görünür (tek tık, tooltip, paperdoll). Kurallar, kayıt ve mesajlar
+//  emulatörün ([DEFMESSAGE] family_*, sphere.ini'de FamilyMaxMembers). Emulatörün anahtarları:
+// - Char: <FAMILY> (ailenin UID'si, ailede değilse 0), FAMILY.<anahtar>, FAMILYCREATE <soyad>, FAMILYLEAVE.
+//   .family (oyuncu komutu) d_family'yi ailenin kaydıyla açar. @FamilyJoin (katılmadan önce, RETURN 1 engeller; ARGN1
+//   1 kurulurken), @FamilyLeave (ayrıldıktan sonra; ARGN1 0 ayrıldı, 1 çıkarıldı, 2 aile dağıldı).
+// - Aile (FAMILY.<anahtar> ve d_family'nin nesnesi): NAME (soyad; NAME=<soyad> yeniden adlandırır), MASTER (aile reisi;
+//   MASTER=<uid> bir üyeye devreder), MEMBERCOUNT (reis dahil), MEMBER.n (0 reis, sonra katılma sırasıyla),
+//   ISMEMBER <uid>, CREATEDAT (kuruluş), MEMBERADD <uid>, MEMBERREMOVE <uid>, DISBAND; ailenin TAG'leri.
+// Aile i_deed_family ile kurulur (itemdefs/provs/item_provs_deed.scp); .fs <metin> aile sohbeti.
+// Dialog butonları client'ın gönderdiği nesneye güvenmez: her butonda SRC'nin bu ailede, gerekiyorsa reisi olduğu
+//  denetlenir.
+
+
+// Aile belgesinden: aile adının girildiği dialog (nesnesi belge).
+[DIALOG d_family_create]
+<DEF.DlgStartPos>
+RESIZE 0,0,400,200,Aile Kur
+DORIGIN 20 50
+DHTMLGUMP +0 +0 355 80 1 1 Ailenin adını (soyadı) yaz; ailenin bütün üyelerinin adının arkasında görünür.<DEF.BR>3-16 karakter: harf (Türkçe harfler dahil), boşluk ve kesme işareti. Başka bir ailenin adı olmamalı.
+RESIZEPIC +0 +90 3000 190 30
+DTEXTENTRYLIMITED +10 +95 170 30 0 1 16
+BUTTON +210 +97 0845 0846 1 0 1
+DTEXT +230 +95 044 Aileyi kur
+
+[DIALOG d_family_create BUTTON]
+ON=1
+IF (<TOPOBJ.UID> != <SRC.UID>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Aile belgesi üzerinde olmalı.
+	RETURN 1
+ENDIF
+// Ad, tekillik ve "zaten bir ailedesin" emulatörün; kurulursa belge harcanır.
+SRC.FAMILYCREATE <ARGTXT[1]>
+IF (<SRC.FAMILY>)
+	REMOVE
+	SRC.FAMILY
+ENDIF
+
+
+// Ailenin ana dialog'u (.family). Nesnesi ailenin kaydı, SRC dialog'u açan üye.
+[DIALOG d_family]
+<DEF.DlgStartPos>
+LOCAL.PAGELEN=10
+LOCAL.COUNT=<MEMBERCOUNT>
+LOCAL.PAGES=<EVAL ((<LOCAL.COUNT>-1)/<LOCAL.PAGELEN>)+1>
+IF (<SRC.DCTAG0.FamilyPage> >= <LOCAL.PAGES>)
+	SRC.CTAG0.FamilyPage=<EVAL <LOCAL.PAGES>-1>
+ENDIF
+LOCAL.FIRST=<EVAL <SRC.DCTAG0.FamilyPage>*<LOCAL.PAGELEN>>
+LOCAL.ISMASTER=0
+IF (<MASTER> == <SRC.UID>)
+	LOCAL.ISMASTER=1
+ENDIF
+RESIZE 0,0,420,<EVAL 240+(<LOCAL.PAGELEN>*25)>,<NAME> Ailesi
+DORIGIN 25 55
+DTEXT +0 +0 0 Aile reisi: <MASTER.NAME>
+IF (<SERV.FAMILYMAXMEMBERS> > 0)
+	DTEXT +0 +20 0 Üye sayısı: <dLOCAL.COUNT> / <EVAL <SERV.FAMILYMAXMEMBERS>>
+ELSE
+	DTEXT +0 +20 0 Üye sayısı: <dLOCAL.COUNT>
+ENDIF
+DTEXT +200 +0 0 Kuruluş: <SERV.RTICKS.FORMAT <CREATEDAT>,%d.%m.%Y>
+
+DHTMLGUMP +0 +45 170 22 1 0 <DEF.CENTER>ÜYE<DEF.CENTERE>
+DHTMLGUMP +175 +45 195 22 1 0 <DEF.CENTER>DURUM<DEF.CENTERE>
+LOCAL.Y=72
+FOR <dLOCAL.FIRST> <EVAL <LOCAL.FIRST>+<LOCAL.PAGELEN>-1>
+	IF (<DLOCAL._FOR> < <LOCAL.COUNT>)
+		REF1=<MEMBER.<DLOCAL._FOR>.UID>
+		IF (<LOCAL.ISMASTER>) && (<DLOCAL._FOR> > 0)
+			RADIO +0 +<dLOCAL.Y> 0D2 0D3 0 <REF1.UID>
+		ENDIF
+		IF (<DLOCAL._FOR> == 0)
+			DTEXT +25 +<dLOCAL.Y> 0455 <REF1.NAME> (reis)
+		ELSE
+			DTEXT +25 +<dLOCAL.Y> 0 <REF1.NAME>
+		ENDIF
+		IF (<REF1.ISONLINE>)
+			DTEXT +175 +<dLOCAL.Y> 044 <REF1.REGION.NAME>
+		ELSE
+			DTEXT +175 +<dLOCAL.Y> 038 Çevrimdışı
+		ENDIF
+		LOCAL.Y=<EVAL <LOCAL.Y>+25>
+	ENDIF
+ENDFOR
+
+LOCAL.Y=<EVAL 82+(<LOCAL.PAGELEN>*25)>
+IF (<LOCAL.PAGES> > 1)
+	IF (<SRC.DCTAG0.FamilyPage> > 0)
+		BUTTON +0 +<dLOCAL.Y> 5603 5607 1 0 10
+	ENDIF
+	DTEXT +25 +<dLOCAL.Y> 0 Sayfa <EVAL <SRC.DCTAG0.FamilyPage>+1> / <dLOCAL.PAGES>
+	IF (<EVAL <SRC.DCTAG0.FamilyPage>+1> < <LOCAL.PAGES>)
+		BUTTON +110 +<dLOCAL.Y> 5601 5605 1 0 11
+	ENDIF
+ENDIF
+LOCAL.Y=<EVAL <LOCAL.Y>+30>
+IF (<LOCAL.ISMASTER>)
+	BUTTON +0 +<dLOCAL.Y> 4005 4007 1 0 1
+	DTEXT +35 +<dLOCAL.Y> 044 Üye al
+	BUTTON +110 +<dLOCAL.Y> 4005 4007 1 0 2
+	DTEXT +145 +<dLOCAL.Y> 0 Seçileni çıkar
+	BUTTON +250 +<dLOCAL.Y> 4005 4007 1 0 3
+	DTEXT +285 +<dLOCAL.Y> 0 Seçilene devret
+	LOCAL.Y=<EVAL <LOCAL.Y>+30>
+	BUTTON +0 +<dLOCAL.Y> 4017 4018 1 0 4
+	IF (<SRC.CTAG0.FamilyConfirm> == 4)
+		DTEXT +35 +<dLOCAL.Y> 038 Emin misin? Aile dağılacak.
+	ELSE
+		DTEXT +35 +<dLOCAL.Y> 038 Aileyi dağıt
+	ENDIF
+ELSE
+	BUTTON +0 +<dLOCAL.Y> 4017 4018 1 0 5
+	IF (<SRC.CTAG0.FamilyConfirm> == 5)
+		DTEXT +35 +<dLOCAL.Y> 038 Emin misin? Aileden ayrılacaksın.
+	ELSE
+		DTEXT +35 +<dLOCAL.Y> 038 Aileden ayrıl
+	ENDIF
+ENDIF
+DTEXT +200 +<dLOCAL.Y> 0389 Aile sohbeti: .fs metin
+
+[DIALOG d_family BUTTON]
+ON=0
+SRC.CTAG0.FamilyConfirm=
+
+// Üye al: hedef bir oyuncu; kendisi seçilirse hesabındaki öteki karakterler.
+ON=1
+IF (<SRC.FAMILY> != <UID>) || (<MASTER> != <SRC.UID>)
+	RETURN 1
+ENDIF
+SRC.CTAG0.FamilyConfirm=
+SRC.TARGETF f_family_invite_target
+SRC.SYSMESSAGELOC <def.tcolor_grey>,<def.empty_cliloc2>, Aileye almak istediğin oyuncuyu seç. Kendini seçersen hesabındaki öteki karakterler listelenir.
+
+// Seçili üyeyi çıkar
+ON=2
+IF (<SRC.FAMILY> != <UID>) || (<MASTER> != <SRC.UID>)
+	RETURN 1
+ENDIF
+SRC.CTAG0.FamilyConfirm=
+IF (<ARGCHKID> > 0)
+	MEMBERREMOVE <ARGCHKID>
+ELSE
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Önce listeden bir üye seç.
+ENDIF
+SRC.FAMILY
+
+// Seçili üyeye devret
+ON=3
+IF (<SRC.FAMILY> != <UID>) || (<MASTER> != <SRC.UID>)
+	RETURN 1
+ENDIF
+SRC.CTAG0.FamilyConfirm=
+IF (<ARGCHKID> > 0)
+	MASTER=<ARGCHKID>
+ELSE
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Önce listeden bir üye seç.
+ENDIF
+SRC.FAMILY
+
+// Aileyi dağıt (ikinci basışta)
+ON=4
+IF (<SRC.FAMILY> != <UID>) || (<MASTER> != <SRC.UID>)
+	RETURN 1
+ENDIF
+IF (<SRC.CTAG0.FamilyConfirm> != 4)
+	SRC.CTAG0.FamilyConfirm=4
+	SRC.FAMILY
+	RETURN 1
+ENDIF
+SRC.CTAG0.FamilyConfirm=
+DISBAND
+
+// Aileden ayrıl (ikinci basışta)
+ON=5
+IF (<SRC.FAMILY> != <UID>)
+	RETURN 1
+ENDIF
+IF (<SRC.CTAG0.FamilyConfirm> != 5)
+	SRC.CTAG0.FamilyConfirm=5
+	SRC.FAMILY
+	RETURN 1
+ENDIF
+SRC.CTAG0.FamilyConfirm=
+SRC.FAMILYLEAVE
+
+// Sayfalar
+ON=10
+IF (<SRC.DCTAG0.FamilyPage> > 0)
+	SRC.CTAG0.FamilyPage=<EVAL <SRC.DCTAG0.FamilyPage>-1>
+ENDIF
+SRC.FAMILY
+
+ON=11
+SRC.CTAG0.FamilyPage=<EVAL <SRC.DCTAG0.FamilyPage>+1>
+SRC.FAMILY
+
+
+// d_family'nin "Üye al" hedefi (TARGETF): I aile reisi, ARGO seçilen.
+[FUNCTION f_family_invite_target]
+IF !(<FAMILY>)
+	RETURN 1
+ELSEIF (<FAMILY.MASTER> != <UID>)
+	RETURN 1
+ELSEIF !(<ARGO>)
+	SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bir oyuncu seçmelisin.
+	RETURN 1
+ELSEIF !(<ARGO.ISCHAR>)
+	SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bir oyuncu seçmelisin.
+	RETURN 1
+ELSEIF (<ARGO> == <UID>)
+	FAMILY.DIALOGCLOSE d_family_chars
+	FAMILY.DIALOG d_family_chars
+	RETURN 1
+ELSEIF !(<ARGO.ISPLAYER>)
+	SYSMESSAGE <DEFMSG.family_target_not_player>
+	RETURN 1
+ELSEIF (<ARGO.FAMILY>)
+	SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, <ARGO.NAME> zaten bir ailede.
+	RETURN 1
+ELSEIF !(<ARGO.ISONLINE>)
+	SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, <ARGO.NAME> çevrimiçi değil.
+	RETURN 1
+ENDIF
+// Davet edilen sadece bu ailenin davetini kabul edebilir (d_family_invite); bağlantısı kopunca davet biter (CTAG).
+ARGO.CTAG0.FamilyInvite=<FAMILY>
+TRYSRC <ARGO> FAMILY.DIALOGCLOSE d_family_invite
+TRYSRC <ARGO> FAMILY.DIALOG d_family_invite
+SYSMESSAGELOC <def.tcolor_grey>,<def.empty_cliloc2>, <ARGO.NAME> isimli oyuncuya aile daveti gönderildi.
+RETURN 1
+
+
+// Aile daveti. Nesnesi ailenin kaydı, SRC davet edilen.
+[DIALOG d_family_invite]
+<DEF.DlgStartPos>
+RESIZE 0,0,340,170,Aile Daveti
+DORIGIN 20 50
+DHTMLGUMP +0 +0 300 60 1 0 <DEF.CENTER><MASTER.NAME> seni <NAME> ailesine davet ediyor.<DEF.BR>Üye sayısı: <MEMBERCOUNT><DEF.CENTERE>
+BUTTON +0 +75 4023 4024 1 0 1
+DTEXT +35 +75 044 Kabul et
+BUTTON +180 +75 4017 4018 1 0 0
+DTEXT +215 +75 038 Reddet
+
+[DIALOG d_family_invite BUTTON]
+ON=0
+IF (<SRC.CTAG0.FamilyInvite> == <UID>)
+	SRC.CTAG0.FamilyInvite=
+	MASTER.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, <SRC.NAME> aile davetini reddetti.
+ENDIF
+
+ON=1
+IF (<SRC.CTAG0.FamilyInvite> != <UID>)
+	RETURN 1
+ENDIF
+SRC.CTAG0.FamilyInvite=
+// Katılma kuralları (zaten bir ailede, aile dolu, @FamilyJoin) ve mesajlar emulatörün.
+MEMBERADD <SRC.UID>
+
+
+// Aile reisinin hesabındaki öteki karakterleri: davetsiz aileye alınır. Nesnesi ailenin kaydı, SRC aile reisi.
+[DIALOG d_family_chars]
+<DEF.DlgStartPos>
+RESIZE 0,0,300,<EVAL (<SRC.ACCOUNT.CHARS>*25)+80>,Hesabındaki Karakterler
+DORIGIN 20 50
+LOCAL.Y=0
+FOR 0 <EVAL <SRC.ACCOUNT.CHARS>-1>
+	REF1=<SRC.ACCOUNT.CHAR.<DLOCAL._FOR>.UID>
+	IF (<REF1> != <SRC.UID>)
+		IF (<REF1.FAMILY>)
+			DTEXT +35 +<dLOCAL.Y> 0389 <REF1.NAME> (<REF1.FAMILY.NAME>)
+		ELSE
+			BUTTON +0 +<dLOCAL.Y> 4005 4007 1 0 <EVAL <DLOCAL._FOR>+100>
+			DTEXT +35 +<dLOCAL.Y> 0 <REF1.NAME>
+		ENDIF
+		LOCAL.Y=<EVAL <LOCAL.Y>+25>
+	ENDIF
+ENDFOR
+
+[DIALOG d_family_chars BUTTON]
+ON=100 199
+IF (<SRC.FAMILY> != <UID>) || (<MASTER> != <SRC.UID>)
+	RETURN 1
+ENDIF
+REF1=<SRC.ACCOUNT.CHAR.<EVAL <DARGN>-100>.UID>
+IF (<REF1>) && (<REF1> != <SRC.UID>)
+	MEMBERADD <REF1>
+ENDIF
+SRC.FAMILY
+
+
+// .fs <metin>: aile sohbeti, ailenin çevrimiçi üyelerine.
+[FUNCTION fs]
+IF !(<FAMILY>)
+	SYSMESSAGE <DEFMSG.family_none>
+	RETURN 1
+ELSEIF (<ISEMPTY <ARGS>>)
+	RETURN 1
+ENDIF
+FOR 0 <EVAL <FAMILY.MEMBERCOUNT>-1>
+	REF1=<FAMILY.MEMBER.<DLOCAL._FOR>.UID>
+	IF (<REF1.ISONLINE>)
+		REF1.SYSMESSAGELOC 0480,<def.empty_cliloc2>, [<FAMILY.NAME>] <NAME>: <ARGS>
+	ENDIF
+ENDFOR
+
+
+[EOF]

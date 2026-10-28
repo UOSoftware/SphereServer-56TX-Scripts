@@ -113,6 +113,7 @@ memory_guard         00100   // guard this item (never time out)
 memory_ispawned      00200   // UNUSED!!!! i am spawned from this item. (never time out)
 memory_guild         00400   // this is my guild stone. (never time out)
 memory_town          00800   // this is my town stone. (never time out)
+memory_family        01000   // 0.56TX: ailem; ailenin kaydı ya da kayda bağlı üye memory'si (emulatörün aile sistemi). Hiç silinmez.
 memory_friend        04000   // they can command me but not release me. (not primary blame)
 
 [DEFNAME stat_flags]

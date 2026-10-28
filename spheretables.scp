@@ -395,6 +395,7 @@ Zan
 
 [PLEVEL 1]	// extra player commands.
 AFK
+FS
 WHERE
 HUNGRY
 SELF

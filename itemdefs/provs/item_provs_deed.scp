@@ -1767,4 +1767,34 @@ DESCRIPTION=18x18 Foundation
 ON=@Create
 MORE=m_foundation_18x18
 
+
+//////////////////////////////////////////////////////
+// Aile belgesi: çift tıklanınca aile adı sorulur (d_family_create, dialogs/dialogs_family.scp); aile kurulursa harcanır.
+//////////////////////////////////////////////////////
+
+[ITEMDEF i_deed_family]
+DEFNAME=i_deed_family
+ID=i_deed
+NAME=Aile Belgesi
+VALUE=250000
+CATEGORY=Provisions - Deeds
+SUBSECTION=Family Deeds
+DESCRIPTION=Aile Belgesi
+
+ON=@Create
+COLOR=0455
+ATTR=ATTR_NEWBIE
+
+ON=@DClick
+IF (<TOPOBJ.UID> != <SRC.UID>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Aile belgesini kullanmak için üzerinde olmalı.
+	RETURN 1
+ELSEIF (<SRC.FAMILY>)
+	SRC.SYSMESSAGE <DEFMSG.family_already>
+	RETURN 1
+ENDIF
+DIALOGCLOSE d_family_create
+DIALOG d_family_create
+RETURN 1
+
 [EOF]
