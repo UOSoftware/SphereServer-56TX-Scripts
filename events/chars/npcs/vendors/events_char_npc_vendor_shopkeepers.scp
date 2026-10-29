@@ -4,22 +4,8 @@
 // MESSAGE @058 <NAME> the <job>
 // RETURN 1
 
-ON=@DCLICK
-// sorgular buy speechin altinda mi olmali? buraya ekstra sorguya gerek var mi
-IF !(<SRC.ISGM>)
-	IF (<SRC.FLAGS>&STATF_DEAD) 
-		SRC.SYSMESSAGELOC <def.tcolor_red>,600027 // Olu durumdayken bu islemi yapamazsiniz.
-		RETURN 1
-	ELSEIF (<SRC.ISDIFF 4,<UID>>)
-		SRC.SYSMESSAGELOC <def.tcolor_red>,600018,<JOB> <NAME>
-		RETURN 1
-	ENDIF
-ENDIF
-FACE <SRC>
-BUY
-RETURN 1
-
-
+// Satis yapan vendor'a cift tik emulatorde: sphere.ini VendorDClickBuy=1 (varsayilan) vendor'a "buy" duyurur,
+// *buy* konusmasi (spk_generic_npc_vendor_shopkeepers) denetimleriyle calisir. Burada @DCLICK gerekmez.
 
 // ON=@NPCACTWANDER
 // SERV.B NPCACTWANDER <baseid>
