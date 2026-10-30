@@ -1,0 +1,17 @@
+VERSION=TX
+
+// Nesne veritabanına (sphere.ini: ObjsDatabase) yazılmayan nesneler: emulatörün [OBJSDBEXCLUDE] bölümü (0.56TX).
+// Her satırda bir ya da birkaç ad (virgül ya da boşlukla): CHARDEF, ITEMDEF/MULTIDEF, TYPEDEF (t_*) ya da ATTR bayrağı
+//  (attr_*). Hariç tutulan nesnenin içindekiler (giydikleri, çantası, container'ın içi, iç içe hepsi) de yazılmaz.
+// Bölüm hiç yoksa statik eşyalar (attr_static) yazılmaz; bölüm varsa sadece buradakiler: attr_static satırını silmek
+//  statikleri de yazdırır. Bilinmeyen ad açılışta dosya ve satırıyla log'a yazılır; liste resync'te değişirse emulatör
+//  bütün dünyayı yeniden yazar. ObjsDatabase boşken bu dosya bir şey yapmaz.
+
+[OBJSDBEXCLUDE]
+// Statik eşyalar (spherestatics, dekor): hareket etmez, sayıları çok.
+attr_static
+// Örnekler:
+// t_spawn_char, t_spawn_item
+// c_man_invisible
+
+[EOF]
