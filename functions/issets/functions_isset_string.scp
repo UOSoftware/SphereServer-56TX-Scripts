@@ -6,17 +6,8 @@
 //*****************************************
 
 [FUNCTION ISBADCHAR]
-LOCAL.CHAR=<ASC <ARGS>>
-IF ( (<LOCAL.CHAR> >= 030) && (<LOCAL.CHAR> <= 039)) // 0-9
-	RETURN 0
-ELSEIF ( (<LOCAL.CHAR> >= 041) && (<LOCAL.CHAR> <= 05A)) // A-Z
-	RETURN 0
-ELSEIF ( (<LOCAL.CHAR> >= 061) && (<LOCAL.CHAR> <= 07A)) // a-z
-	RETURN 0
-ELSEIF (<LOCAL.CHAR> == 0A0 || <LOCAL.CHAR> == 020 || <LOCAL.CHAR> == 00) // NO-BREAK SPACE
-	RETURN 0
-ENDIF
-RETURN 1
+// Harf (Türkçe dahil), rakam ve boşluk dışında bir karakter varsa 1 (emulatörün HASSPECIAL'ı).
+RETURN <HASSPECIAL <ARGS>>
 
 
 
@@ -33,36 +24,18 @@ RETURN 0
 
 
 [FUNCTION ISNUMERIC]
-LOCAL.INPUT <ARGS>
-LOCAL.LEN <EVAL STRLEN(<ARGS>)>
-IF (<DLOCAL.LEN>)
-	FOR 0 <EVAL <LOCAL.LEN>-1>
-		LOCAL.CHAR <STRSUB <LOCAL._FOR> 1 <LOCAL.INPUT>>
-		LOCAL.ASCII <ASC <LOCAL.CHAR>>
-		// 48 = '0', 57 = '9'
-		// serv.b <dlocal.ascii>
-		IF (<dLOCAL.ASCII> >= 48 && <dLOCAL.ASCII> <= 57)
-			LOCAL.STATUS 1
-		ELSE 
-			LOCAL.STATUS 0
-		ENDIF
-	ENDFOR
-ENDIF
-RETURN <DLOCAL.STATUS>
+// Sadece rakam (0-9) varsa 1 (emulatörün ISDIGITS'i).
+RETURN <ISDIGITS <ARGS>>
 
 
 
 [FUNCTION ISSTRING]
-IF (STRREGEX(^[a-zA-Z]+$,<ARGS>))
-	RETURN 1
-ENDIF
-RETURN 0
+// Sadece A-Z ve a-z varsa 1 (emulatörün ISALPHA.ASCII'si).
+RETURN <ISALPHA.ASCII <ARGS>>
 
 [FUNCTION ISALPHANUMERIC]
-IF (STRREGEX(^[a-zA-Z0-9]+$,<ARGS>))
-	RETURN 1
-ENDIF
-RETURN 0
+// Sadece A-Z, a-z ve 0-9 varsa 1 (emulatörün ISALNUM.ASCII'si).
+RETURN <ISALNUM.ASCII <ARGS>>
 
 
 [eof]

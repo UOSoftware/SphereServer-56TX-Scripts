@@ -33,10 +33,7 @@ IF ((<LOCAL.GUILDLENGTH> < <DEF0.GUILDCONFIG_NAME_MINLENGTH>) || (<LOCAL.GUILDLE
 ELSEIF (<OBJ.TAG0.CHANGENAME_TIME> >= <SERV.TIME>)
 	SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Tekrar işlem yapmak için bir süre beklemelisiniz.
 	RETURN 1
-	
-ELSEIF (<ISBADCHAR <LOCAL.GUILDNAME>>)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, <def.systxt_using_bad>
-	RETURN 1
+
 ELSEIF (<ISBLANK <LOCAL.GUILDNAME>>)
 	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, <def.systxt_only_empty>
 	RETURN 1
