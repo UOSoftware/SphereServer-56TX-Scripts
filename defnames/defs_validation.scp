@@ -1,0 +1,39 @@
+//****************************************************************************
+// VALIDATE'in kural setleri: emulatörün metin doğrulaması, Laravel'in kurallarıyla.
+//
+// Kullanım (oyuncunun dialog'a ya da prompt'a yazdığı metin):
+//   IF !(<VALIDATE validate_guild_name,<ARGTXT[0]>>)
+//       SRC.SYSMESSAGELOC <def.tcolor_red>,<VALIDATEERROR validate_guild_name,Guild adı,<ARGTXT[0]>>
+//       RETURN 1
+//   ENDIF
+// - VALIDATE kurallar,metin: metin geçerliyse 1.
+// - VALIDATEERROR kurallar,alan,metin: ilk tutmayan kuralın mesajı "numara,alan,argümanlar"; SYSMESSAGELOC'a verilir,
+//   oyuncu kendi dilinde görür ("Guild adı en az 3, en çok 16 karakter olmalı."). Geçerli metinde boş.
+// - VALIDATEERRORTEXT kurallar,alan,metin: aynı mesaj SRC'nin dilinde metin (dialog yazıları için).
+// - Kurallar buradaki gibi bir defname ya da tırnak içinde: <VALIDATE "required|integer|min:1",<ARGTXT[0]>>.
+// - Alan düz metin ya da #<cliloc numarası>: numaranın metni oyuncunun dilinde (ör. SERV.CLILOCADD pack,Guild name|Guild adı).
+// - Kurallar: required, alpha, alpha_num, alpha_dash (parametreler ascii, space ve izin verilen tek karakterler:
+//   alpha:space,'), ascii, lowercase, uppercase, digits, digits_between, integer, numeric, min, max, between, size, in,
+//   not_in, starts_with, ends_with, doesnt_start_with, doesnt_end_with, regex, not_regex, email, uuid, not_obscene.
+//   Harf Türkçe ve İngilizce alfabe (ascii: sadece A-Z); min/max/between/size integer ya da numeric varsa sayının
+//   değerine, yoksa harf sayısına bakar. Ayrıntısı emulatörün docs/FeatureRequests.md'sinde (Karakter sınıfları).
+//
+// Bunlar örnek: paketin bugünkü denetimleriyle aynı kurallar. Paketin script'leri henüz kullanmıyor.
+//****************************************************************************
+
+[DEFNAME validation_rules]
+// Guild adı, ünvanı ve kısaltması (guild_promptconsole.scp, guild_dlg_create.scp; sınırlar guild_config.scp'de).
+validate_guild_name		"required|alpha:ascii,space,'|between:3,16"
+validate_guild_title	"required|alpha:ascii|between:3,16"
+validate_guild_abbrev	"required|alpha:ascii|size:3"
+// Rune'un ve runebook'taki yerin adı (typedefs.scp'nin D_RUNE_RENAME'i, item_default_runebook.scp).
+validate_rune_name		"required|alpha_num:ascii,space|between:3,25"
+validate_runebook_name	"required|alpha_num:space|between:3,25"
+// Karakter adı (FUNC_ISIM_KONTROL): ASCII harf, 2-16, [OBSCENE]'deki kelimeler olmadan.
+validate_char_name		"required|alpha:ascii|between:2,16|not_obscene"
+// Oyuncunun yazdığı fiyat ve miktar (ev vendor'ı, ev dialog'ları).
+validate_price			"required|integer|min:1|max:1000000000"
+validate_amount			"required|integer|min:1"
+validate_email			"required|email"
+
+[EOF]
