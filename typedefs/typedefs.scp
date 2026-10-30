@@ -525,7 +525,7 @@ SRC.SKILLGAIN 45 // Ore Smelt Mining Gain
 
 
 //ON=@DCLICK
-//IF (<SRC.ISDIFF 3,<UID>>)
+//IF (<SRC.ISOUTOFREACH 3,<UID>>)
 //	SRC.SYSMESSAGELOC <def.tcolor_red>,600018,<NAME>
 //	RETURN 1
 //ENDIF
@@ -552,7 +552,7 @@ RETURN 1
 
 [TYPEDEF t_forge]
 ON=@DCLICK
-IF (<SRC.ISDIFF 3,<UID>>)
+IF (<SRC.ISOUTOFREACH 3,<UID>>)
 	SRC.SYSMESSAGELOC <def.tcolor_red>,600018,<NAME>
 	RETURN 1
 ENDIF
@@ -1135,7 +1135,7 @@ MESSAGE @1,1 (Kilitli-<QVAL (<TIMER> == -1)?Kapali:Acik>)
 
 ON=@DCLICK
 IF (<SRC.ISPLAYER>)
-	IF (<SRC.ISDIFF 2,<UID>>)
+	IF (<SRC.ISOUTOFREACH 2,<UID>>)
 		SRC.SYSMESSAGELOC <def.tcolor_red>,600018,<NAME>
 		RETURN 1
 	ELSEIF (<eval (<src.z> - <z>)> > 5)
@@ -1155,7 +1155,7 @@ MESSAGE @1,1 (Kilitsiz-<QVAL (<TIMER> == -1)?Kapali:Acik>)
 
 ON=@DCLICK
 IF (<SRC.ISPLAYER>)
-	IF (<SRC.ISDIFF 2,<UID>>)
+	IF (<SRC.ISOUTOFREACH 2,<UID>>)
 		SRC.SYSMESSAGELOC <def.tcolor_red>,600018,<NAME>
 		RETURN 1
 	ELSEIF (<eval (<src.z> - <z>)> > 5)
@@ -1178,7 +1178,7 @@ MESSAGE @1,1 (Kilitsiz-<QVAL (<TIMER> == -1)?Kapali:Acik>)
 
 ON=@DCLICK
 IF (<SRC.ISPLAYER>)
-	IF (<SRC.ISDIFF 2,<UID>>)
+	IF (<SRC.ISOUTOFREACH 2,<UID>>)
 		SRC.SYSMESSAGELOC <def.tcolor_red>,600018,<NAME>
 		RETURN 1
 	ELSEIF (<EVAL (<SRC.Z> - <Z>)> > 5)
@@ -1463,7 +1463,7 @@ ON=@TARGON_ITEM
 IF (<SRC.FLAGS>&STATF_STONE|STATF_FREEZE|STATF_DEAD)
 	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bulunduğunuz durumda kullanamazsınız.
 	RETURN 1
-ELSEIF (<SRC.ISDIFF 2,<SRC.TARG.UID>>)
+ELSEIF (<SRC.ISOUTOFREACH 2,<SRC.TARG.UID>>)
 	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Ateşe uzaksınız veya görüş alanınızda değil.
 	RETURN 1
 ELSEIF (<SRC.TARG.TYPE>!=T_CAMPFIRE)
@@ -1531,7 +1531,7 @@ ON=@TARGON_ITEM
 IF (<SRC.FLAGS>&STATF_STONE|STATF_FREEZE|STATF_DEAD)
 	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bulunduğunuz durumda kullanamazsınız.
 	RETURN 1
-ELSEIF (<SRC.ISDIFF 2,<UID>>)
+ELSEIF (<SRC.ISOUTOFREACH 2,<UID>>)
 	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Ateşe uzaksınız veya görüş alanınızda değil.
 	RETURN 1
 ELSEIF (<BASEID> == I_EMBER_LIT)

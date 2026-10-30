@@ -147,7 +147,7 @@ CATEGORY=Hairs, Horns and Faces
 DESCRIPTION=Short
 
 ON=@Create
-   ATTR=attr_newbie
+ATTR=attr_newbie
 
 [ITEMDEF 0203c]
 DEFNAME=i_hair_long
@@ -159,7 +159,7 @@ CATEGORY=Hairs, Horns and Faces
 DESCRIPTION=Long
 
 ON=@Create
-   ATTR=attr_newbie
+ATTR=attr_newbie
 
 [ITEMDEF 0203d]
 DEFNAME=i_hair_ponytail
@@ -171,7 +171,7 @@ CATEGORY=Hairs, Horns and Faces
 DESCRIPTION=Ponytail
 
 ON=@Create
-   ATTR=attr_newbie
+ATTR=attr_newbie
 
 [ITEMDEF 0203e]
 DEFNAME=i_beard_long
@@ -183,7 +183,7 @@ CATEGORY=Hairs, Horns and Faces
 DESCRIPTION=Long
 
 ON=@Create
-   ATTR=attr_newbie
+ATTR=attr_newbie
 
 [ITEMDEF 0203f]
 DEFNAME=i_beard_short
@@ -195,7 +195,7 @@ CATEGORY=Hairs, Horns and Faces
 DESCRIPTION=Short
 
 ON=@Create
-   ATTR=attr_newbie
+ATTR=attr_newbie
 
 [ITEMDEF 02040]
 DEFNAME=i_beard_goatee
@@ -207,7 +207,7 @@ CATEGORY=Hairs, Horns and Faces
 DESCRIPTION=Goatee
 
 ON=@Create
-   ATTR=attr_newbie
+ATTR=attr_newbie
 
 [ITEMDEF 02041]
 DEFNAME=i_beard_mustache
@@ -219,7 +219,7 @@ CATEGORY=Hairs, Horns and Faces
 DESCRIPTION=Mustache
 
 ON=@Create
-   ATTR=attr_newbie
+ATTR=attr_newbie
 
 [ITEMDEF 02044]
 DEFNAME=i_hair_mohawk
@@ -231,7 +231,7 @@ CATEGORY=Hairs, Horns and Faces
 DESCRIPTION=Mohawk
 
 ON=@Create
-   ATTR=attr_newbie
+ATTR=attr_newbie
 
 [ITEMDEF 02045]
 DEFNAME=i_hair_pageboy
@@ -243,7 +243,7 @@ CATEGORY=Hairs, Horns and Faces
 DESCRIPTION=Pageboy
 
 ON=@Create
-   ATTR=attr_newbie
+ATTR=attr_newbie
 
 [ITEMDEF 02046]
 DEFNAME=i_hair_buns
@@ -255,7 +255,7 @@ CATEGORY=Hairs, Horns and Faces
 DESCRIPTION=Buns
 
 ON=@Create
-   ATTR=attr_newbie
+ATTR=attr_newbie
 
 [ITEMDEF 02047]
 DEFNAME=i_hair_curly
@@ -268,7 +268,7 @@ CATEGORY=Hairs, Horns and Faces
 DESCRIPTION=Curly
 
 ON=@Create
-   ATTR=attr_newbie
+ATTR=attr_newbie
 
 [ITEMDEF 02048]
 DEFNAME=i_hair_receding
@@ -280,7 +280,7 @@ CATEGORY=Hairs, Horns and Faces
 DESCRIPTION=Receding
 
 ON=@Create
-   ATTR=attr_newbie
+ATTR=attr_newbie
 
 [ITEMDEF 02049]
 DEFNAME=i_hair_2_pigtails
@@ -292,7 +292,7 @@ CATEGORY=Hairs, Horns and Faces
 DESCRIPTION=2-tails
 
 ON=@Create
-   ATTR=attr_newbie
+ATTR=attr_newbie
 
 [ITEMDEF 0204a]
 DEFNAME=i_hair_topknot
@@ -304,7 +304,7 @@ CATEGORY=Hairs, Horns and Faces
 DESCRIPTION=Topknot
 
 ON=@Create
-   ATTR=attr_newbie
+ATTR=attr_newbie
 
 [ITEMDEF 0204b]
 DEFNAME=i_beard_short_med
@@ -316,7 +316,7 @@ CATEGORY=Hairs, Horns and Faces
 DESCRIPTION=Short Beard & Mustache
 
 ON=@Create
-   ATTR=attr_newbie
+ATTR=attr_newbie
 
 [ITEMDEF 0204c]
 DEFNAME=i_beard_long_med
@@ -328,7 +328,7 @@ CATEGORY=Hairs, Horns and Faces
 DESCRIPTION=Long Beard & Mustache
 
 ON=@Create
-   ATTR=attr_newbie
+ATTR=attr_newbie
 
 [ITEMDEF 0204d]
 DEFNAME=i_beard_vandyke
@@ -340,7 +340,7 @@ CATEGORY=Hairs, Horns and Faces
 DESCRIPTION=Vandyke
 
 ON=@Create
-   ATTR=attr_newbie
+ATTR=attr_newbie
 
 [ITEMDEF 02fbf]
 DEFNAME=i_hair_elven_ml
@@ -352,7 +352,7 @@ SUBSECTION=Elven Hair
 DESCRIPTION=Mid Long
 
 ON=@Create
-   ATTR=attr_newbie
+ATTR=attr_newbie
 
 [ITEMDEF 02fc0]
 DEFNAME=i_hair_long_feather
@@ -364,7 +364,7 @@ SUBSECTION=Elven Hair
 DESCRIPTION=Long Feather
 
 ON=@Create
-   ATTR=attr_newbie
+ATTR=attr_newbie
 
 [ITEMDEF 02fc1]
 DEFNAME=i_hair_short1
@@ -376,7 +376,7 @@ SUBSECTION=Elven Hair
 DESCRIPTION=Short
 
 ON=@Create
-   ATTR=attr_newbie
+ATTR=attr_newbie
 
 [ITEMDEF 02fc2]
 DEFNAME=i_hair_elven_mullet_2
@@ -388,7 +388,7 @@ SUBSECTION=Elven Hair
 DESCRIPTION=Mullet
 
 ON=@Create
-   ATTR=attr_newbie
+ATTR=attr_newbie
 
 [ITEMDEF 02fcc]
 DEFNAME=i_hair_elven_flower
@@ -400,7 +400,7 @@ SUBSECTION=Elven Hair
 DESCRIPTION=Flower
 
 ON=@Create
-   ATTR=attr_newbie
+ATTR=attr_newbie
 
 [ITEMDEF 02fcd]
 DEFNAME=i_hair_elven_long
@@ -412,7 +412,7 @@ SUBSECTION=Elven Hair
 DESCRIPTION=Long
 
 ON=@Create
-   ATTR=attr_newbie
+ATTR=attr_newbie
 
 [ITEMDEF 02fce]
 DEFNAME=i_hair_elven_topknot
@@ -424,7 +424,7 @@ SUBSECTION=Elven Hair
 DESCRIPTION=Topknot
 
 ON=@Create
-   ATTR=attr_newbie
+ATTR=attr_newbie
 
 [ITEMDEF 02fcf]
 DEFNAME=i_hair_elven_braid
@@ -436,7 +436,7 @@ SUBSECTION=Elven Hair
 DESCRIPTION=Long Braid
 
 ON=@Create
-   ATTR=attr_newbie
+ATTR=attr_newbie
 
 [ITEMDEF 02fd0]
 DEFNAME=i_hair_elven_buns
@@ -448,7 +448,7 @@ SUBSECTION=Elven Hair
 DESCRIPTION=Buns
 
 ON=@Create
-   ATTR=attr_newbie
+ATTR=attr_newbie
 
 [ITEMDEF 02fd1]
 DEFNAME=i_hair_elven_spike
@@ -460,7 +460,7 @@ SUBSECTION=Elven Hair
 DESCRIPTION=Spiked
 
 ON=@Create
-   ATTR=attr_newbie
+ATTR=attr_newbie
 
 [ITEMDEF 03b44]
 DEFNAME=i_face_1
@@ -470,7 +470,7 @@ SUBSECTION=Faces
 DESCRIPTION=Face 1
 
 ON=@Create
-   ATTR=attr_newbie
+ATTR=attr_newbie
 
 [ITEMDEF 03b45]
 DEFNAME=i_face_2
@@ -480,7 +480,7 @@ SUBSECTION=Faces
 DESCRIPTION=Face 2
 
 ON=@Create
-   ATTR=attr_newbie
+ATTR=attr_newbie
 
 [ITEMDEF 03b46]
 DEFNAME=i_face_3
@@ -490,7 +490,7 @@ SUBSECTION=Faces
 DESCRIPTION=Face 3
 
 ON=@Create
-   ATTR=attr_newbie
+ATTR=attr_newbie
 
 [ITEMDEF 03b47]
 DEFNAME=i_face_4
@@ -500,7 +500,7 @@ SUBSECTION=Faces
 DESCRIPTION=Face 4
 
 ON=@Create
-   ATTR=attr_newbie
+ATTR=attr_newbie
 
 [ITEMDEF 03b48]
 DEFNAME=i_face_5
@@ -510,7 +510,7 @@ SUBSECTION=Faces
 DESCRIPTION=Face 5
 
 ON=@Create
-   ATTR=attr_newbie
+ATTR=attr_newbie
 
 [ITEMDEF 03b49]
 DEFNAME=i_face_6
@@ -520,7 +520,7 @@ SUBSECTION=Faces
 DESCRIPTION=Face 6
 
 ON=@Create
-   ATTR=attr_newbie
+ATTR=attr_newbie
 
 [ITEMDEF 03b4a]
 DEFNAME=i_face_7
@@ -530,7 +530,7 @@ SUBSECTION=Faces
 DESCRIPTION=Face 7
 
 ON=@Create
-   ATTR=attr_newbie
+ATTR=attr_newbie
 
 [ITEMDEF 03b4b]
 DEFNAME=i_face_8
@@ -540,7 +540,7 @@ SUBSECTION=Faces
 DESCRIPTION=Face 8
 
 ON=@Create
-   ATTR=attr_newbie
+ATTR=attr_newbie
 
 [ITEMDEF 03b4c]
 DEFNAME=i_face_9
@@ -550,7 +550,7 @@ SUBSECTION=Faces
 DESCRIPTION=Face 9
 
 ON=@Create
-   ATTR=attr_newbie
+ATTR=attr_newbie
 
 [ITEMDEF 03b4d]
 DEFNAME=i_face_10
@@ -560,7 +560,7 @@ SUBSECTION=Faces
 DESCRIPTION=Face 10
 
 ON=@Create
-   ATTR=attr_newbie
+ATTR=attr_newbie
 
 [ITEMDEF 03b4e]
 DEFNAME=i_face_anime
@@ -570,7 +570,7 @@ SUBSECTION=Faces
 DESCRIPTION=Anime
 
 ON=@Create
-   ATTR=attr_newbie
+ATTR=attr_newbie
 
 [ITEMDEF 03b4f]
 DEFNAME=i_face_hellian
@@ -580,7 +580,7 @@ SUBSECTION=Faces
 DESCRIPTION=Hellian
 
 ON=@Create
-   ATTR=attr_newbie
+ATTR=attr_newbie
 
 [ITEMDEF 03b50]
 DEFNAME=i_face_juka
@@ -590,7 +590,7 @@ SUBSECTION=Faces
 DESCRIPTION=Juka
 
 ON=@Create
-   ATTR=attr_newbie
+ATTR=attr_newbie
 
 [ITEMDEF 03b51]
 DEFNAME=i_face_undead
@@ -600,7 +600,7 @@ SUBSECTION=Faces
 DESCRIPTION=Undead
 
 ON=@Create
-   ATTR=attr_newbie
+ATTR=attr_newbie
 
 [ITEMDEF 03b52]
 DEFNAME=i_face_meer
@@ -610,7 +610,7 @@ SUBSECTION=Faces
 DESCRIPTION=Meer
 
 ON=@Create
-   ATTR=attr_newbie
+ATTR=attr_newbie
 
 [ITEMDEF 03b53]
 DEFNAME=i_face_elder
@@ -620,7 +620,7 @@ SUBSECTION=Faces
 DESCRIPTION=Elder
 
 ON=@Create
-   ATTR=attr_newbie
+ATTR=attr_newbie
 
 [ITEMDEF 03b54]
 DEFNAME=i_face_orc
@@ -630,7 +630,7 @@ SUBSECTION=Faces
 DESCRIPTION=Orc
 
 ON=@Create
-   ATTR=attr_newbie
+ATTR=attr_newbie
 
 [ITEMDEF 03b55]
 DEFNAME=i_face_pirate
@@ -640,7 +640,7 @@ SUBSECTION=Faces
 DESCRIPTION=Pirate
 
 ON=@Create
-   ATTR=attr_newbie
+ATTR=attr_newbie
 
 [ITEMDEF 03b56]
 DEFNAME=i_face_native_papuan
@@ -650,7 +650,7 @@ SUBSECTION=Faces
 DESCRIPTION=Native Papuan
 
 ON=@Create
-   ATTR=attr_newbie
+ATTR=attr_newbie
 
 [ITEMDEF 03b57]
 DEFNAME=i_face_vampire
@@ -660,7 +660,7 @@ SUBSECTION=Faces
 DESCRIPTION=Vampire
 
 ON=@Create
-   ATTR=attr_newbie
+ATTR=attr_newbie
 
 [ITEMDEF 04258]
 DEFNAME=i_horn_gargoyle_male_1
@@ -672,7 +672,7 @@ SUBSECTION=Gargoyle Horns
 DESCRIPTION=Male Horn 1
 
 ON=@Create
-   ATTR=attr_newbie
+ATTR=attr_newbie
 
 [ITEMDEF 04259]
 DEFNAME=i_horn_gargoyle_male_2
@@ -684,7 +684,7 @@ SUBSECTION=Gargoyle Horns
 DESCRIPTION=Male Horn 2
 
 ON=@Create
-   ATTR=attr_newbie
+ATTR=attr_newbie
 
 [ITEMDEF 0425a]
 DEFNAME=i_horn_gargoyle_male_3
@@ -696,7 +696,7 @@ SUBSECTION=Gargoyle Horns
 DESCRIPTION=Male Horn 3
 
 ON=@Create
-   ATTR=attr_newbie
+ATTR=attr_newbie
 
 [ITEMDEF 0425b]
 DEFNAME=i_horn_gargoyle_male_4
@@ -708,7 +708,7 @@ SUBSECTION=Gargoyle Horns
 DESCRIPTION=Male Horn 4
 
 ON=@Create
-   ATTR=attr_newbie
+ATTR=attr_newbie
 
 [ITEMDEF 0425c]
 DEFNAME=i_horn_gargoyle_male_5
@@ -720,7 +720,7 @@ SUBSECTION=Gargoyle Horns
 DESCRIPTION=Male Horn 5
 
 ON=@Create
-   ATTR=attr_newbie
+ATTR=attr_newbie
 
 [ITEMDEF 0425d]
 DEFNAME=i_horn_gargoyle_male_6
@@ -732,7 +732,7 @@ SUBSECTION=Gargoyle Horns
 DESCRIPTION=Male Horn 6
 
 ON=@Create
-   ATTR=attr_newbie
+ATTR=attr_newbie
 
 [ITEMDEF 0425e]
 DEFNAME=i_horn_gargoyle_male_7
@@ -744,7 +744,7 @@ SUBSECTION=Gargoyle Horns
 DESCRIPTION=Male Horn 7
 
 ON=@Create
-   ATTR=attr_newbie
+ATTR=attr_newbie
 
 [ITEMDEF 0425f]
 DEFNAME=i_horn_gargoyle_male_8
@@ -756,7 +756,7 @@ SUBSECTION=Gargoyle Horns
 DESCRIPTION=Male Horn 8
 
 ON=@Create
-   ATTR=attr_newbie
+ATTR=attr_newbie
 
 [ITEMDEF 04260]
 //FIXME: what is this?
@@ -771,7 +771,7 @@ SUBSECTION=Gargoyle Horns
 DESCRIPTION=Female Horn 1
 
 ON=@Create
-   ATTR=attr_newbie
+ATTR=attr_newbie
 
 [ITEMDEF 04262]
 DEFNAME=i_horn_gargoyle_female_2
@@ -783,7 +783,7 @@ SUBSECTION=Gargoyle Horns
 DESCRIPTION=Female Horn 2
 
 ON=@Create
-   ATTR=attr_newbie
+ATTR=attr_newbie
 
 [ITEMDEF 04273]
 DEFNAME=i_horn_gargoyle_female_3
@@ -795,7 +795,7 @@ SUBSECTION=Gargoyle Horns
 DESCRIPTION=Female Horn 3
 
 ON=@Create
-   ATTR=attr_newbie
+ATTR=attr_newbie
 
 [ITEMDEF 04274]
 DEFNAME=i_horn_gargoyle_female_4
@@ -807,7 +807,7 @@ SUBSECTION=Gargoyle Horns
 DESCRIPTION=Female Horn 4
 
 ON=@Create
-   ATTR=attr_newbie
+ATTR=attr_newbie
 
 [ITEMDEF 04275]
 DEFNAME=i_horn_gargoyle_female_5
@@ -819,7 +819,7 @@ SUBSECTION=Gargoyle Horns
 DESCRIPTION=Female Horn 5
 
 ON=@Create
-   ATTR=attr_newbie
+ATTR=attr_newbie
 
 [ITEMDEF 042aa]
 DEFNAME=i_horn_gargoyle_female_6
@@ -831,7 +831,7 @@ SUBSECTION=Gargoyle Horns
 DESCRIPTION=Female Horn 6
 
 ON=@Create
-   ATTR=attr_newbie
+ATTR=attr_newbie
 
 [ITEMDEF 042ab]
 DEFNAME=i_horn_gargoyle_female_7
@@ -843,7 +843,7 @@ SUBSECTION=Gargoyle Horns
 DESCRIPTION=Female Horn 7
 
 ON=@Create
-   ATTR=attr_newbie
+ATTR=attr_newbie
 
 [ITEMDEF 042ad]
 DEFNAME=i_horn_gargoyle_facial_1
@@ -855,7 +855,7 @@ SUBSECTION=Gargoyle Facial Horns
 DESCRIPTION=Male Facial Horn 1
 
 ON=@Create
-   ATTR=attr_newbie
+ATTR=attr_newbie
 
 [ITEMDEF 042ae]
 DEFNAME=i_horn_gargoyle_facial_2
@@ -867,7 +867,7 @@ SUBSECTION=Gargoyle Facial Horns
 DESCRIPTION=Male Facial Horn 2
 
 ON=@Create
-   ATTR=attr_newbie
+ATTR=attr_newbie
 
 [ITEMDEF 042af]
 DEFNAME=i_horn_gargoyle_facial_3
@@ -879,7 +879,7 @@ SUBSECTION=Gargoyle Facial Horns
 DESCRIPTION=Male Facial Horn 3
 
 ON=@Create
-   ATTR=attr_newbie
+ATTR=attr_newbie
 
 [ITEMDEF 042b0]
 DEFNAME=i_horn_gargoyle_facial_4
@@ -891,7 +891,7 @@ SUBSECTION=Gargoyle Facial Horns
 DESCRIPTION=Male Facial Horn 4
 
 ON=@Create
-   ATTR=attr_newbie
+ATTR=attr_newbie
 
 [ITEMDEF 042b1]
 DEFNAME=i_horn_gargoyle_female_8
@@ -903,7 +903,7 @@ SUBSECTION=Gargoyle Horns
 DESCRIPTION=Female Horn 8
 
 ON=@Create
-   ATTR=attr_newbie
+ATTR=attr_newbie
 
 [ITEMDEF 05679]
 DEFNAME=i_face_gargoyle_1
@@ -913,7 +913,7 @@ SUBSECTION=Gargoyle Faces
 DESCRIPTION=Face 1
 
 ON=@Create
-   ATTR=attr_newbie
+ATTR=attr_newbie
 
 [ITEMDEF 0567a]
 DEFNAME=i_face_gargoyle_2
@@ -923,7 +923,7 @@ SUBSECTION=Gargoyle Faces
 DESCRIPTION=Face 2
 
 ON=@Create
-   ATTR=attr_newbie
+ATTR=attr_newbie
 
 [ITEMDEF 0567b]
 DEFNAME=i_face_gargoyle_3
@@ -933,7 +933,7 @@ SUBSECTION=Gargoyle Faces
 DESCRIPTION=Face 3
 
 ON=@Create
-   ATTR=attr_newbie
+ATTR=attr_newbie
 
 [ITEMDEF 0567c]
 DEFNAME=i_face_gargoyle_4
@@ -943,7 +943,7 @@ SUBSECTION=Gargoyle Faces
 DESCRIPTION=Face 4
 
 ON=@Create
-   ATTR=attr_newbie
+ATTR=attr_newbie
 
 [ITEMDEF 0567d]
 DEFNAME=i_face_gargoyle_5
@@ -953,7 +953,7 @@ SUBSECTION=Gargoyle Faces
 DESCRIPTION=Face 5
 
 ON=@Create
-   ATTR=attr_newbie
+ATTR=attr_newbie
 
 [ITEMDEF 0567e]
 DEFNAME=i_face_gargoyle_6
@@ -963,7 +963,7 @@ SUBSECTION=Gargoyle Faces
 DESCRIPTION=Face 6
 
 ON=@Create
-   ATTR=attr_newbie
+ATTR=attr_newbie
 
 
 [ITEMDEF 0a1a4]
@@ -976,7 +976,7 @@ SUBSECTION=Human Hair
 DESCRIPTION=Hobo
 
 ON=@Create
-   ATTR=attr_newbie
+ATTR=attr_newbie
 
 [ITEMDEF 0a1a6]
 DEFNAME=i_hair_monk
@@ -988,7 +988,7 @@ SUBSECTION=Human Hair
 DESCRIPTION=Monk
 
 ON=@Create
-   ATTR=attr_newbie
+ATTR=attr_newbie
 
 [ITEMDEF 0a1a7]
 DEFNAME=i_hair_swoop
@@ -1000,7 +1000,7 @@ SUBSECTION=Human Hair
 DESCRIPTION=Swoop
 
 ON=@Create
-   ATTR=attr_newbie
+ATTR=attr_newbie
 
 [ITEMDEF 0a1a8]
 DEFNAME=i_beard_braid
@@ -1012,7 +1012,7 @@ CATEGORY=Human Beard
 DESCRIPTION=Braid
 
 ON=@Create
-   ATTR=attr_newbie
+ATTR=attr_newbie
 
 [ITEMDEF 0a1a9]
 DEFNAME=i_beard_handlebar
@@ -1024,7 +1024,7 @@ CATEGORY=Human Beard
 DESCRIPTION=Handlebar
 
 ON=@Create
-   ATTR=attr_newbie
+ATTR=attr_newbie
 
 [ITEMDEF 0a1aa]
 DEFNAME=i_beard_viking
@@ -1036,7 +1036,7 @@ CATEGORY=Human Beard
 DESCRIPTION=Viking
 
 ON=@Create
-   ATTR=attr_newbie
+ATTR=attr_newbie
 
 [ITEMDEF 0a1ab]
 DEFNAME=i_beard_mutton_chop
@@ -1048,7 +1048,7 @@ CATEGORY=Human Beard
 DESCRIPTION=Mutton Chop
 
 ON=@Create
-   ATTR=attr_newbie
+ATTR=attr_newbie
 
 [ITEMDEF 0a1ac]
 DEFNAME=i_hair_long_braid
@@ -1060,7 +1060,7 @@ SUBSECTION=Human Hair
 DESCRIPTION=Long Braid
 
 ON=@Create
-   ATTR=attr_newbie
+ATTR=attr_newbie
 
 [ITEMDEF 0a1ad]
 DEFNAME=i_hair_dread
@@ -1072,7 +1072,7 @@ SUBSECTION=Human Hair
 DESCRIPTION=Dread
 
 ON=@Create
-   ATTR=attr_newbie
+ATTR=attr_newbie
 
 [ITEMDEF 0a1ae]
 DEFNAME=i_hair_pigtail
@@ -1084,7 +1084,7 @@ SUBSECTION=Human Hair
 DESCRIPTION=Pigtail
 
 ON=@Create
-   ATTR=attr_newbie
+ATTR=attr_newbie
 
 [ITEMDEF 0a1b0]
 DEFNAME=i_hair_clay_spike
@@ -1096,7 +1096,7 @@ SUBSECTION=Elf Hair
 DESCRIPTION=Clay Spike
 
 ON=@Create
-   ATTR=attr_newbie
+ATTR=attr_newbie
 
 [ITEMDEF 0a1b1]
 DEFNAME=i_hair_long_spike
@@ -1108,7 +1108,7 @@ SUBSECTION=Elf Hair
 DESCRIPTION=Long Spike
 
 ON=@Create
-   ATTR=attr_newbie
+ATTR=attr_newbie
 
 [ITEMDEF 0a1b2]
 DEFNAME=i_hair_long_bangs
@@ -1120,7 +1120,7 @@ SUBSECTION=Elf Hair
 DESCRIPTION=Long Bangs
 
 ON=@Create
-   ATTR=attr_newbie
+ATTR=attr_newbie
 
 [ITEMDEF 0a1b3]
 DEFNAME=i_hair_elven_mullet
@@ -1132,7 +1132,7 @@ SUBSECTION=Elf Hair
 DESCRIPTION=Elven Mullet
 
 ON=@Create
-   ATTR=attr_newbie
+ATTR=attr_newbie
 
 [ITEMDEF 0a1b4]
 DEFNAME=i_hair_side_wave
@@ -1144,7 +1144,7 @@ SUBSECTION=Elf Hair
 DESCRIPTION=Side Wave
 
 ON=@Create
-   ATTR=attr_newbie
+ATTR=attr_newbie
 
 [ITEMDEF 0a1b5]
 DEFNAME=i_hair_messy_topknot
@@ -1156,7 +1156,7 @@ SUBSECTION=Elf Hair
 DESCRIPTION=Messy Topknot
 
 ON=@Create
-   ATTR=attr_newbie
+ATTR=attr_newbie
 
 [ITEMDEF 0a1b6]
 DEFNAME=i_hair_long_curls
@@ -1168,7 +1168,7 @@ SUBSECTION=Elf Hair
 DESCRIPTION=Long Curls
 
 ON=@Create
-   ATTR=attr_newbie
+ATTR=attr_newbie
 
 [ITEMDEF 0a1b7]
 DEFNAME=i_hair_neck_wrap
@@ -1180,7 +1180,7 @@ SUBSECTION=Elf Hair
 DESCRIPTION=Neck Wrap
 
 ON=@Create
-   ATTR=attr_newbie
+ATTR=attr_newbie
 
 [ITEMDEF 0a1b8]
 DEFNAME=i_horn_gargoyle_nyala
@@ -1192,7 +1192,7 @@ SUBSECTION=Gargoyle Horns
 DESCRIPTION=Nyala
 
 ON=@Create
-   ATTR=attr_newbie
+ATTR=attr_newbie
 
 [ITEMDEF 0a1b9]
 DEFNAME=i_horn_gargoyle_broken_left
@@ -1204,7 +1204,7 @@ SUBSECTION=Gargoyle Horns
 DESCRIPTION=Broken Left
 
 ON=@Create
-   ATTR=attr_newbie
+ATTR=attr_newbie
 
 [ITEMDEF 0a1ba]
 DEFNAME=i_horn_gargoyle_bull
@@ -1216,7 +1216,7 @@ SUBSECTION=Gargoyle Horns
 DESCRIPTION=Bull
 
 ON=@Create
-   ATTR=attr_newbie
+ATTR=attr_newbie
 
 [ITEMDEF 0a1bb]
 DEFNAME=i_horn_gargoyle_rhino
@@ -1228,7 +1228,7 @@ SUBSECTION=Gargoyle Horns
 DESCRIPTION=Rhino
 
 ON=@Create
-   ATTR=attr_newbie
+ATTR=attr_newbie
 
 [ITEMDEF 0a1bc]
 DEFNAME=i_horn_gargoyle_facial_warthog_tusks
@@ -1240,7 +1240,7 @@ SUBSECTION=Gargoyle Facial Horns
 DESCRIPTION=Warthog Tusks
 
 ON=@Create
-   ATTR=attr_newbie
+ATTR=attr_newbie
 
 [ITEMDEF 0a1bd]
 DEFNAME=i_horn_gargoyle_facial_mandibles
@@ -1252,7 +1252,7 @@ SUBSECTION=Gargoyle Facial Horns
 DESCRIPTION=Mandibles
 
 ON=@Create
-   ATTR=attr_newbie
+ATTR=attr_newbie
 
 [ITEMDEF 0a1be]
 DEFNAME=i_horn_gargoyle_facial_goatee
@@ -1264,7 +1264,7 @@ SUBSECTION=Gargoyle Facial Horns
 DESCRIPTION=Goatee
 
 ON=@Create
-   ATTR=attr_newbie
+ATTR=attr_newbie
 
 [ITEMDEF 0a1bf]
 DEFNAME=i_horn_gargoyle_facial_spiral_tusk
@@ -1276,7 +1276,7 @@ SUBSECTION=Gargoyle Facial Horns
 DESCRIPTION=Spiral Tusk
 
 ON=@Create
-   ATTR=attr_newbie
+ATTR=attr_newbie
 
 [ITEMDEF 0a1c0]
 DEFNAME=i_horn_gargoyle_antlers
@@ -1288,7 +1288,7 @@ SUBSECTION=Gargoyle Horns
 DESCRIPTION=Antlers
 
 ON=@Create
-   ATTR=attr_newbie
+ATTR=attr_newbie
 
 [ITEMDEF 0a1c1]
 DEFNAME=i_horn_gargoyle_corkscrew
@@ -1300,7 +1300,7 @@ SUBSECTION=Gargoyle Horns
 DESCRIPTION=Corkscrew
 
 ON=@Create
-   ATTR=attr_newbie
+ATTR=attr_newbie
 
 [ITEMDEF 0a1c2]
 DEFNAME=i_horn_gargoyle_broken_right
@@ -1312,7 +1312,7 @@ SUBSECTION=Gargoyle Horns
 DESCRIPTION=Broken Right
 
 ON=@Create
-   ATTR=attr_newbie
+ATTR=attr_newbie
 
 [ITEMDEF 0a1c3]
 DEFNAME=i_horn_gargoyle_topi
@@ -1324,6 +1324,6 @@ SUBSECTION=Gargoyle Horns
 DESCRIPTION=Topi
 
 ON=@Create
-   ATTR=attr_newbie
+ATTR=attr_newbie
 
 [EOF]

@@ -189,7 +189,7 @@ LOCAL.HITS = <EVAL (<def.Ship_Create_Hits_Percent>*<SRC.STR>)/100>
 IF (<SRC.REGION.FLAGS>&REGION_FLAG_SHIP)
 	SRC.FUNC_SYS_ERROR Gemi içerisindeyken gemi kuramazsınız.
 	RETURN 1
-ELSEIF (<SRC.ISINSAFE>) || (<SRC.REGION.FLAGS>&region_flag_underground) || (strmatch('Sosarria Lair','<REGION.NAME>')) || (strmatch('Star','<REGION.NAME>')) || (strmatch(*Green Acres*,'<REGION.NAME>'))
+ELSEIF (<SRC.REGION.SAFE>) || (<SRC.REGION.FLAGS>&region_flag_underground) || (strmatch('Sosarria Lair','<REGION.NAME>')) || (strmatch('Star','<REGION.NAME>')) || (strmatch(*Green Acres*,'<REGION.NAME>'))
 	SRC.FUNC_SYS_ERROR Bu bölgeye gemi kuramazsınız. Bu bölge korumalı. Dungeon veya yapı kurulmaya kapalı. (<SRC.REGION.NAME>)
 	RETURN 1
 ELSEIF (<SRC.HITS> < <DLOCAL.HITS>)

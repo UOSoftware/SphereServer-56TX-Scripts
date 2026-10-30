@@ -166,7 +166,7 @@ REF1=<OWNER>
 IF !(<REF1.ISVALIDE>)
 	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu vendorun bir sahibi yok.
 	RETURN 1
-ELSEIF (<SRC.ISDIFF 2,<UID>>)
+ELSEIF (<SRC.ISOUTOFREACH 2,<UID>>)
 	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Vendora yetişemiyorsunuz.
 	RETURN 1
 ENDIF
@@ -259,7 +259,7 @@ ENDIF
 [SPEECH spk_house_speech_vendor]
 on=*buy*
 on=*satin al*
-IF (<SRC.ISDIFF 3,<UID>>)
+IF (<SRC.ISOUTOFREACH 3,<UID>>)
 	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Biraz daha yaklaşmalısınız.
 	RETURN 1
 ELSEIF !(<OWNER>)
@@ -289,7 +289,7 @@ ON=kontrat*
 ON=kasa*
 ON=yardim*
 REF1=<OWNER> // SAHIBI
-IF (<SRC.ISDIFF 3,<UID>>)
+IF (<SRC.ISOUTOFREACH 3,<UID>>)
 	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Vendora yetişemiyorsunuz.
 	RETURN 1
 ELSEIF !(<OWNER>)
@@ -310,7 +310,7 @@ On=*sat*
 REF1=<OWNER> // SAHIBI
 LOCAL.PRICE=<STREAT <ARGS>>
 
-IF (<SRC.ISDIFF 3,<UID>>)
+IF (<SRC.ISDIFISOUTOFREACHF 3,<UID>>)
 	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Vendora yetişemiyorsunuz.
 	RETURN 1
 ELSEIF !(<OWNER>)
@@ -375,7 +375,7 @@ ELSEIF !(<REF2.ISPLAYER>)
 	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Vendor sahibi bulunamadı!
 	RETURN 1
 ENDIF
-IF (<SRC.ISDIFF 3,<REF1>>)
+IF (<SRC.ISOUTOFREACH 3,<REF1>>)
 	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Vendora yetişemiyorsunuz.
 	RETURN 1
 ELSEIF (<ARGO.TOPOBJ> != <REF1>)
@@ -443,7 +443,7 @@ ELSEIF !(<REF3.ISVALIDE>)
 	RETURN 1
 ENDIF
 
-IF (<SRC.ISDIFF 3,<REF1>>)
+IF (<SRC.ISOUTOFREACH 3,<REF1>>)
 	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Vendora yetişemiyorsunuz.
 	RETURN 1
 ELSEIF (<TOPOBJ> != <REF1>)
@@ -527,7 +527,7 @@ LOCAL.PRICE=<ARGV1>		// FİYAT
 IF !(<REF1.ISVALIDE>)
 	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Vendor bulunamadı!
 	RETURN 1
-ELSEIF (<SRC.ISDIFF 3,<REF1>>)
+ELSEIF (<SRC.ISOUTOFREACH 3,<REF1>>)
 	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Vendora yetişemiyorsunuz.
 	RETURN 1
 ELSEIF !(<REF1.OWNER>)
@@ -722,7 +722,7 @@ DTEXT +30 +120 <def.tcolor_green> Hayır
 // Kontrat kabul
 ON=30
 REF1=<REGION.UID>
-IF (<SRC.ISDIFF 3,<UID>>)
+IF (<SRC.ISOUTOFREACH 3,<UID>>)
 	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Vendora yetişemiyorsunuz.
 	RETURN 1
 ELSEIF !(<OWNER>)

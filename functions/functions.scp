@@ -262,36 +262,6 @@ IF (<ISONLINE>)
 ENDIF
 
 
-[FUNCTION fMakeBloodEffect]
-
-IF !(<FLAGS>&STATF_Conjured)
-
-	LOCAL.BloodId = 0
-	LOCAL.DMG = <dARGV0>
-	
-	IF (<dLOCAL.DMG> > 10)
-		LOCAL.BloodId = <R4651,4654>
-	ELIF (RAND(<DLOCAL.DMG>) > 5)
-		LOCAL.BloodId = 5701
-	ENDIF
-
-	IF (<LOCAL.BloodId> > 0) && (<ARGV1>&dam_pierce|dam_slash)
-		SERV.NEWITEM = <LOCAL.BloodId>
-		NEW.TIMERD = {50 70}
-		NEW.P = <P>
-		// NEW.MOVENEAR <UID> <R0,1>
-		NEW.MOVENEAR <UID> <R0,1>
-		IF (<NPC>)
-			NEW.COLOR = <COLOR>
-		ELSE
-			NEW.COLOR = {colors_blood 1 colors_red 1}
-		ENDIF
-		NEW.ATTR = ATTR_DECAY
-		NEW.UPDATE
-
-	ENDIF
-ENDIF
-
 
 
 
@@ -521,73 +491,6 @@ ENDIF
 
 
 
-[FUNCTION Func_Char_Default_Set]
-Func_Char_Default_Speech_Set
-Func_Char_Default_Event_Set
-
-
-
-[FUNCTION Func_Char_Default_Speech_Set]
-// Speechs
-IF !(<ISDSPEECH.spk_generic_chars>)
-	DSPEECH +spk_generic_chars
-ENDIF
-
-IF (<ACCOUNT.PLEVEL> > 1) // Staff
-
-	IF !(<ISDSPEECH.spk_generic_chars_staffs>)
-		DSPEECH +spk_generic_chars_staffs
-	ENDIF
-	IF (<ISDSPEECH.spk_generic_chars_players>)
-		DSPEECH -spk_generic_chars_players
-	ENDIF
-
-ELSE // Player
-
-	IF (<ISDSPEECH.spk_generic_chars_staffs>)
-		DSPEECH -spk_generic_chars_staffs
-	ENDIF
-	IF !(<ISDSPEECH.spk_generic_chars_players>)
-		DSPEECH +spk_generic_chars_players
-	ENDIF
-
-ENDIF
-
-
-[FUNCTION Func_Char_Default_Event_Set]
-IF !(<ISEVENT.e_generic_chars>)
-	EVENTS +e_generic_chars
-ENDIF
-
-IF !(<SRC.ISEVENT.e_uosoft_client_v3>)
-	SRC.EVENTS +e_uosoft_client_v3
-ENDIF
-
-IF !(<ISEVENT.e_generic_actdiff>)
-	EVENTS +e_generic_actdiff
-ENDIF
-
-IF (<ACCOUNT.PLEVEL> > 1)
-	SKILLCLASS Class_Staff 
-ELSE
-	SKILLCLASS Class_Player
-ENDIF
-
-
-
-// x SPAWNLARI İÇİN functionlar,
-// [FUNCTION SPAWNID]
-// MORE1=<ARGS>
-
-// [FUNCTION MAXDIST]
-// MOREZ=<ARGS>
-
-// [FUNCTION TIMELO]
-// MOREX=<ARGS>
-
-// [FUNCTION TIMEHI]
-// MOREY=<ARGS>
-
 
 
 [PLEVEL 1]
@@ -645,24 +548,6 @@ DIALOGCLOSE D_SPELLBOOK
 DIALOG D_SPELLBOOK
 
 
-
-
-
-// Season Flag:
-// 0: Spring == ilkbahar
-// 1: Summer == yaz
-// 2: Fall == sonbahar
-// 3: Winter == kis
-// 4: Desolation
-// BYTE[1] 0xBC
-// BYTE[1] Season Flag
-// BYTE[1] Play Sound (0/1)
-[FUNCTION FUNC_Season]
-IF (<ISNUM <ARGS>>)
-	IF (<ARGS> >= 0) && (<ARGS> <= 4)
-		SENDPACKET 0bc B<ARGS> B1
-	ENDIF
-ENDIF
 
 
 
@@ -1230,31 +1115,9 @@ ENDIF
 DIALOG d_bank_depo
 
 
-[FUNCTION GETARGVX]
-IF <ARGV[0]> == -1
- RETURN <EVAL <ARGV>-1>
-ELSE
- RETURN <ARGV[<ARGV[0]>]>
-ENDIF
 
 
 
-[FUNCTION dialoglarilistele]
-IF (<ISONLINE>)
-	IF (<DIALOGLIST.COUNT>)
-		FOR 0 <EVAL <DIALOGLIST.COUNT>-1>
-			serv.log <DIALOGLIST.<dLOCAL._FOR>.ID> // <ARGN2>
-		ENDFOR
-	ENDIF
-ENDIF
-
-// X DE GEREK YOK.
-// [FUNCTION TARGTKAPAT]
-// IF (<ISONLINE>)
-	// TARGETCLOSE
-	// SENDPACKET 06c 00 D(00) 03 D(00) W(00) W(00) 00 00 W(00)
-	// SYSMESSAGELOC <def.tcolor_grey>,<def.empty_cliloc2>, Hedef zorla kapatildi.
-// ENDIF
 
 
 
@@ -1300,10 +1163,12 @@ ENDIF
 
 
 
+
 [FUNCTION RevealAll]
 REVEAL STATF_HIDDEN
 REVEAL STATF_INSUBSTANTIAL
 REVEAL STATF_INVISIBLE
+
 
 
 
@@ -1315,18 +1180,6 @@ FORINSTANCES i_worldgem_bit
 ENDFOR
 
 
-
-
-// [function AllDungeonChests]
-// FORITEMS 7168
-	// IF (<iscontainer>) && (<REGION.dTAG0.DUNGEON>)
-		// ATTR=ATTR_MOVE_NEVER|ATTR_STATIC
-		// COLOR=0
-		// TYPE=T_CONTAINER
-		// empty
-		// TIMER=-1
-	// ENDIF
-// ENDFOR
 
 
 // World Flush
@@ -1450,21 +1303,5 @@ FOR 1 <EVAL <ARGV>-1>
 ENDFOR
 RETURN <LOCAL.RESULT>
 
-
-
-[FUNCTION poop_smart_scan]
-LOCAL.StartUID = 040000000
-LOCAL.EndUID = <SERV.LASTNEWITEM>
-LOCAL.FoundItems = 0
-LOCAL.UID = <LOCAL.StartUID>
-SERV.B @07a1 Scan start, <dLOCAL.EndUID> It will be checked all the way to the UID...
-WHILE (<LOCAL.UID> < <LOCAL.EndUID>)
-    IF (<UID.<LOCAL.UID>.ISVALID>) && (<UID.<LOCAL.UID>.ISITEM>)
-        LOCAL.FoundItems ++
-    ENDIF
-    LOCAL.UID ++
-ENDWHILE
-SERV.LOG Scanned UID Range: <dLOCAL.StartUID> - <dLOCAL.EndUID>
-SERV.LOG Valid Items Found: <dLOCAL.FoundItems> / <SERV.ITEMS>
 
 [eof]

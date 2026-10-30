@@ -12,7 +12,7 @@ IF !(<SRC.ISGM>)
 	IF (<SRC.FLAGS>&STATF_DEAD) 
 		SRC.SYSMESSAGELOC <def.tcolor_red>,600027 // Ölü durumdayken bu islemi yapamazsiniz.
 		RETURN 1
-	ELSEIF (<SRC.ISDIFF 2,<UID>>)
+	ELSEIF (<SRC.ISOUTOFREACH 2,<UID>>)
 		SRC.SYSMESSAGELOC <def.tcolor_red>,600018,<JOB> <NAME>
 		RETURN 1
 	ENDIF

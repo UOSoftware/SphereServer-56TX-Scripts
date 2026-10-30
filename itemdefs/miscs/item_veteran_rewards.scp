@@ -12,7 +12,7 @@ SUBSECTION=Year 6
 DESCRIPTION=Character Statue Maker
 
 ON=@Create
-   COLOR={0b8f 0b9a}
+COLOR={0b8f 0b9a}
 
 
 [ITEMDEF 032f2]
@@ -1073,7 +1073,7 @@ DESCRIPTION=Enchanted Writing Desk
 DUPELIST=09ff1
 
 ON=@Create
-   MOREZ=29
+MOREZ=29
 
 [ITEMDEF 09feb]
 //enchanted writing desk (south)(anim)
@@ -1518,8 +1518,8 @@ SUBSECTION=Year 4
 DESCRIPTION=Embroidery Tool
 
 ON=@Create
-   ATTR=attr_newbie
-   USESMAX=10
+ATTR=attr_newbie
+USESMAX=10
 
 [TYPEDEF e_embroidered]
 

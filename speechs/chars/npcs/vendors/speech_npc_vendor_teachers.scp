@@ -3,7 +3,7 @@
 [SPEECH spk_generic_npc_teachers]
 ON=*train*
 ON=*teach*
-IF (<SRC.ISDIFF 2,<UID>>)
+IF (<SRC.ISOUTOFREACH 2,<UID>>)
 	SRC.SYSMESSAGELOC <def.tcolor_red>,600018,<JOB> <NAME>
 	RETURN 1
 ENDIF

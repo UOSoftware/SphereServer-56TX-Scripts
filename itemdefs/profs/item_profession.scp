@@ -721,7 +721,7 @@ SUBSECTION=Stablemaster
 DESCRIPTION=Bucket of Water
 
 ON=@Create
-   MOREM=9
+MOREM=9
 
 
 [ITEMDEF 01003]
@@ -828,7 +828,7 @@ DESCRIPTION=Dovetail Saw
 DUPELIST=01029
 
 ON=@Create
-   UsesMax={25 75}
+UsesMax={25 75}
 
 [ITEMDEF 01029]
 //dovetail saw
@@ -848,7 +848,7 @@ DESCRIPTION=Hammer
 DUPELIST=0102b
 
 ON=@Create
-   UsesMax={25 75}
+UsesMax={25 75}
 
 [ITEMDEF 0102b]
 //hammer
@@ -868,7 +868,7 @@ DESCRIPTION=Moulding Planes
 DUPELIST=0102d
 
 ON=@Create
-   UsesMax={25 75}
+UsesMax={25 75}
 
 [ITEMDEF 0102d]
 //moulding planes
@@ -888,7 +888,7 @@ DESCRIPTION=Nails
 DUPELIST=0102f
 
 ON=@Create
-   UsesMax={25 75}
+UsesMax={25 75}
 
 [ITEMDEF 0102f]
 //nails
@@ -908,7 +908,7 @@ DESCRIPTION=Jointing Plane
 DUPELIST=01031
 
 ON=@Create
-   UsesMax={25 75}
+UsesMax={25 75}
 
 [ITEMDEF 01031]
 //jointing plane
@@ -928,7 +928,7 @@ DESCRIPTION=Smoothing Plane
 DUPELIST=01033
 
 ON=@Create
-   UsesMax={25 75}
+UsesMax={25 75}
 
 [ITEMDEF 01033]
 //smoothing plane
@@ -948,7 +948,7 @@ DESCRIPTION=Saw
 DUPELIST=01035
 
 ON=@Create
-   UsesMax={25 75}
+UsesMax={25 75}
 
 [ITEMDEF 01035]
 //saw
@@ -976,7 +976,7 @@ SUBSECTION=Carpenter
 DESCRIPTION=Wood Curls
 
 ON=@Create
-   ATTR=08012
+ATTR=08012
 
 
 
@@ -1211,7 +1211,7 @@ SUBSECTION=Carpenter
 DESCRIPTION=Draw Knife
 
 ON=@Create
-   UsesMax={25 75}
+UsesMax={25 75}
 
 [ITEMDEF 010e5]
 DEFNAME=i_froe
@@ -1225,7 +1225,7 @@ SUBSECTION=Carpenter
 DESCRIPTION=Froe
 
 ON=@Create
-   UsesMax={25 75}
+UsesMax={25 75}
 
 [ITEMDEF 010e6]
 DEFNAME=i_inshave
@@ -1239,7 +1239,7 @@ SUBSECTION=Carpenter
 DESCRIPTION=Inshave
 
 ON=@Create
-   UsesMax={25 75}
+UsesMax={25 75}
 
 [ITEMDEF 010e7]
 DEFNAME=i_scorp
@@ -1253,7 +1253,7 @@ SUBSECTION=Carpenter
 DESCRIPTION=Scorp
 
 ON=@Create
-   UsesMax={25 75}
+UsesMax={25 75}
 
 [ITEMDEF 012a5]
 DEFNAME=i_cards_tarot
@@ -1300,7 +1300,7 @@ SUBSECTION=Mason
 DESCRIPTION=Mallet and Chisel
 
 ON=@Create
-   UsesMax={25 75}
+UsesMax={25 75}
 
 [ITEMDEF 01370]
 DEFNAME=i_brush_horse
@@ -1608,7 +1608,7 @@ DESCRIPTION=Beef Carcass
 DUPELIST=01872
 
 ON=@Create
-   MOREM=40
+MOREM=40
 
 [ITEMDEF 01872]
 //beef carcass
@@ -1627,7 +1627,7 @@ DESCRIPTION=Sheep Carcass
 DUPELIST=01874
 
 ON=@Create
-   MOREM=20
+MOREM=20
 
 [ITEMDEF 01874]
 //sheep carcass
@@ -2624,7 +2624,7 @@ DESCRIPTION=Tool Kit (carpentry)
 DUPELIST=01eb9
 
 ON=@Create
-   ATTR=attr_newbie
+ATTR=attr_newbie
 
 [ITEMDEF 01eb9]
 //toolkit (carpentry)
@@ -2661,7 +2661,7 @@ SUBSECTION=Tinker
 DESCRIPTION=Tinker Tools
 
 ON=@Create
-   UsesMax={25 75}
+UsesMax={25 75}
 
 [ITEMDEF 01ebd]
 DEFNAME=i_wheat_sheaf
@@ -3122,7 +3122,7 @@ DESCRIPTION=Chicken Coop
 //TEVENTS=t_chicken_coop
 DUPELIST=04514
 //ON=@Create
-//   TAG.StablesMax=3
+//TAG.StablesMax=3
 
 [ITEMDEF 04514]
 //chicken coop

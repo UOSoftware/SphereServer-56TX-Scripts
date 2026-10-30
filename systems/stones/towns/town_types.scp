@@ -22,7 +22,7 @@ FORINSTANCES i_town_stone
 	ENDIF
 ENDFOR
 
-// IF (<SRC.ISDIFF <UID>>)
+// IF (<SRC.ISOUTOFREACH 2,<UID>>)
 	// SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, <NAME>: <DEF.REACH_FAIL>
 	// RETURN 1
 // ENDIF

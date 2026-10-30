@@ -183,7 +183,7 @@ ELIF (<ARGO.ISITEM>)
 ELIF (!<ARGO.ISPLAYER>)
 	SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>,  Bu bir oyuncu değil.
 	RETURN 1
-ELIF (<REF1.ISDIFF <ARGO>>)
+ELIF (<REF1.ISOUTOFREACH 3, <ARGO>>)
 	SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, <ARGO.NAME>: <def.reach_fail>
 	RETURN 1
 ELIF (<ARGO.FLAGS>&<DEF.STATF_DEAD>)

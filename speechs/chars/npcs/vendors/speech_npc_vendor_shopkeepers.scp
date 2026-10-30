@@ -4,7 +4,7 @@ ON=*sell*
 IF (<SRC.FLAGS>&STATF_DEAD) 
 	SRC.SYSMESSAGELOC <def.tcolor_red>,600027 // "Ölü durumdayken bu islemi yapamazsiniz."
 	RETURN 1
-ELSEIF (<SRC.ISDIFF 2,<UID>>)
+ELSEIF (<SRC.ISOUTOFREACH 2,<UID>>)
 	SRC.SYSMESSAGELOC <def.tcolor_red>,600018,<JOB> <NAME>
 	RETURN 1
 ELSEIF (<SRC.ACTION> != -1 && <SERV.SKILL.<SRC.ACTION>.FLAGS>&SKF_CRAFT)
@@ -23,7 +23,7 @@ ON=*buy*
 IF (<SRC.FLAGS>&STATF_DEAD) 
 	SRC.SYSMESSAGELOC <def.tcolor_red>,600027 // "Ölü durumdayken bu islemi yapamazsiniz."
 	RETURN 1
-ELSEIF (<SRC.ISDIFF 2,<UID>>)
+ELSEIF (<SRC.ISOUTOFREACH 2,<UID>>)
 	SRC.SYSMESSAGELOC <def.tcolor_red>,600018,<JOB> <NAME>
 	RETURN 1
 ENDIF
@@ -50,7 +50,7 @@ ELSEIF !(<SRC.ISINPACK <ARGO>>)
 ELSEIF (<EVAL <ARGO.VALUE>*<ARGO.AMOUNT>> > 2000000)
 	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Sattığınız eşyanın değeri 2.000.000 gpyi geçmemelidir.
 	RETURN 1
-ELSEIF (<SRC.ISDIFF 2,<ref1>>)
+ELSEIF (<SRC.ISOUTOFREACH 2,<ref1>>)
 	SRC.SYSMESSAGELOC <def.tcolor_red>,600018,<ref1.JOB> <ref1.NAME>
 	RETURN 1
 ELSEIF !(<ARGO.IsSalableItem>)

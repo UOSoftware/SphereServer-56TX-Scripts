@@ -29,7 +29,7 @@ IF (<ISEMPTY <ARGS>>)
 	RETURN 1
 ENDIF
 FORINSTANCES i_guild_stone
-	IF (STRMATCH('<ARGS>','<NAME>'))
+	IF (STRMATCH(*<ARGS>*,'<NAME>'))
 		REF1=<UID>
 		SRC.GOUID <REF1>
 	ELSE
@@ -76,84 +76,6 @@ FOR 0 <EVAL <SERV.ACCOUNTS>-1>
 	ENDIF
 ENDFOR
 
-
-
-
-
-[function badspawnlistele]
-serv.list.badspawns.clear
-clearctags Dialog.BadSpawn
-
-FORITEMS 7168
-	IF (<TYPE> == T_SPAWN_CHAR)
-		IF (<MORE1> <= 0)
-			SRC.CTAG0.Dialog.BadSpawn.Chars ++
-			SRC.CTAG0.Dialog.BadSpawn.C<SRC.dCTAG0.Dialog.BadSpawn.Chars> = <UID>
-		ENDIF
-	ENDIF
-ENDFOR
-
-
-CTAG.Dialog.BadSpawn.Page=1
-CTAG.Dialog.BadSpawn.PageLength=31
-CTAG.Dialog.BadSpawn.MaxPage=<eval (((<CTAG0.Dialog.BadSpawn.Chars>-1)/<dCTAG.Dialog.BadSpawn.PageLength>)+1)>
-
-dialogclose d_badspawnlist
-dialog d_badspawnlist
-
-[DIALOG d_badspawnlist]
-<DEF.DSP>
-resize 0,0,300,700,badspawns (<SRC.dCTAG0.Dialog.BadSpawn.Chars>)
-
-IF (<CTAG0.Dialog.BadSpawn.Page> > 1)
-	BUTTON 10 660 015a1 015a3 1 0 5000 // --
-ENDIF
-IF (<CTAG0.Dialog.BadSpawn.Page> < <CTAG0.Dialog.BadSpawn.MaxPage>)
-	BUTTON 150 660 015a4 015a6 1 0 5001 // ++
-ENDIF
-
-LOCAL.Y=40
-
-FOR <eval ((<CTAG0.Dialog.BadSpawn.Page> - 1) * <dCTAG.Dialog.BadSpawn.PageLength>) + 1> <eval (<CTAG0.Dialog.BadSpawn.Page> * <dCTAG.Dialog.BadSpawn.PageLength>>
-	REF1=<CTAG0.Dialog.BadSpawn.C<dLOCAL._FOR>>
-	
-	BUTTON 20 <LOCAL.Y> 4006 4007 1 0 <dLOCAL._FOR>
-	BUTTON 50 <LOCAL.Y> 4012 4011 1 0 <eval <dLOCAL._FOR>+2000>
-	DTEXT 80 <LOCAL.Y> 0 <ref1> <ref1.NAME> 
-	TILEPICHUE 200 <LOCAL.Y> <ref1.DISPIDDEC> <EVAL <ref1.COLOR> &~ 08000|04000>
-	LOCAL.Y += 20	
-ENDFOR
-
-[DIALOG d_badspawnlist button]
-on=1,1999
-ref1=<CTAG.Dialog.BadSpawn.C<dARGN>>
-src.gouid <ref1>
-src.badspawnlistele
-// DIALOG d_badspawnlist
-
-
-on=2000,2999
-local.currentid <eval <dARGN>-2000>
-local.nextid <eval (<dARGN>-2000)+1>
-ref1=<CTAG.Dialog.BadSpawn.C<dlocal.currentid>>
-ref2=<CTAG.Dialog.BadSpawn.C<dlocal.nextid>>
-
-// src.gouid <ref1>
-ref1.more1 spawn_Animals
-src.badspawnlistele
-// src.timerf 1,gouid <ref2>
-
-ON=5000
-IF (<CTAG0.Dialog.BadSpawn.Page> > 1)
-	CTAG0.Dialog.BadSpawn.Page --
-ENDIF
-DIALOG d_badspawnlist
-
-ON=5001
-IF (<CTAG0.Dialog.BadSpawn.Page> < <CTAG0.Dialog.BadSpawn.MaxPage>)
-	CTAG0.Dialog.BadSpawn.Page ++
-ENDIF
-DIALOG d_badspawnlist
 
 
 
@@ -353,6 +275,8 @@ DIALOG d_Attrsec
 
 
 
+
+
 // wall of stone
 [function wFieldPaket]
 FOR 1 4
@@ -499,6 +423,8 @@ ENDFOR
 
 
 
+
+
 [function herkesidiz]
 // Başlangıç koordinatları
 // LOCAL.StartX = 6449
@@ -592,6 +518,7 @@ ENDIF
 
 
 
+
 [PLEVEL 2]
 S
 SC
@@ -618,6 +545,9 @@ ENDIF
 IF (<ACCOUNT.PLEVEL> > 1)
 	SYSMESSAGE @<def.tcolor_yellow>,,1,1 <ARGS>
 ENDIF
+
+
+
 
 
 

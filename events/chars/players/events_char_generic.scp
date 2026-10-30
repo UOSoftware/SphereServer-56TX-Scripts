@@ -607,11 +607,11 @@ IF !(<SRC.ISGM>)
 		ENDIF
 	ENDIF
 
-	IF (<KILLS> < <eval <SERV.MURDERMINCOUNT>>) && (<SRC.REGION.DEFNAME> == a_townDelucia)
-		SRC.SYSMESSAGE Calimport'un guclu buyu duvarlari sebebiyle buyunuz engellendi.
-		SRC.GO 5249,3918,28,0
-		RETURN 1
-	ENDIF
+	// IF (<KILLS> < <eval <SERV.MURDERMINCOUNT>>) && (<SRC.REGION.DEFNAME> == a_townDelucia)
+		// SRC.SYSMESSAGE Calimport'un guclu buyu duvarlari sebebiyle buyunuz engellendi.
+		// SRC.GO 5249,3918,28,0
+		// RETURN 1
+	// ENDIF
 
 	IF (<ACT>) // eger nesneye hedef aliyorsa,
 		local.timeDiff <EVAL (<SERV.TIMEHIRES> - <SRC.LASTEVENTWALK>)/100>

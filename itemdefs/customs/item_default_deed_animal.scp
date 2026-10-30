@@ -229,7 +229,7 @@ ELSE // BOŞSA
 		SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu hayvan zehirli.
 		RETURN 1
 		
-	ELSEIF (<SRC.ISDIFF <SRC.TARG.UID>>)
+	ELSEIF (<SRC.ISISOUTOFREACHDIFF <SRC.TARG.UID>>)
 		SRC.SYSMESSAGELOC <def.tcolor_red>,600018,<SRC.TARG.NAME>
 		RETURN 1
 	ENDIF

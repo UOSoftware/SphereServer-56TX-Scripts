@@ -31,7 +31,7 @@ ENDFOR
  
 [DIALOG D_MOONGATE BUTTON]
 ON=1 99
-IF (<SRC.ISDIFF 3,<UID>>)
+IF (<SRC.ISOUTOFREACH 3,<UID>>)
 	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Moongateye ulaşamıyorsunuz.
 	RETURN 1
 ELSEIF (<SRC.ISPOISONED>)

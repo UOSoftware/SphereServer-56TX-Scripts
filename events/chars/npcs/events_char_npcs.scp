@@ -20,12 +20,13 @@ ENDIF
 
 
 // Npclerin sahiplerine sürekli crim görünmesi fixi
-ON=@NOTOSEND
-IF (<OWNER.ISVALIDE>) && (<OWNER>==<SRC>)
-	REF1 = <UID>
-	LOCAL.NOTO = <NOTOGETFLAG <REF1>>
-	ARGN1=<DLOCAL.NOTO>
-ENDIF
+// sphereTX ile birlikte gerek kaldı mı bilmiyorum.
+// ON=@NOTOSEND
+// IF (<OWNER.ISVALIDE>) && (<OWNER>==<SRC>)
+	// REF1 = <UID>
+	// LOCAL.NOTO = <NOTOGETFLAG <REF1>>
+	// ARGN1=<DLOCAL.NOTO>
+// ENDIF
 
 
 

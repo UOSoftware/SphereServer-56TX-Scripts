@@ -113,7 +113,7 @@ ACCOUNT.TAG.PIN_COMMAND=
 // Pin girilmeden yapılamayanlar. Oyuncuya girişte verilir, pin girilince kalkar (e_generic_chars, d_pin_login).
 [EVENTS e_pin]
 ON=@ItemPickUp_Pack
-IF (<SRC.ISINSAFE>)
+IF (<SRC.REGION.SAFE>)
 	IF !(<SRC.ISPINVERIFIED>)
 		SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Pin girişi yapmadan bunu yapamazsınız.
 		SRC.f_pin_login
@@ -122,7 +122,7 @@ IF (<SRC.ISINSAFE>)
 ENDIF
 
 ON=@ITEMPICKUP_SELF
-IF !(<SRC.ISINSAFE>)
+IF !(<SRC.REGION.SAFE>)
 	IF !(<SRC.ISPINVERIFIED>)
 		SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Pin girişi yapmadan bunu yapamazsınız.
 		SRC.f_pin_login

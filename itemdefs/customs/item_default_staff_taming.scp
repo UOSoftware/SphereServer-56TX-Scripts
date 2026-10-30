@@ -68,7 +68,7 @@ ENDIF
 
 
 ON=@TARGON_CHAR
-IF (<SRC.ISDIFF 3,<SRC.TARG.UID>>)
+IF (<SRC.ISOUTOFREACH 3,<SRC.TARG.UID>>)
 	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Hayvanı göremiyorsunuz.
 	RETURN 1
 
@@ -188,7 +188,7 @@ IF (<LINK.ISVALIDE>)
 		TRIGGER @TameAbort
 		RETURN 1
 			
-	ELSEIF (<CONT.ISDIFF 3,<LINK>>)
+	ELSEIF (<CONT.ISOUTOFREACH 3,<LINK>>)
 		CONT.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Hayvana yetişemiyorsunuz.
 		TRIGGER @TameAbort
 		RETURN 1

@@ -13,14 +13,6 @@
 // ENDIF
 // RETURN 0
 
-[FUNCTION ISINSAFE]
-IF (<REGION>)
-	IF (<REGION.SAFE>)
-		RETURN 1
-	ENDIF
-ENDIF
-RETURN 0
-
 [FUNCTION IsNotAllowedRecallArea]
 IF (<REGION>)
 	IF (<REGION.DEFNAME> == a_yomotsu_mines)
