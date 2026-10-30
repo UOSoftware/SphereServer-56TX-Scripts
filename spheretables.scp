@@ -283,6 +283,16 @@ moongates/map5_moongates.scp
 // moongates/map5_moongates_tol.scp
 
 
+// Yeni karakterin adında geçemeyen kelimeler: emulatörün [BLOCKNAME] bölümü (0.56TX; sphere.ini: CharNameReject).
+// Her satır bir kelime: adın içinde geçerse (büyük-küçük harf farksız) karaktere rastgele ad verilir ya da
+//  CharNameReject=1'de ad reddedilir. * ve ? joker: "adm?n", "gm*". Bölüm boşsa [OBSCENE] kullanılır, o da boşsa
+//  kelime denetlenmez. Sadece yeni karakterin adı içindir; [OBSCENE] eşya, pet, hesap ve sohbet adlarında ve
+//  script'in ISOBSCENE'inde de kullanılır.
+[BLOCKNAME]
+// Örnekler:
+// admin
+// gamemaster
+
 [OBSCENE]
 
 [FAME]
