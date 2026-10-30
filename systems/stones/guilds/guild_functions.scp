@@ -10,12 +10,12 @@ endfor
 
 [FUNCTION f_guildsys_point_gain]
 TAG0.POINTS.GUILD +=1
-SYSMESSAGELOC <def.tcolor_green>,<def.empty_cliloc2>, Guild puanı kazandın!
+SYSMESSAGELOC <def.tcolor_green>,3300849
 
 [FUNCTION f_guildsys_point_lost]
 IF (<TAG0.POINTS.GUILD> > 0)
 	TAG0.POINTS.GUILD -=1
-	SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Guild puanı kaybettin!
+	SYSMESSAGELOC <def.tcolor_red>,3300850
 ENDIF
 IF (<TAG0.POINTS.GUILD> <= 0)
 	TAG0.POINTS.GUILD=0
@@ -32,7 +32,7 @@ ENDIF
 
 [FUNCTION f_guildsys_main]
 IF !(<GUILD>)
-	SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bir guild üyesi değilsiniz.
+	SYSMESSAGELOC <def.tcolor_red>,3300851
 	RETURN 1
 ENDIF
 REF1=<GUILD>
@@ -42,13 +42,13 @@ REF1.DIALOG D_GUILD_MAIN
 
 [FUNCTION f_guildsys_create]
 IF (<SERV.GUILDS> >= <DEF.SERVER_MAX_GUILDS>)
-	SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Şu an için sunucuda en fazla <DEF.SERVER_MAX_GUILDS> guild kurulumuna izin verilmektedir. (Kurulu guild: <SERV.GUILDS>/<DEF.SERVER_MAX_GUILDS>)
+	SYSMESSAGELOC <def.tcolor_red>,3300852,<DEF.SERVER_MAX_GUILDS>,<SERV.GUILDS>,<DEF.SERVER_MAX_GUILDS>
 	RETURN 1
 ELSEIF (<GUILD>)
-	SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Sizin zaten bir guildiniz var.
+	SYSMESSAGELOC <def.tcolor_red>,3300853
 	RETURN 1
 ELSEIF (<HOUSES> <= 0)
-	SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Guild kurabilecek herhangi bir eviniz yok.
+	SYSMESSAGELOC <def.tcolor_red>,3300854
 	RETURN 1
 ENDIF
 
@@ -58,7 +58,7 @@ IF (<HOUSES> > 0)
 		IF (<REF1.ISVALID>)
 			IF ((<REF1.BASEID> == M_TOWER) || (<REF1.BASEID> == M_CASTLE) || (<REF1.BASEID> == M_SMALL_STONE_KEEP))
 				IF (<REF1.OWNER> != <SRC>)
-					SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Guild kurulabilecek evlerinizden herhangi birinin sahibi değilsiniz.
+					SYSMESSAGELOC <def.tcolor_red>,3300855
 					RETURN 1
 				ENDIF	
 			ENDIF
@@ -96,31 +96,31 @@ REF1=<ARGS>
 ENDIF
 
 IF !(<ARGO>)
-	SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Hatalı seçim.
+	SYSMESSAGELOC <def.tcolor_red>,3300221
 	RETURN 1
 
 ELSEIF !((<REF1.MASTERUID> == <SRC>) || (<ISGM>))
-	SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu işlemi sadece Guildmaster yapabilir.
+	SYSMESSAGELOC <def.tcolor_red>,3300856
 	RETURN 1
   
 ELSEIF (<ARGO.ISITEM>)
-	SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Sadece oyuncuları guildinize dahil edebilirsiniz.
+	SYSMESSAGELOC <def.tcolor_red>,3300857
 	RETURN 1
   
 ELSEIF !(<ARGO.ISPLAYER>)
-	SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Sadece oyuncuları guildinize dahil edebilirsiniz.
+	SYSMESSAGELOC <def.tcolor_red>,3300857
 	RETURN 1
 
 ELSEIF (<ARGO.FLAGS>&STATF_DEAD) || (<ARGO.IsNomove>)
-	SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, <ARGO.NAME> ölü veya şu an uygun bir halde değil.
+	SYSMESSAGELOC <def.tcolor_red>,3300858,<ARGO.NAME>
 	RETURN 1
 
 ELSEIF (<ARGO.ISDIALOGOPEN.D_GUILD_INVITE_ADD_MEMBER>) || (<ARGO.ISDIALOGOPEN.D_GUILD_CREATE>)
-	SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, <ARGO.NAME> isimli oyuncuya zaten bir davet gönderilmiş veya yeni guild kuruyor.
+	SYSMESSAGELOC <def.tcolor_red>,3300859,<ARGO.NAME>
 	RETURN 1
 
 ELSEIF (<REF1.MEMBER.COUNT> >= <DDEF.GUILDCONFIG_MAX_MEMBERCOUNT>)
-	SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Guildiniz en fazla üye sayısına ulaşmış. (Max:<DDEF.GUILDCONFIG_MAX_MEMBERCOUNT> - <REF1.MEMBER.COUNT>/<DDEF.GUILDCONFIG_MAX_MEMBERCOUNT>)
+	SYSMESSAGELOC <def.tcolor_red>,3300860,<DDEF.GUILDCONFIG_MAX_MEMBERCOUNT>,<REF1.MEMBER.COUNT>,<DDEF.GUILDCONFIG_MAX_MEMBERCOUNT>
 	RETURN 1
 ENDIF
 
@@ -133,14 +133,14 @@ ENDIF
 
 IF (<ARGO.GUILD>)
   IF (<ARGO.MEMORYFINDTYPE.MEMORY_GUILD.LINK> == <REF1.UID>)
-SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, <ARGO.NAME> zaten guildinize üye.
+SYSMESSAGELOC <def.tcolor_red>,3300861,<ARGO.NAME>
   ELSE
-SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, <ARGO.NAME> zaten bir guilde üye.
+SYSMESSAGELOC <def.tcolor_red>,3300862,<ARGO.NAME>
   ENDIF
   RETURN 1
 ENDIF
 ARGO.CTAG0.INVITE_GUILD=<REF1>
-SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, <ARGO.NAME> isimli oyuncuya üye daveti gönderdiniz.
+SYSMESSAGELOC <def.tcolor_text>,3300863,<ARGO.NAME>
 TRYSRC <ARGO> SDIALOG D_GUILD_INVITE_ADD_MEMBER
 RETURN 1
 
@@ -175,27 +175,27 @@ REF1 = <ARGS> // GUILDSTONE
 IF (<REF1.TYPE> != T_STONE_GUILD)
 	RETURN 1
 ELIF ((<REF1.MASTERUID> != <UID>) && (<REF1.MEMBERFROMUID.<UID>.PRIV> != <DEF0.STONEPRIV_MEMBER>) && (!<ISGM>))
-	SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Sadece guild üyeleri yeni oyuncular alabilir.
+	SYSMESSAGELOC <def.tcolor_red>,3300864
 	RETURN 1
 ELIF (<ARGO.ISITEM>)
-	SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu bir oyuncu değil.
+	SYSMESSAGELOC <def.tcolor_red>,3300865
 	return 1
 ELIF (!<ARGO.ISPLAYER>)
-	SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>,  Bu bir oyuncu değil.
+	SYSMESSAGELOC <def.tcolor_red>,3300865
 	RETURN 1
 ELIF (<REF1.ISOUTOFREACH 3, <ARGO>>)
-	SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, <ARGO.NAME>: <def.reach_fail>
+	SYSMESSAGELOC <def.tcolor_red>,3300510,<ARGO.NAME>,<def.reach_fail>
 	RETURN 1
 ELIF (<ARGO.FLAGS>&<DEF.STATF_DEAD>)
-	SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu oyuncu hayatta değil.
+	SYSMESSAGELOC <def.tcolor_red>,3300866
 	RETURN 1
 ENDIF
 
 IF (<ARGO.MEMORYFINDTYPE.<DEF0.MEMORY_GUILD>.UID>)
 	IF (<ARGO.MEMORYFINDTYPE.<DEF0.MEMORY_GUILD>.LINK> == <REF1.UID>)
-		SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, <ARGO.NAME> zaten bir guilde üye.
+		SYSMESSAGELOC <def.tcolor_red>,3300862,<ARGO.NAME>
 	ELSE
-		SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, <ARGO.NAME> zaten bir guilde üye.
+		SYSMESSAGELOC <def.tcolor_red>,3300862,<ARGO.NAME>
 	ENDIF
 RETURN 1
 ENDIF
@@ -209,7 +209,7 @@ IF (<REF1.MEMBERFROMUID.<ARGO.UID>.UID> != <ARGO.UID>)
 			IF (<REF1.MEMBER.COUNT <DEF0.STONEPRIV_MEMBER>> < <DEF0.GUILDCONFIG_MAXMEMBERS>)
 				F_GUILDSYS_ADDCHARTOGUILD <REF1.UID>,<ARGO.UID>,1
 			ELSE
-				SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Guildde <REF1.MEMBER.COUNT>/<dDEF0.GUILDCONFIG_MAXMEMBERS> üye var. Şu an bir üye daveti gönderemezsiniz.
+				SYSMESSAGELOC <def.tcolor_red>,3300867,<REF1.MEMBER.COUNT>,<dDEF0.GUILDCONFIG_MAXMEMBERS>
 			ENDIF
 		ELSE
 			F_GUILDSYS_ADDCHARTOGUILD <REF1.UID>,<ARGO.UID>,1
@@ -223,7 +223,7 @@ IF (<REF1.MEMBERFROMUID.<ARGO.UID>.UID> != <ARGO.UID>)
 			IF (<REF1.MEMBER.COUNT <DEF0.STONEPRIV_CANDIDATE>> < <DEF0.GUILDCONFIG_MAXCANDIDATES>)
 				F_GUILDSYS_ADDCHARTOGUILD <REF1.UID>,<ARGO.UID>,0
 			ELSE
-				SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Guildde <dDEF0.GUILDCONFIG_MAXCANDIDATES> aday üye mevcut. Şu an bir aday üye daveti gönderemezsiniz.
+				SYSMESSAGELOC <def.tcolor_red>,3300868,<dDEF0.GUILDCONFIG_MAXCANDIDATES>
 			ENDIF
 		ELSE
 			F_GUILDSYS_ADDCHARTOGUILD <ref1.uid>,<argo.uid>,0
@@ -233,7 +233,7 @@ IF (<REF1.MEMBERFROMUID.<ARGO.UID>.UID> != <ARGO.UID>)
 	ENDIF
    
 ELSE
-	SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, <ARGO.NAME> zaten guild üye adayı.
+	SYSMESSAGELOC <def.tcolor_red>,3300869,<ARGO.NAME>
 ENDIF
 
 
@@ -247,11 +247,11 @@ LOCAL.ADDASMEMBER = <ARGV[2]>
 
 IF (<LOCAL.ADDASMEMBER>)
 	REF1.JOINASMEMBER <REF2.UID>
-	REF1.SAYU Yeni üye : <REF2.NAME>
+	REF1.SAYLOC 0,3301165,<REF2.NAME>
 	REF2.GC Guildinizin yeni üyesi olarak kabul edildim, teşekkürler...
 ELSE
 	REF1.APPLYTOJOIN <REF2.UID>
-	REF1.SAYU Yeni üye adayı : <REF2.NAME>
+	REF1.SAYLOC 0,3301166,<REF2.NAME>
 	REF2.GC Merhaba! Guildinizin yeni üye adayıyım.
 ENDIF
 REF2.f_guildsys_event_speech_fix
@@ -269,7 +269,7 @@ REF2 = <ARGV[1]> // THE CHAR
 // Online ise timer memory ver.
 IF (<REF2.ISONLINE>)
 	IF (<REF2.FINDID.I_GUILD_RESIGN_MEMORY>)
-		SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, <ref2.name> isimli oyuncu zaten guildden ayrılma aşamasında.
+		SRC.SYSMESSAGELOC <def.tcolor_red>,3300870,<ref2.name>
 		RETURN 1
 	ENDIF
 	SERV.NEWITEM I_GUILD_RESIGN_MEMORY,1,<REF2>,1

@@ -61,7 +61,7 @@ ENDIF
 // PARTY KUR
 ON=999
 TARGETF PARTY_CREATE_TARGET
-SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, Party kurmak istediğiniz oyuncuyu seçiniz.
+SYSMESSAGELOC <def.tcolor_text>,3300132
 
 
 // PARTY BOZ
@@ -72,7 +72,7 @@ PARTY.DISBAND
 // ÜYE AL
 ON=997
 TARGETF PARTY_CREATE_TARGET
-SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, Partye almak istediğiniz oyuncuyu seçiniz.
+SYSMESSAGELOC <def.tcolor_text>,3300133
 
 
 // AYRIL
@@ -91,22 +91,22 @@ ENDIF
 
 [FUNCTION PARTY_CREATE_TARGET]
 IF !(<ARGO>)
-	SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, <def.msg_invalid_target_tr>
+	SYSMESSAGELOC <def.tcolor_red>,3300090,<def.msg_invalid_target_tr>
 	RETURN 1
 ELSEIF !(<ARGO.ISPLAYER>)
-	SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bir oyuncu seçmelisiniz.
+	SYSMESSAGELOC <def.tcolor_red>,3300134
 	RETURN 1
 ELSEIF !(<ARGO.ISONLINE>)
-	SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, <ARGO.NAME> çevrimiçi değil.
+	SYSMESSAGELOC <def.tcolor_red>,3300113,<ARGO.NAME>
 	RETURN 1
 ELSEIF (<UID> == <ARGO>)
-	SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Kendinizi partye alamazsınız.
+	SYSMESSAGELOC <def.tcolor_red>,3300135
 	RETURN 1
 ELSEIF (<argo.ISINPARTY>)
-	SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, <ARGO.NAME> zaten bir partye dahil.
+	SYSMESSAGELOC <def.tcolor_red>,3300136,<ARGO.NAME>
 	RETURN 1
 ENDIF
-	SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, <ARGO.NAME> isimli oyuncuya party daveti gönderildi.
+	SYSMESSAGELOC <def.tcolor_text>,3300137,<ARGO.NAME>
 	TRYSRC <ARGO> DIALOGCLOSE D_PARTY_INVITE
 	TRYSRC <ARGO> DIALOG D_PARTY_INVITE
 RETURN 1
@@ -157,8 +157,8 @@ ENDIF
 
 [DIALOG D_PARTY_INVITE BUTTON]
 ON=0
-SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, <REF1.NAME> isimli oyuncunun party davetini reddettin.
-SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, <SRC.NAME> isimli oyuncu party davetinizi reddetti.
+SRC.SYSMESSAGELOC <def.tcolor_red>,3300138,<REF1.NAME>
+SYSMESSAGELOC <def.tcolor_red>,3300139,<SRC.NAME>
 
 
 ON=1
@@ -177,7 +177,7 @@ ON=@PARTYJOIN
 // uid = partye giren
 
 SRC.EVENTS +e_party_inside
-SYSMESSAGELOC <def.tcolor_green>,<def.empty_cliloc2>, Party kurucusu: <SRC.NAME>
+SYSMESSAGELOC <def.tcolor_green>,3300140,<SRC.NAME>
 
 EVENTS +e_party_inside
 UPDATE

@@ -139,7 +139,7 @@ ENDIF
 
 ON=@DropOn_Self
 IF !(<SRC.ISGM>)
- SRC.SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>,The chest refuses to be filled with treasure again.
+ SRC.SYSMESSAGELOC <def.tcolor_text>,3300592
  return 1
 ENDIF
 
@@ -150,7 +150,7 @@ ENDIF
 [TYPEDEF t_map_treasure]
 ON=@DClick
 IF (<TOPOBJ> != <SRC>)
- SRC.SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, <DEFMSG.reach_fail>
+ SRC.SYSMESSAGELOC <def.tcolor_text>,3300090,<DEFMSG.reach_fail>
  return 1
 ELIF !(<MORE1>)
  TreasureMap_Decode
@@ -159,7 +159,7 @@ ELIF (<TreasureMap_CanDig>)
  TreasureMap_Dig
  return 1
 ENDIF
-MESSAGE The treasure is marked by the red pin. Grab a shovel and go dig it up!
+MESSAGELOC 0,3301123
 return 0
 
 ON=@ClientToolTip
@@ -183,10 +183,10 @@ ENDIF
 
 [FUNCTION TreasureMap_Decode]
 IF (<SRC.CARTOGRAPHY> < <DEF0.TreasureMap_L<TDATA3>_Cartography>)
- SRC.MESSAGE The map is too difficult to attempt to decode.
+ SRC.MESSAGELOC 0,3301124
  return 1
 ENDIF
-SRC.MESSAGE You successfully decode a treasure map!
+SRC.MESSAGELOC 0,3301125
 TYPE=t_map
 NAME=<STREAT <NAME>>
 RESENDTOOLTIP
@@ -207,30 +207,30 @@ PIN=<eval <TDATA1>/2>,<eval <TDATA2>/2>   //add pin on map center
 
 [FUNCTION TreasureMap_CanDig]
 IF (<TAG0.DirtPatch1>)
- SRC.SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, You are already digging treasure.
+ SRC.SYSMESSAGELOC <def.tcolor_text>,3300593
  return 0
 ELIF (<SRC.CARTOGRAPHY> < <DEF0.TreasureMap_L<TDATA3>_Cartography>)
- SRC.SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, You did not decode this map and have no clue where to look for the treasure.
+ SRC.SYSMESSAGELOC <def.tcolor_text>,3300594
  return 0
 ELIF (<SRC.FLAGS> & statf_hovering)
- SRC.SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, You cannot dig for treasure while flying!
+ SRC.SYSMESSAGELOC <def.tcolor_text>,3300595
  return 0
 ELIF (<SRC.DISTANCE <MOREX>,<MOREY>> > <SRC.TreasureMap_GetDigDistance>)
- SRC.SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, You dig and dig but no treasure seems to be here.
+ SRC.SYSMESSAGELOC <def.tcolor_text>,3300596
  return 0
 ELIF (<SRC.P.M> != <MOREM>)
- SRC.SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, You seem to be in the right place, but may be on the wrong facet!
+ SRC.SYSMESSAGELOC <def.tcolor_text>,3300597
  return 0
 ENDIF
 return 1
 
 [FUNCTION TreasureMap_Dig]
 IF (<TAG0.DiggingPos>) && STRCMP("<dTAG.DiggingPos>","<SRC.P.X><SRC.P.Y>")
- SRC.SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, You cannot move around while digging up treasure. You will need to start digging anew.
+ SRC.SYSMESSAGELOC <def.tcolor_text>,3300598
  TreasureMap_ClearTags
  return 1
 ELIF (<SRC.WEAPON.BASEID> != i_pickaxe)
- SRC.SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, You must have a digging tool to dig for treasure.
+ SRC.SYSMESSAGELOC <def.tcolor_text>,3300599
  TreasureMap_ClearTags
  return 1
 ENDIF
@@ -238,7 +238,7 @@ REF1=<TAG.DirtPatch1>
 REF2=<TAG.DirtPatch2>
 REF3=<TAG.Treasure>
 IF ((<TAG0.DirtPatch1>) && !(<REF1>)) || ((<TAG0.DirtPatch2>) && !(<REF2>)) || ((<TAG0.Treasure>) && !(<REF3>))
- SRC.SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, The treasure chest fell apart for some reason.  Try digging it up again.
+ SRC.SYSMESSAGELOC <def.tcolor_text>,3300600
  TreasureMap_ClearTags
  return 1
 ENDIF
@@ -252,11 +252,11 @@ IF !(<REF1>)
  REF1=<TAG0.DirtPatch1>
  //Check if treasure still fit on this location
  IF (<SRC.P.X> == <MOREX>) && (<SRC.P.Y> == <MOREY>)
-  SRC.SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, The chest can't be dug up because you are standing on top of it.
+  SRC.SYSMESSAGELOC <def.tcolor_text>,3300601
   TreasureMap_ClearTags
   return 1
  ELIF !(<REF1.TreasureMap_CanFitLocation>)
-  SRC.SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, You have found the treasure chest but something is keeping it from being dug up.
+  SRC.SYSMESSAGELOC <def.tcolor_text>,3300602
   TreasureMap_ClearTags
   return 1
  ENDIF
@@ -417,7 +417,7 @@ dhtmlgump 75 197 180 35 0 0 <DEF.BFONT_WHITE>Cancel
 [DIALOG d_treasure_chest_remove BUTTON]
 ON=1
 IF ((<SRC> == <LINK>) && (<SRC.CANSEELOS <UID>>)) || (<SRC.ISGM>)
- SRC.SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, The old, rusted chest crumbles when you hit it.
+ SRC.SYSMESSAGELOC <def.tcolor_text>,3300603
  REMOVE
 ENDIF
 

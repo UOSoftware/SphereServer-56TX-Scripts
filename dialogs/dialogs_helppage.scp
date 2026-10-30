@@ -97,7 +97,7 @@ TICKETNEW <ARGTXT[0]>
 
 // Destek: vazgeç
 ON=21
-SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Destek isteğinden vazgeçildi.
+SYSMESSAGELOC <def.tcolor_red>,3300117
 
 // Ticket'larım
 ON=23
@@ -118,7 +118,7 @@ IF !(<FINDID.I_MEMORY_HELPPAGE_STUCK>)
     NEW.TIMER=1
     NEW.MORE1=<eval 10+<R45>>
     NEW.EQUIP
-    SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, <NEW.MORE1> saniye icinde <SERV.MAP(<dARGV[0]>,<dARGV[1]>,<dARGV[3]>).REGION.NAME> bolgesine ulasmis olacaksiniz.
+    SYSMESSAGELOC <def.tcolor_text>,3300118,<NEW.MORE1>,<SERV.MAP(<dARGV[0]>,<dARGV[1]>,<dARGV[3]>).REGION.NAME>
 ENDIF
 
 
@@ -150,7 +150,7 @@ ON=@Timer
 IF (<MORE1>)
     TIMER 1
     MORE1 --
-    TOPOBJ.SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, <DMORE1>
+    TOPOBJ.SYSMESSAGELOC <def.tcolor_text>,3300090,<DMORE1>
     TOPOBJ.FLAGS |= STATF_FREEZE
 ELSE
     CONT.GO <MOREP>

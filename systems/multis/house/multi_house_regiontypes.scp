@@ -9,7 +9,7 @@ IF (<SRC.ISPLAYER>)
 	SRC.DIALOGCLOSEALL
 	
 	IF (<SRC.ACTION> == Magery) && ((<SRC.ACTARG1> == 32) || (<SRC.ACTARG1> == 52))
-		SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Ev içinde recall veya gate travel yapamazsiniz.
+		SRC.SYSMESSAGELOC <def.tcolor_red>,3300722
 		SRC.SKILL FAIL
 	ENDIF
 	
@@ -23,7 +23,7 @@ IF (<SRC.ISPLAYER>)
 	IF (<REF1.ISVALIDE>)
 		IF ((<REF1.ISOWNER <SRC>>) || (<REF1.GETCOOWNERPOS <SRC>> >= 0) || (<REF1.GETFRIENDPOS <SRC>> >= 0) || (<SRC.ISGM>))
 			// Ev uyeleri girerse	
-			SRC.SYSMESSAGELOC <def.tcolor_green>,<def.empty_cliloc2>, Evinize hosgeldiniz.
+			SRC.SYSMESSAGELOC <def.tcolor_green>,3300723
 		ELSE
 			// SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Evden ayril yazarak yabanci kisilerin evlerinden 10 sn. içinde ayrilabilirsiniz.
 			REF1.TAG0.VISITS ++

@@ -17,7 +17,7 @@ ELSE
 ENDIF
 
 IF (!<LOCAL.TOWNLIST_COUNT>)
-	SRC.SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, No results found for "<local.tosearch>".
+	SRC.SYSMESSAGELOC <def.tcolor_text>,3300951,<local.tosearch>
 	RETURN 1
 ENDIF
 
@@ -101,13 +101,13 @@ ELIF (<ARGN1>==1)
 	ENDIF
 
 	IF ( <GUILDFROMUID.<LOCAL.SELECTEDTOWN>.ISENEMY> )
-		SRC.SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, You are already at war with <uid.<local.selectedtown>.name>.
+		SRC.SYSMESSAGELOC <def.tcolor_text>,3300983,<uid.<local.selectedtown>.name>
 	ELSEIF ( <GUILDFROMUID.<LOCAL.SELECTEDTOWN>.THEYWAR> && !<GUILDFROMUID.<LOCAL.SELECTEDTOWN>.WEWAR> )
 		IF ( <F_TOWNSYS_CANDECLAREWARWITH <UID>,<LOCAL.SELECTEDTOWN>> )
 			F_TOWNSYS_DECLAREWAR <UID>,<LOCAL.SELECTEDTOWN>,1
 		ENDIF
 	ELSEIF ( <GUILDFROMUID.<LOCAL.SELECTEDTOWN>.WEWAR> && !<GUILDFROMUID.<LOCAL.SELECTEDTOWN>.THEYWAR> )
-		SRC.SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>,A declaration of war is already made to <uid.<local.selectedtown>.name>.
+		SRC.SYSMESSAGELOC <def.tcolor_text>,3300984,<uid.<local.selectedtown>.name>
 	ELSEIF ( !<GUILDFROMUID.<LOCAL.SELECTEDTOWN>.WEWAR> && !<GUILDFROMUID.<LOCAL.SELECTEDTOWN>.THEYWAR> )
 		IF ( <F_TOWNSYS_CANDECLAREWARWITH <UID>,<LOCAL.SELECTEDTOWN>> )
 			F_TOWNSYS_DECLAREWAR <UID>,<LOCAL.SELECTEDTOWN>,2

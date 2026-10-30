@@ -65,7 +65,7 @@ ON=@Hit
    IF (<MANA> >= 20) && (<SRC.FLAGS> & statf_onhorse)
       MANA -= 20
       SRC.DISMOUNT
-      SRC.EMOTE knocked off mount!
+      SRC.EMOTELOC 0,3301040
       SRC.DAMAGE <R15,25> <DEF.dam_physical> <UID>
    ENDIF
    //Bleed Attack
@@ -304,7 +304,7 @@ ON=@Hit
    LOCAL.Counter=RAND(20)
    //Critical hit
    IF ( (<MANA> >= 10) && (RAND(5)==0) )
-      EMOTE critical hit <SRC.NAME>
+      EMOTELOC 0,3301043,<SRC.NAME>
       SRC.DAMAGE <R25,35> <DEF.dam_physical>
       MANA -= 10
    ENDIF
@@ -375,7 +375,7 @@ ON=@Hit
    //Critical Hit Attack vs pets
    IF (<SRC.FLAGS>&statf_pet) || (RAND(10)==1)
       SRC.DAMAGE <R50,100> <DEF.dam_physical> <UID>
-      EMOTE critical hit <SRC.NAME>
+      EMOTELOC 0,3301043,<SRC.NAME>
    ENDIF
    //Stat Reduction Attack
    IF (RAND(10)==1)
@@ -634,7 +634,7 @@ ON=@GetHit
          IF (<ISPLAYER>) || (<FLAGS>&statf_pet)
             LOCAL.DAM=<R10,20>
             DAMAGE <LOCAL.DAM> <DEF.dam_energy> <REF11>
-            SYSMESSAGE @color_text,,1 Intense energy radiating from the creature damages you
+            SYSMESSAGELOC color_text,3300001
          ENDIF
       ENDFOR
    ENDIF

@@ -42,16 +42,16 @@ ENDIF
 on=1
 REF1=<MASTERUID>
 IF (<SRC.CTAG0.GUILD_ADD_INVITE> > <SERV.TIME>)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu kadar sık bildirim gönderemezsiniz.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300932
 	RETURN 1
 ENDIF
 IF (<REF1>)
 	REF1.NOTICE <SRC.NAME> guildinize katılmak istiyor. Şu an guildstone yanında!
 ENDIF
 IF (<REF1.ISONLINE>)
-	SRC.SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, Guildstone yanında olduğunuzun ve guilde katılmak istediğinizin bildirimi guildmastera (Çevrimiçi) gönderildi.
+	SRC.SYSMESSAGELOC <def.tcolor_text>,3300933
 ELSE
-	SRC.SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, Guildstone yanında olduğunuzun ve guilde katılmak istediğinizin bildirimi guildmastera (Çevrimdışı) gönderildi.
+	SRC.SYSMESSAGELOC <def.tcolor_text>,3300934
 ENDIF
 SRC.CTAG0.GUILD_ADD_INVITE=<EVAL <SERV.TIME>+100> // 10 SANİYE sonra
 

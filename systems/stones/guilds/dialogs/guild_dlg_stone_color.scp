@@ -54,14 +54,14 @@ REF1=<UID>
 // Baska guild bu rengi kullaniyor mu kontrolunu yap
 FORINSTANCES I_GUILDSTONE
 	IF (<REF1> != <UID> && <DCOLOR> == <DLOCAL.ID>)
-		SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu renk başka bir guild tarafından kullanılıyor. (<name> guildi)
+		SRC.SYSMESSAGELOC <def.tcolor_red>,3300947,<name>
 		RETURN 1
 	ENDIF
 ENDFOR
 
 IF (<DLOCAL.POINT>)
 	IF (<SRC.dTAG0.POINTS.GUILD> < <dLOCAL.Point>)
-		SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bunu kullanabilmek için en az <DLOCAL.POINT> Guild puanına ihtiyacınız var.
+		SRC.SYSMESSAGELOC <def.tcolor_red>,3300948,<DLOCAL.POINT>
 		RETURN 1
 	ENDIF
 ENDIF
@@ -79,7 +79,7 @@ ENDFOR
 
 COLOR = <LOCAL.ID>
 UPDATE
-SRC.SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, Guildstone rengi değişti.
+SRC.SYSMESSAGELOC <def.tcolor_text>,3300949
 
 DIALOGCLOSE d_Guild_StoneColor
 DIALOG d_Guild_StoneColor,0

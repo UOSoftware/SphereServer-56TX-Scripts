@@ -82,7 +82,7 @@ ON=@DClick
      SERV.NEWITEM {i_turkey_platter 1 i_basket_rolls 1 i_potted_coffee_plant_1 1}
      NEW.BOUNCE
     ELSE
-     MESSAGE That one's not cooked!
+     MESSAGELOC 0,3301103
      SERV.NEWNPC c_turkey
      NEW.P=<TOPOBJ.P>
      NEW.UPDATE

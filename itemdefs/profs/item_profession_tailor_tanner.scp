@@ -185,36 +185,36 @@ SUBSECTION=Tailor
 DESCRIPTION=Dying Tub
 
 ON=@DClick
-src.sysmessage Lutfen boyamak istediginiz esyayi seciniz.
+src.sysmessageloc 0,3300380
 target
 return 1
 
 ON=@TargOn_Char
-src.sysmessage Bunu boyayamazsiniz.
+src.sysmessageloc 0,3300387
 return 1
 
 ON=@TargOn_Item
 if <src.targ.topobj.uid> != <src.uid> 
-	src.sysmessage Boyayacaginiz esya uzerinizde olmali.
+	src.sysmessageloc 0,3300381
 	return 1
 endif
 
 if (( <src.targ.dispid> = i_leather_cap ) || ( <src.targ.dispid> = i_leather_gorget ) || ( <src.targ.dispid> = i_leather_sleeves ) || ( <src.targ.dispid> = i_leather_leggings ) || ( <src.targ.dispid> = i_leather_tunic ) || ( <src.targ.dispid> = i_studded_gorget ) || ( <src.targ.dispid> = i_studded_gloves ) || ( <src.targ.dispid> = i_studded_sleeves ) || ( <src.targ.dispid> = i_studded_leggings ) || ( <src.targ.dispid> = i_studded_tunic ) || ( <src.targ.dispid> = i_armor_female_shorts ) || ( <src.targ.dispid> = i_armor_female_bustier ) || ( <src.targ.dispid> = i_armor_female_bustier_studded ) || ( <src.targ.dispid> = i_armor_female_studded ) || ( <src.targ.dispid> = i_armor_female_skirt ) || ( <src.targ.dispid> = i_armor_female_leather ))
-	src.sysmessage Bu boya ile deri boyayamazsiniz.
+	src.sysmessageloc 0,3300382
 	return 1
 elseif (( <src.targ.baseid> = i_x_ranger_sleeves ) || ( <src.targ.baseid> = i_x_ranger_gloves ) || ( <src.targ.baseid> = i_x_ranger_gorget ) || ( <src.targ.baseid> = i_x_ranger_leggings ) || ( <src.targ.baseid> = i_x_ranger_tunic ))
-	src.sysmessage Bu boya ile ranger armor boyayamazsiniz.
+	src.sysmessageloc 0,3300383
 	return 1
 elseif (( <src.targ.baseid> = i_x_phoenix_leggings ) || ( <src.targ.baseid> = i_x_phoenix_gloves ) || ( <src.targ.baseid> = i_x_phoenix_sleeves ) || ( <src.targ.baseid> = i_x_phoenix_tunic ) || ( <src.targ.baseid> = i_x_phoenix_gorget ) || ( <src.targ.baseid> = i_x_phoenix_helm ))
-	src.sysmessage Bu boya ile phoenix armor boyayamazsiniz.
+	src.sysmessageloc 0,3300384
 	return 1
 elseif ( <src.targ.type> = t_dye_vat )
-	src.sysmessage Bu boya ile baska boyalari boyayamazsiniz.
+	src.sysmessageloc 0,3300385
 	return 1
 elseif (<src.targ.type> = t_clothing )
 	return 0
 else
-	src.sysmessage Bunu boyayamazsiniz.
+	src.sysmessageloc 0,3300387
 	return 1
 endif
 

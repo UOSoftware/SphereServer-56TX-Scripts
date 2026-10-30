@@ -5,12 +5,12 @@
 
 ON=@EXIT
 IF (<SRC.ISPLAYER>)
-SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Faction şehrinden çıktınız.
+SRC.SYSMESSAGELOC <def.tcolor_red>,3300969
 ENDIF
 
 ON=@ENTER
 IF !(<SRC.MEMORYFINDTYPE.MEMORY_TOWN>)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu alana sadece Faction üyeleri girebilir.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300970
 	RETURN 1
 
 ELSE
@@ -19,12 +19,12 @@ ELSE
 	
 		IF (<REGION.DEFNAME> != <REF1.TAG0.CITYDEF>)
 			IF (<SRC.ISPLAYER>)
-				SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu şehir sizin factionunuza ait değil.
+				SRC.SYSMESSAGELOC <def.tcolor_red>,3300971
 				SRC.POISON 100.0
 				SRC.DAMAGE {3 8}
 			ENDIF
 		ELSE
-			SRC.SYSMESSAGELOC <def.tcolor_green>,<def.empty_cliloc2>, Şehrinize hoşgeldiniz sayın <src.name>
+			SRC.SYSMESSAGELOC <def.tcolor_green>,3300972,<src.name>
 		ENDIF
 		
 	ENDIF

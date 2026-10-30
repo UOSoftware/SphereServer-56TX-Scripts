@@ -37,7 +37,7 @@ DTEXT +230 +95 044 Aileyi kur
 [DIALOG d_family_create BUTTON]
 ON=1
 IF (<TOPOBJ.UID> != <SRC.UID>)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Aile belgesi üzerinde olmalı.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300108
 	RETURN 1
 ENDIF
 // Ad, tekillik ve "zaten bir ailedesin" emulatörün; kurulursa belge harcanır.
@@ -141,7 +141,7 @@ IF (<SRC.FAMILY> != <UID>) || (<MASTER> != <SRC.UID>)
 ENDIF
 SRC.CTAG0.FamilyConfirm=
 SRC.TARGETF f_family_invite_target
-SRC.SYSMESSAGELOC <def.tcolor_grey>,<def.empty_cliloc2>, Aileye almak istediğin oyuncuyu seç. Kendini seçersen hesabındaki öteki karakterler listelenir.
+SRC.SYSMESSAGELOC <def.tcolor_grey>,3300109
 
 // Seçili üyeyi çıkar
 ON=2
@@ -152,7 +152,7 @@ SRC.CTAG0.FamilyConfirm=
 IF (<ARGCHKID> > 0)
 	MEMBERREMOVE <ARGCHKID>
 ELSE
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Önce listeden bir üye seç.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300110
 ENDIF
 SRC.FAMILY
 
@@ -165,7 +165,7 @@ SRC.CTAG0.FamilyConfirm=
 IF (<ARGCHKID> > 0)
 	MASTER=<ARGCHKID>
 ELSE
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Önce listeden bir üye seç.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300110
 ENDIF
 SRC.FAMILY
 
@@ -214,10 +214,10 @@ IF !(<FAMILY>)
 ELSEIF (<FAMILY.MASTER> != <UID>)
 	RETURN 1
 ELSEIF !(<ARGO>)
-	SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bir oyuncu seçmelisin.
+	SYSMESSAGELOC <def.tcolor_red>,3300111
 	RETURN 1
 ELSEIF !(<ARGO.ISCHAR>)
-	SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bir oyuncu seçmelisin.
+	SYSMESSAGELOC <def.tcolor_red>,3300111
 	RETURN 1
 ELSEIF (<ARGO> == <UID>)
 	FAMILY.DIALOGCLOSE d_family_chars
@@ -227,17 +227,17 @@ ELSEIF !(<ARGO.ISPLAYER>)
 	SYSMESSAGE <DEFMSG.family_target_not_player>
 	RETURN 1
 ELSEIF (<ARGO.FAMILY>)
-	SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, <ARGO.NAME> zaten bir ailede.
+	SYSMESSAGELOC <def.tcolor_red>,3300112,<ARGO.NAME>
 	RETURN 1
 ELSEIF !(<ARGO.ISONLINE>)
-	SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, <ARGO.NAME> çevrimiçi değil.
+	SYSMESSAGELOC <def.tcolor_red>,3300113,<ARGO.NAME>
 	RETURN 1
 ENDIF
 // Davet edilen sadece bu ailenin davetini kabul edebilir (d_family_invite); bağlantısı kopunca davet biter (CTAG).
 ARGO.CTAG0.FamilyInvite=<FAMILY>
 TRYSRC <ARGO> FAMILY.DIALOGCLOSE d_family_invite
 TRYSRC <ARGO> FAMILY.DIALOG d_family_invite
-SYSMESSAGELOC <def.tcolor_grey>,<def.empty_cliloc2>, <ARGO.NAME> isimli oyuncuya aile daveti gönderildi.
+SYSMESSAGELOC <def.tcolor_grey>,3300114,<ARGO.NAME>
 RETURN 1
 
 
@@ -256,7 +256,7 @@ DTEXT +215 +75 038 Reddet
 ON=0
 IF (<SRC.CTAG0.FamilyInvite> == <UID>)
 	SRC.CTAG0.FamilyInvite=
-	MASTER.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, <SRC.NAME> aile davetini reddetti.
+	MASTER.SYSMESSAGELOC <def.tcolor_red>,3300115,<SRC.NAME>
 ENDIF
 
 ON=1
@@ -310,7 +310,7 @@ ENDIF
 FOR 0 <EVAL <FAMILY.MEMBERCOUNT>-1>
 	REF1=<FAMILY.MEMBER.<DLOCAL._FOR>.UID>
 	IF (<REF1.ISONLINE>)
-		REF1.SYSMESSAGELOC 0480,<def.empty_cliloc2>, [<FAMILY.NAME>] <NAME>: <ARGS>
+		REF1.SYSMESSAGELOC 0480,3300116,<FAMILY.NAME>,<NAME>,<ARGS>
 	ENDIF
 ENDFOR
 

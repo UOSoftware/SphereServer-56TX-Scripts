@@ -22,47 +22,47 @@ ON=@DCLICK
 REF1=<SRC.REGION.UID>   // EV
 
 IF !(<SRC.IsInHouse>)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Ev içinde değilsiniz.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300610
 	RETURN 1
 	
 ELSEIF !(<REF1.ISMULTI>)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu vendoru sadece evlere kurabilirsiniz.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300770
 	RETURN 1
 	
 ELSEIF (<REF1.TAG0.PRICE>)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Satiliga çikartilmis evlere vendor kuramazsiniz.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300771
 	RETURN 1
 	
 ELSEIF (<SRC.ISDEATH>)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Ölüyken bunun kullanamazsiniz.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300255
 	RETURN 1
 	
 ELSEIF (<SRC.HITS> < <DLOCAL.HITS>) 
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Hitsiniz %50 altinda oldugu için eve strongbox yerlestiremezsiniz.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300725
 	RETURN 1
 	
 ELSEIF (<SRC.F_HOUSE_NEAR_DOOR 2>)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Kapi yakinlarina vendor koyamazsiniz.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300772
 	RETURN 1
 	
 ELSEIF (<SRC.FLAGS>&STATF_WAR)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Su an savas modundayken vendor koyamazsiniz.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300773
 	RETURN 1
 	
 ELSEIF (<SRC.FLAGS>&STATF_STONE|STATF_FREEZE)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Şuan vendor kuramazsınız.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300774
 	RETURN 1
 	
 ELSEIF !(<REF1.ISOWNER <SRC>> || <SRC.ISGM>)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Ev ile iliskiniz yok. (Sahip)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300775
 	RETURN 1
 	
 ELSEIF (<REF1.HOUSETYPE> != <DEF.house_public>)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Sadece halka açık evlere vendor kurabilirsiniz.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300776
 	RETURN 1
 	
 ELSEIF (<REF1.F_HOUSE_VENDOR_COUNT>)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu evde zaten vendor var.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300777
 	RETURN 1
 ENDIF
 
@@ -73,7 +73,7 @@ FORITEMS 2
 	ENDIF
 ENDFOR
 IF !(<DLOCAL.NEARSIGN>)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Vendoru sadece tabelanın altına kurabilirsiniz.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300778
 	RETURN 1
 ENDIF
 
@@ -105,7 +105,7 @@ ENDIF
 
 // tell him he works for you.
 REF2.MAKEMYPET <SRC>
-SRC.SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, Ev vendorunu başarıyla kurdunuz.
+SRC.SYSMESSAGELOC <def.tcolor_text>,3300779
 
 // get rid of the deed.
 REMOVE
@@ -126,7 +126,7 @@ ON=@REGENSTAT
 RETURN 1
 
 ON=@GETHIT
-SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Vendorlara saldıramazsınız.
+SRC.SYSMESSAGELOC <def.tcolor_red>,3300780
 RETURN 1
 
 ON=@ATTACK
@@ -164,15 +164,15 @@ return 1
 ON=@DCLICK
 REF1=<OWNER>
 IF !(<REF1.ISVALIDE>)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu vendorun bir sahibi yok.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300781
 	RETURN 1
 ELSEIF (<SRC.ISOUTOFREACH 2,<UID>>)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Vendora yetişemiyorsunuz.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300782
 	RETURN 1
 ENDIF
 IF !(<SRC> == <REF1>)
 	IF !(<FINDLAYER.21.RESCOUNT>)
-		SAYU Satılık eşyam yok!
+		SAYLOC 0,3301151
 		FACE <SRC>
 		RETURN 1
 	ENDIF
@@ -180,22 +180,22 @@ ENDIF
 SRC.DIALOGCLOSEALL
 IF (<SRC> == <REF1>)
 	IF (<SRC.HITS> < <SRC.STR>)
-		SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Yaralıyken oyuncu vendorunu kullanamazsınız.
+		SRC.SYSMESSAGELOC <def.tcolor_red>,3300783
 		RETURN 1
 	ELSEIF (<SRC.ISPOISONED>)
-		SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Zehirliyken oyuncu vendorunu kullanamazsınız.
+		SRC.SYSMESSAGELOC <def.tcolor_red>,3300784
 		RETURN 1
 	ELSEIF (<SRC.FLAGS>&statf_war)
-		SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Savaş esnasında oyuncu vendorunu kullanamazsınız.
+		SRC.SYSMESSAGELOC <def.tcolor_red>,3300785
 		RETURN 1
 	ENDIF
-	SAYU Hoşgeldin patron!
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Eşyayı satılığa çıkartmak için 'Fiyat' yazınız. (Örneğin : Fiyat 5000)
+	SAYLOC 0,3301152
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300786
 ELSE
 	IF !(<SRC.ISGM>)
-		SAYU Merhaba <SRC.NAME>!
+		SAYLOC 0,3301153,<SRC.NAME>
 	ENDIF
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Alışveriş yapmak için vendorun yakınında 'Satin al' veya 'Buy' yazınız.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300787
 ENDIF
 // SRC.PaperdollReOpen <UID>
 FACE=<SRC>
@@ -243,7 +243,7 @@ IF (<REF2.ISVALIDE>)
 				SERV.LOG VendorIade: [Item: <UID>/<NAME>] [Vendor: <UID>/<NAME>]
 			ENDFOR
 		ENDIF
-		REF2.SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, Vendorunuz (<NAME>) kaldırıldı. Çantasındaki tüm eşyalar (<REF99.RESCOUNT> adet) bir kasa içerisinde bankanıza aktarıldı.
+		REF2.SYSMESSAGELOC <def.tcolor_text>,3300788,<NAME>,<REF99.RESCOUNT>
 	ENDIF
 ENDIF
 
@@ -260,25 +260,25 @@ ENDIF
 on=*buy*
 on=*satin al*
 IF (<SRC.ISOUTOFREACH 3,<UID>>)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Biraz daha yaklaşmalısınız.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300789
 	RETURN 1
 ELSEIF !(<OWNER>)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu vendorun sahibi yok.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300790
 	RETURN 1
 ELSEIF (<OWNER> == <SRC>)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Kendi vendorunuzdan eşya satın alamazsınız.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300791
 	RETURN 1
 ENDIF
 IF !(<SRC> == <UID>)
 	IF !(<FINDLAYER.21.RESCOUNT>)
-		SAYU Satılık eşyam yok!
+		SAYLOC 0,3301151
 		RETURN 1
 	ENDIF
 ENDIF
 FACE=<SRC>
 PACK
 SRC.TARGETF func_player_vendor_item_buy_target <uid>
-SRC.SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, Hangi eşyayı satın almak istiyorsun?
+SRC.SYSMESSAGELOC <def.tcolor_text>,3300792
 RETURN 1
 
 
@@ -290,13 +290,13 @@ ON=kasa*
 ON=yardim*
 REF1=<OWNER> // SAHIBI
 IF (<SRC.ISOUTOFREACH 3,<UID>>)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Vendora yetişemiyorsunuz.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300782
 	RETURN 1
 ELSEIF !(<OWNER>)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu vendorun sahibi yok.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300790
 	RETURN 1
 ELSEIF !(<OWNER> == <SRC>)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu vendorun sahibi sen değilsin.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300793
 	RETURN 1
 ENDIF
 DIALOGCLOSE d_player_vendor_owner
@@ -311,46 +311,46 @@ REF1=<OWNER> // SAHIBI
 LOCAL.PRICE=<STREAT <ARGS>>
 
 IF (<SRC.ISDIFISOUTOFREACHF 3,<UID>>)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Vendora yetişemiyorsunuz.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300782
 	RETURN 1
 ELSEIF !(<OWNER>)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu vendorun sahibi yok.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300790
 	RETURN 1
 ELSEIF !(<OWNER> == <SRC>)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu vendorun sahibi sen değilsin.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300793
 	RETURN 1
 ENDIF
 
 IF (<ISEMPTY <DLOCAL.PRICE>>)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Boş giriş yapamazsınız.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300323
 	RETURN 1
 	
 ELSEIF (<ISBLANK <DLOCAL.PRICE>>)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Boş giriş yapamazsınız.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300323
 	RETURN 1
 ELSEIF !(<ISNUM <DLOCAL.PRICE>>)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Sadece rakam girebilirsiniz.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300621
 	RETURN 1
 	
 ELSEIF !(<EVAL STRLEN(<LOCAL.PRICE>)>)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Girdiğiniz değerin bir uzunluğu yok.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300794
 	RETURN 1
 	
 ELSEIF (<STRSUB 0 1 <STREAT <ARGS>>> <= 0)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, İlk rakam sıfır ile başlayamaz.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300795
 	RETURN 1
 	
 ELSEIF (<DLOCAL.PRICE> > 50000000)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Fiyatı en fazla 50.000.000 gp yapabilirsiniz.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300796
 	RETURN 1
 	
 ELSEIF (<EVAL STRLEN(<DLOCAL.PRICE>)> > 9)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Fiyatı en fazla 9 haneden ulaşabilir yapabilirsiniz.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300797
 	RETURN 1
 ENDIF
 FACE=<SRC>
 SRC.TARGETF func_player_vendor_item_sell_target <uid>,<DLOCAL.PRICE>
-SRC.SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, Hangi eşyayı <NumberFormat <DLOCAL.PRICE>> gp karşılığında satılığa çıkartmak istiyorsun?
+SRC.SYSMESSAGELOC <def.tcolor_text>,3300798,<NumberFormat <DLOCAL.PRICE>>
 RETURN 1
 
 
@@ -366,23 +366,23 @@ ELSEIF (<ARGO.PRICE> > 0)
 ENDIF
 
 IF !(<REF1.ISVALIDE>)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Vendor bulunamadı!
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300799
 	RETURN 1
 ELSEIF !(<REF2.ISVALIDE>)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Vendor sahibi bulunamadı!
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300800
 	RETURN 1
 ELSEIF !(<REF2.ISPLAYER>)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Vendor sahibi bulunamadı!
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300800
 	RETURN 1
 ENDIF
 IF (<SRC.ISOUTOFREACH 3,<REF1>>)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Vendora yetişemiyorsunuz.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300782
 	RETURN 1
 ELSEIF (<ARGO.TOPOBJ> != <REF1>)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu eşya bu vendor üzerinde değil.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300801
 	RETURN 1
 ELSEIF (<DLOCAL.PRICE> <= 0)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu eşya satılık değil.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300802
 	RETURN 1
 ENDIF
 	ARGO.DIALOGCLOSE d_player_vendor_item_buy_query
@@ -427,30 +427,30 @@ REF2=<REF1.OWNER>		// SAHIBI
 REF3=<UID>
 
 IF !(<REF1.ISVALIDE>)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, #1 Vendor bulunamadı!
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300803
 	RETURN 1
 ELSEIF !(<REF1.BASEID> == c_h_vendor)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, #2 Vendor bulunamadı!
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300804
 	RETURN 1
 ELSEIF !(<REF2.ISVALIDE>)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Vendor sahibi bulunamadı!
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300800
 	RETURN 1
 ELSEIF !(<REF2.ISPLAYER>)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Vendor sahibi bulunamadı!
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300800
 	RETURN 1
 ELSEIF !(<REF3.ISVALIDE>)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Eşya bulunamadı!
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300805
 	RETURN 1
 ENDIF
 
 IF (<SRC.ISOUTOFREACH 3,<REF1>>)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Vendora yetişemiyorsunuz.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300782
 	RETURN 1
 ELSEIF (<TOPOBJ> != <REF1>)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu eşya bu vendor üzerinde değil.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300801
 	RETURN 1
 ELSEIF (<DTAG0.PRICE> <= 0 && <PRICE> <= 0)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu eşya satılık değil.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300802
 	RETURN 1
 ENDIF
 
@@ -461,7 +461,7 @@ ELSEIF (<PRICE> > 0)
 	LOCAL.PRICE = <PRICE>
 ENDIF
 IF (<SRC.GOLD> < <dlocal.PRICE>)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bunu satın alacak kadar altınınız yok.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300806
 	RETURN 1
 ENDIF
 
@@ -477,7 +477,7 @@ NEW.CONT=<REF2.FINDLAYER.29>
 // SATIN ALAN == SRC
 SRC.GOLD -=<DLOCAL.PRICE>
 SERV.LOG VendorBuy: [Item: <UID>/<NAME>] [Vendor: <REF1>/<REF1.NAME>] [Tutar: <NumberFormat <DLOCAL.PRICE>> gp] [Sahibi: <REF2>/<REF2.NAME>]
-SRC.SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, <NAME> isimli eşyayı <NumberFormat <DLOCAL.PRICE>> gp karşılığında satın aldınız.
+SRC.SYSMESSAGELOC <def.tcolor_text>,3300807,<NAME>,<NumberFormat <DLOCAL.PRICE>>
 
 // SATAN == REF2
 REF2.Notice <REF1.NAME> vendorunuzdan <NAME> eşyasını satın aldı. Ucreti (<NumberFormat <dNEW.MORE1>> gp) bankanıza çek olarak gönderildi.
@@ -525,74 +525,74 @@ LOCAL.PRICE=<ARGV1>		// FİYAT
 
 // Vendor Kontrol
 IF !(<REF1.ISVALIDE>)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Vendor bulunamadı!
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300799
 	RETURN 1
 ELSEIF (<SRC.ISOUTOFREACH 3,<REF1>>)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Vendora yetişemiyorsunuz.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300782
 	RETURN 1
 ELSEIF !(<REF1.OWNER>)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu vendorun sahibi bulunmuyor.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300808
 	RETURN 1
 ELSEIF (<REF1.OWNER> != <SRC>)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu vendor sizin değil.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300809
 	RETURN 1
 ENDIF
 
 // Item Kontrol
 IF !(<ARGO>)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Hatalı seçim.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300221
 	RETURN 1
 		
 ELSEIF !(<ARGO.ISITEM>)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Sadece eşya ekleyebilirsiniz.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300810
 	RETURN 1
 	
 ELSEIF !(<ARGO.TOPOBJ> == <REF1>)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Sadece vendorun çantasındaki eşyaları ekleyebilirsiniz.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300811
 	RETURN 1
 	
 ELSEIF (<ARGO.ATTR>&ATTR_STATIC) || (<ARGO.TYPE>==T_GOLD)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu eşyayı satamazsınız.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300539
 	RETURN 1
 ENDIF
 IF (<ARGO.TYPE> == T_CONTAINER) && (<ARGO.BASEID> != i_runebook)
 	IF (<ARGO.RESCOUNT> < 1)
-		SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Boş kasa&kutuları satamazsınız.
+		SRC.SYSMESSAGELOC <def.tcolor_red>,3300812
 		RETURN 1
 	ENDIF
 ENDIF
 
 // Fiyat Kontrol
 IF (<ISEMPTY <DLOCAL.PRICE>>)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Boş giriş yapamazsınız.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300323
 	RETURN 1
 	
 ELSEIF (<ISBLANK <DLOCAL.PRICE>>)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Boş giriş yapamazsınız.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300323
 	RETURN 1
 ELSEIF !(<ISNUM <DLOCAL.PRICE>>)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Sadece rakam girebilirsiniz.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300621
 	RETURN 1
 	
 ELSEIF !(<EVAL STRLEN(<LOCAL.PRICE>)>)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Girdiğiniz değerin bir uzunluğu yok.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300794
 	RETURN 1
 	
 ELSEIF (<STRSUB 0 1 <STREAT <ARGS>>> <= 0)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, İlk rakam sıfır ile başlayamaz.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300795
 	RETURN 1
 	
 ELSEIF (<DLOCAL.PRICE> > 50000000)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Fiyatı en fazla 50.000.000 gp yapabilirsiniz.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300796
 	RETURN 1
 	
 ELSEIF (<EVAL STRLEN(<DLOCAL.PRICE>)> > 9)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Fiyatı en fazla 9 haneden ulaşabilir yapabilirsiniz.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300797
 	RETURN 1
 ENDIF
 SRC.DIALOGCLOSEALL
 ARGO.HouseVendorItemSetProps <DLOCAL.PRICE>
-SRC.SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, <ARGO.NAME> isimli eşyanın fiyatı <BolukAyir <DLOCAL.PRICE>> gp olarak belirlendi.
+SRC.SYSMESSAGELOC <def.tcolor_text>,3300813,<ARGO.NAME>,<BolukAyir <DLOCAL.PRICE>>
 SERV.LOG <ARGO.NAME>[<ARGO>] isimli esyayi <BolukAyir <DLOCAL.PRICE>> gp fiyatina vendora eklendi.
 
 
@@ -610,7 +610,7 @@ IF !(<CONT.TOPOBJ.BASEID> == c_h_vendor)
 	HouseVendorItemSetProps 0
 ELSE
 	IF !(<ISCONT>)
-		SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Satılık eşyayı bu şekilde kullanamazsınız.
+		SRC.SYSMESSAGELOC <def.tcolor_red>,3300814
 		RETURN 1
 	ENDIF
 ENDIF
@@ -619,31 +619,31 @@ ON=@CLICK
 IF !(<CONT.TOPOBJ.BASEID> == c_h_vendor)
 	HouseVendorItemSetProps 0
 ELSE
-	MESSAGE [<PRICE> gp]
+	MESSAGELOC 0,3301154,<PRICE>
 ENDIF
 
 ON=@PICKUP_PACK
 IF !(<CONT.TOPOBJ.BASEID> == c_h_vendor)
 	HouseVendorItemSetProps 0
-	SRC.SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, [Pickup Pack]: Eşya vendordan kaldırıldı ve fiyatı sıfırlandı!
+	SRC.SYSMESSAGELOC <def.tcolor_text>,3300815
 ENDIF
 
 ON=@DROPON_Ground
 HouseVendorItemSetProps 0
-SRC.SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, [DropOn Ground]: Eşya vendordan kaldırıldı ve fiyatı sıfırlandı!
+SRC.SYSMESSAGELOC <def.tcolor_text>,3300816
 
 
 ON=@DROPON_TRADE
 HouseVendorItemSetProps 0
-SRC.SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, [DropOn Trade]: Eşya vendordan kaldırıldı ve fiyatı sıfırlandı!
+SRC.SYSMESSAGELOC <def.tcolor_text>,3300817
 
 ON=@DROPON_SELF
 HouseVendorItemSetProps 0
-SRC.SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, [DropOn Self]: Eşya vendordan kaldırıldı ve fiyatı sıfırlandı!
+SRC.SYSMESSAGELOC <def.tcolor_text>,3300818
 
 ON=@DROPON_Char
 HouseVendorItemSetProps 0
-SRC.SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, [DropOn Char]: Eşya vendordan kaldırıldı ve fiyatı sıfırlandı!
+SRC.SYSMESSAGELOC <def.tcolor_text>,3300819
 
 
 
@@ -723,13 +723,13 @@ DTEXT +30 +120 <def.tcolor_green> Hayır
 ON=30
 REF1=<REGION.UID>
 IF (<SRC.ISOUTOFREACH 3,<UID>>)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Vendora yetişemiyorsunuz.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300782
 	RETURN 1
 ELSEIF !(<OWNER>)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu vendorun bir sahibi yok.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300781
 	RETURN 1
 ELSEIF (<OWNER> != <SRC>)
-	REF1.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Kontrat işlemlerini sadece sahibi gerçekleştirebilir.
+	REF1.SYSMESSAGELOC <def.tcolor_red>,3300820
 	RETURN 1
 ENDIF
 REMOVE
@@ -738,7 +738,7 @@ REMOVE
 
 // Kontrat ret
 ON=31
-SRC.SYSMESSAGELOC <def.tcolor_green>,<def.empty_cliloc2>, Vendoru kovmaktan vazgeçtiniz.
+SRC.SYSMESSAGELOC <def.tcolor_green>,3300821
 
 
 

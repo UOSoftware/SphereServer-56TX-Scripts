@@ -25,17 +25,17 @@ ENDIF
 
 ON=@CLICK
 IF (<LINK.HOUSETYPE> == <DEF.HOUSE_PRIVATE>)
-	MESSAGE @38,,1,1 (Özel)
+	MESSAGELOC 38,3301132
 ELSEIF (<LINK.HOUSETYPE> == <DEF.HOUSE_PUBLIC>)
-	MESSAGE @044,,1,1 (Halka Açık)
+	MESSAGELOC 044,3301133
 ENDIF
 MESSAGE @<DEF.NOTO.<LINK.OWNER.NOTOGETFLAG>> [<LINK.OWNER.NAME>] // sahibinin adı
 IF (<LINK.ISVALIDE>)
 	MESSAGE @,,1,1 [<LINK.NAME>] // evin adı
 ENDIF
 IF (<LINK.DTAG0.PRICE>)
-	MESSAGE @044,,1,1 [Satılık]
-	MESSAGE <LINK.DTAG0.PRICE> gp
+	MESSAGELOC 044,3301134
+	MESSAGELOC 0,3301135,<LINK.DTAG0.PRICE>
 ENDIF
 // MESSAGE <NAME>
 RETURN 1
@@ -97,7 +97,7 @@ IF (<REF2.ISPLAYER>)
 	IF (<REF2> == <SRC>) || (<REF1.ISOWNER <SRC>>)
 		RETURN 0
 	ELSE
-		SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu kasa size ait degil.
+		SRC.SYSMESSAGELOC <def.tcolor_red>,3300743
 		RETURN 1
 	ENDIF
 ENDIF
@@ -134,12 +134,12 @@ ENDIF
 ON=@CLICK
 COLOR=<SERV.ITEMDEF.<BASEID>.RESDISPDNHUE>
 IF (<RESCOUNT>)
-	MESSAGE @,,1,1 (Esya : <RESCOUNT>)
+	MESSAGELOC 0,3301136,<RESCOUNT>
 ENDIF
 IF !(<TIMER> <= 0)
-	MESSAGE @044,1,1 (<timer> sn sonra bosaltilacak)
+	MESSAGELOC 044,3301137,<timer>
 ENDIF
-MESSAGE @,1,1 çöp kutusu
+MESSAGELOC 0,3301138
 RETURN 1
 
 
@@ -155,7 +155,7 @@ COLOR=<SERV.ITEMDEF.<BASEID>.RESDISPDNHUE>
 IF (<RESCOUNT>)
 	EMPTY
 	UPDATEX
-	SAYU * çöp kutusu bosaltildi *
+	SAYLOC 0,3301139
 ENDIF
 TIMER 10
 RETURN 1
@@ -163,11 +163,11 @@ RETURN 1
 
 ON=@DropOn_Self
 IF (<RESCOUNT> >= 50)
-	SAYU Çöp kutusu doldugu için bosaltildi!
+	SAYLOC 0,3301140
 	EMPTY
 	UPDATEX
 ELSE
-	SRC.sysmessage <ARGO.NAME> <TIMER> saniye sonra silinecektir.
+	SRC.sysmessageloc 0,3300744,<ARGO.NAME>,<TIMER>
 	// TIMER=10
 ENDIF
 
@@ -189,26 +189,26 @@ SKILLMAKE=
 
 ON=@Click
 IF (<TAG0.MODE>==1)
-	MESSAGE @,,1,1 Mod : Çevir
+	MESSAGELOC 0,3301141
 ELIF (<TAG0.MODE>==2)
-	MESSAGE @,,1,1 Mod : Yukarı kaldır
+	MESSAGELOC 0,3301142
 ELIF (<TAG0.MODE>==3)
-	MESSAGE @,,1,1 Mod : Aşağı indir
+	MESSAGELOC 0,3301143
 ENDIF
 
 
 ON=@DCLICK
 REF1=<SRC.REGION.UID>
 IF !(<REF1.ISVALID>)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Ev bulunamadı!
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300648
 	RETURN 1
 ENDIF
 
 IF (<CONT.TOPOBJ> != <SRC>)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, That must be in your pack for you to use it.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300479
 	RETURN 1
 ELIF !((<REF1.ISOWNER <SRC>>) || (<REF1.GETCOOWNERPOS <SRC>> >= 0) || (<SRC.ISGM>))
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Only owner and co-owners can change items locations!
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300745
 	RETURN 1
 ELIF !(<TAG0.MODE>)
 	SDIALOG D_HOUSE_INTERIOR_DECORATOR
@@ -220,12 +220,12 @@ RETURN 1
 
 ON=@TARGON_CHAR
 TAG.HOUSE=
-SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Hatalı seçim.
+SRC.SYSMESSAGELOC <def.tcolor_red>,3300221
 RETURN 1
 
 ON=@TARGON_GROUND
 TAG.HOUSE=
-SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Hatalı seçim.
+SRC.SYSMESSAGELOC <def.tcolor_red>,3300221
 RETURN 1
 
 
@@ -243,23 +243,23 @@ ELSE
 	REF1 = <ARGO.REGION.UID>
 	
 	IF (<REF1> != <TAG0.HOUSE>) || !(<SRC.IsInHouse>)
-		SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, You must be in your house to do this.
+		SRC.SYSMESSAGELOC <def.tcolor_red>,3300746
 		RETURN 1
 	ELIF (<ARGO.CONT>) || (<ARGO.REGION.UID> != <TAG0.HOUSE>) || !(<ARGO.IsInHouse>)
-		SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, That must be in your house.
+		SRC.SYSMESSAGELOC <def.tcolor_red>,3300747
 		RETURN 1
 	ELIF !(<ARGO.ISEVENT.EI_HOUSE_LOCKDOWN>)
-		SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu eve sabit bir esya degil.
+		SRC.SYSMESSAGELOC <def.tcolor_red>,3300748
 		RETURN 1
 	ELIF !(<REF1.OWNER> == <SRC>)
-		SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu evin sahibi degilsiniz.
+		SRC.SYSMESSAGELOC <def.tcolor_red>,3300749
 		RETURN 1		
 	ELSE
 		TAG.HOUSE=
 		
 		IF (<TAG0.MODE>==1) // flip
 			IF !(<ARGO.FLIP>)
-				SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu cevirilebilen bir esya degil.
+				SRC.SYSMESSAGELOC <def.tcolor_red>,3300750
 			ELSE
 				ARGO.FLIP
 				DCLICK
@@ -268,7 +268,7 @@ ELSE
 			
 		ELIF (<TAG0.MODE>==2) // up
 			IF (<ARGO.HouseFloor <ARGO.Z>> != <ARGO.HouseFloor <eval <ARGO.Z>+<ARGO.HEIGHT>+3>>)
-				SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu esya daha fazla yukari cikamaz.
+				SRC.SYSMESSAGELOC <def.tcolor_red>,3300751
 			ELSE
 				ARGO.NUDGEUP
 				DCLICK
@@ -277,11 +277,11 @@ ELSE
 			
 		ELIF (<TAG0.MODE>==3) // down
 			IF (<ARGO.P.Z> <= <SRC.P.Z>)
-				SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu eşya sizinle aynı seviyeden daha aşağı inemez.
+				SRC.SYSMESSAGELOC <def.tcolor_red>,3300752
 				RETURN 1
 			ENDIF
 			IF (<ARGO.HouseFloor <ARGO.Z>> != <ARGO.HouseFloor <eval <ARGO.Z>-1>>)
-				SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu esya daha fazla asagi inemez.
+				SRC.SYSMESSAGELOC <def.tcolor_red>,3300753
 			ELSE
 				ARGO.NUDGEDOWN
 				DCLICK

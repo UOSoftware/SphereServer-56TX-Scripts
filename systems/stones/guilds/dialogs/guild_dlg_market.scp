@@ -53,7 +53,7 @@ LOCAL.ALIGN=<SERV.ITEMDEF.<LOCAL.ITEM>.TAG0.GuildAlign>
 
 IF (<DLOCAL.POINT>)
 	IF (<SRC.dTAG0.POINTS.GUILD> < <DLOCAL.POINT>)
-		SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu eşyayı almak için <NumberFormat <DLOCAL.POINT>> Guild puanına ihtiyacınız var.
+		SRC.SYSMESSAGELOC <def.tcolor_red>,3300942,<NumberFormat <DLOCAL.POINT>>
 		DIALOGCLOSE d_Guild_Market
 		DIALOG d_Guild_Market
 		RETURN 1
@@ -71,7 +71,7 @@ NEW.Ownedby=<UID>
 
 IF (<DLOCAL.POINT>)
 	SRC.TAG0.POINTS.GUILD -=<DLOCAL.POINT>
-	SRC.SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, <NumberFormat <DLOCAL.POINT>> guild puanı harcadınız. Kalan guild puanını: <NumberFormat <SRC.dTAG0.POINTS.GUILD>>
+	SRC.SYSMESSAGELOC <def.tcolor_text>,3300943,<NumberFormat <DLOCAL.POINT>>,<NumberFormat <SRC.dTAG0.POINTS.GUILD>>
 	IF (<SRC.TAG0.POINTS.GUILD> <= 0)
 		SRC.TAG0.POINTS.GUILD=0
 	ENDIF

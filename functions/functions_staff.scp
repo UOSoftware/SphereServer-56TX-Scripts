@@ -3,7 +3,7 @@ VERSION=TX
 
 [FUNCTION GETUID]
 IF (<ISEMPTY <ARGS>>)
-	SRC.SYSMESSAGE Bir serial (uid) giriniz.
+	SRC.SYSMESSAGELOC 0,3300216
 	RETURN 1
 ENDIF
 REF1=<ARGS>
@@ -15,17 +15,17 @@ IF (<REF1.ISVALID>)
 		REF1.GO <SRC.P>
 		REF1.UPDATE
 	ELSE
-		SRC.SYSMESSAGE @38,,1,1 Bu seri numarasında herhangi bir nesne/obje yok.
+		SRC.SYSMESSAGELOC 38,3300217
 	ENDIF
 ELSE
-	SRC.SYSMESSAGE @38,,1,1 Bu seri numarasında herhangi bir nesne/obje yok.
+	SRC.SYSMESSAGELOC 38,3300217
 ENDIF
 
 
 // Bir guilde gider (isim ile)
 [FUNCTION GOGUILD]
 IF (<ISEMPTY <ARGS>>)
-	SRC.SYSMESSAGE Bir guild adi giriniz.
+	SRC.SYSMESSAGELOC 0,3300218
 	RETURN 1
 ENDIF
 FORINSTANCES i_guild_stone
@@ -33,7 +33,7 @@ FORINSTANCES i_guild_stone
 		REF1=<UID>
 		SRC.GOUID <REF1>
 	ELSE
-		SRC.SYSMESSAGE @38,,1,1 Bu isimde guild bulunamadı!
+		SRC.SYSMESSAGELOC 38,3300219
 		RETURN 1
 	ENDIF
 ENDFOR
@@ -89,7 +89,7 @@ attrsec
 
 [function attrsec]
 if !(<isitem>)
-src.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu bir item degil.
+src.SYSMESSAGELOC <def.tcolor_red>,3300220
 return 1
 ENDIF
 dialogclose d_attrsec
@@ -268,7 +268,7 @@ ELSE
 	ATTR &=~ 0400000000000
 ENDIF
 UPDATE
-SRC.sysmessageloc <def.tcolor_text>, <def.empty_cliloc2>, <NAME> Attr Update
+SRC.sysmessageloc <def.tcolor_text>,3300149,<NAME>
 DIALOG d_Attrsec
 
 
@@ -487,11 +487,11 @@ SRC.TARGETF F_RESKILL
 
 [FUNCTION F_RESKILL]
 IF !(<ARGO>)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Hatalı seçim.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300221
 	SRC.TARGETF F_RESKILL
 	RETURN 1
 ELSEIF !(<ARGO.ISCHAR>)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Hatalı seçim.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300221
 	SRC.TARGETF F_RESKILL
 	RETURN 1
 ENDIF
@@ -617,21 +617,21 @@ GOTUR
 
 [FUNCTION GOTUR]
 SRC.TARGETF FUNC_GOTUR_SELECT_OBJ
-SRC.SYSMESSAGELOC <def.tcolor_grey>,<def.empty_cliloc2>, Başka yere götürmek istediğiniz varlığı veya eşyayı seçiniz.
+SRC.SYSMESSAGELOC <def.tcolor_grey>,3300222
 RETURN 1
 
 [FUNCTION FUNC_GOTUR_SELECT_OBJ]
 REF1=<ARGO>
 
 IF !(<ARGO>)
-SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bir eşya veya varlık seçiniz.
+SRC.SYSMESSAGELOC <def.tcolor_red>,3300223
 SRC.TARGETFG FUNC_GOTUR_SELECT_OBJ
 RETURN 1
 ENDIF
 
 SRC.CTAG0.GOTUR_OBJ <REF1>
 SRC.TARGETFG FUNC_GOTUR_SELECT_P
-SRC.SYSMESSAGELOC <def.tcolor_grey>,<def.empty_cliloc2>, Götürmek istediğiniz <qval (<ref1.isitem>)?eşya:varlık> seçildi. Şimdi götürmek istediğiniz yeri seçiniz.
+SRC.SYSMESSAGELOC <def.tcolor_grey>,3300224,<qval (<ref1.isitem>)?eşya:varlık>
  
 
 [FUNCTION FUNC_GOTUR_SELECT_P]
@@ -655,7 +655,7 @@ IF (<REF1>)
 		REF1.GO <SRC.TARGP>
 	ENDIF
 
-	SRC.SYSMESSAGELOC <def.tcolor_grey>,<def.empty_cliloc2>, <REF1.NAME>: <SRC.TARGP.X>-<SRC.TARGP.Y>-<SRC.TARGP.Z>-<SRC.TARGP.M> yerine götürüldü!
+	SRC.SYSMESSAGELOC <def.tcolor_grey>,3300225,<REF1.NAME>,<SRC.TARGP.X>,<SRC.TARGP.Y>,<SRC.TARGP.Z>,<SRC.TARGP.M>
 	SRC.CTAG0.GOTUR_OBJ=
 	SRC.TARGETFG FUNC_GOTUR_SELECT_OBJ
 ELSE
@@ -669,7 +669,7 @@ GETIR
 
 [FUNCTION GETIR]
 SRC.TARGETF F_SUMMONTO
-src.SYSMESSAGELOC <def.tcolor_grey>,<def.empty_cliloc2>, Yanınıza getirmek istediğiniz varlığı veya eşyayı seçiniz.
+src.SYSMESSAGELOC <def.tcolor_grey>,3300226
 
 [FUNCTION F_SUMMONTO]
 IF (<ARGO>)
@@ -684,13 +684,13 @@ IF (<ARGO>)
 		IF (<ARGO.TYPE> == T_SPAWN_CHAR)
 			ARGO.RESET
 		ENDIF
-		SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, <argo.name> isimli esya yaniniza geldi.
+		SRC.SYSMESSAGELOC <def.tcolor_red>,3300227,<argo.name>
 	ENDIF
 
 	IF (<ARGO.ISCHAR>)
 		ARGO.GO <SRC.P>
 		SRC.TARGETF F_SUMMONTO
-		SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, <argo.name> isimli varlik yaniniza geldi.
+		SRC.SYSMESSAGELOC <def.tcolor_red>,3300228,<argo.name>
 	ENDIF
 ENDIF
 
@@ -744,7 +744,7 @@ FORINSTANCES i_worldgem_bit
 		ENDIF
 	ENDIF
 ENDFOR
-SRC.sysmessageloc <def.tcolor_text>, <def.empty_cliloc2>, <DLOCAL.I> adet spawn resetlendi.
+SRC.sysmessageloc <def.tcolor_text>,3300229,<DLOCAL.I>
 DIALOGCLOSE D_SpawnReset 
 DIALOG D_SpawnReset 
 
@@ -759,7 +759,7 @@ FORINSTANCES i_worldgem_bit
 		ENDIF
 	ENDIF
 ENDFOR
-SRC.sysmessageloc <def.tcolor_text>, <def.empty_cliloc2>, <DLOCAL.I> adet spawn resetlendi.
+SRC.sysmessageloc <def.tcolor_text>,3300229,<DLOCAL.I>
 DIALOGCLOSE D_SpawnReset 
 DIALOG D_SpawnReset 
 
@@ -774,7 +774,7 @@ FORINSTANCES i_worldgem_bit
 		ENDIF
 	ENDIF
 ENDFOR
-SRC.sysmessageloc <def.tcolor_text>, <def.empty_cliloc2>, <DLOCAL.I> adet spawn resetlendi.
+SRC.sysmessageloc <def.tcolor_text>,3300229,<DLOCAL.I>
 DIALOGCLOSE D_SpawnReset 
 DIALOG D_SpawnReset 
 
@@ -790,7 +790,7 @@ FORINSTANCES i_worldgem_bit
 		ENDIF
 	ENDIF
 ENDFOR
-SRC.sysmessageloc <def.tcolor_text>, <def.empty_cliloc2>, <DLOCAL.I> adet spawn resetlendi.
+SRC.sysmessageloc <def.tcolor_text>,3300229,<DLOCAL.I>
 DIALOGCLOSE D_SpawnReset 
 DIALOG D_SpawnReset 
 
@@ -808,7 +808,7 @@ FORINSTANCES i_worldgem_bit
 		ENDIF
 	ENDIF
 ENDFOR
-SRC.sysmessageloc <def.tcolor_text>, <def.empty_cliloc2>, <DLOCAL.I> adet spawn resetlendi.
+SRC.sysmessageloc <def.tcolor_text>,3300229,<DLOCAL.I>
 DIALOGCLOSE D_SpawnReset 
 DIALOG D_SpawnReset 
 
@@ -825,7 +825,7 @@ FORINSTANCES i_worldgem_bit
 		ENDIF
 	ENDIF
 ENDFOR
-SRC.sysmessageloc <def.tcolor_text>, <def.empty_cliloc2>, <DLOCAL.I> adet spawn resetlendi.
+SRC.sysmessageloc <def.tcolor_text>,3300229,<DLOCAL.I>
 DIALOGCLOSE D_SpawnReset 
 DIALOG D_SpawnReset 
 
@@ -840,10 +840,10 @@ DIALOG D_SpawnReset
 
 [FUNCTION FUNC_SPAWNRESET_TARGET_OBJ]
 IF !(<ARGO>)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Birşey seçiniz.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300230
 	RETURN 1
 ELSEIF !((<ARGO.ISITEM>) || (<ARGO.ISCHAR>))
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Seçtiğiniz şey item veya char olmalı.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300231
 	RETURN 1
 ENDIF
 
@@ -853,7 +853,7 @@ FORINSTANCES i_worldgem_bit
 		LOCAL.I ++
 	ENDIF
 ENDFOR
-SRC.sysmessageloc <def.tcolor_text>, <def.empty_cliloc2>, <DLOCAL.I> adet spawn resetlendi.
+SRC.sysmessageloc <def.tcolor_text>,3300229,<DLOCAL.I>
 
 
 

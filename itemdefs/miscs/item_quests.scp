@@ -896,13 +896,13 @@ ATTR=attr_newbie
 
 ON=@DClick
 IF (<CONT> != <SRC.FINDLAYER.21>)
-    SRC.SYSMESSAGELOC <def.tcolor_grey>,<def.empty_cliloc2>, This item must be equipped to be used.
+    SRC.SYSMESSAGELOC <def.tcolor_grey>,3300476
     return 1
 ELIF (<SRC.CTAG0.ShoulderParrot.Cooldown> > <SERV.TIME>)
-    SRC.SYSMESSAGELOC <def.tcolor_grey>,<def.empty_cliloc2>, Your parrot is too tired to fly right now.
+    SRC.SYSMESSAGELOC <def.tcolor_grey>,3300477
     return 1
 ELIF (<SRC.FLAGS> & statf_hovering)
-    SRC.SYSMESSAGELOC <def.tcolor_grey>,<def.empty_cliloc2>, Your parrot can't fly here.
+    SRC.SYSMESSAGELOC <def.tcolor_grey>,3300478
     return 1
 ENDIF
 EFFECT 3,0a2cc,0,52
@@ -1751,11 +1751,11 @@ ATTR=attr_newbie
 
 ON=@DClick
 IF (<CONT> != <SRC.FINDLAYER.layer_pack>)
-SRC.SYSMESSAGELOC <def.tcolor_grey>,<def.empty_cliloc2>, That must be in your pack for you to use it.
+SRC.SYSMESSAGELOC <def.tcolor_grey>,3300479
 ELIF (<SRC.FLAGS> & statf_onhorse)
-SRC.SYSMESSAGELOC <def.tcolor_grey>,<def.empty_cliloc2>, You can't do that while riding a mount.
+SRC.SYSMESSAGELOC <def.tcolor_grey>,3300480
 ELIF (<SRC.CTAG0.ExplodingJackOLantern.Delay> > <SERV.TIME>)
-SRC.SYSMESSAGELOC <def.tcolor_grey>,<def.empty_cliloc2>, You must wait before trying again.
+SRC.SYSMESSAGELOC <def.tcolor_grey>,3300481
 ELSE
 SRC.CTAG.ExplodingJackOLantern.Delay=<eval <SERV.TIME>+30>
 TARGET Which target do you wish to throw this at?
@@ -1770,13 +1770,13 @@ return 1
 
 ON=@TargOn_Char
 IF (<ARGO> == <SRC>)
-SRC.SYSMESSAGELOC <def.tcolor_grey>,<def.empty_cliloc2>, Verbal taunts might be more effective!
+SRC.SYSMESSAGELOC <def.tcolor_grey>,3300482
 ELIF (<SRC.CANSEE <ARGO>>) && (<ARGO.FINDID.i_exploding_jack_o_lantern>)
 SRC.ANIM 11
-SRC.SYSMESSAGELOC <def.tcolor_grey>,<def.empty_cliloc2>, You hit your target!
+SRC.SYSMESSAGELOC <def.tcolor_grey>,3300483
 ARGO.EFFECT 0 <DISPID> 10 0 1
 ARGO.SOUND 0207
-ARGO.SYSMESSAGELOC <def.tcolor_grey>,<def.empty_cliloc2>, You have just been hit by a Jack o' Lantern!!!
+ARGO.SYSMESSAGELOC <def.tcolor_grey>,3300484
 ENDIF
 return 1
 

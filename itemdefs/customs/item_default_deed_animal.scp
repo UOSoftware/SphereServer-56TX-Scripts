@@ -44,7 +44,7 @@ ELSEIF (<IsInHouse>)
 	// SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu eşya ev içindeyken kullanamazsın.
 	// RETURN 1
 ELSEIF (<ATTR>&ATTR_MOVE_NEVER|ATTR_LOCKEDDOWN|ATTR_SECURE)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu eşya sabit.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300259
 	RETURN 1
 ENDIF
 
@@ -73,10 +73,10 @@ ENDIF
 IF (<MORE2>) // DOLUYSA
 
 	IF (<SRC.ISHIDE>)
-		SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Gizlenmiş durumdayken bunu kullanamazsınız.
+		SRC.SYSMESSAGELOC <def.tcolor_red>,3300260
 		RETURN 1
 	ELSEIF (<SRC.ISUSESKILL HIDING>)
-		SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu eşyayı gizleniyorken kullanamazsın.
+		SRC.SYSMESSAGELOC <def.tcolor_red>,3300261
 		RETURN 1
 	ENDIF
 	// IF (<SRC.IsInShip>)
@@ -168,7 +168,7 @@ IF (<MORE2>) // DOLUYSA
 
 ELSE // BOŞSA
 	TARGET
-	SRC.SYSMESSAGELOC <def.tcolor_grey>,<def.empty_cliloc2>, Küçültmek istediğiniz hayvanı seçiniz.
+	SRC.SYSMESSAGELOC <def.tcolor_grey>,3300262
 ENDIF
 RETURN 1
 
@@ -182,51 +182,51 @@ IF (<MORE2>) // DOLUYSA
 ELSE // BOŞSA
 
 	IF !(<SRC.TARG.IsPetableNpc>)
-		SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Sadece evcil hayvanları - binek hayvanları ve golemleri küçültebilirsiniz.
+		SRC.SYSMESSAGELOC <def.tcolor_red>,3300263
 		RETURN 1
 		
 	ELSEIF ((<SRC.TARG.BODY> == C_MAN) || (<SRC.TARG.BODY> == C_WOMAN))
-		SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Sadece binekler hayvanları küçültebilirsiniz.
+		SRC.SYSMESSAGELOC <def.tcolor_red>,3300264
 		RETURN 1
 		
 	ELSEIF !(<SRC.TARG.ISMYPET>)
-		SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu hayvan size ait değil.
+		SRC.SYSMESSAGELOC <def.tcolor_red>,3300265
 		RETURN 1
 		
 	ELSEIF (<SRC.TARG.MEMORYFINDTYPE.MEMORY_FIGHT> || <SRC.TARG.FLAGS>&statf_war)
-		SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu hayvan şu anda çok kızgın.
+		SRC.SYSMESSAGELOC <def.tcolor_red>,3300266
 		RETURN 1
 		
 	ELSEIF (<SRC.TARG.IsSummonNpc>)
-		SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Büyü ile yaratılmış hayvanları küçültemezsiniz.
+		SRC.SYSMESSAGELOC <def.tcolor_red>,3300267
 		RETURN 1
 		
 	ELSEIF (<SRC.TARG.FINDID.I_RUNE_STRENGTH> || <SRC.TARG.FINDID.I_RUNE_AGILITY> || <SRC.TARG.FINDID.I_RUNE_BLESS> || <SRC.TARG.FINDID.I_RUNE_PROTECTION> || <SRC.TARG.FINDID.I_RUNE_REACTIVE_ARMOR>)
-		SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu hayvanın statları büyü veya iksir etkisinde.
+		SRC.SYSMESSAGELOC <def.tcolor_red>,3300268
 		RETURN 1
 		
 	ELSEIF (<SRC.TARG.FINDLAYER.LAYER_SPELL_STATS>) || (<SRC.TARG.FINDLAYER.LAYER_FLAG_POTION>)
-		SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu hayvanın stat değerlerini etkileyen büyü/iksir etkisindeyken küçültülemez.
+		SRC.SYSMESSAGELOC <def.tcolor_red>,3300269
 		RETURN 1
 
 	ELSEIF !(<SRC.TARG.HITS> >= <SRC.TARG.STR>)
-		SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu hayvan yaralanmış.
+		SRC.SYSMESSAGELOC <def.tcolor_red>,3300270
 		RETURN 1
 		
 	ELSEIF (<SRC.TARG.MAXFOOD> > 0) && (<SRC.TARG.FOOD> <= 1)
-		SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu hayvan çok aç. (<SRC.TARG.FOOD>/<SRC.TARG.MAXFOOD>)
+		SRC.SYSMESSAGELOC <def.tcolor_red>,3300271,<SRC.TARG.FOOD>,<SRC.TARG.MAXFOOD>
 		RETURN 1
 		
 	ELSEIF (<SRC.TARG.FLAGS>&STATF_FREEZE)
-		SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu hayvan bulunduğu durum da küçültülemez.
+		SRC.SYSMESSAGELOC <def.tcolor_red>,3300272
 		RETURN 1
 		
 	ELSEIF (<SRC.TARG.FLAGS>&STATF_STONE)
-		SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu hayvan bulunduğu durum da küçültülemez.
+		SRC.SYSMESSAGELOC <def.tcolor_red>,3300272
 		RETURN 1
 
 	ELSEIF (<SRC.TARG.ISPOISONED>)
-		SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu hayvan zehirli.
+		SRC.SYSMESSAGELOC <def.tcolor_red>,3300273
 		RETURN 1
 		
 	ELSEIF (<SRC.ISISOUTOFREACHDIFF <SRC.TARG.UID>>)

@@ -1736,7 +1736,7 @@ MODAR=30
 ON=@CLICK
 MODAR=30
 TYPE=<serv.itemdef.<baseid>.type>
-MESSAGE a mage's robe
+MESSAGELOC 0,3301113
 RETURN 1
 
 ON=@Equip
@@ -1745,7 +1745,7 @@ TYPE=<serv.itemdef.<baseid>.type>
 
 IF !(<SRC.ISGM>)	
 	IF ((<SRC.MAGERY> < 74.9) || (<SRC.MEDITATION> < 74.9) || (<SRC.EVALUATINGINTEL> < 74.9))
-			SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu eşyayı kullanabilecek yeteneğe sahip değilsiniz. (75.0 Magery - Meditation - Evaluating Int)
+			SRC.SYSMESSAGELOC <def.tcolor_red>,3300522
 			fUnequip
 		RETURN 1
 	// ELSEIF ((<SRC.Parrying> > 0.5) || (<SRC.TACTICS> > 0.5) || (<SRC.FENCING> > 0.5) || (<SRC.MACEFIGHTING> > 0.5) || (<SRC.SWORDSMANSHIP> > 0.5) || (<SRC.ARCHERY> > 0.5) || (<SRC.WRESTLING> > 0.5))

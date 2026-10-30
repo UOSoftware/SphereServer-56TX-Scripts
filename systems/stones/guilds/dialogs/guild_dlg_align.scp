@@ -48,7 +48,7 @@ IF (<MASTERUID>!=<SRC.UID>)&&(!<SRC.ISGM>)
 	RETURN 1
 ENDIF
 IF (<SERV.TIME> < <TAG0.CHANGEALIGN_TIME>)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Guild destek yönünü değiştirmek için bir süre beklemelisiniz.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300897
 	RETURN 1
 ENDIF	
 FORINSTANCES I_GUILDSTONE
@@ -61,15 +61,15 @@ FORINSTANCES I_GUILDSTONE
 	ENDIF
 ENDFOR
 IF (<DLOCAL.TYPE> == 1) // ORDER
-	SRC.SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, Order : <dLOCAL.ORDER> - Chaos : <DLOCAL.CHAOS> - Natural : <DLOCAL.NATURAL>
+	SRC.SYSMESSAGELOC <def.tcolor_text>,3300898,<dLOCAL.ORDER>,<DLOCAL.CHAOS>,<DLOCAL.NATURAL>
 	IF (<DLOCAL.ORDER> > <DLOCAL.CHAOS>)
-		SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Ordera destek veren guild sayısı Chaosa destek verenden fazla olduğu için destek yönü değişemedi.
+		SRC.SYSMESSAGELOC <def.tcolor_red>,3300899
 		RETURN 1
 	ENDIF
 ELSEIF (<DLOCAL.TYPE> == 2) // CHAOS
-	SRC.SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, Order : <dLOCAL.ORDER> - Chaos : <DLOCAL.CHAOS> - Natural : <DLOCAL.NATURAL>
+	SRC.SYSMESSAGELOC <def.tcolor_text>,3300898,<dLOCAL.ORDER>,<DLOCAL.CHAOS>,<DLOCAL.NATURAL>
 	IF (<DLOCAL.CHAOS> > <DLOCAL.ORDER>)
-		SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Chaosa destek veren guild sayısı Ordera destek verenden fazla olduğu için destek yönü değişemedi.
+		SRC.SYSMESSAGELOC <def.tcolor_red>,3300900
 		RETURN 1
 	ENDIF
 ENDIF

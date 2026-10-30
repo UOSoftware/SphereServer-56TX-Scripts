@@ -143,14 +143,14 @@ TIMER=1
 ON=@EQUIP
 TIMER=1
 SRC.EVENTS +e_memory_revealtimer_eq
-SRC.sysmessageloc <def.tcolor_text>, <def.empty_cliloc2>, Gizliliginiz <DURATIONFORHUMANS <MORE1>,,short> sonra otomatik olarak bozulacaktir.	
+SRC.sysmessageloc <def.tcolor_text>,3300203,<DURATIONFORHUMANS <MORE1>,,short>
 
 ON=@UNEQUIP
 SRC.EVENTS -e_memory_revealtimer_eq
 IF (<SRC.FLAGS>&STATF_HIDDEN)
 	SRC.FLAGSIL STATF_HIDDEN
 ENDIF
-SRC.sysmessageloc <def.tcolor_text>, <def.empty_cliloc2>, Gizliliginiz otomatik olarak bozuldu.
+SRC.sysmessageloc <def.tcolor_text>,3300204
 
 ON=@Timer
 IF (<DMORE1> <= 0)
@@ -200,7 +200,7 @@ TIMER=1
 ON=@EQUIP
 TIMER=1
 SRC.EVENTS +e_memory_disconnecttimer_eq
-SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, <DURATIONFORHUMANS <MORE1>,,short> sonra baglantiniz kesilecektir.
+SRC.SYSMESSAGELOC <def.tcolor_red>,3300205,<DURATIONFORHUMANS <MORE1>,,short>
 
 ON=@UNEQUIP
 SRC.EVENTS -e_memory_disconnecttimer_eq
@@ -313,7 +313,7 @@ ATTR=ATTR_INVIS|ATTR_NEWBIE
 ON=@EQUIP
 SRC.STONE 1
 SRC.EVENTS +e_memory_stonetimer_eq
-SRC.SYSMESSAGELOC <def.tcolor_grey>,<def.empty_cliloc2>, <DURATIONFORHUMANS <MORE1>,,short> sonra stone stoneliğiniz kalkacaktır.
+SRC.SYSMESSAGELOC <def.tcolor_grey>,3300206,<DURATIONFORHUMANS <MORE1>,,short>
 
 ON=@UNEQUIP
 SRC.STONE 0
@@ -379,7 +379,7 @@ IF (<DMORE1> <= 0)
 	TOPOBJ.REMOVE
 ELSE
 	IF (<DMORE1> == 3)
-		TOPOBJ.SAYU * 3 saniye sonra silinecektir *
+		TOPOBJ.SAYLOC 0,3301058
 	ENDIF
 	MORE1 --
 	TIMER=1
@@ -432,7 +432,7 @@ IF (<DMORE1> <= 0)
 	TOPOBJ.HITS=0
 ELSE
 	IF (<DMORE1> == 3)
-		TOPOBJ.SAYU * 3 saniye sonra ölecek *
+		TOPOBJ.SAYLOC 0,3301059
 	ENDIF
 	MORE1 --
 	TIMER=1

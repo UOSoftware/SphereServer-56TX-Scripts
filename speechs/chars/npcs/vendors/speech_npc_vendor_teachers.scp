@@ -18,7 +18,7 @@ ENDIF
 		DIALOGCLOSE D_TEACH_INFO
 		DIALOG D_TEACH_INFO
 	ELSE
-		SRC.SYSMESSAGELOC <def.tcolor_grey>,<def.empty_cliloc2>, Hangi beceriyi nasil teach yapacaginizi görmek için sadece 'teach' yaziniz.
+		SRC.SYSMESSAGELOC <def.tcolor_grey>,3300543
 		TRAIN <LOCAL.SKILLKEY>
 	ENDIF
 // ENDIF

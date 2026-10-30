@@ -76,7 +76,7 @@ Throwing=100.0
 
 ON=@ItemClick
 IF (<ACT.ATTR>&ATTR_STATIC)
-	ACT.MESSAGE @0,3 (static)
+	ACT.MESSAGELOC 0,3301117
 ENDIF
 
 ON=@DEATH
@@ -117,7 +117,7 @@ IF (<DARGN1> == 211)
 		
 		SRC.GO <REF1.P.X>,<REF1.P.Y>,<REF1.P.Z>,<REF1.P.M>
 		SRC.MOVENEAR <REF1> 1
-		SRC.SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc>, <ref1.p.x>-<ref1.p.y>-<ref1.p.z>-<ref1.p.m>
+		SRC.SYSMESSAGELOC <def.tcolor_text>,3300527,<ref1.p.x>,<ref1.p.y>,<ref1.p.z>,<ref1.p.m>
 		SRC.FIX
 		
 		NEW.REMOVE
@@ -126,7 +126,7 @@ ENDIF
 
 ON=@SPELLEFFECT
 IF (<ARGN> == 20)
-	SAYU * büyüyü geri çevirir *
+	SAYLOC 0,3301118
 	IF (<FINDID.I_RUNE_POISON>)
 		FINDID.I_RUNE_POISON.REMOVE
 	ENDIF

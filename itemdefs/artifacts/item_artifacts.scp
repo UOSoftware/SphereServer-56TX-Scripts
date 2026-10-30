@@ -1006,13 +1006,13 @@ ENDFOR
 [DIALOG d_serpents_jawbone BUTTON]
 ON=1 17
 IF !(<ATTR> & attr_move_never|attr_lockeddown|attr_secure)
-SRC.SYSMESSAGELOC <def.tcolor_grey>,<def.empty_cliloc2>, This must be locked down or secured in order to use it.
+SRC.SYSMESSAGELOC <def.tcolor_grey>,3300240
 return 1
 ELIF (<DISTANCE> > 1)
-SRC.SYSMESSAGELOC <def.tcolor_grey>,<def.empty_cliloc2>, You are too far away to use the gate.
+SRC.SYSMESSAGELOC <def.tcolor_grey>,3300241
 return 1
 ELIF (<SRC.ACTION> != -1)
-SRC.SYSMESSAGELOC <def.tcolor_grey>,<def.empty_cliloc2>, You are too busy to do that at the moment.
+SRC.SYSMESSAGELOC <def.tcolor_grey>,3300242
 return 1
 ENDIF
 SRC.GO <STREAT <DEF0.SerpentsJawbone.Loc<ARGN>>>

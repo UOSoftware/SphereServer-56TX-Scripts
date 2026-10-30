@@ -41,21 +41,21 @@ IF (<SERV.ACCOUNT.<DLOCAL.a>>)
 ENDFOR
 
 IF (<DLOCAL.NAME_BAD_LEN>)
-	SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, İsminiz EN AZ 2 EN FAZLA 16 karakter olmalıdır.
+	SYSMESSAGELOC <def.tcolor_red>,3300170
 ENDIF
 IF (<DLOCAL.NAME_BAD_FORBIDDEN>)
-	SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, İsminiz içeriğinde argo veya yasaklı kelimeler bulunuyor.
+	SYSMESSAGELOC <def.tcolor_red>,3300171
 ENDIF	
 IF (<DLOCAL.NAME_BAD_CHAR>)
-	SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, İsminizde yalnızca alfabetik karakter kullanabilirsiniz.
+	SYSMESSAGELOC <def.tcolor_red>,3300172
 ENDIF		
 IF (<DLOCAL.NAME_DUPE>)
-	SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu isimden sunucuda bulunuyor.
+	SYSMESSAGELOC <def.tcolor_red>,3300173
 ENDIF
 LOCAL.Result <EVAL <DLOCAL.NAME_BAD_LEN> + <DLOCAL.NAME_BAD_FORBIDDEN> + <DLOCAL.NAME_BAD_CHAR> + <DLOCAL.NAME_DUPE>>
 // serv.b <dLOCAL.Result>
 IF (<DLOCAL.Result>)
-	SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, İsminiz hatalıdır, Otomatik olarak değiştirilmiştir. (<NAME>)
+	SYSMESSAGELOC <def.tcolor_red>,3300174,<NAME>
 	NAME #NAMES_HUMAN<IsGenderName>
 	DIALOGCLOSE D_RENAME_CHAR
 	DIALOG D_RENAME_CHAR
@@ -165,13 +165,13 @@ ENDIF
 [FUNCTION fControlledbyBounce]
 REF1=<ARGV0> // PLAYER
 IF (<REF1.ISVALID>)
-    ref1.sysmessage Weight: <REF1.WEIGHT> / <REF1.MAXWEIGHT>
+    ref1.sysmessageloc 0,3300175,<REF1.WEIGHT>,<REF1.MAXWEIGHT>
     IF (<REF1.WEIGHT> < <REF1.MAXWEIGHT>)
         CONT=<SRC.FINDLAYER.21>
-        REF1.SYSMESSAGE <name> cantaniza gonderildi.
+        REF1.SYSMESSAGELOC 0,3300176,<name>
     ELSE
         CONT=<SRC.FINDLAYER.29>
-        REF1.SYSMESSAGE <name> bankaniza gonderildi.
+        REF1.SYSMESSAGELOC 0,3300177,<name>
     ENDIF
 ENDIF
 
@@ -347,10 +347,10 @@ IF !(<TOPOBJ.UID> == <SRC>)
 ENDIF
 REF1=<MORE1>
 IF (<REF1>) && (<SRC> != <REF1>)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu belge size ait değil. (<REF1.NAME>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300178,<REF1.NAME>
 	IF (<REF1>)
 		CONT=<REF1.FINDLAYER.layer_bankbox>
-		SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Belge sahibinin bankasına gönderildi.
+		SRC.SYSMESSAGELOC <def.tcolor_red>,3300179
 		REF1.NOTICE <DEF.BFONT_NOTICE_RED>Size ait bir Eşya Hafıza belgesi <SRC.NAME> isimli oyuncu tarafından kullanılmaya çalışıldı. Belge bankanıza aktarıldı.
 	ELSE
 		RETURN 1
@@ -367,7 +367,7 @@ IF (<RESCOUNT>)
 		ENDIF
 	ENDFOR
 ELSE
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Hafıza belgesi içinde eşya bulunmadığı için geri iade yapılmadı.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300180
 ENDIF
 
 REMOVE
@@ -437,7 +437,7 @@ DHTMLGUMP 25 35 265 90 0 1 <SRC.TAG0.NOTICE>
 
 [DIALOG D_NOTICE BUTTON]
 ON=0
-SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu bildiriyi okudunuz sayıldı!
+SYSMESSAGELOC <def.tcolor_red>,3300181
 SRC.TAG0.NOTICE.READ_AT=<serv.rtime>
 SRC.EVENTS -e_notice
 
@@ -543,7 +543,7 @@ IF !(<RESTEST 1 I_FULL_SPELLBOOK>)
 ENDIF
 //src.mana = <src.int>
 CAST <DARGN>
-sysmessageloc <def.tcolor_text>, <def.empty_cliloc2>, ID=<ARGN>, NAME=<SERV.SPELL.<DARGN>.NAME>, WORD=<SERV.SPELL.<DARGN>.RUNES>
+sysmessageloc <def.tcolor_text>,3300182,<ARGN>,<SERV.SPELL.<DARGN>.NAME>,<SERV.SPELL.<DARGN>.RUNES>
 DIALOGCLOSE D_SPELLBOOK
 DIALOG D_SPELLBOOK
 
@@ -885,18 +885,18 @@ ENDIF
 LOCAL.TAG=<ARGV[0]>
 IF (<ISCHAR>)
 	IF (STRMATCH(*ASC*,<CTAG0.<LOCAL.TAG>>)) || (STRMATCH(*ASC*,<TAG0.<LOCAL.TAG>>))
-		SYSMESSAGELOC <def.tcolor_grey>,<def.empty_cliloc2>, Listeleme : Artan
+		SYSMESSAGELOC <def.tcolor_grey>,3300183
 		RETURN DESC
 	ELSE
-		SYSMESSAGELOC <def.tcolor_grey>,<def.empty_cliloc2>, Listeleme : Azalan
+		SYSMESSAGELOC <def.tcolor_grey>,3300184
 		RETURN ASC
 	ENDIF
 ELSE
 	IF STRMATCH(*ASC*,<TAG0.<LOCAL.TAG>>)
-		SRC.SYSMESSAGELOC <def.tcolor_grey>,<def.empty_cliloc2>, Listeleme : Artan
+		SRC.SYSMESSAGELOC <def.tcolor_grey>,3300183
 		RETURN DESC
 	ELSE
-		SRC.SYSMESSAGELOC <def.tcolor_grey>,<def.empty_cliloc2>, Listeleme : Azalan
+		SRC.SYSMESSAGELOC <def.tcolor_grey>,3300184
 		RETURN ASC
 	ENDIF
 ENDIF
@@ -905,25 +905,25 @@ ENDIF
 
 
 [FUNCTION ActLogla]
-SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, ----------------
-SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, ACT: <ACT> <qval (<act.isvalid>) ? [<ACT.NAME>] : >
-SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, ACTARG1: <dACTARG1>
-SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, ACTARG2: <dACTARG2>
-SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, ACTARG3: <dACTARG3>
+SYSMESSAGELOC <def.tcolor_text>,3300185
+SYSMESSAGELOC <def.tcolor_text>,3300186,<ACT>,<qval (<act.isvalid>) ? [<ACT.NAME>] : >
+SYSMESSAGELOC <def.tcolor_text>,3300187,<dACTARG1>
+SYSMESSAGELOC <def.tcolor_text>,3300188,<dACTARG2>
+SYSMESSAGELOC <def.tcolor_text>,3300189,<dACTARG3>
 REF1=<ACTPRV>
 
-SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, ACTPRV: <REF1> <QVAL (<REF1.ISVALID>) ? [<REF1.NAME>] : >
-SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, ACTP: <ACTP>
-SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, ACTION: <ACTION>
-SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, ACTIONEFFECT: <ACTIONEFFECT>
-SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, ACTDIFF: <ACTDIFF>
+SYSMESSAGELOC <def.tcolor_text>,3300190,<REF1>,<QVAL (<REF1.ISVALID>) ? [<REF1.NAME>] : >
+SYSMESSAGELOC <def.tcolor_text>,3300191,<ACTP>
+SYSMESSAGELOC <def.tcolor_text>,3300192,<ACTION>
+SYSMESSAGELOC <def.tcolor_text>,3300193,<ACTIONEFFECT>
+SYSMESSAGELOC <def.tcolor_text>,3300194,<ACTDIFF>
 IF (<ISONLINE> && <ISPLAYER>)
 	IF (<TARG>)
-		SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, Targ: <TARG> <qval (<Targ>) ? [<Targ.NAME>] : >
-		SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, TargP: <TargP>
+		SYSMESSAGELOC <def.tcolor_text>,3300195,<TARG>,<qval (<Targ>) ? [<Targ.NAME>] : >
+		SYSMESSAGELOC <def.tcolor_text>,3300196,<TargP>
 	ENDIF
 ENDIF
-SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, ActPri: <ActPri>
+SYSMESSAGELOC <def.tcolor_text>,3300197,<ActPri>
 
 
 
@@ -1062,7 +1062,7 @@ LOCAL.HTTPS https:/
    // CTAG0.OPEN_WEBURL_TIME <EVAL <SERV.TIME>+8>
    WEBLINK <LOCAL.HTTPS>/<ARGS>
    // ClassicUO clientte bu mesaja gerek yok
-   SYSMESSAGELOC <def.tcolor_grey>,<def.empty_cliloc2>, Yönlendiriliyorsunuz: <LOCAL.HTTPS>/<ARGS>
+   SYSMESSAGELOC <def.tcolor_grey>,3300198,<LOCAL.HTTPS>,<ARGS>
 // ELSE
    // SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Başka bir yönlendirme için bekleyiniz.
 // ENDIF
@@ -1100,7 +1100,7 @@ ELSEIF (<FLAGS>&statf_stone)
 	SYSMESSAGELOC <def.tcolor_red>,600028 // "Stone durumdayken bu işlemi yapamazsınız."
 	RETURN 1
 ENDIF
-SYSMESSAGELOC <def.tcolor_yellow>,<def.empty_cliloc2>, Bankanıza ulaşmak için 'bank' yazınız.
+SYSMESSAGELOC <def.tcolor_yellow>,3300199
 CTAG.Dialog.BankDepo.Index=
 CTAG.Dialog.BankDepo.Order=
 CTAG.Dialog.BankDepo.Where=
@@ -1192,7 +1192,7 @@ FORINSTANCES I_BULLETIN_BOARD
 		LOCAL.I ++
 	ENDIF
 ENDFOR
-SRC.SYSMESSAGE <DLOCAL.I> adet bulletin board temizlendi.
+SRC.SYSMESSAGELOC 0,3300200,<DLOCAL.I>
 
 
 
@@ -1211,9 +1211,9 @@ IF (<REF1.ISVALIDE>)
 	SRC.GOUID <REF1.UID>
 ENDIF
 IF (<DLOCAL.I> > 0)
-	SRC.SYSMESSAGE World uzerinde <DLOCAL.I> adet ici dolu container var.
+	SRC.SYSMESSAGELOC 0,3300201,<DLOCAL.I>
 ELSE
-	SRC.SYSMESSAGE World uzerinde ici dolu container yok.
+	SRC.SYSMESSAGELOC 0,3300202
 ENDIF
 
 

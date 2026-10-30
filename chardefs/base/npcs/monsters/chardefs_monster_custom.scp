@@ -662,7 +662,7 @@ ENDIF
 
 On=@GetHit
 IF <FINDID.i_rune_poison>
-	SAYU * skeleton resists poison *
+	SAYLOC 0,3301041
 	FINDID.i_rune_poison.REMOVE
 ENDIF
 
@@ -1418,7 +1418,7 @@ IF  (<SRC.FINDID.i_rune_POLYMORPH>) && (<MANA> > 20)
 	SOUND SND_SPELL_DISPEL
 	SRC.SPELLEFFECT 41 1000
 	MANA (<MANA> - 20)
-	SAYU * Büyü etkisini kaldırır. *
+	SAYLOC 0,3301042
 ENDIF
 
 

@@ -208,7 +208,7 @@ ON=0 2
           If (<member.count <def.STONEPRIV_MEMBER>> < <def0.TOWNSCONFIG_MAXMEMBERS>)
             f_townsys_addchartotown <uid>,<local.memberuid>,1
           else
-            src.SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, There are already <dDEF0.TOWNSCONFIG_MAXMEMBERS> members. You cannot submit a member at this time.
+            src.SYSMESSAGELOC <def.tcolor_text>,3300965,<dDEF0.TOWNSCONFIG_MAXMEMBERS>
           endif
         else
           f_townsys_addchartotown <uid>,<local.memberuid>,1

@@ -2301,7 +2301,7 @@ REF11.HITS += <LOCAL.DAM>
 IF (<REF11.HITS> > <REF11.MAXHITS>)
 REF11.HITS=<REF11.MAXHITS>
 ENDIF
-SRC.SYSMESSAGE @color_text,,1 The evil aura of the succubus drains life from you
+SRC.SYSMESSAGELOC color_text,3300000
  ENDIF
   ENDFOR
 ENDIF
@@ -2740,7 +2740,7 @@ ON=@Hit
 IF (<MANA> >= 20) && (<SRC.FLAGS> & statf_onhorse)
   MANA -= 20
   SRC.DISMOUNT
-  SRC.EMOTE knocked off mount!
+  SRC.EMOTELOC 0,3301040
   SRC.DAMAGE <R15,25> <DEF.dam_physical> <UID>
 ENDIF
 //Triple Damage Attack vs pets

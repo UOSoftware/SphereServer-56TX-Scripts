@@ -9,10 +9,10 @@ DEFNAME=T_STONESYS_DOOR
 ON=@DCLICK
   If (<SRC.MEMORYFINDTYPE.0400.LINK> == <LINK>)
     MOREP=<P>
-    SRC.MESSAGE You've been allowed to pass through the door magically.
+    SRC.MESSAGELOC 0,3301163
     SRC.GO <MOREP>
   else
-    SRC.MESSAGE The door seems magically locked.
+    SRC.MESSAGELOC 0,3301164
   endif
 return 1
 

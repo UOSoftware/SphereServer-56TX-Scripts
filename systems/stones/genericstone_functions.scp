@@ -3,7 +3,7 @@ VERSION=0.56T
 // ------------------------------------------------------
 [FUNCTION TRANSFERSTONE]
 SRC.TARGETF F_STONESYS_TRANSFER <ARGS>
-SRC.SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, <f_stonesys_gettypename <args>> aktarmak istediginiz kisiyi seciniz.
+SRC.SYSMESSAGELOC <def.tcolor_text>,3300841,<f_stonesys_gettypename <args>>
 
 [FUNCTION F_STONESYS_TRANSFER]
 // ARGS = STONE UID
@@ -12,27 +12,27 @@ REF1 = <ARGS>
 LOCAL.TYPENAME = <F_STONESYS_GETTYPENAME <REF1.UID>>
 
 IF !(<ARGO>)
-  SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Hatali secim.
+  SYSMESSAGELOC <def.tcolor_red>,3300221
 
 ELSEIF (<ARGO.ISITEM>)
-  SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Hatali secim.
+  SYSMESSAGELOC <def.tcolor_red>,3300221
 
 ELIF (<ARGO.NPC>)
-  SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Hatali secim.
+  SYSMESSAGELOC <def.tcolor_red>,3300221
 
 elif (<argo> == <ref1.masteruid>)
-  SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, You are already the master of <ref1.name>.
+  SYSMESSAGELOC <def.tcolor_text>,3300842,<ref1.name>
 
 elif (<argo.memoryfindtype.memory_guild.link.uid> != <ref1.uid>) && (<argo.memoryfindtype.memory_town.link.uid> != <ref1.uid>)
-  SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, That player is not a member of the <local.typename>.
+  SYSMESSAGELOC <def.tcolor_text>,3300843,<local.typename>
 
 elif (!<argo.npc>)
   ref1.masteruid = <argo.uid>
   serv.log <name> (<uid>) transferred <sex his/her> <local.typename> (<ref1.name>) to <argo.name> (<argo.uid>)
-  SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, You have transfered the <local.typename> to <argo.name>.
-  argo.SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, You are now the master of <ref1.name>.
+  SYSMESSAGELOC <def.tcolor_text>,3300844,<local.typename>,<argo.name>
+  argo.SYSMESSAGELOC <def.tcolor_text>,3300845,<ref1.name>
 else
-  SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, You cannot transfer a <local.typename> to that.
+  SYSMESSAGELOC <def.tcolor_text>,3300846,<local.typename>
 ENDIF
 RETURN 1
 
@@ -93,7 +93,7 @@ IF (!STRLEN(<LOCAL.MESSAGE>))
   RETURN 0
 ENDIF
 // REF1.ALLMEMBERS -1,SYSMESSAGE @68,0,0 <F_STONESYS_GETTYPENAME <REF1.UID>>: <LOCAL.MESSAGE>
-REF1.ALLMEMBERS -1,SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, <F_STONESYS_GETTYPENAME <REF1.UID>>: <LOCAL.MESSAGE>
+REF1.ALLMEMBERS -1,SYSMESSAGELOC <def.tcolor_text>,3300510,<F_STONESYS_GETTYPENAME <REF1.UID>>,<LOCAL.MESSAGE>
 
 
 

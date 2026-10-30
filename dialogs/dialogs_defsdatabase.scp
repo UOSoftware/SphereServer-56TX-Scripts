@@ -286,11 +286,11 @@ IF (<ISEMPTY <CTAG.DefsAdd.Sel>>)
 	RETURN 0
 ENDIF
 IF (<CTAG0.DefsAdd.Amount> < 1) || (<CTAG0.DefsAdd.TimeLo> < 1) || (<CTAG0.DefsAdd.TimeHi> < <CTAG0.DefsAdd.TimeLo>)
-	SYSMESSAGE @<DEF.tcolor_red>,,1 Spawn: adet ve süreler 1 ya da büyük olmalı, en çok süre en azdan küçük olamaz.
+	SYSMESSAGELOC <DEF.tcolor_red>,3300105
 	DIALOG d_add
 	RETURN 0
 ENDIF
-SYSMESSAGE @<DEF.tcolor_green>,,1 Spawn'ın yerini seçin.
+SYSMESSAGELOC <DEF.tcolor_green>,3300106
 TARGETFG f_defs_add_spawn_place <QVAL <CTAG0.DefsAdd.Mode>?t_spawn_char:t_spawn_item>,<CTAG.DefsAdd.Sel>,<dCTAG0.DefsAdd.Amount>,<dCTAG0.DefsAdd.TimeLo>,<dCTAG0.DefsAdd.TimeHi>,<dCTAG0.DefsAdd.Dist>
 
 [FUNCTION f_defs_add_spawn_place]
@@ -305,7 +305,7 @@ NEW.MOREZ=<ARGV[5]>
 NEW.ATTR=0b0
 NEW.P=<TARGP>
 NEW.TIMER=1
-SYSMESSAGE @<DEF.tcolor_green>,,1 Spawn konuldu: <ARGV[1]> (<NEW.UID>).
+SYSMESSAGELOC <DEF.tcolor_green>,3300107,<ARGV[1]>,<NEW.UID>
 DIALOG d_add
 
 

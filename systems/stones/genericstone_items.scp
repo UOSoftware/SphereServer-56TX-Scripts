@@ -10,44 +10,44 @@ CAN=0
 ON=@Click
 if (<link.isitem>)
     if (<link.type> == T_STONE_GUILD )
-    		message "guildstone teleporter"
+    		messageloc 0,3301160
         message <link.name> <qval (<eval strlen(<link.abbrev>)>) ? [<link.abbrev>]:>
         return 1
     elif (<link.type> == T_STONE_TOWN )
-    	  message "townstone teleporter"
+    	  messageloc 0,3301161
         message <link.name>
         return 1
     endif
 endif
 
-message "stone teleporter"
+messageloc 0,3301162
 return 1
 
 ON=@Dclick
 if (!<link.isitem>)
-    src.SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, This teleporting object can not determine what stone to teleport.
+    src.SYSMESSAGELOC <def.tcolor_text>,3300847
     remove
     return 1
 endif
 
 if ((<link.type> != T_STONE_GUILD ) && (<link.type> != T_STONE_TOWN ))
-    src.SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, This teleporting object can not determine what stone to teleport.
+    src.SYSMESSAGELOC <def.tcolor_text>,3300847
     remove
     return 1
 endif
 
 if (<cont.uid> != <src.findlayer(layer_pack).uid> )
-    src.SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, That must be in your pack for you to use it.
+    src.SYSMESSAGELOC <def.tcolor_text>,3300479
     return 1
 endif
 
 if ( !<src.isgm> && ( <link.masteruid> != <src.uid> ))
-    src.SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, You must be the master of the guild to use it.
+    src.SYSMESSAGELOC <def.tcolor_text>,3300848
     return 1
 endif
 
 if ( <link.tag0.stonesys_moveruid> != <uid> )
-    src.SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, This teleporting object can not determine what stone to teleport.
+    src.SYSMESSAGELOC <def.tcolor_text>,3300847
     return 1
 endif
 

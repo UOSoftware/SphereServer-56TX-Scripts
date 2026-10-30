@@ -110,15 +110,15 @@ ON=2
 IF !((<MASTERUID> == <SRC.UID>) || (<SRC.ISGM>))
 	DIALOGCLOSE D_GUILD_MAIN
 	DIALOG D_GUILD_MAIN
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu işlemi sadece Guildmaster yapabilir.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300856
 	RETURN 1
 ENDIF
 IF (<MEMBER.COUNT> >= <DDEF.GUILDCONFIG_MAX_MEMBERCOUNT>)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Guildiniz en fazla üye sayısına ulaşmış. (Max:<DDEF.GUILDCONFIG_MAX_MEMBERCOUNT> - <REF1.MEMBER.COUNT>/<DDEF.GUILDCONFIG_MAX_MEMBERCOUNT>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300860,<DDEF.GUILDCONFIG_MAX_MEMBERCOUNT>,<REF1.MEMBER.COUNT>,<DDEF.GUILDCONFIG_MAX_MEMBERCOUNT>
 	RETURN 1
 ENDIF
 SRC.TARGETF f_guildsys_member_add <UID>
-SRC.SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, Kime guild üye daveti göndermek istiyorsun?
+SRC.SYSMESSAGELOC <def.tcolor_text>,3300937
 SDIALOG D_GUILD_MAIN,0,<UID>
   
   
@@ -136,25 +136,25 @@ SDIALOG d_Guild_ViewCharter,0,<uid>
 ON=5
 IF (<MASTERUID> == <SRC>)
 	IF !(<SRC.CTAG0.Guild.IsRemoving>)
-		SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Guildi yıkmak istediğinizden emin misiniz?
+		SRC.SYSMESSAGELOC <def.tcolor_red>,3300938
 		SRC.CTAG.Guild.IsRemoving=1
 		sdialog d_Guild_Main,0,<uid>
 		RETURN 1
 	ELSE
 		SRC.CTAG.GUILD.ISREMOVING=
-		SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Guildi yıktınız!
+		SRC.SYSMESSAGELOC <def.tcolor_red>,3300939
 		REMOVE
 	ENDIF
 ELSE
 
 	IF !(<SRC.CTAG0.Guild.IsResign>)
-		SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Guildden ayrılmak istediğinizden emin misiniz?
+		SRC.SYSMESSAGELOC <def.tcolor_red>,3300940
 		SRC.CTAG.GUILD.ISRESIGN=1
 		SDIALOG D_GUILD_MAIN,0,<UID>
 		RETURN 1
 	ELSE
 		SRC.CTAG.GUILD.IsResign=
-		SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Guildden ayrıldınız.
+		SRC.SYSMESSAGELOC <def.tcolor_red>,3300941
 
 
 		RESIGN

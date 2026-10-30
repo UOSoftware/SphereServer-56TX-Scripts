@@ -60,7 +60,7 @@ ON=1
 LOCAL.WEBSITE=<WEBPAGE>
 
 IF (<EVAL STRLEN(<LOCAL.WEBSITE>)> <= 3)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Webste bağlantı adresi bu kadar kısa olamaz.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300905
 	LOCAL.WEBSITE=<SERV.URL>
 ENDIF
 SRC.OpenWebUrl <LOCAL.WEBSITE>
@@ -132,7 +132,7 @@ FOR 0 5
 ENDFOR
 
 WEBPAGE=<StrReplaceSQL <ARGTXT[1]>>
-SRC.SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, Guild tüzüğü güncellendi.
+SRC.SYSMESSAGELOC <def.tcolor_text>,3300906
 SDIALOG d_Guild_SetCharter,0
 RETURN 1
 

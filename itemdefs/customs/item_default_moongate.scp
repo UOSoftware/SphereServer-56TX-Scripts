@@ -40,7 +40,7 @@ RETURN 0
 ON=@DCLICK
 IF !(<SRC.FLAGS>&STATF_STONE)
 	IF (<DISTANCE> > 3)
-		SRC.SYSMESSAGE Gate'e ulasamiyorsunuz.
+		SRC.SYSMESSAGELOC 0,3300336
 	ELSE
 		IF (<SRC.FINDID.I_MOONGATER>)
 			SRC.FINDID.I_MOONGATER.REMOVE
@@ -73,9 +73,9 @@ RETURN 1
 
 ON=@CLICK
 ATTR=ATTR_STATIC|ATTR_MOVE_NEVER
-MESSAGE a Moongate
+MESSAGELOC 0,3301068
 IF !(<REGION.SAFE>)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Geçişlerin etrafını herhangi bir şekilde kapatmak ihlal ve sabote etmek Alan İhlali suçudur.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300337
 ENDIF
 RETURN 1
 
@@ -111,7 +111,7 @@ ENDFOR
 ON 1 99
 REF1=<SRC.CTAG0.MOONGATE> // Moongate
 IF !(<REF1.ISVALIDE>)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Moongate bulunamadı!
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300338
 	RETURN 1
 ELSEIF (<SRC.ISOUTOFREACH 3,<REF1>>)
 	SRC.SYSMESSAGELOC <def.tcolor_red>,600018,<REF1>
@@ -123,10 +123,10 @@ ELSEIF (<SRC.IsNoFullHp>)
 	SRC.SYSMESSAGELOC <def.tcolor_red>,600075 // "Yaralı durumdayken bu işlemi yapamazsınız."
 	RETURN 1
 ELSEIF (<SRC.IsInHouse>)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Ev içindeyken kullanamazsınız.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300126
 	RETURN 1
 ELSEIF !(<SRC.ISNEARTYPE T_MOONGATE_CUSTOM 4>)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Yakınlarınızda Moongate bulunmuyor.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300127
 	RETURN 1
 ENDIF
 LOCAL.P <SERV.AREA.<ARRAY <DEF.MOONGATE_MOONGATES>,<DARGN>>.P>
@@ -142,11 +142,11 @@ SRC.MOVENAR <REF1> <R1,3>
 
 [TYPEDEF T_MOONGATE]
 ON=@STEP
-SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, <name> Bu eşya kullanılmamaktadır.
+SRC.SYSMESSAGELOC <def.tcolor_red>,3300339,<name>
 RETURN 1
 
 ON=@DCLICK
-SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, <name> Bu eşya kullanılmamaktadır.
+SRC.SYSMESSAGELOC <def.tcolor_red>,3300339,<name>
 RETURN 1
 
 

@@ -17,19 +17,19 @@ IF (<SERV.TIME> > <ACCOUNT.DTAG0.JailTime>)
 ELSE
 	MESSAGE @38,,1,1 [<f_stonesys_determine_timeleft <ACCOUNT.DTAG0.JailTime>>]
 ENDIF
-MESSAGE @38,,1,1 [Hücre: <ACCOUNT.DTAG0.JailCell>]
+MESSAGELOC 38,3301045,<ACCOUNT.DTAG0.JailCell>
 
 
 ON=@ITEMDCLICK
-SRC.SYSMESSAGELOC <def.tcolor_red>,<DEF.empty_cliloc2>, Hapiste <act.name> kullanamazsınız.
+SRC.SYSMESSAGELOC <def.tcolor_red>,3300119,<act.name>
 RETURN 1
 
 ON=@SKILLSTART
-SRC.SYSMESSAGELOC <def.tcolor_red>,<DEF.empty_cliloc2>, Bu alanda becerilerinizi kullanamazsınız.
+SRC.SYSMESSAGELOC <def.tcolor_red>,3300120
 RETURN 1
 
 ON=@ITEMDROPON_GROUND
-SRC.SYSMESSAGELOC <def.tcolor_red>,<DEF.empty_cliloc2>, Bu alanda yere eşya atamazsınız.
+SRC.SYSMESSAGELOC <def.tcolor_red>,3300121
 RETURN 1
 
 
@@ -45,7 +45,7 @@ IF (<ACCOUNT.PLEVEL> == 1)
 	DIALOGCLOSE D_JAIL_SICIL
 	DIALOG D_JAIL_SICIL
 ELSE
-	SRC.SYSMESSAGELOC <def.tcolor_grey>,<DEF.empty_cliloc2>, Hangi oyuncunun siciline bakacaksınız.
+	SRC.SYSMESSAGELOC <def.tcolor_grey>,3300122
 	SRC.TARGETF FUNC_SICIL_TARGET
 ENDIF
 

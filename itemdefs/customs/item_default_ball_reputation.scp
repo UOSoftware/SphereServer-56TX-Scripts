@@ -22,19 +22,19 @@ IF !(<SRC.ISINPACK <UID>>)
 	SRC.SYSMESSAGELOC <def.tcolor_red>,600036,<NAME>	// Bunu (~1_val~) kullanabilmek için çantanızda veya üzerinizde olmalıdır.
 	RETURN 1
 ELSEIF (<USESMAX> > 0) && (<USESCUR> >= <USESMAX>)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Şarj bitmiş.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300243
 	REMOVE
 	RETURN 1
 ENDIF
 SRC.EFFECT 3,I_FX_SPARKLE,2,25,1
 SRC.SOUND SND_SPELL_ARCHPROTECTION
 IF (<SRC.FLAGS>&STATF_CRIMINAL)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Criminal: Evet
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300244
 ENDIF
-SRC.SYSMESSAGELOC <def.tcolor_grey>,<def.empty_cliloc2>, Kills: <src.kills>
-SRC.SYSMESSAGELOC <def.tcolor_grey>,<def.empty_cliloc2>, Deaths: <src.Deaths>
-SRC.SYSMESSAGELOC <def.tcolor_grey>,<def.empty_cliloc2>, Fame: <NumberFormat <src.fame>>
-SRC.SYSMESSAGELOC <def.tcolor_grey>,<def.empty_cliloc2>, Karma: <NumberFormat <src.karma>>
+SRC.SYSMESSAGELOC <def.tcolor_grey>,3300245,<src.kills>
+SRC.SYSMESSAGELOC <def.tcolor_grey>,3300246,<src.Deaths>
+SRC.SYSMESSAGELOC <def.tcolor_grey>,3300247,<NumberFormat <src.fame>>
+SRC.SYSMESSAGELOC <def.tcolor_grey>,3300248,<NumberFormat <src.karma>>
 
 CONSUME
 

@@ -4,13 +4,13 @@
 
 [TYPEDEF t_light_lit]
 ON=@click
-MESSAGE (acik)
+MESSAGELOC 0,3301173
 
 
 
 [TYPEDEF t_light_out]
 ON=@click
-MESSAGE (kapali)
+MESSAGELOC 0,3301174
 
 
 
@@ -20,7 +20,7 @@ MESSAGE @<qval (<TYPE> == T_CONTAINER_LOCKED)?38,,1 (Kilitli):044,,1 (Açık)>
 
 IF (<TIMER> > 0)
 	IF (<TYPE> == T_CONTAINER)
-		SRC.SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, <DURATIONFORHUMANS <TIMER>,,short> sonra kilitlenecek.
+		SRC.SYSMESSAGELOC <def.tcolor_text>,3300988,<DURATIONFORHUMANS <TIMER>,,short>
 	ENDIF
 ENDIF
 
@@ -28,7 +28,7 @@ MESSAGE <NAME>
 RETURN 1
 
 ON=@TIMER
-SAYU * kilitlendi *
+SAYLOC 0,3301175
 COLOR=<def.tcolor_blue>
 TIMER=-1
 TYPE=T_CONTAINER_LOCKED
@@ -319,7 +319,7 @@ RETURN <eval 100000 / <LOCAL.iChance>>
 [TYPEDEF t_musical]
 ON=@DCLICK
 IF (<SRC.FINDLAYER.layer_hand1> || <SRC.FINDLAYER.layer_hand2>)
-	src.sysmessage Ellerin doluyken muzik aleti nasil kullanacaksin?
+	src.sysmessageloc 0,3300989
 	return 1
 ENDIF
 // STATLOCK[1] 2 // int
@@ -328,17 +328,17 @@ ENDIF
 
 // STR
 IF (<SRC.STATLOCK[0]> != 0 ) // up & locked
-SRC.SYSMESSAGE @38,,1,1 STR kilitli veya düşüşte olduğu için STR geliştiremiyorsunuz.
+SRC.SYSMESSAGELOC 38,3300990
 ENDIF
 
 // INT
 IF (<SRC.STATLOCK[1]> != 0) // up & locked
-SRC.SYSMESSAGE @38,,1,1 INT kilitli veya düşüşte olduğu için INT geliştiremiyorsunuz.
+SRC.SYSMESSAGELOC 38,3300991
 ENDIF
 
 // DEX
 IF (<SRC.STATLOCK[2]> != 0) // up & locked
-SRC.SYSMESSAGE @38,,1,1 DEX kilitli veya düşüşte olduğu için DEX geliştiremiyorsunuz.
+SRC.SYSMESSAGELOC 38,3300992
 ENDIF
 
 
@@ -352,35 +352,35 @@ ENDIF
 [TYPEDEF t_cooking]
 ON=@DCLICK
 IF !(<SRC.ISNEARTYPE T_CAMPFIRE 1>)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Ates olmadan nasil baliklari pisireceksin?
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300993
 	RETURN 1
 ELSEIF !(<SRC.COOKING> >= 85.0)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu tavanin nasil kullanildigini bilmiyorsunuz. (85.0 Cooking)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300994
 	RETURN 1
 ENDIF
 TARGET 
-SRC.SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, Pisirmek istediginiz baligi secin.
+SRC.SYSMESSAGELOC <def.tcolor_text>,3300995
 RETURN 1
 
 
 ON=@TARGON_ITEM
 IF (<SRC.TARG.BASEID> != i_fish_cut_raw)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Sadece pismemis baliklari pisirebilirsin.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300996
 	RETURN 1
 ELSEIF !(<SRC.ISINPACK <SRC.TARG.UID>>)
 	SRC.SYSMESSAGELOC <def.tcolor_red>,600036,<SRC.TARG.NAME>	// Bunu (~1_val~) kullanabilmek için çantanızda veya üzerinizde olmalıdır.
 	RETURN 1
 ELSEIF !(<SRC.RESTEST 10 I_FISH_CUT_RAW>)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, 10 tane pişmemiş balık bulunmuyor.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300997
 	RETURN 1
 ENDIF
 SRC.TARG.CONSUME 10
 IF (RAND(100) <= <EVAL (<SRC.COOKING> / 10)>)
 	USESCUR ++
 	SERV.NEWITEM I_FISH_CUT_COOKED,10,<SRC.FINDLAYER.21>,1
-	SRC.SYSMESSAGELOC <def.tcolor_green>,<def.empty_cliloc2>, 10 adet balık pişirdin!
+	SRC.SYSMESSAGELOC <def.tcolor_green>,3300998
 ELSE
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Yandi guzelim baliklar.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300999
 ENDIF
 RETURN 1
 
@@ -433,7 +433,7 @@ IF !(<LOCAL.SKILL>)
 ENDIF
 LOCAL.SKILLVAL <STRARG <SERV.SPELL.<MOREX>.SKILLREQ>>
 IF (<SRC.<SERV.SKILL.<DLOCAL.SKILL>.NAME>> < <DLOCAL.SKILLVAL>)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu büyüyü yapacak yeteneğe sahip değilsin. (<FVAL <DLOCAL.SKILLVAL>> <SERV.SKILL.<DLOCAL.SKILL>.NAME>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3301000,<FVAL <DLOCAL.SKILLVAL>>,<SERV.SKILL.<DLOCAL.SKILL>.NAME>
 	RETURN 1
 ENDIF
 
@@ -457,15 +457,15 @@ on=@click
 
 ref1 <findcont.0>
 if (<ref1.isvalid>)
-message (ilk msj: <ref1.link.name>)
+messageloc 0,3301176,<ref1.link.name>
 ENDIF
 ref2 <findcont.<eval <rescount>-1>>
 if (<ref2.isvalid>)
-message (son msj: <ref2.link.name>)
+messageloc 0,3301177,<ref2.link.name>
 ENDIF
 
 if (<rescount>)
-message a <name> (<rescount> mesaj)
+messageloc 0,3301178,<name>,<rescount>
 ELSE
 message a <name>
 ENDIF
@@ -479,7 +479,7 @@ return 1
 [TYPEDEF t_archery_butte]
 ON=@DCLICK
 IF (<SRC.CTAG0.ArcheryButte.Delay> > <SERV.TIME>)
-	SRC.SYSMESSAGELOC <def.tcolor_grey>,<def.empty_cliloc2>, <defmsg.skillwait_3>
+	SRC.SYSMESSAGELOC <def.tcolor_grey>,3300090,<defmsg.skillwait_3>
 	RETURN 1
 ENDIF
 SRC.CTAG0.ArcheryButte.Delay = <serv.time> + <R8,12>
@@ -500,11 +500,11 @@ ENDIF
 [TYPEDEF t_lockpick]
 ON=@TARGON_SELF
 IF (<SRC.TARG.DISTANCE> > 2)
-	SRC.SYSMESSAGE Kasadan cok uzaktasiniz.
+	SRC.SYSMESSAGELOC 0,3301001
 	RETURN 1
 ENDIF
 IF !(<SRC.TARG.IsContainer>)
-	SRC.SYSMESSAGE Bu bir kasa degil.
+	SRC.SYSMESSAGELOC 0,3301002
 	RETURN 1
 ENDIF
 
@@ -533,18 +533,18 @@ SRC.SKILLGAIN 45 // Ore Smelt Mining Gain
 //RETURN 1
 
 ON=@TARGON_CHAR
-SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Hatalı seçim.
+SRC.SYSMESSAGELOC <def.tcolor_red>,3300221
 RETURN 1
 
 ON=@TARGON_ITEM
 IF !(<TOPOBJ> == <SRC>)
-	SRC.SYSMESSAGE Oreler yaninizda olmalidir.
+	SRC.SYSMESSAGELOC 0,3301003
 	RETURN 1
 ENDIF
 IF (<SRC.TARG.UID> == <UID>)
     SMELT
 ELSE
-    SRC.SYSMESSAGE Baska bisi secti.
+    SRC.SYSMESSAGELOC 0,3301004
 ENDIF
 RETURN 1
 
@@ -558,15 +558,15 @@ IF (<SRC.ISOUTOFREACH 3,<UID>>)
 ENDIF
 
 ON=@TARGON_CHAR
-SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Hatalı seçim.
+SRC.SYSMESSAGELOC <def.tcolor_red>,3300221
 RETURN 1
 
 ON=@TARGON_ITEM
 IF !(<SRC.TARG.TYPE> == T_ORE)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Sadece Ore eritebilirsiniz.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3301005
 	RETURN 1
 ELSEIF !(<SRC.TARG.TOPOBJ> == <SRC>)
-	SRC.SYSMESSAGE Oreler yaninizda olmalidir.
+	SRC.SYSMESSAGELOC 0,3301003
 	RETURN 1
 ENDIF
 
@@ -612,7 +612,7 @@ GUMPPIC +250 +0 05e
 
 [DIALOG d_forge_smelt prebutton]
 IF !(<TOPOBJ> == <SRC>)
-	SRC.SYSMESSAGE Oreler yaninizda olmalidir.
+	SRC.SYSMESSAGELOC 0,3301003
 	RETURN 1
 ENDIF
 
@@ -645,7 +645,7 @@ ENDIF
 ON=@CLICK
 IF !((<TYPE> == T_CORPSE) || (<BASEID> == I_MULTI_FINDER) || (<BASEID> == I_TRASHCAN) || (<BASEID> == I_RUNEBOOK))
 	IF (<RESCOUNT>)
-		MESSAGE @,,1,1 (Eşya: <RESCOUNT>, Ağırlık: <FVAL <WEIGHT>>)
+		MESSAGELOC 0,3301179,<RESCOUNT>,<FVAL <WEIGHT>>
 	ENDIF
 ENDIF
 
@@ -666,12 +666,12 @@ IF !((<BASEID> == I_BACKPACK) || (<BASEID> == I_MULTI_FINDER) || (<BASEID> == I_
 		SRC.Notice Dikkat! Bu kasa maksimum eşya limitini aştığı için (<RESCOUNT>/<dLOCAL.MaxItems> Items) içindeki bazı eşyaları göremiyor olabilirsiniz. İçindeki eşyaların tamamını görebilmek için kasanın içindeki eşya adetini <dLOCAL.MaxItems> altında tutunuz.
 	ENDIF
 	IF (<ATTR>&ATTR_NEWBIE) 
-		SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu Newbified, eşya koyulamaz.
+		SRC.SYSMESSAGELOC <def.tcolor_red>,3301006
 		// ATTR=<ATTR>&~ATTR_NEWBIE
 		RETURN 1
 	ENDIF
 	IF (<ARGO.ATTR>&ATTR_NEWBIE) 
-		SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, <ARGO.NAME>: Newbified eşyaları buna koyamazsınız.
+		SRC.SYSMESSAGELOC <def.tcolor_red>,3301007,<ARGO.NAME>
 		RETURN 1
 	ENDIF
 ENDIF
@@ -691,7 +691,7 @@ IF (<MOREX> > 0)
 	MESSAGE [<MOREP>]
 	MESSAGE @0 [<SERV.MAP(<MOREX>,<MOREY>,<MOREZ>,<MOREM>).REGION.NAME>]
 ELSE
-	MESSAGE @38,,1,1 (Karşılıksız)
+	MESSAGELOC 38,3301180
 ENDIF
 // MESSAGE @,,1,1 <name>
 // RETURN 1
@@ -730,7 +730,7 @@ ELSEIF (<ATTR>&ATTR_STATIC)
 ENDIF
 IF (<SRC.FOOD> >= <SRC.MAXFOOD>)
 	SRC.FOOD=<SRC.MAXFOOD>
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Toksunuz. (Food/MaxFood: <SRC.Food>/<SRC.MAXFOOD>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3301008,<SRC.Food>,<SRC.MAXFOOD>
 ELSE
 	//SRC.FOOD +=1
 	Local.FoodGain <qval (<morem>)?<morem>:1>
@@ -738,7 +738,7 @@ ELSE
 	SRC.ANIM 6
 	SRC.SOUND {03a 1 03b 1 03c 1}
 	IF !(<SRC.IsUseSkill Magery>)
-		SRC.EMOTE eat some <NAME>
+		SRC.EMOTELOC 0,3301181,<NAME>
 	ENDIF
 	SRC.TRIGGER @EAT
 	CONSUME 1
@@ -754,7 +754,7 @@ IF (<SRC.TARG.UID> == <src>)
 	DIALOGCLOSE D_SCISSORS_PLAYER_MYSELF
 	DIALOG D_SCISSORS_PLAYER_MYSELF
 ELSE
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu eşyayı bu şekilde kullanamazsın.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3301009
 ENDIF
 RETURN 1
 
@@ -843,12 +843,12 @@ IF (<SRC.FINDLAYER.LAYER_HAIR>)
 	REF1=<SRC.FINDLAYER.LAYER_HAIR>
 	IF (<REF1.ISVALIDE>) && (<REF1.TYPE> == T_HAIR)
 		REF1.REMOVE
-		SRC.SYSMESSAGELOC <def.tcolor_grey>,<def.empty_cliloc2>, Saçınızı kestiniz!
+		SRC.SYSMESSAGELOC <def.tcolor_grey>,3301010
 	ENDIF
 ELSE
 	DIALOGCLOSE D_SCISSORS_PLAYER_MYSELF
 	DIALOG D_SCISSORS_PLAYER_MYSELF
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Saçınız yok.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3301011
 ENDIF
 
 
@@ -857,12 +857,12 @@ IF (<SRC.FINDLAYER.LAYER_BEARD>)
 	REF1=<SRC.FINDLAYER.LAYER_BEARD>
 	IF (<REF1.ISVALIDE>) && (<REF1.TYPE> == T_BEARD)
 		REF1.REMOVE
-		SRC.SYSMESSAGELOC <def.tcolor_grey>,<def.empty_cliloc2>, Sakalınızı kestiniz!
+		SRC.SYSMESSAGELOC <def.tcolor_grey>,3301012
 	ENDIF
 ELSE
 	DIALOGCLOSE D_SCISSORS_PLAYER_MYSELF
 	DIALOG D_SCISSORS_PLAYER_MYSELF
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Sakalınız yok.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3301013
 ENDIF
 
 
@@ -873,20 +873,20 @@ IF (<SRC.FINDLAYER.LAYER_HAIR>)
 	REF1=<SRC.FINDLAYER.LAYER_HAIR>
 	IF (<REF1.ISVALIDE>) && (<REF1.TYPE> == T_HAIR)
 		REF1.REMOVE
-		SRC.SYSMESSAGELOC <def.tcolor_grey>,<def.empty_cliloc2>, Saçınızı kestiniz!
+		SRC.SYSMESSAGELOC <def.tcolor_grey>,3301010
 	ENDIF
 ELSE
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Saçınız yok.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3301011
 ENDIF
 
 IF (<SRC.FINDLAYER.LAYER_BEARD>)
 	REF2=<SRC.FINDLAYER.LAYER_BEARD>
 	IF (<REF2.ISVALIDE>) && (<REF2.TYPE> == T_BEARD)
 		REF2.REMOVE
-		SRC.SYSMESSAGELOC <def.tcolor_grey>,<def.empty_cliloc2>, Sakalınızı kestiniz!
+		SRC.SYSMESSAGELOC <def.tcolor_grey>,3301012
 	ENDIF
 ELSE
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Sakalınız yok.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3301013
 ENDIF
 
 
@@ -910,11 +910,11 @@ RETURN 1
 
 [TYPEDEF t_dye_vat]
 ON=@TARGON_GROUND
-SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bunu boyayamazsiniz.
+SRC.SYSMESSAGELOC <def.tcolor_red>,3300387
 RETURN 1
 
 ON=@TARGON_CHAR
-SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bunu boyayamazsiniz.
+SRC.SYSMESSAGELOC <def.tcolor_red>,3300387
 RETURN 1
 
 
@@ -1064,7 +1064,7 @@ ENDIF
 
 ON=@CLICK
 IF (<SRC.ISGM>)
-MESSAGE (<DURATIONFORHUMANS <TIMER>,,short>) GM Only
+MESSAGELOC 0,3301182,<DURATIONFORHUMANS <TIMER>,,short>
 ENDIF
 
 IF !(<LINK.ISVALIDE>)
@@ -1088,22 +1088,22 @@ ENDIF
 
 ON=@DROPON_ITEM
 IF (<EVAL <ARGO.WEIGHT>+<WEIGHT>> > <SRC.MAXWEIGHT>)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu ceset daha fazla eşya taşıyamaz.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3301014
 	RETURN 1
 ENDIF
 IF (<RESCOUNT> >= 100)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu ceset daha fazla eşya alamaz.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3301015
 	RETURN 1
 ENDIF
 
 
 ON=@DROPON_Self
 IF (<EVAL <ARGO.WEIGHT>+<WEIGHT>> > <SRC.MAXWEIGHT>)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu ceset daha fazla eşya taşıyamaz.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3301014
 	RETURN 1
 ENDIF
 IF (<RESCOUNT> >= 100)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu ceset daha fazla eşya alamaz.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3301015
 	RETURN 1
 ENDIF
 
@@ -1121,7 +1121,7 @@ IF !(<LINK.ISVALIDE>)
 	ENDIF
 ELSE
 	IF (<SRC> == <LINK>)
-		SRC.SYSMESSAGELOC <def.tcolor_green>,<def.empty_cliloc2>, Bu ceset size ait.
+		SRC.SYSMESSAGELOC <def.tcolor_green>,3301016
 	ENDIF
 ENDIF
 
@@ -1131,7 +1131,7 @@ ENDIF
 [TYPEDEF t_door_locked]
 ON=@Click
 // MESSAGE @,,1,1 (Kilitli-<QVAL (<TIMER> == -1)?Kapalı:Açık>)
-MESSAGE @1,1 (Kilitli-<QVAL (<TIMER> == -1)?Kapali:Acik>)
+MESSAGELOC 1,3301183,<QVAL (<TIMER> == -1)?Kapali:Acik>
 
 ON=@DCLICK
 IF (<SRC.ISPLAYER>)
@@ -1150,7 +1150,7 @@ ENDIF
 [TYPEDEF t_door]
 ON=@Click
 // MESSAGE @,,1,1 (Kilitsiz-<QVAL (<TIMER> == -1)?Kapalı:Açık>)
-MESSAGE @1,1 (Kilitsiz-<QVAL (<TIMER> == -1)?Kapali:Acik>)
+MESSAGELOC 1,3301184,<QVAL (<TIMER> == -1)?Kapali:Acik>
 
 
 ON=@DCLICK
@@ -1173,7 +1173,7 @@ ENDIF
 [TYPEDEF t_door_open]
 ON=@Click
 // MESSAGE @,,1,1 (Kilitsiz-<QVAL (<TIMER> == -1)?Kapalı:Açık>)
-MESSAGE @1,1 (Kilitsiz-<QVAL (<TIMER> == -1)?Kapali:Acik>)
+MESSAGELOC 1,3301184,<QVAL (<TIMER> == -1)?Kapali:Acik>
 
 
 ON=@DCLICK
@@ -1283,18 +1283,18 @@ ENDIF
 
 ON=@DCLICK
 IF !(<MOREX> > 0)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Boş rune boş.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3301017
 	RETURN 1
 ENDIF
 TARGET
-SRC.SYSMESSAGELOC <def.tcolor_grey>,<def.empty_cliloc2>, Eklemek istediğiniz Runebooku seçiniz veya rune işlemleri için tekrar runeyi seçiniz.
+SRC.SYSMESSAGELOC <def.tcolor_grey>,3301018
 RETURN 1
 
 
 ON=@TARGON_ITEM
 IF (<SRC.TARG.UID> == <UID>)
 	IF !(<MOREX> > 0)
-		SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Boş runeye isim veremezsiniz.
+		SRC.SYSMESSAGELOC <def.tcolor_red>,3301019
 		RETURN 1
 	ENDIF
 	DIALOGCLOSE D_RUNE_RENAME
@@ -1303,7 +1303,7 @@ IF (<SRC.TARG.UID> == <UID>)
 ELSEIF (<SRC.TARG.BASEID> == I_RUNEBOOK)
 	SRC.TARG.Func_Runebook_Add_Rune <UID>
 ELSE
-SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>,  Bu eşya üzerinde kullanamazsınız. Runebooku veya markın kendisini seçiniz.
+SRC.SYSMESSAGELOC <def.tcolor_red>,3301020
 ENDIF
 RETURN 1
 
@@ -1330,24 +1330,24 @@ DHTMLGUMP +0 +90 240 25 1 0 <MOREX>,<MOREY>,<MOREZ>,<MOREM>
 [DIALOG D_RUNE_RENAME BUTTON]
 ON=1
 IF (<ISBADCHAR <ARGTXT[0]>>)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Hatalı karakter kullanimi
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3301021
 	RETURN 1
 ELSEIF (<ISBLANK <ARGTXT[0]>>)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Boş giriş yapamazsınız.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300323
 	RETURN 1
 ELSEIF !(STRREGEX(^[a-zA-Z0-9 ]+$,<ARGTXT[0]>))
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Sadece alfabetik karakter ve numara girebilirsiniz.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3301022
 	RETURN 1
 ELSEIF (<EVAL STRLEN(<ARGTXT[0]>)> < 3) || (<EVAL STRLEN(<ARGTXT[0]>)> > 25)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Rune adı en az 3 en fazla 25 karakterden oluşabilir.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300443
 	RETURN 1
 ENDIF
 NAME=rn: <ARGTXT[0]>
-SRC.SYSMESSAGELOC <def.tcolor_grey>,<def.empty_cliloc2>, Rune adı başarıyla değişti: (<ARGTXT[0]>)
+SRC.SYSMESSAGELOC <def.tcolor_grey>,3301023,<ARGTXT[0]>
 
 ON=2
 NAME=<SERV.MAP(<MOREX>,<MOREY>,<MOREZ>,<MOREM>).REGION.NAME>
-SRC.SYSMESSAGELOC <def.tcolor_grey>,<def.empty_cliloc2>, Rune adı başarıyla varsayılan haline getirildi: (<NAME>)
+SRC.SYSMESSAGELOC <def.tcolor_grey>,3301024,<NAME>
 
 
 
@@ -1455,34 +1455,34 @@ IF !(<SRC.ISINPACK <UID>>)
 	SRC.SYSMESSAGELOC <def.tcolor_red>,600036,<SRC.TARG.NAME>	// Bunu (~1_val~) kullanabilmek için çantanızda veya üzerinizde olmalıdır.
 ELSE
 	TARGET
-	SRC.SYSMESSAGELOC <def.tcolor_grey>,<def.empty_cliloc2>, Pişirme yapacağınız ateşi seçiniz.
+	SRC.SYSMESSAGELOC <def.tcolor_grey>,3301025
 ENDIF
 RETURN 1
 
 ON=@TARGON_ITEM
 IF (<SRC.FLAGS>&STATF_STONE|STATF_FREEZE|STATF_DEAD)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bulunduğunuz durumda kullanamazsınız.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3301026
 	RETURN 1
 ELSEIF (<SRC.ISOUTOFREACH 2,<SRC.TARG.UID>>)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Ateşe uzaksınız veya görüş alanınızda değil.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3301027
 	RETURN 1
 ELSEIF (<SRC.TARG.TYPE>!=T_CAMPFIRE)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Sadece kamp ateşinde pişirme yapabilirsiniz.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3301028
 	RETURN 1
 ELSEIF (<SRC.TARG.BASEID> == I_EMBER_LIT)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu ateş sönmüş.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3301029
 	RETURN 1
 ELSEIF !(<TDATA1>)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu pişebilen bir şey değil.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3301030
 	RETURN 1
 ELSEIF (<RESOURCETYPE <TDATA1>> != RES_ITEMDEF)	
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu pişebilen bir şey değil.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3301030
 	RETURN 1
 ELSEIF !(<SRC.CANMAKESKILL <TDATA1>>)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Yeterli beceriye sahip değilsin. (Gereken beceri: <SERV.ITEMDEF.<TDATA1>.SKILLMAKE>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3301031,<SERV.ITEMDEF.<TDATA1>.SKILLMAKE>
 	RETURN 1
 ELSEIF !(<SRC.CANMAKE <TDATA1>>)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Yeterli malzemeye sahip değilsin. (Gereken eşyalar: <SERV.ITEMDEF.<TDATA1>.RESMAKE>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3301032,<SERV.ITEMDEF.<TDATA1>.RESMAKE>
 	RETURN 1
 ENDIF
 SRC.MAKEITEM <TDATA1>,<R1,10>
@@ -1512,45 +1512,45 @@ ON=@CLICK
 IF (<LINK.ISVALIDE>)
 	IF (<LINK> == <SRC>)
 		IF !(<TIMER> <= 0)
-			MESSAGE @,,1,1 (<DURATIONFORHUMANS <TIMER>,,short> sonra sönecek)
+			MESSAGELOC 0,3301185,<DURATIONFORHUMANS <TIMER>,,short>
 		ENDIF
 	ENDIF
-	MESSAGE (Camper <LINK.NAME>)
+	MESSAGELOC 0,3301186,<LINK.NAME>
 ENDIF
 
 ON=@DCLICK
 IF (<BASEID> == I_EMBER_LIT)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu ateş sönmüş.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3301029
 ELSE
 	TARGET 
-	SRC.SYSMESSAGELOC <def.tcolor_grey>,<def.empty_cliloc2>, Burada ne pisireceksiniz?
+	SRC.SYSMESSAGELOC <def.tcolor_grey>,3301033
 ENDIF
 RETURN 1
 
 ON=@TARGON_ITEM
 IF (<SRC.FLAGS>&STATF_STONE|STATF_FREEZE|STATF_DEAD)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bulunduğunuz durumda kullanamazsınız.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3301026
 	RETURN 1
 ELSEIF (<SRC.ISOUTOFREACH 2,<UID>>)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Ateşe uzaksınız veya görüş alanınızda değil.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3301027
 	RETURN 1
 ELSEIF (<BASEID> == I_EMBER_LIT)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu ateş sönmüş.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3301029
 	RETURN 1
 ELSEIF !(<SRC.TARG.TYPE> == T_MEAT_RAW)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Burada bunu pişiremezsiniz.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3301034
 	RETURN 1
 ELSEIF !(<SRC.TARG.TDATA1>)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu pişebilen bir şey değil.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3301030
 	RETURN 1
 ELSEIF (<RESOURCETYPE <SRC.TARG.TDATA1>> != RES_ITEMDEF)	
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu pişebilen bir şey değil.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3301030
 	RETURN 1
 ELSEIF !(<SRC.CANMAKESKILL <SRC.TARG.TDATA1>>)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Yeterli beceriye sahip değilsin. (Gereken beceri: <SERV.ITEMDEF.<SRC.TARG.TDATA1>.SKILLMAKE>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3301031,<SERV.ITEMDEF.<SRC.TARG.TDATA1>.SKILLMAKE>
 	RETURN 1
 ELSEIF !(<SRC.CANMAKE <SRC.TARG.TDATA1>>)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Yeterli malzemeye sahip değilsin. (Gereken eşyalar: <SERV.ITEMDEF.<SRC.TARG.TDATA1>.RESMAKE>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3301032,<SERV.ITEMDEF.<SRC.TARG.TDATA1>.RESMAKE>
 	RETURN 1
 ENDIF
 SRC.MAKEITEM <SRC.TARG.TDATA1>,<R1,10>

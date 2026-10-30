@@ -61,7 +61,7 @@ COLOR=0
 ATTR=ATTR_NEWBIE
 
 ON=@Click
-message a lesser reagent crystal
+messageloc 0,3301070
 return 1
 
 [ITEMDEF i_magic_reg60]
@@ -78,7 +78,7 @@ COLOR=0
 ATTR=ATTR_NEWBIE
 
 ON=@Click
-message a reagent crystal
+messageloc 0,3301071
 return 1
 
 
@@ -96,7 +96,7 @@ COLOR=0
 ATTR=ATTR_NEWBIE
 
 ON=@Click
-message a greater reagent crystal
+messageloc 0,3301072
 return 1
 
 [ITEMDEF i_magic_reg120]
@@ -113,7 +113,7 @@ COLOR=0
 ATTR=ATTR_NEWBIE
 
 ON=@Click
-message a greater reagent crystal
+messageloc 0,3301072
 return 1
 
 
@@ -125,13 +125,13 @@ ATTR=ATTR_NEWBIE
 LOCAL.AMOUNT = <DTAG0.REAGENT_AMOUNT>
 
 IF (<LOCAL.AMOUNT> == 30)
-	MESSAGE a lesser reagent crystal(<DLOCAL.AMOUNT>)
+	MESSAGELOC 0,3301073,<DLOCAL.AMOUNT>
 
 ELSEIF (<LOCAL.AMOUNT> == 60)
-	MESSAGE a reagent crystal(<DLOCAL.AMOUNT>)
+	MESSAGELOC 0,3301074,<DLOCAL.AMOUNT>
 
 ELSEIF (<LOCAL.AMOUNT> == 90)
-	MESSAGE a greater reagent crystal(<DLOCAL.AMOUNT>)
+	MESSAGELOC 0,3301075,<DLOCAL.AMOUNT>
 ENDIF
 RETURN 1
 
@@ -146,11 +146,11 @@ IF !(1 == 1)
 	RETURN 1
 
 ELSEIF (<DLOCAL.AMOUNT> <= 0)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Hatalı reagent adeti.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300359
 	RETURN 1
 
 ELSEIF !(<EVAL STRLEN(<LOCAL.REAGENTS>)>)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Hatalı reagent tür.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300360
 	RETURN 1
 ENDIF
 
@@ -177,15 +177,15 @@ ENDFOR
 
 IF (<SRC.ACTION> != Magery)
 	IF (<DLOCAL.AMOUNT> == 30)
-		SRC.EMOTE use lesser reagent crystal
+		SRC.EMOTELOC 0,3301076
 	ELSEIF (<DLOCAL.AMOUNT> == 60)
-		src.EMOTE use reagent crystal
+		src.EMOTELOC 0,3301077
 	ELSEIF (<DLOCAL.AMOUNT> == 90)
-		SRC.EMOTE use greater reagent crystal
+		SRC.EMOTELOC 0,3301078
 	ELSEIF (<DLOCAL.AMOUNT> == 120)
-		SRC.EMOTE use greater reagent crystal
+		SRC.EMOTELOC 0,3301078
 	ELSE
-		SRC.EMOTE use custom reagent crystal
+		SRC.EMOTELOC 0,3301079
 	ENDIF
 ENDIF
 

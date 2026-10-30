@@ -24,13 +24,13 @@ ENDIF
 
 ON=@SPELLSELECT
 IF (<SERV.SPELL.<ARGN>.FLAGS>&spellflag_field)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Burada bu büyü kullanamazsiniz.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300548
 	RETURN 1
 ENDIF
 
 on=@spellcast
 IF (<SERV.SPELL.<ARGN>.FLAGS>&spellflag_field)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Burada bu büyü kullanamazsiniz.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300548
 	RETURN 1
 ENDIF
 
@@ -66,10 +66,10 @@ IF !((<REF1.ISOWNER <SRC>>) || (<REF1.GETCOOWNERPOS <SRC>> >= 0) || (<REF1.GETFR
 		SRC.MOVE 0 <r1,2>
 		SRC.Func_House_BanishArea_Clear
 		SRC.FIX
-		SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu eve Sahip & ortak veya dost olmadiginiz için evden atildin!
+		SRC.SYSMESSAGELOC <def.tcolor_red>,3300662
 	ENDIF
 ELSE
-	SRC.SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, Evinizdesiniz!
+	SRC.SYSMESSAGELOC <def.tcolor_text>,3300663
 ENDIF
 
 

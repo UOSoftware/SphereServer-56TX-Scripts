@@ -697,7 +697,7 @@ ENDIF
 
 // PAGE 0
 ON=9999
-SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, <NAME> silindi.
+SRC.SYSMESSAGELOC <def.tcolor_red>,3300141,<NAME>
 TRYP 7 REMOVE
 
 
@@ -852,10 +852,10 @@ TRYP 4 INPDLG MAXMANA 5
 on=223
 FIXWEIGHT
 IF (<SRC> != <UID>)
-	SRC.SYSMESSAGELOC <def.tcolor_grey>,<def.empty_cliloc2>, Fixweight
-	SYSMESSAGELOC <def.tcolor_grey>,<def.empty_cliloc2>, Fixweight
+	SRC.SYSMESSAGELOC <def.tcolor_grey>,3300142
+	SYSMESSAGELOC <def.tcolor_grey>,3300142
 ELSE
-	SRC.SYSMESSAGELOC <def.tcolor_grey>,<def.empty_cliloc2>, Fixweight
+	SRC.SYSMESSAGELOC <def.tcolor_grey>,3300142
 ENDIF
 DIALOG D_CHARPROP1 2
 
@@ -894,7 +894,7 @@ LOCAL.FLAG=<DEF0.CharFlag.<DLOCAL._FOR>>
 	ENDIF
 ENDFOR
 DIALOG D_CHARPROP1 4
-SRC.SYSMESSAGELOC <def.tcolor_grey>,<def.empty_cliloc2>, <NAME> flag Ayarlandı: <FLAGS>
+SRC.SYSMESSAGELOC <def.tcolor_grey>,3300143,<NAME>,<FLAGS>
 
 
 //////////////////////////////////////////////////////////////////////////////
@@ -924,7 +924,7 @@ DIALOG D_CHARPROP1 5
 On=699
 CLEARTAGS
 DIALOG D_CHARPROP1 6
-SRC.SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, Tum taglar silindi
+SRC.SYSMESSAGELOC <def.tcolor_text>,3300144
 
 
 
@@ -947,7 +947,7 @@ ON=703
 IF (<GUILD>)
 	SRC.GOUID <GUILD>
 ELSE
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Guild yok.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300145
 ENDIF
 DIALOG D_CHARPROP1 7
 
@@ -1934,7 +1934,7 @@ ENDIF
 [DIALOG D_ITEMPROP1 BUTTON]
 // PAGE 0
 ON=9999
-SRC.SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, <NAME> silindi.
+SRC.SYSMESSAGELOC <def.tcolor_text>,3300141,<NAME>
 TRYP 4 REMOVE
 
 ON=9998
@@ -2019,7 +2019,7 @@ TRYP 4 INPDLG TYPE 30
 //////////////////////////////////////////////////////////////////////////////
 on=200
 TRYP 6 CLEARTAGS
-SRC.SYSMESSAGELOC <def.tcolor_grey>,<def.empty_cliloc2>, Eşyanın tüm tagları silindi.
+SRC.SYSMESSAGELOC <def.tcolor_grey>,3300146
 DIALOG D_ITEMPROP1 2
 
 
@@ -2133,19 +2133,19 @@ ON=705
 REF1=<HATCH>
 SRC.GOUID <REF1>
 DIALOG D_ITEMPROP1 7
-SRC.SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, <REF1.NAME>
+SRC.SYSMESSAGELOC <def.tcolor_text>,3300090,<REF1.NAME>
 
 ON=706
 REF1=<Tiller>
 SRC.GOUID <REF1>
 DIALOG D_ITEMPROP1 7
-SRC.SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, <REF1.NAME>
+SRC.SYSMESSAGELOC <def.tcolor_text>,3300090,<REF1.NAME>
 	
 ON=707
 REF1=<OWNER>
 SRC.GOUID <REF1>
 DIALOG D_ITEMPROP1 7
-SRC.SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, <REF1.NAME>
+SRC.SYSMESSAGELOC <def.tcolor_text>,3300090,<REF1.NAME>
 
 ON=708,710
 IF (<PLANK>)
@@ -2153,7 +2153,7 @@ IF (<PLANK>)
 	IF (<REF1.ISVALIDE>)
 		SRC.GOUID <REF1>
 	ELSE
-		SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Ship Plank bulunamadı!
+		SRC.SYSMESSAGELOC <def.tcolor_red>,3300147
 	ENDIF
 ENDIF
 DIALOG D_ITEMPROP1 7
@@ -2208,7 +2208,7 @@ ELSE
 	AMOUNT=1
 ENDIF
 TIMER=
-SRC.SYSMESSAGELOC <def.tcolor_grey>,<def.empty_cliloc2>, Spawn güncellendi.
+SRC.SYSMESSAGELOC <def.tcolor_grey>,3300148
 DIALOG D_ITEMPROP1 9
 RESET
 
@@ -2347,7 +2347,7 @@ ELSE
 	ATTR &=~ 0400000000000
 ENDIF
 UPDATE
-SRC.SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, <NAME> Attr Update
+SRC.SYSMESSAGELOC <def.tcolor_text>,3300149,<NAME>
 DIALOG D_ITEMPROP1 13
 
 

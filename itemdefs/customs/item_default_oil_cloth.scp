@@ -26,33 +26,33 @@ IF !(<SRC.ISINPACK <UID>>)
 	RETURN 1
 ENDIF
 TARGET
-SRC.SYSMESSAGELOC <def.tcolor_grey>,<def.empty_cliloc2>, Zehirli silahı seçiniz.
+SRC.SYSMESSAGELOC <def.tcolor_grey>,3300355
 RETURN 1
 
 ON=@TargOn_Ground
-SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, <def.msg_invalid_target_tr>
+SRC.SYSMESSAGELOC <def.tcolor_red>,3300090,<def.msg_invalid_target_tr>
 RETURN 1
 
 ON=@TargOn_Char
-SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, <def.msg_invalid_target_tr>
+SRC.SYSMESSAGELOC <def.tcolor_red>,3300090,<def.msg_invalid_target_tr>
 RETURN 1
 
 ON=@TARGON_ITEM
 IF (<SRC.TARG.UID>==<UID>)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu bir silah değil.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300356
 	RETURN 1
 ELSEIF !(<SRC.TARG.ISWEAPON>)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu bir silah değil.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300356
 	RETURN 1
 ELSEIF !(<SRC.TARG.MOREZ> > 0)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu silah zehirli değil.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300357
 	RETURN 1
 // ELSEIF !(<SRC.ISINPACK <SRC.TARG.UID>>)
 	// SRC.SYSMESSAGELOC <def.tcolor_red>,600036,<SRC.TARG.NAME>	// Bunu (~1_val~) kullanabilmek için çantanızda veya üzerinizde olmalıdır.
 	// RETURN 1
 ENDIF
 SRC.TARG.MOREZ 0
-SRC.SYSMESSAGELOC <def.tcolor_grey>,<def.empty_cliloc2>, Silahin zehrini gecirdiniz
+SRC.SYSMESSAGELOC <def.tcolor_grey>,3300358
 CONSUME
 RETURN 1
 

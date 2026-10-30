@@ -18,7 +18,7 @@ ENDIF
 
 IF !(<SRC.ISPINVERIFIED>)
 	SRC.EVENTS +E_PIN
-	SRC.SYSMESSAGELOC <def.tcolor_yellow>,<def.empty_cliloc2>, Pin girişi yapmayı unutmayınız (.pin).
+	SRC.SYSMESSAGELOC <def.tcolor_yellow>,3300157
 ELSE
 	SRC.EVENTS -E_PIN
 ENDIF
@@ -104,11 +104,11 @@ IF !(<SRC.ISPINVERIFIED>)
 	RETURN 1
 ENDIF
 IF (<SRC.UID> == <UID>)
-	SRC.SYSMESSAGELOC <def.tcolor_grey>,<def.empty_cliloc2>,Hesap Adı: <account>
-	SRC.SYSMESSAGELOC <def.tcolor_grey>,<def.empty_cliloc2>,Seri NO: <DUID> (<UID>)
-	SRC.SYSMESSAGELOC <def.tcolor_grey>,<def.empty_cliloc2>,İlk Girişi: <ACCOUNT.FIRSTCONNECTDATE>
+	SRC.SYSMESSAGELOC <def.tcolor_grey>,3300158,<account>
+	SRC.SYSMESSAGELOC <def.tcolor_grey>,3300159,<DUID>,<UID>
+	SRC.SYSMESSAGELOC <def.tcolor_grey>,3300160,<ACCOUNT.FIRSTCONNECTDATE>
 	// SRC.SYSMESSAGELOC <def.tcolor_grey>,<def.empty_cliloc2>,Karakter Yaşı: <eval (<age>)> gün once doğmuş.
-	SRC.SYSMESSAGELOC <def.tcolor_grey>,<def.empty_cliloc2>,Karakter Yaşı: <eval (<age> / 86400)> gün once doğmuş.
+	SRC.SYSMESSAGELOC <def.tcolor_grey>,3300161,<eval (<age> / 86400)>
 ENDIF
 
 
@@ -118,19 +118,19 @@ IF (<ISONLINE>)
 		IF (<FOOD> < <MAXFOOD>)
 			IF (<CTAG0.EnvironChange.Food> < <SERV.TIME>)
 				IF (<FOOD> == 2)
-					SAYU * açlıktan başı döner *
-					SYSMESSAGE @36 Food Level: <food>/<maxfood>
+					SAYLOC 0,3301055
+					SYSMESSAGELOC 36,3300162,<food>,<maxfood>
 					HUNGRY
 					CTAG0.EnvironChange.Food <EVAL <SERV.TIME> + 600>
 				ELSEIF (<FOOD> == 1)
-					SAYU * açlıktan ölmek üzeredir * 
-					SYSMESSAGE @37 Food Level: <food>/<maxfood>
+					SAYLOC 0,3301056
+					SYSMESSAGELOC 37,3300162,<food>,<maxfood>
 					HUNGRY
 					CTAG0.EnvironChange.Food <EVAL <SERV.TIME> + 600>
 				ELSEIF (<FOOD> == 0)
 					SUICIDE
-					SAYU * açlıktan ölür *
-					SYSMESSAGELOC <def.tcolor_red,<def.empty_cliloc2>, Food Level: <food>/<maxfood>
+					SAYLOC 0,3301057
+					SYSMESSAGELOC <def.tcolor_red>,3300162,<food>,<maxfood>
 					HUNGRY
 					CTAG0.EnvironChange.Food <EVAL <SERV.TIME> + 600>
 					FOOD 2
@@ -292,11 +292,11 @@ ON=@UserExWalklimit
 IF (<SRC.ACCOUNT.PLEVEL> == 1) && !((<SRC.ISINSHIP>) || (<SRC.ISINDUNGEON>))
 	SRC.CTAG0.UserExWalklimit.Count ++
 
-	SRC.SYSMESSAGELOC <def.tcolor_yellow>,<def.empty_cliloc2>, [<SRC.dCTAG0.UserExWalklimit.Count>. Uyarı]: Hızınızda bir anormallik saptandı ve bu anormallik kayıt altına alındı.
+	SRC.SYSMESSAGELOC <def.tcolor_yellow>,3300163,<SRC.dCTAG0.UserExWalklimit.Count>
 
 	IF (<SRC.dCTAG0.UserExWalklimit.Count> >= 4)
 		SERV.ALLCLIENTS Func_Player_To_Staff_Chat [Walklimit] [<SRC.dCTAG0.UserExWalklimit.Count>] <SRC.NAME>[<SRC.UID>] - <SRC.REGION.NAME>[<SRC.P>] : HIZINDA anormallik saptandi. Kontrol ediniz.
-			SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, [<SRC.dCTAG0.UserExWalklimit.Count>. Uyarı]: Hızınızda bir anormallik saptandı ve bu anormallik kayıt altına alındı.
+			SRC.SYSMESSAGELOC <def.tcolor_red>,3300163,<SRC.dCTAG0.UserExWalklimit.Count>
 
 		SRC.CTAG0.UserExWalklimit.Count=0
 		// SRC.fNomovetill 30
@@ -343,10 +343,10 @@ ON=@Userextcmd
 IF (<ARGN1> == 199) // 0xc8
 	IF (STRMATCH("salute","<ARGS>"))
 		IF (<SRC.CTAG0.MacroBow.DELAY> > <SERV.TIME>)
-			SRC.SYSMESSAGELOC <def.tcolor_grey>,<def.empty_cliloc2>, [Salute] <DEFMSG.skillwait_3>
+			SRC.SYSMESSAGELOC <def.tcolor_grey>,3300164,<DEFMSG.skillwait_3>
 			RETURN 1
 		ELSEIF (<SRC.CTAG0.MacroSalute.DELAY> > <SERV.TIME>)
-			SRC.SYSMESSAGELOC <def.tcolor_grey>,<def.empty_cliloc2>, [Salute] <DEFMSG.skillwait_3>
+			SRC.SYSMESSAGELOC <def.tcolor_grey>,3300164,<DEFMSG.skillwait_3>
 			RETURN 1
 		ENDIF
 		SRC.CTAG0.MacroSalute.DELAY <EVAL <SERV.TIME>+35>
@@ -355,10 +355,10 @@ IF (<ARGN1> == 199) // 0xc8
 	ENDIF
 	IF (STRMATCH("bow","<ARGS>"))
 		IF (<SRC.CTAG0.MacroBow.DELAY> > <SERV.TIME>)
-			SRC.SYSMESSAGELOC <def.tcolor_grey>,<def.empty_cliloc2>, [Bow] <DEFMSG.skillwait_3>
+			SRC.SYSMESSAGELOC <def.tcolor_grey>,3300165,<DEFMSG.skillwait_3>
 			RETURN 1
 		ELSEIF (<SRC.CTAG0.MacroSalute.DELAY> > <SERV.TIME>)
-			SRC.SYSMESSAGELOC <def.tcolor_grey>,<def.empty_cliloc2>, [Bow] <DEFMSG.skillwait_3>
+			SRC.SYSMESSAGELOC <def.tcolor_grey>,3300165,<DEFMSG.skillwait_3>
 			RETURN 1
 		ENDIF
 		SRC.CTAG0.MacroBow.DELAY <EVAL <SERV.TIME>+35>
@@ -451,7 +451,7 @@ ON=@FamilyLeave
 ON=@ITEMTARGON_ITEM
 IF (<ACT.ISWEAPON>)
 	IF (<ARGO.TYPE>==T_POTION)
-		SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu eşyayı şekilde kullanamazsınız.
+		SRC.SYSMESSAGELOC <def.tcolor_red>,3300166
 		RETURN 1
 	ENDIF
 ENDIF
@@ -464,7 +464,7 @@ ENDIF
 
 IF (<ACT.dTAG0.CarveCorpseItems>) && !(<ACT.CONT>)
 	IF (<SRC.CTAG0.CorpseDumpItem.Delay> > <SERV.TIME>)
-		SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Cesetten kopan eşyaları bu kadar hızlı kullanamazsınız.
+		SRC.SYSMESSAGELOC <def.tcolor_red>,3300167
 		RETURN 1
 	ENDIF
 	SRC.CTAG0.CorpseDumpItem.Delay <EVAL <SERV.TIME>+25>
@@ -553,7 +553,7 @@ IF (<ARGN2> >= 175) // kusursuz item
 	ENDIF
 ENDIF
 
-SRC.SYSMESSAGE Bu uretim sonucu sizden eksilen malzemeler;
+SRC.SYSMESSAGELOC 0,3300168
 LOCAL.RESOURCES <SERV.ITEMDEF.<act.baseid>.RESOURCES.0.KEY>
 IF (<ARRAYCOUNT <LOCAL.RESOURCES>>)
 	FOR r 1 <ARRAYCOUNT <LOCAL.RESOURCES>>
@@ -600,7 +600,7 @@ IF !(<SRC.ISGM>)
 
 	IF !((<ARGN1> == 32) || (<ARGN1> == 52))
 		IF  (<SRC.IsEquipTypeArmors>)
-			SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Üzerinizde ağır zırh varken büyü yapamazsınız.
+			SRC.SYSMESSAGELOC <def.tcolor_red>,3300169
 			SRC.SKILL FAIL
 			SRC.ACTION -1
 			RETURN 1

@@ -85,7 +85,7 @@ DHTMLGUMP +0 +100 250 100 1 1 <def.bfont_red>Pinkodu sorulan yerler;<def.bfont_b
 
 [DIALOG d_pin_main BUTTON]
 ON=1
-SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, Pin kodu ayarlarınız kaydedildi.
+SYSMESSAGELOC <def.tcolor_text>,3300096
 ACCOUNT.TAG.PIN_SPEECH=<ARGCHK[1]>
 ACCOUNT.TAG.PIN_HELP=<ARGCHK[2]>
 ACCOUNT.TAG.PIN_ITEMUSE=<ARGCHK[3]>
@@ -93,16 +93,16 @@ ACCOUNT.TAG.PIN_COMMAND=<ARGCHK[4]>
 
 ON=2
 DIALOGCLOSEALL d_staff_panel,d_pin_login
-SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Pin sisteminden faylanmıyorsunuz. Karakteriniz ile ilgili herhangi bir güvenlik ihlalinden, kayıp vs. gibi şeylerden <serv.name> sunucusu sorumlu değildir.
+SYSMESSAGELOC <def.tcolor_red>,3300097,<serv.name>
 EVENTS -E_PIN
 
 ON=3
-SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Pin değişimleri Hesabım > Pin bölümünden yapılmaktadır. Yönlendiriliyorsunuz...
+SYSMESSAGELOC <def.tcolor_red>,3300098
 OpenWebUrl <SERV.URL>/home
 DIALOG d_pin_main
 
 ON=4
-SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Pin kodu ayarlarınız sıfırlandı.
+SYSMESSAGELOC <def.tcolor_red>,3300099
 ACCOUNT.TAG.PIN_SPEECH=
 ACCOUNT.TAG.PIN_HELP=
 ACCOUNT.TAG.PIN_ITEMUSE=
@@ -115,7 +115,7 @@ ACCOUNT.TAG.PIN_COMMAND=
 ON=@ItemPickUp_Pack
 IF (<SRC.REGION.SAFE>)
 	IF !(<SRC.ISPINVERIFIED>)
-		SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Pin girişi yapmadan bunu yapamazsınız.
+		SRC.SYSMESSAGELOC <def.tcolor_red>,3300100
 		SRC.f_pin_login
 		RETURN 1
 	ENDIF
@@ -124,7 +124,7 @@ ENDIF
 ON=@ITEMPICKUP_SELF
 IF !(<SRC.REGION.SAFE>)
 	IF !(<SRC.ISPINVERIFIED>)
-		SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Pin girişi yapmadan bunu yapamazsınız.
+		SRC.SYSMESSAGELOC <def.tcolor_red>,3300100
 		SRC.f_pin_login
 		RETURN 1
 	ENDIF
@@ -155,7 +155,7 @@ ENDIF
 
 On=@ItemDropon_Ground
 IF !(<SRC.ISPINVERIFIED>)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Pin girişi yapmadan bunu yapamazsınız.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300100
 	SRC.f_pin_login
 	RETURN 1
 ENDIF

@@ -1090,7 +1090,7 @@ ON=@Hit
    IF (<MANA> >= 20) && (<SRC.FLAGS> & statf_onhorse)
   MANA -= 20
   SRC.DISMOUNT
-  SRC.EMOTE knocked off mount!
+  SRC.EMOTELOC 0,3301040
   SRC.DAMAGE <R15,25> <DEF.dam_physical> <UID>
    ENDIF
    //Paralyze Attack

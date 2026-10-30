@@ -463,7 +463,7 @@ ON=@Create
 	ATTR=attr_newbie
 
 ON=@DClick
-	SRC.MESSAGE Drop keys on an empty key ring
+	SRC.MESSAGELOC 0,3301111
 
 [ITEMDEF 01012]
 DEFNAME=i_key_magic

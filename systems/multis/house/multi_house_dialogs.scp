@@ -399,13 +399,13 @@ ON=21
 // Halka aç
 ON=22
 HOUSETYPE=<DEF.HOUSE_PUBLIC>
-SRC.SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, Bu ev "Halka Açık" olarak ayarlandı.
+SRC.SYSMESSAGELOC <def.tcolor_text>,3300604
 SDIALOG d_house_menu,2
 
 // Özel
 ON=23
 HOUSETYPE=<DEF.HOUSE_PRIVATE>
-SRC.SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, Bu ev "Özel" olarak ayarlandı.
+SRC.SYSMESSAGELOC <def.tcolor_text>,3300605
 SDIALOG d_house_menu,2
 
 
@@ -419,7 +419,7 @@ FORINSTANCES I_KEY_COPPER
 		ENDIF
 	ENDIF
 ENDFOR
-SRC.SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, Bu eve ait tüm anahtarlar silindi.
+SRC.SYSMESSAGELOC <def.tcolor_text>,3300606
 REMOVEKEYS <SRC>
 ADDKEY <SRC>,1
 
@@ -435,7 +435,7 @@ IF (<Coowners>)
 			ENDIF
 		ENDIF
 	ENDFOR
-	SRC.SRC.SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, Evin anahtarı tüm ortaklara dağıtıldı.
+	SRC.SRC.SYSMESSAGELOC <def.tcolor_text>,3300607
 ENDIF
 
 // DOSTLARA ANAHTAR
@@ -450,7 +450,7 @@ IF (<Friends>)
 			ENDIF
 		ENDIF
 	ENDFOR
-	SRC.SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, Evin anahtarı tüm dostlara dağıtıldı.
+	SRC.SYSMESSAGELOC <def.tcolor_text>,3300608
 ENDIF
 
 REF99=<OWNER>
@@ -465,7 +465,7 @@ IF (<REF99.GUILD>)
 			REF97.NOTICE <NAME> isimli ev anahtarlarını yenilendi.
 		ENDIF
 	ENDFOR
-	SRC.SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, Evin anahtarı tüm guild üyelerine dağıtıldı.
+	SRC.SYSMESSAGELOC <def.tcolor_text>,3300609
 ENDIF
 
 SDIALOG d_house_menu,2
@@ -478,18 +478,18 @@ SDIALOG d_house_menu,2
 // Ortaklık/dostluktan ayrıl
 on=25
 IF !(<SRC.IsInHouse>)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Ev içinde değilsiniz.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300610
 	RETURN 1
 ELSEIF (<SRC.REGION.UID> != <UID>)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Ev içinde değilsiniz.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300610
 	RETURN 1
 ENDIF
 IF (<GETCOOWNERPOS <SRC>> >= 0)
 	DELCOOWNER <SRC>
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Evin ortaklığından ayrıldınız.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300611
 ELSEIF (<GETFRIENDPOS <SRC>> >= 0)
 	DELFRIEND <src>
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Evin dostluğundan ayrıldınız.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300612
 ENDIF
 REMOVEKEYS <SRC>
 
@@ -502,14 +502,14 @@ REMOVEKEYS <SRC>
 // Ortak Ekle
 ON=200
 IF !(<SRC.IsInHouse>)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Ev içinde değilsiniz.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300610
 	RETURN 1
 ELSEIF (<SRC.REGION.UID> != <UID>)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Ev içinde değilsiniz.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300610
 	RETURN 1
 ENDIF
 TARGETF F_HOUSE_ADD_LIST 1
-SRC.SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, Eve ortak olarak eklemek istediğiniz oyuncuyu seçiniz.
+SRC.SYSMESSAGELOC <def.tcolor_text>,3300613
 
 // Tüm Ortakları Sil 
 ON=201
@@ -520,14 +520,14 @@ SDIALOG D_HOUSE_LIST_CLEAR
 ON=2000 2099
 REF1=<CoOwner.<EVAL <DARGN>-2000>.UID>
 IF !(<REF1.ISVALIDE>)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Oyuncu bulunamadı!
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300101
 	RETURN 1
 ELSEIF !(<REF1.ISPLAYER>)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Oyuncu bulunamadı!
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300101
 	RETURN 1
 ENDIF
 REF1.NOTICE <OWNER.NAME> isimli oyuncunun sahibi olduğu <NAME> evindeki ortaklığınız kaldırıldı!
-SRC.SYSMESSAGELOC <def.tcolor_green>,<def.empty_cliloc2>, <REF1.NAME> isimli oyuncunun ortaklığı kaldırıldı.
+SRC.SYSMESSAGELOC <def.tcolor_green>,3300614,<REF1.NAME>
 DELCOOWNER <REF1>
 REMOVEKEYS <REF1>
 
@@ -536,14 +536,14 @@ REMOVEKEYS <REF1>
 ON=2100 2200
 REF1=<Friend.<EVAL <DARGN>-2100>.UID>
 IF !(<REF1.ISVALIDE>)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Oyuncu bulunamadı!
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300101
 	RETURN 1
 ELSEIF !(<REF1.ISPLAYER>)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Oyuncu bulunamadı!
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300101
 	RETURN 1
 ENDIF
 REF1.NOTICE <OWNER.NAME> isimli oyuncunun sahibi olduğu <NAME> evindeki dostluğunuz kaldırıldı!
-SRC.SYSMESSAGELOC <def.tcolor_green>,<def.empty_cliloc2>, <REF1.NAME> isimli oyuncunun dostluğu kaldırıldı.
+SRC.SYSMESSAGELOC <def.tcolor_green>,3300615,<REF1.NAME>
 DELFRIEND <REF1>
 REMOVEKEYS <REF1>
 
@@ -556,10 +556,10 @@ REMOVEKEYS <REF1>
 // Dost Ekle
 ON=202
 IF !(<SRC.IsInHouse>)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Ev içinde değilsiniz.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300610
 	RETURN 1
 ELSEIF (<SRC.REGION.UID> != <UID>)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Ev içinde değilsiniz.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300610
 	RETURN 1
 ENDIF
 TARGETF F_HOUSE_ADD_LIST 2
@@ -596,11 +596,11 @@ SDIALOG D_HOUSE_RENAME
 // Nodecay change
 ON=42
 IF (<LINK.REGION.FLAGS>&REGION_FLAG_NODECAY || <REGION.FLAGS>&REGION_FLAG_NODECAY)
-	SRC.SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, Evin içinde yere atılan eşyalar SİLİNECEK şekilde ayarlandı.
+	SRC.SYSMESSAGELOC <def.tcolor_text>,3300616
 	LINK.REGION.FLAGS <link.region.flags>&~region_flag_nodecay
 
 ELSE
-SRC.SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, Evin içinde yere atılan eşyalar SİLİNMEYECEK şekilde ayarlandı.
+SRC.SYSMESSAGELOC <def.tcolor_text>,3300617
 	LINK.REGION.FLAGS |= region_flag_nodecay
 	
 ENDIF
@@ -613,17 +613,17 @@ ENDIF
 // Evi transfer et
 ON=50
 IF (<TAG0.DEMOLITION>)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu evin yıkılması planlanıyor ve satışı yapılamaz.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300618
 	RETURN 1
 ENDIF
 SRC.TARGETF F_HOUSE_TRANSFER <UID>
-SRC.SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, Evi transfer etmek istediğiniz kişiyi seçiniz.
+SRC.SYSMESSAGELOC <def.tcolor_text>,3300619
 
 
 // Evi kaldır
 ON=51
 IF (<SRC.IsInHouse>)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Ev içindeyken evi yıkamazsınız.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300620
 	RETURN 1
 ENDIF
 
@@ -636,15 +636,15 @@ SDIALOG D_HOUSE_REDEED
 // Satışa çıkart
 ON=500
 IF (<TAG0.DEMOLITION>)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu evin yıkılması planlanıyor ve satışı yapılamaz.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300618
 	RETURN 1
 ENDIF
 IF !(<ISNUM <ARGTXT[0]>>)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Sadece rakam girebilirsiniz.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300621
 	RETURN 1
 ENDIF
 TAG0.PRICE=<ARGTXT[0]>
-SRC.SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, Evi satılığa çıkarttınız.
+SRC.SYSMESSAGELOC <def.tcolor_text>,3300622
 SDIALOG D_HOUSE_MENU 50
 
 
@@ -652,16 +652,16 @@ SDIALOG D_HOUSE_MENU 50
 // Fiyatı güncelle
 ON=501
 IF (<TAG0.DEMOLITION>)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu evin yıkılması planlanıyor ve satışı yapılamaz.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300618
 	RETURN 1
 ENDIF
 IF !(<ISNUM <ARGTXT[0]>>)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Sadece rakam girebilirsiniz.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300621
 	RETURN 1
 ENDIF
 
 TAG0.PRICE=<ARGTXT[0]>
-SRC.SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, Evin fiyatı güncellendi.
+SRC.SYSMESSAGELOC <def.tcolor_text>,3300623
 SDIALOG D_HOUSE_MENU 50
 
 
@@ -669,7 +669,7 @@ SDIALOG D_HOUSE_MENU 50
 // Satıştan kaldır
 ON=502
 TAG0.PRICE=
-SRC.SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, Evi satmaktan vazgeçtiniz.
+SRC.SYSMESSAGELOC <def.tcolor_text>,3300624
 SDIALOG D_HOUSE_MENU 50
 
 
@@ -680,7 +680,7 @@ SDIALOG D_HOUSE_MENU 50
 ON=7
 IF (<DEF.hs_can_bank>)
 	IF !(<SRC.IsInHouse>)
-		SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Ev içinde değilsiniz.
+		SRC.SYSMESSAGELOC <def.tcolor_red>,3300610
 		RETURN 1
 	ENDIF
 	SRC.OPENBANK
@@ -696,7 +696,7 @@ ON=80
 IF !(<TAG0.DEMOLITION>)
 	IF (<TAG0.PRICE>)
 		TAG.PRICE=
-		SRC.SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, Bu evin satisi durduruldu.
+		SRC.SYSMESSAGELOC <def.tcolor_text>,3300625
 	ENDIF
 			
 	IF (<ISNUM <ARGTXT[1]>>)
@@ -704,20 +704,20 @@ IF !(<TAG0.DEMOLITION>)
 			IF (<EVAL <ARGTXT[1]>> > 6)
 				TAG0.DEMOLITION=<EVAL <ARGTXT[1]>>
 				LINK.TIMER=60*60*24*<EVAL <ARGTXT[1]>>
-				SRC.SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, Bu ev <EVAL <TAG0.DEMOLITION>> sonra yıkılması planladı.
+				SRC.SYSMESSAGELOC <def.tcolor_text>,3300626,<EVAL <TAG0.DEMOLITION>>
 			ELSE
-				SRC.SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, Yıkımdan önce en az 7 günlük ihbar süresi gerekmektedir.
+				SRC.SYSMESSAGELOC <def.tcolor_text>,3300627
 			ENDIF
 		ELSE
-			SRC.SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, Yıkım 30 gün içinde gerçekleşmelidir
+			SRC.SYSMESSAGELOC <def.tcolor_text>,3300628
 		ENDIF
 		
 	ELSE
-		SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Geçersiz giriş, günler sayısal olmalı & < 30
+		SRC.SYSMESSAGELOC <def.tcolor_red>,3300629
 	ENDIF
 ELSE
 	TAG.DEMOLITION=
-	SRC.SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, Evin yikilma sureci iptal edildi.
+	SRC.SYSMESSAGELOC <def.tcolor_text>,3300630
 ENDIF
 
 	
@@ -769,16 +769,16 @@ TILEPICHUE +25 +10 <EVAL <SERV.ITEMDEF.I_DEED.ID>+1> 0
 [DIALOG D_HOUSE_REDEED PREBUTTON]
 
 IF (<F_HOUSE_Guildstone_COUNT>)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Eve guild kuruluyken yıkım yapamazsınız.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300631
 	RETURN 1
 ELSEIF (<SRC.IsInHouse>)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Evin içindeyken evi yıkamazsınız.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300632
 	RETURN 1
 ELSEIF (<LINK.DISTANCE <SRC>> > 20)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Eve uzaksiniz.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300633
 	RETURN 1
 ELSEIF !(<ISOWNER <SRC>>)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Evein sahibİ değilsiniz.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300634
 	RETURN 1
 ENDIF
 
@@ -801,7 +801,7 @@ IF (<ARGCHK[1]>)
 	ENDIF
 	
 ELSE
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Ev içindeki eşyaları bankanıza aktarmamayı SEÇMEDİĞİNİZ için ev içindeki eşyalar silindi.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300635
 ENDIF
 region.allclients.update
 
@@ -854,19 +854,19 @@ ENDIF
 // Evi satın al
 ON=1
 IF !(<DTAG0.PRICE>)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu ev satilik degil.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300636
 	RETURN 1
 ELSEIF (<DTAG0.PRICE> <= 0)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu ev satilik degil.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300636
 	RETURN 1
 ELSEIF (<SRC.GOLD> < <DTAG0.PRICE>)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, <bolukayir <DTAG0.PRICE>> gpniz yok.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300637,<bolukayir <DTAG0.PRICE>>
 	RETURN 1
 ENDIF
 
 REF1=<OWNER> // Eski sahibi
 IF !(<REF1.ISVALIDE>)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Evin sahibi bulunamadı!
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300638
 	RETURN 1
 ENDIF
 
@@ -876,18 +876,18 @@ REF1.DELHOUSE <UID>
 REF1.GOLD +=<DTAG0.PRICE>
 
 IF (<REF1.ISONLINE>)
-	REF1.SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, Sahip olduğunuz <NAME> isimli ev <SRC.NAME> isimli oyuncu tarafından <Bolukayir <DTAG.PRICE>> gp karşılığından satın alınmıştır. Dost - Ortak - Yasaklı - Erişim listesi temizlendi. Evin sahibi artık <SRC.NAME>.
+	REF1.SYSMESSAGELOC <def.tcolor_text>,3300639,<NAME>,<SRC.NAME>,<Bolukayir <DTAG.PRICE>>,<SRC.NAME>
 ENDIF
 
 // Yeni sahibi
 SRC.GOLD -=<DTAG0.PRICE>
 IF (<SRC.ISONLINE>)
-	SRC.SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, <Bolukayir <DTAG.PRICE>> gp karşılığında <NAME> isimli ev satın alındı. Dost - Ortak - Yasaklı - Erişim listesi temizlendi. Evin sahibi artık sensin.
+	SRC.SYSMESSAGELOC <def.tcolor_text>,3300640,<Bolukayir <DTAG.PRICE>>,<NAME>
 ENDIF
 SRC.ADDHOUSE <UID>
 
 // Tabela
-LINK.SAYU Yeni sahibi: <SRC.NAME>
+LINK.SAYLOC 0,3301126,<SRC.NAME>
 
 // Ev
 TAG0.PRICE=
@@ -926,7 +926,7 @@ DHTMLGUMP +30 +125 100 20 0 0 Vazgeç
 [DIALOG D_HOUSE_RENAME BUTTON]
 ON=0
 SRC.DIALOGCLOSE d_house_menu
-SRC.SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, Ev adini degistirmekten vazgectiniz.
+SRC.SYSMESSAGELOC <def.tcolor_text>,3300641
 DIALOG d_house_menu 4
 
 ON=1
@@ -972,16 +972,16 @@ DHTMLGUMP +30 +70 100 20 0 0 Onayla
 ON=0
 SRC.DIALOGCLOSE d_house_menu
 SRC.CTAG.LIST=
-SRC.SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, İşlem iptal edildi.
+SRC.SYSMESSAGELOC <def.tcolor_text>,3300642
 DIALOG d_house_menu 2
 
 ON=1 2
 IF (<ARGN>==1) //CO-OWNER
     DELCOOWNER -1
-    SRC.SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, Tüm ortaklar silindi.
+    SRC.SYSMESSAGELOC <def.tcolor_text>,3300643
 ELIF (<ARGN>==2) //FRIEND
     DELFRIEND -1
-    SRC.SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, Tüm dostlar silindi.
+    SRC.SYSMESSAGELOC <def.tcolor_text>,3300644
 ENDIF
 SRC.DIALOGCLOSE d_house_menu
 DIALOG d_house_menu 2
@@ -1048,7 +1048,7 @@ IF !(<DLOCAL.IZINCOUNT>)
 	TAG0.ACCESS=
 ENDIF
 
-SRC.SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, <NAME> izinleri ayarlandı.
+SRC.SYSMESSAGELOC <def.tcolor_text>,3300645,<NAME>
 DIALOGCLOSE D_HOUSE_ACCESS
 DIALOG D_HOUSE_ACCESS
 
@@ -1128,9 +1128,9 @@ ARGS=<SRC.CTAG0.HOUSE_ACCESS_INVITE>
 REF1=<ARGV0> // ev
 REF2=<ARGV1> // teklifi gönderen
 IF (<REF1.ISVALIDE>)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, <REF1.NAME> teklifini reddettiniz.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300646,<REF1.NAME>
 	IF (<REF2.ISVALIDE>)
-		REF2.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, <SRC.NAME> teklifi reddetti!
+		REF2.SYSMESSAGELOC <def.tcolor_red>,3300647,<SRC.NAME>
 	ENDIF
 ENDIF
 SRC.CLEARCTAGS HOUSE_ACCESS_INVITE
@@ -1145,53 +1145,53 @@ REF2=<ARGV1>		// teklifi gönderen
 REF3=<REF1.LINK>	// tabela
 
 IF !(<REF1.ISVALIDE>)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Ev bulunamadı!
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300648
 	RETURN 1
 ELSEIF !(<REF1.ISMULTI>)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Burası ev olarak görünmüyor.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300649
 	RETURN 1
 ENDIF
 
 IF (<ARGV2> == 1) // ORTAK eklemek
 	IF (<REF1.COOWNERS> >= <DDEF.HS_MAX_CO_OWNERS>)
-		SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu evin ortak ekleme limiti dolmuş. (<REF1.COOWNERS>/<DDEF.HS_MAX_CO_OWNERS>)
-		REF1.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu evin ortak ekleme limiti dolmuş. (<REF1.COOWNERS>/<DDEF.HS_MAX_CO_OWNERS>)
+		SRC.SYSMESSAGELOC <def.tcolor_red>,3300650,<REF1.COOWNERS>,<DDEF.HS_MAX_CO_OWNERS>
+		REF1.SYSMESSAGELOC <def.tcolor_red>,3300650,<REF1.COOWNERS>,<DDEF.HS_MAX_CO_OWNERS>
 		RETURN 1
 	ELSEIF (<REF1.ISOWNER <SRC>>) || (<REF1.GETCOOWNERPOS <SRC>> >= 0) || (<REF1.GETFRIENDPOS <SRC>> >= 0) || (<SRC.ISGM>)
-		SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu ev ile zaten bir ilişiğiniz var.
-		REF1.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, <SRC.NAME> isimli oyuncunun bu ev ile zaten bir ilişiği var.
+		SRC.SYSMESSAGELOC <def.tcolor_red>,3300651
+		REF1.SYSMESSAGELOC <def.tcolor_red>,3300652,<SRC.NAME>
 		RETURN 1
 	ENDIF
 	REF1.ADDKEY <SRC>
 	REF1.ADDCOOWNER=<SRC>
-	REF3.SAYU Yeni ortak: <SRC.NAME>
-	SRC.SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, <ref1.name> isimli eve ortak oldunuz.
-	REF2.SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, <SRC.NAME> <ref1.name> isimli evin ortaklar listesine başarıyla eklendi.
+	REF3.SAYLOC 0,3301127,<SRC.NAME>
+	SRC.SYSMESSAGELOC <def.tcolor_text>,3300653,<ref1.name>
+	REF2.SYSMESSAGELOC <def.tcolor_text>,3300654,<SRC.NAME>,<ref1.name>
 
 ELSEIF (<ARGV2> == 2) // Dost ekleme
 
 	IF (<REF1.FRIENDS> >= <DDEF.hs_max_friends>)
-		SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu evin dost ekleme limiti dolmuş. (<REF1.FRIENDS>/<DDEF.hs_max_friends>)
-		REF1.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu evin dost ekleme limiti dolmuş. (<REF1.FRIENDS>/<DDEF.hs_max_friends>)
+		SRC.SYSMESSAGELOC <def.tcolor_red>,3300655,<REF1.FRIENDS>,<DDEF.hs_max_friends>
+		REF1.SYSMESSAGELOC <def.tcolor_red>,3300655,<REF1.FRIENDS>,<DDEF.hs_max_friends>
 		RETURN 1
 	ELSEIF (<REF1.ISOWNER <SRC>>) || (<REF1.GETCOOWNERPOS <SRC>> >= 0) || (<REF1.GETFRIENDPOS <SRC>> >= 0) || (<SRC.ISGM>)
-		SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu ev ile zaten bir ilişiğiniz var.
-		REF1.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>,  <SRC.NAME> isimli oyuncunun bu ev ile zaten bir ilişiği var.
+		SRC.SYSMESSAGELOC <def.tcolor_red>,3300651
+		REF1.SYSMESSAGELOC <def.tcolor_red>,3300652,<SRC.NAME>
 		RETURN 1
 	ENDIF
 	REF1.ADDKEY <SRC>
 	REF1.ADDFRIEND=<SRC>
-	REF3.SAYU Yeni dost: <SRC.NAME>
-	SRC.SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, <ref1.name> isimli eve dost oldunuz.
-	REF2.SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, <SRC.NAME> <ref1.name> isimli evin dost listesine başarıyla eklendi.
+	REF3.SAYLOC 0,3301128,<SRC.NAME>
+	SRC.SYSMESSAGELOC <def.tcolor_text>,3300656,<ref1.name>
+	REF2.SYSMESSAGELOC <def.tcolor_text>,3300657,<SRC.NAME>,<ref1.name>
 
 ELSEIF (<ARGV2> == 3) // Transfer
 
-	SRC.SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, <REF2.NAME> isimli oyuncudan <REF1.name> isimli evi başarıyla transfer aldınız.
-	SRC.SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, Evin tüm ortak - dost - yasaklı ve izin listesi temizlendi.
+	SRC.SYSMESSAGELOC <def.tcolor_text>,3300658,<REF2.NAME>,<REF1.name>
+	SRC.SYSMESSAGELOC <def.tcolor_text>,3300659
 	
-	REF2.SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, <SRC.NAME> isimli oyuncuya evi başarıyla transfer ettiniz.
-	REF2.SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, Evin tüm ortak - dost - yasaklı ve izin listesi temizlendi.
+	REF2.SYSMESSAGELOC <def.tcolor_text>,3300660,<SRC.NAME>
+	REF2.SYSMESSAGELOC <def.tcolor_text>,3300659
 	
 	REF1.REMOVEKEYS
 	
@@ -1205,13 +1205,13 @@ ELSEIF (<ARGV2> == 3) // Transfer
 	REF1.DELACCESS -1
 	REF1.DELFRIEND -1
 	
-	REF3.SAYU Yeni sahibi: <SRC.NAME>
+	REF3.SAYLOC 0,3301126,<SRC.NAME>
 	
 	REF2.DELHOUSE <REF1>
 
 
 ELSE
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Tanımsız işlem.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300661
 ENDIF
 
 SRC.CLEARCTAGS HOUSE_ACCESS_INVITE

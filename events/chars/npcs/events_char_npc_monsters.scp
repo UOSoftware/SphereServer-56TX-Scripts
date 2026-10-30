@@ -159,13 +159,13 @@ ENDIF
 ON=@Spelleffect
 // poison resist
 IF (<ARGN> == 20)
-	SAYU * <NAME> resists poison *
+	SAYLOC 0,3301047,<NAME>
 	FINDID.i_rune_poison.REMOVE
 	RETURN 1
 ENDIF
 
 IF (<ARGN> == 38)
-	SAYU * <NAME> resists paralyze *
+	SAYLOC 0,3301048,<NAME>
 	FINDID.i_rune_paralyze.REMOVE
 	RETURN 1
 ENDIF
@@ -175,7 +175,7 @@ ENDIF
 ON=@GetHit
 // poison resist
 IF (<FINDID.i_rune_poison>)
-	SAYU * <NAME> resists poison *
+	SAYLOC 0,3301047,<NAME>
 	FINDID.i_rune_poison.REMOVE
 ENDIF
 
@@ -187,7 +187,7 @@ IF (<SRC.FINDID.I_RUNE_SUMMON_CREATURE>)
 		SRC.SPELLEFFECT 41 1000 // dispel
 		// src.remove // daemonlar yok olmuyo?
 		MANA -=20
-		SAYU * <NAME> casts dispel *
+		SAYLOC 0,3301049,<NAME>
 	ENDIF 
 ENDIF 
 
@@ -197,7 +197,7 @@ IF (<HITS> < (<STR>/5))
 		SOUND=snd_SPELL_GREATER_HEAL 
 		SPELLEFFECT 29 4000 // greater heal
 		MANA -=100
-		SAYU * <NAME> casts heal *
+		SAYLOC 0,3301050,<NAME>
 	ENDIF 
 ENDIF 
 
@@ -208,7 +208,7 @@ IF (<SRC.FINDID.I_RUNE_POLYMORPH>)
 		FACE
 		SRC.SPELLEFFECT 41 1000 // dispel
 		MANA -=20
-		SAYU * <NAME> casts dispel *
+		SAYLOC 0,3301049,<NAME>
 		RETURN 1
 	ENDIF 
 ENDIF 
@@ -274,7 +274,7 @@ IF !(<R3>)
      IF (<ISPLAYER>) || (<FLAGS>&statf_pet)
         LOCAL.DAM=<R10,20>
         DAMAGE <LOCAL.DAM> <DEF.dam_cold> <REF11>
-        SYSMESSAGE Intense cold radiating from the demon damages you
+        SYSMESSAGELOC 0,3300151
      ENDIF
   ENDFOR
 ENDIF
@@ -289,7 +289,7 @@ IF ( (<MANA> >= 20) && !(<R5>) )
      IF (<ISPLAYER>) || (<FLAGS>&statf_pet)
         LOCAL.DAM=<R10,20>
         DAMAGE <LOCAL.DAM> <DEF.dam_fire> <REF11>
-        SYSMESSAGE Intense heat radiating from the serpent damages you
+        SYSMESSAGELOC 0,3300152
      ENDIF
   ENDFOR
 ENDIF
@@ -334,7 +334,7 @@ IF (<ACT.TYPE>==t_corpse)
         MAXHITS += 200
         HITS += 200
         ACT.TAG.PLAGUEEATEN=1
-        SAY @03c1,3,1 * <NAME> eats a corpse *
+        SAYLOC 03c1,3301051,<NAME>
     endif
 endif
 

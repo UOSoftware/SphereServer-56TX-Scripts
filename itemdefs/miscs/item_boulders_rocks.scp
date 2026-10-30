@@ -533,7 +533,7 @@ DESCRIPTION=Moonstone Crystal (teleporter)
 
 ON=@DClick
    IF !(<ATTR> & attr_move_never|attr_static)
-    SRC.SYSMESSAGELOC <def.tcolor_grey>,<def.empty_cliloc2>, This must be locked down or secured in order to use it.
+    SRC.SYSMESSAGELOC <def.tcolor_grey>,3300240
    ELSE
     SDIALOG d_moonstone_crystal
    ENDIF
@@ -551,10 +551,10 @@ ENDFOR
 [DIALOG d_moonstone_crystal BUTTON]
 ON=1 12
 IF !(<ATTR> & attr_move_never|attr_static)
- SRC.SYSMESSAGELOC <def.tcolor_grey>,<def.empty_cliloc2>, This must be locked down or secured in order to use it.
+ SRC.SYSMESSAGELOC <def.tcolor_grey>,3300240
  return 1
 ELIF (<DISTANCE> > 1)
- SRC.SYSMESSAGELOC <def.tcolor_grey>,<def.empty_cliloc2>, You are too far away to use the gate.
+ SRC.SYSMESSAGELOC <def.tcolor_grey>,3300241
  return 1
 ELIF (<ARGN> == 1)
  SRC.GO 719,1863,0,5 	//Eodon Moongate

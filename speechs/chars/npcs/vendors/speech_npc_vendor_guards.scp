@@ -2,6 +2,6 @@
 // sphere.ini SpeechNpcGuard: sadece brain_guard NPC'lere verilir.
 [SPEECH spk_generic_npc_guards]
 ON=*forgive*
-SAYU Seni ben affedemem!
+SAYLOC 0,3301121
 
 [EOF]

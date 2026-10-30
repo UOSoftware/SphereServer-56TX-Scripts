@@ -2084,7 +2084,7 @@ FORCHARS 2
 IF (<ISPLAYER>) || (<FLAGS>&statf_pet)
 LOCAL.DAM=<R10,20>
 DAMAGE <LOCAL.DAM> <DEF.dam_cold> <REF11>
-SYSMESSAGE Intense cold radiating from the elemental damages you
+SYSMESSAGELOC 0,3300002
 ENDIF
 ENDFOR
 ENDIF
@@ -2198,7 +2198,7 @@ FORCHARS 2
 IF (<ISPLAYER>) || (<FLAGS>&statf_pet)
 LOCAL.DAM=<R10,20>
 DAMAGE <LOCAL.DAM> <DEF.dam_cold> <REF11>
-SYSMESSAGE Intense cold radiating from the elemental damages you
+SYSMESSAGELOC 0,3300002
 ENDIF
 ENDFOR
 ENDIF

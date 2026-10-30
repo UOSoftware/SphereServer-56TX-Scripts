@@ -17,13 +17,13 @@ ENDIF
 
 [FUNCTION GC]
 IF !(<GUILD>)
-	SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Herhangi bir guild mensubu değilsin.
+	SYSMESSAGELOC <def.tcolor_red>,3300871
 	RETURN 1
 ELSEIF (STRMATCH('','<ARGS>'))
-	SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Boş mesaj gönderemezsin.
+	SYSMESSAGELOC <def.tcolor_red>,3300872
 	RETURN 1
 ELSEIF (STRMATCH('<TAG0.GUILD_CHAT>','<ARGS>'))
-	SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Yazı tekrarı yapamazsın.
+	SYSMESSAGELOC <def.tcolor_red>,3300873
 	RETURN 1
 ENDIF
 REF1=<GUILD>
@@ -52,7 +52,7 @@ FUNC_GUILD_ONLINE
 
 [FUNCTION FUNC_GUILD_ONLINE]
 IF !(<GUILD>)
-	SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bir guild üyesi değilsiniz.
+	SYSMESSAGELOC <def.tcolor_red>,3300851
 ELSE
 	REF1=<GUILD>
 	CLEARCTAGS GuildOnlineList

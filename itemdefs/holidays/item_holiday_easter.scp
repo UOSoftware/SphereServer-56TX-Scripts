@@ -174,11 +174,11 @@ ON=@Create
 ON=@DClick
    IF (<TAG0.LastCreated> != <SERV.RTIME.FORMAT %d>)
     TAG.LastCreated=<SERV.RTIME.FORMAT %d>
-    SAY @0800 Here you go! A freshly made marshmallow duckling! Don't eat too many! *chuckles*
+    SAYLOC 0800,3301101
     SERV.NEWITEM i_marshmallow_duckling
     NEW.BOUNCE
    ELSE
-    SAY @0800 I haven't quite finished a marshmallow duckling yet...
+    SAYLOC 0800,3301102
    ENDIF
    return 1
 

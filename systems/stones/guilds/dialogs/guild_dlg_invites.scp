@@ -26,8 +26,8 @@ ENDIF
 ON=0
 REF1=<SRC.CTAG0.INVITE_GUILD>
 IF (<REF1.ISVALID>)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, <REF1.NAME> guildinin üyelik teklifini reddetin.
-	SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, <SRC.NAME> guild teklifinizi reddetti.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300935,<REF1.NAME>
+	SYSMESSAGELOC <def.tcolor_red>,3300936,<SRC.NAME>
 ENDIF
 
 ON=1

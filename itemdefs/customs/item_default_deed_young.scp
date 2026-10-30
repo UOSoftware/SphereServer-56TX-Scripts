@@ -130,7 +130,7 @@ ATTR=attr_magic|attr_newbie
 COLOR=colors_all
 
 ON=@CLICK
-MESSAGE (Charges: <DMORE2>)
+MESSAGELOC 0,3301064,<DMORE2>
 
 ON=@DCLICK
 IF !(<SRC.ISINPACK <UID>>)
@@ -139,7 +139,7 @@ IF !(<SRC.ISINPACK <UID>>)
 ENDIF
 
 IF (<MORE2>==0)
-	SRC.SYSMESSAGELOC <def.tcolor_grey>,<def.empty_cliloc2>, It seems to be out of charges.
+	SRC.SYSMESSAGELOC <def.tcolor_grey>,3300327
 	REMOVE
 	RETURN 1
 	
@@ -180,7 +180,7 @@ TIMER=3
 
 ON=@DCLICK
 IF (<TIMER> >= 1)
-	SRC.SYSMESSAGELOC <def.tcolor_grey>,<def.empty_cliloc2>, Kartopu henuz hazir degil!
+	SRC.SYSMESSAGELOC <def.tcolor_grey>,3300328
 ELSE
 	TARGET Kime atmak istiyorsun?
 ENDIF
@@ -204,10 +204,10 @@ IF (<SRC.TARG.UID> != <SRC>)
 	SOUND 0145
 	// EFFECT type, item_id, speed, loop, explode, colour(hue), rendermode
 	SRC.TARG.EFFECT 2,i_fx_smoke,15,20,0,color_snow,0
-	SRC.TARG.SYSMESSAGELOC <def.tcolor_grey>,<def.empty_cliloc2>, <SRC.NAME> sana kartopu atti!
+	SRC.TARG.SYSMESSAGELOC <def.tcolor_grey>,3300329,<SRC.NAME>
 	REMOVE
 ELSE
-	SRC.SYSMESSAGELOC <def.tcolor_grey>,<def.empty_cliloc2>, Kendine kartopu atamazsin..
+	SRC.SYSMESSAGELOC <def.tcolor_grey>,3300330
 	TIMER 3
 ENDIF
 RETURN 1
@@ -228,7 +228,7 @@ IF (<SRC.CANSEELOS <SRC.TARGP>>)
 	NEW.COLOR=color_snow
 	REMOVE
 ELSE
-	SRC.SYSMESSAGELOC <def.tcolor_grey>,<def.empty_cliloc2>, Burayi goremiyorsun.
+	SRC.SYSMESSAGELOC <def.tcolor_grey>,3300331
 	TIMER 3
 ENDIF
 RETURN 1
@@ -243,7 +243,7 @@ IF !(<SRC.TARG.CONT>)
 	SRC.TARG.EFFECT 3,i_fx_smoke,15,20,0,color_snow,0
 	REMOVE
 ELSE
-	SRC.SYSMESSAGELOC <def.tcolor_grey>,<def.empty_cliloc2>, Cantadaki esyalara kartopu atamazsin..
+	SRC.SYSMESSAGELOC <def.tcolor_grey>,3300332
 	TIMER 3
 ENDIF
 RETURN 1

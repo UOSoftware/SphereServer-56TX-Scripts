@@ -7,9 +7,9 @@ ON=@Click
 MESSAGE @1153,0 <NAME>
 // MESSAGE Lonca Stone
 IF (<SERV.AREA(<TAG0.CITYDEF>)>)
-MESSAGE @<color>,,1,1 Şehir: <serv.area(<tag0.citydef>).name>
+MESSAGELOC <color>,3301170,<serv.area(<tag0.citydef>).name>
 ENDIF
-MESSAGE @,,1,1 Üye sayısı: <member.count>
+MESSAGELOC 0,3301171,<member.count>
 RETURN 1
 
 
@@ -29,20 +29,20 @@ ENDFOR
 IF !(<SRC.MEMORYFINDTYPE.MEMORY_TOWN>)
 
 	IF (<SRC.MEMORYFINDTYPE.MEMORY_GUILD>)
-		SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Guild üyesiyken factiona giremezsiniz.
+		SRC.SYSMESSAGELOC <def.tcolor_red>,3300973
 		RETURN 1
 	ENDIF
 		
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Herhangi bir factiona üyesi değilsiniz.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300974
 	DIALOGCLOSE D_TOWN_REGISGN
 	DIALOG D_TOWN_REGISGN
 ELSE
 	IF (<MEMBERFROMUID.<SRC>.PRIV> > 0)
-		SRC.SYSMESSAGELOC <def.tcolor_green>,<def.empty_cliloc2>, Bu factiona üyesiniz.
+		SRC.SYSMESSAGELOC <def.tcolor_green>,3300975
 		DIALOGCLOSE D_TOWN_MAIN
 		DIALOG D_TOWN_MAIN,0
 	ELSE
-		SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu factiona üye değilsiniz.
+		SRC.SYSMESSAGELOC <def.tcolor_red>,3300976
 	ENDIF
 ENDIF
 

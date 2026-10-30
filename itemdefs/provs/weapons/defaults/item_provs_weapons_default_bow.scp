@@ -22,7 +22,7 @@ COLOR=237
 
 ON=@EQUIP
 IF (<SRC.ARCHERY> < 90.0)
-	SRC.SYSMESSAGE You must be at least Master Archer to use this! 
+	SRC.SYSMESSAGELOC 0,3300523
 	// fUnequip
 	UNEQUIP
 	RETURN 1
@@ -30,7 +30,7 @@ ENDIF
 	
 ON=@DCLICK
 IF (<SRC.ARCHERY> < 90.0)
-	SRC.SYSMESSAGE You must be at least Master Archer to use this! 
+	SRC.SYSMESSAGELOC 0,3300523
 	// fUnequip
 	UNEQUIP
 	RETURN 1

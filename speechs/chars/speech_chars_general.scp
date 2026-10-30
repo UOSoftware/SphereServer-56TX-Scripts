@@ -7,9 +7,9 @@
 ON=*
 IF (<ACCOUNT.TAG0.Mute>)
 	IF (<FINDID.I_MUTE>)
-		SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Konuşma yasaklısınız. (<DURATIONFORHUMANS <FINDID.I_MUTE.TIMER>,,short>)
+		SRC.SYSMESSAGELOC <def.tcolor_red>,3300528,<DURATIONFORHUMANS <FINDID.I_MUTE.TIMER>,,short>
 	ELSE
-		SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Konuşma yasaklısınız.
+		SRC.SYSMESSAGELOC <def.tcolor_red>,3300529
 	ENDIF
 	RETURN 1
 ENDIF

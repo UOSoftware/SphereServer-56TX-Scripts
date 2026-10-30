@@ -1787,7 +1787,7 @@ ATTR=ATTR_NEWBIE
 
 ON=@DClick
 IF (<TOPOBJ.UID> != <SRC.UID>)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Aile belgesini kullanmak için üzerinde olmalı.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300488
 	RETURN 1
 ELSEIF (<SRC.FAMILY>)
 	SRC.SYSMESSAGE <DEFMSG.family_already>

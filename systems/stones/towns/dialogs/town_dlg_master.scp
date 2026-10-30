@@ -163,7 +163,7 @@ ON=0 12
       new.attr = attr_newbie
       tag.stonesys_moveruid = <new.uid>
       new.cont <src.findlayer(layer_pack).uid>
-      src.SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, Use the teleporting object placed in your backpack to move this townstone.
+      src.SYSMESSAGELOC <def.tcolor_text>,3300982
       sdialog d_Town_Master,0
     endif
   elif (<argn1>==11)

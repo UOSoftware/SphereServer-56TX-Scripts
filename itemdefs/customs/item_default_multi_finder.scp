@@ -23,7 +23,7 @@ USESMAX=5
 
 ON=@CLICK
 IF (<MORE1> > 0)
-MESSAGE (<DMORE1> kullanim)
+MESSAGELOC 0,3301069,<DMORE1>
 ENDIF
 MESSAGE a <name>
 RETURN 1
@@ -45,43 +45,43 @@ ELSEIF (<SRC.FLAGS>&STATF_DEAD)
 	RETURN 1
 	
 ELSEIF (<SRC.FLAGS>&STATF_WAR)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Savaş halinde bunu kullanamazsınız.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300340
 	RETURN 1	
 	
 ELSEIF (<SRC.FLAGS>&STATF_FREEZE)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu durumda bunu kullanamazsınız.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300341
 	RETURN 1	
 	
 ELSEIF (<SRC.FLAGS>&STATF_STONE)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu durumda bunu kullanamazsınız.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300341
 	RETURN 1
 	
 ELSEIF (<SRC.ISPOISONED>)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Zehirliyken bunu kullanamazsınız.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300342
 	RETURN 1
 
 ELSEIF (<SRC.account.priv>&priv_jailed)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Hapisteyken bunu kullanamazsınız.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300343
 	RETURN 1
 	
 ELSEIF (<SRC.ISHELPSTUCK>) 
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Stuck halindeyken bunu kullanamazsınız.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300344
 	RETURN 1
 	
 ELSEIF (<SRC.REGION.FLAGS>&REGION_FLAG_SAFE)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Güvenli alanlarda bunu kullanamazsınız.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300345
 	RETURN 1	
 	
 ELSEIF (<SRC.IsInShip>)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Şu an zaten gemi içerisindesiniz.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300346
 	RETURN 1
 	
 ELSEIF (<SRC.IsInHouse>)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Şu an zaten ev içerisindesiniz.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300347
 	RETURN 1
 	
 ELSEIF (<SRC.HOUSES> <= 0) && (<SRC.SHIPS> <= 0)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Ev veya Geminiz yok.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300348
 	RETURN 1
 	
 ELSEIF (<SRC.ISUSESKILL Magery>)
@@ -89,7 +89,7 @@ ELSEIF (<SRC.ISUSESKILL Magery>)
 	RETURN 1
 	
 ELSEIF (<USESCUR> > <USESMAX>)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, <NAME> kullanım hakkı bitmiş.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300278,<NAME>
 	REMOVE
 	RETURN 1
 ENDIF
@@ -183,11 +183,11 @@ ENDIF
 [DIALOG D_MULTI_FIND_MAIN BUTTON]
 ON=1 2000
 IF !(<SRC.ISINPACK <UID>>)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Yanınızda değil.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300349
 	RETURN 1
 	
 ELSEIF (<SRC.IsNoFullHp>)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Yaralıyken bunu kullanamazsınız.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300350
 	RETURN 1
 	
 ELSEIF (<SRC.FLAGS>&STATF_DEAD)
@@ -195,43 +195,43 @@ ELSEIF (<SRC.FLAGS>&STATF_DEAD)
 	RETURN 1
 	
 ELSEIF (<SRC.FLAGS>&STATF_WAR)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Savaş halinde bunu kullanamazsınız.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300340
 	RETURN 1	
 	
 ELSEIF (<SRC.FLAGS>&STATF_FREEZE)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu durumda bunu kullanamazsınız.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300341
 	RETURN 1	
 	
 ELSEIF (<SRC.FLAGS>&STATF_STONE)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu durumda bunu kullanamazsınız.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300341
 	RETURN 1
 	
 ELSEIF (<SRC.ISPOISONED>)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Zehirliyken bunu kullanamazsınız.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300342
 	RETURN 1
 
 ELSEIF (<SRC.ISHELPSTUCK>)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Stuck halindeyken bunu kullanamazsınız.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300344
 	RETURN 1
 	
 ELSEIF (<SRC.account.priv>&priv_jailed)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Hapisteyken bunu kullanamazsınız.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300343
 	RETURN 1
 	
 ELSEIF (<SRC.REGION.FLAGS>&REGION_FLAG_SAFE)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu alanda kullanamazsınız.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300351
 	RETURN 1	
 	
 ELSEIF (<SRC.IsInShip>)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Şu an zaten gemi içerisindesiniz.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300346
 	RETURN 1
 	
 ELSEIF (<SRC.IsInHouse>)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Şu an zaten ev içerisindesiniz.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300347
 	RETURN 1
 	
 ELSEIF (<SRC.HOUSES> <= 0) && (<SRC.SHIPS> <= 0)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Ev veya Geminiz yok.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300348
 	RETURN 1
 	
 ELSEIF (<SRC.ISUSESKILL Magery>)
@@ -239,7 +239,7 @@ ELSEIF (<SRC.ISUSESKILL Magery>)
 	RETURN 1
 	
 ELSEIF (<USESCUR> > <USESMAX>)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, <NAME> kullanım hakkı bitmiş.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300278,<NAME>
 	REMOVE
 	RETURN 1
 ENDIF
@@ -281,7 +281,7 @@ IF (<DARGN> >= 1 && <DARGN> <= 999)
 		SRC.ACTDIFF=<DEF.SKILL_ACTION_DIFF_NOFAIL>
 				
 	ELSE
-		SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bir hata oluştu. Gemi bulunamadı!
+		SRC.SYSMESSAGELOC <def.tcolor_red>,3300352
 	ENDIF
 
 // ev git
@@ -317,10 +317,10 @@ ELSEIF (<DARGN> >= 1000 && <DARGN> <= 1999)
 		SRC.ACTION = 25	
 		SRC.ACTDIFF=<DEF.SKILL_ACTION_DIFF_NOFAIL>
 	ELSE
-		SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bir hata oluştu. Ev bulunamadı!
+		SRC.SYSMESSAGELOC <def.tcolor_red>,3300353
 	ENDIF
 ELSE
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bir hata oluştu.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300354
 ENDIF
 
 

@@ -18,7 +18,7 @@ else
 endif
 
 If (!<local.guildlist_count>)
-  src.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Sonuç bulunamadı: "<local.tosearch>".
+  src.SYSMESSAGELOC <def.tcolor_red>,3300951,<local.tosearch>
   return 1
 endif
 
@@ -80,7 +80,7 @@ LOCAL.WAR_GUILDLIST=<SRC.CTAG.DIALOG_GUILDMASTERWARFAREDCLAREWAR_GUILDLIST>
 SRC.CTAG.DIALOG_GUILDMASTERWARFAREDCLAREWAR_GUILDLIST=
   
 IF (<MASTERUID>!=<SRC.UID>)&&(!<SRC.ISGM>)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Sadece guildmasterlar savaş ilan edebilir.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300952
 	RETURN 1
 ENDIF
 
@@ -93,49 +93,49 @@ ELIF (<ARGN1>==1)
 	CALL F_GUILDSYS_LISTSPLIT <LOCAL.WAR_GUILDLIST>
   
     IF (!<LOCAL.GUILDLIST_COUNT>)
-		SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Guild yok.
+		SRC.SYSMESSAGELOC <def.tcolor_red>,3300145
 		RETURN 1
     ENDIF
     
     LOCAL.NUM=<ARGCHKID>-10
 	
 	IF ((<LOCAL.NUM> < 0) || (<LOCAL.NUM> > <LOCAL.GUILDLIST_COUNT>))
-		SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bir hata oluştu!
+		SRC.SYSMESSAGELOC <def.tcolor_red>,3300953
 		RETURN 1
     ENDIF
 
     LOCAL.SELECTEDGUILD=<LOCAL.GUILDLIST_DATA<DLOCAL.NUM>>
 
     IF (!<LOCAL.SELECTEDGUILD>)
-		SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Seçili guild yok.
+		SRC.SYSMESSAGELOC <def.tcolor_red>,3300954
 		RETURN 1
     ENDIF
     
     IF (<UID.<LOCAL.SELECTEDGUILD>.TYPE>!=T_STONE_GUILD)
-		SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Seçili guild bulunamadı!
+		SRC.SYSMESSAGELOC <def.tcolor_red>,3300955
 		RETURN 1
     ENDIF
 
     IF (<GUILDFROMUID.<LOCAL.SELECTEDGUILD>.ISENEMY>)
-		SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, <UID.<LOCAL.SELECTEDGUILD>.NAME> guildi ile zaten bir savaş içerisindesiniz.
+		SRC.SYSMESSAGELOC <def.tcolor_red>,3300956,<UID.<LOCAL.SELECTEDGUILD>.NAME>
 		
     ELSEIF ( <GUILDFROMUID.<LOCAL.SELECTEDGUILD>.THEYWAR> && !<GUILDFROMUID.<LOCAL.SELECTEDGUILD>.WEWAR>)
       
 		IF ( <F_GUILDSYS_CANDECLAREWARWITH <UID>,<LOCAL.SELECTEDGUILD>> )
 			F_GUILDSYS_DECLAREWAR <uid>,<local.selectedguild>,1
 		ELSE
-			SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Destek yönü aynı olan guildlere savaş açamazsınız.
+			SRC.SYSMESSAGELOC <def.tcolor_red>,3300957
 		ENDIF
 
     ELSEIF (<GUILDFROMUID.<LOCAL.SELECTEDGUILD>.WEWAR> && !<GUILDFROMUID.<LOCAL.SELECTEDGUILD>.THEYWAR>)
-		SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, <uid.<local.selectedguild>.name> guilde zaten bir savaş ilanı yapılmış.
+		SRC.SYSMESSAGELOC <def.tcolor_red>,3300958,<uid.<local.selectedguild>.name>
 		
     ELSEIF (!<GUILDFROMUID.<LOCAL.SELECTEDGUILD>.WEWAR> && !<GUILDFROMUID.<LOCAL.SELECTEDGUILD>.THEYWAR>)
       
 		IF ( <F_GUILDSYS_CANDECLAREWARWITH <UID>,<LOCAL.SELECTEDGUILD>> )
 			F_GUILDSYS_DECLAREWAR <UID>,<LOCAL.SELECTEDGUILD>,2
 		ELSE
-			SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Destek yönü aynı olan guildlere savaş açamazsınız.
+			SRC.SYSMESSAGELOC <def.tcolor_red>,3300957
 		ENDIF
 	  
     ENDIF

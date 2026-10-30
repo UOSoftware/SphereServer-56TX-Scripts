@@ -9,12 +9,12 @@ ON=@SPELLEFFECT
 IF (<NPC> == BRAIN_ANIMAL)
 	// fire fieldden etkilenmesin.
 	IF (<argn> == 28)
-		SAYU * etkilenmez *
+		SAYLOC 0,3301053
 		RETURN 1
 	ENDIF
 	// poison fieldden etkilenmesin.
 	IF (<argn> == 39)
-		SAYU * etkilenmez *
+		SAYLOC 0,3301053
 		RETURN 1
 	ENDIF
 ENDIF

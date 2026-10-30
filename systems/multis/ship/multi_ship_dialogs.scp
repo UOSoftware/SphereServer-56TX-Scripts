@@ -73,7 +73,7 @@ TILEPICHUE +25 +10 <EVAL <SERV.ITEMDEF.i_deed_ship.ID>+1> 0
 
 [DIALOG d_Ship_demolish button]
 ON=0
-SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Gemiyi kaldırmaktan vazgeçtin.
+SRC.SYSMESSAGELOC <def.tcolor_red>,3300822
 
 ON=1
 REF1=<MORE1>
@@ -87,11 +87,11 @@ IF (<SRC.DISTANCE <UID>> > 18)
 	RETURN 1
 	
 ELSEIF (<SRC.REGION.UID> == <REF3>)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Şu an içinde olduğunuz gemiyi yıkamazsınız.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300823
 	RETURN 1
 	
 ELSEIF (<GemiIciniKontrolEt>)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Gemi içinde varlık varken gemiyi kontrat haline getiremezsiniz.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300824
 	RETURN 1
 ENDIF
 
@@ -122,23 +122,23 @@ IF (<REGION.UID> == <UID>)
 					ENDIF
 				ENDFOR
 				
-				REF1.SYSMESSAGELOC <def.tcolor_green>,<def.empty_cliloc2>,Gemi kasasındaki eşyalar bankanıza <NEW.NAME> içerisinde aktarıldı.
+				REF1.SYSMESSAGELOC <def.tcolor_green>,3300825,<NEW.NAME>
 			ENDIF
 		ELSE
-			SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Gemi kasasındaki eşyaları bankanıza aktarmamayı SEÇMEDİĞİNİZ için gemi kasasındaki eşyalar silindi.
+			SRC.SYSMESSAGELOC <def.tcolor_red>,3300826
 		ENDIF
 	ENDIF
 
 	SERV.NEWITEM <LOCAL.DEEDID>,1,<SRC.FINDLAYER.21>,1
 	NEW.ATTR=ATTR_NEWBIE
 	NEW.COLOR=<COLOR>
-	SRC.SYSMESSAGELOC <def.tcolor_grey>,<def.empty_cliloc2>, Gemi kontrat haline getirildi.
+	SRC.SYSMESSAGELOC <def.tcolor_grey>,3300827
 
 	// SRC.ShipRemoveKeys
 	
 	REMOVE
 ELSE
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Gemi içinde değilsiniz.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300828
 
 ENDIF
 

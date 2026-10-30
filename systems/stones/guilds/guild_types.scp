@@ -3,22 +3,22 @@ VERSION=0.56T
 
 [TYPEDEF T_STONE_GUILD]
 ON=@CLICK
-SRC.SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, Guildmaster: [<MASTER>]
-MESSAGE @,,1,1 (<MEMBER.COUNT> Üye)
+SRC.SYSMESSAGELOC <def.tcolor_text>,3300893,<MASTER>
+MESSAGELOC 0,3301168,<MEMBER.COUNT>
 MESSAGE @<QVAL (<ALIGN>==0)?<def.tcolor_text>:<QVAL (<ALIGN> == 2)?<def.tcolor_orange>:<def.tcolor_blue>>>,,1,1 [<DEF.GUILDCONFIG_ALIGN_<ALIGN>>]
 IF (<ISEMPTY <ABBREV>>)
 	MESSAGE @035 <NAME>
 ELSE
 	MESSAGE @035 <NAME>, <ABBREV>
 ENDIF
-MESSAGE Guildstone
+MESSAGELOC 0,3301169
 RETURN 1
 
 
 
 On=@PickUp_Ground
 IF (<SRC.ACCOUNT.PLEVEL> < 5)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Sistem tarafından sabitlenmiştir.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300894
 	RETURN 1
 ENDIF
 
@@ -33,14 +33,14 @@ ELIF (!<MASTERUID>)
 	F_GUILDSYS_ADDCHARTOGUILD <UID>,<MEMBER.0.UID>,1
   
 ELIF (<MEMBERFROMUID.<SRC.UID>.UID>!=<SRC.UID>)&&(!<SRC.ISGM>)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Guild ile bir ilişkiniz bulunmuyor.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300895
 	f_guildsys_info
 	
 ELIF (<MEMBERFROMUID.<SRC.UID>.PRIV> == <DEF0.STONEPRIV_ACCEPTED>)
 	F_GUILDSYS_ADDCHARTOGUILD <UID>,<SRC.UID>,1
   
 ELIF (<MEMBERFROMUID.<SRC.UID>.PRIV>==<DEF0.STONEPRIV_CANDIDATE>)&&(!<SRC.ISGM>)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Guildmaster tarafından kabul edilmeyi bekliyorsunuz.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300896
 	
 ELIF (<MEMBERFROMUID.<SRC.UID>.PRIV>==<DEF0.STONEPRIV_MEMBER>)||(<MASTERUID>==<SRC.UID>)||(<SRC.ISGM>)
 	DIALOGCLOSE D_GUILD_MAIN

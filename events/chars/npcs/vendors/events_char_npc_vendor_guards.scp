@@ -3,10 +3,10 @@
 [events e_generic_npc_guards]
 ON=@CLICK
 // MESSAGE @0,3 [Guards Agency]
-Message [Guards Agency]
+Messageloc 0,3301054
 
 ON=@NPCRefuseItem
-SAY I cannot be bribed. be gone.
+SAYLOC 0,3301044
 return 1
 
 // guardin hp gitmesin.
@@ -26,7 +26,7 @@ ON=@DEATH
 REF1=<QVAL (<SRC.ATTACKER.LAST>)?<SRC.ATTACKER.LAST>:<SRC.ATTACKER.MAX>> // ÖLDÜREN
 IF (<REF1.ISVALID> && <REF1.ISPLAYER>)
     REF1.KILLS=<eval <serv.MurderMinCount>>
-    REF1.SYSMESSAGE @38,,1,1 Guard öldürdüğünüz için cezalandırıldınız.
+    REF1.SYSMESSAGELOC 38,3300156
 ENDIF
 
 

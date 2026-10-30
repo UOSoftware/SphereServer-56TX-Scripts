@@ -104,7 +104,7 @@ ENDIF
 On=@Click
 // ATTR=ATTR_DECAY
 REF1=<MORE2>
-MESSAGE cek karsiligi: <QVAL <DMORE1>?(<NumberFormat <dmore1>> gp):yok>
+MESSAGELOC 0,3301063,<QVAL <DMORE1>?(<NumberFormat <dmore1>> gp):yok>
 IF (<REF1.ISVALIDE>)
 	MESSAGE [<REF1.NAME>]
 ENDIF
@@ -118,33 +118,33 @@ ELSEIF (<SRC.IsNoFullHp>)
 	SRC.SYSMESSAGELOC <def.tcolor_red>,600075 // "Yaralı durumdayken bu işlemi yapamazsınız."
 	RETURN 1
 ELSEIF (<SRC.FINDTYPE.T_EQ_TRADE_WINDOW>)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Eşya transfer penceresi açıkken bunu kullanamazsınız.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300249
 	RETURN 1
 ELSEIF (<SRC.FLAGS>&statf_dead)
 	SRC.SYSMESSAGELOC <def.tcolor_red>,600027 // Ölü durumdayken bu işlemi yapamazsınız.
 	RETURN 1
 ELSEIF (<SRC.FLAGS>&statf_freeze)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Freeze bunu kullanamazsınız.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300250
 	RETURN 1
 ELSEIF (<SRC.FLAGS>&statf_stone)
 	SRC.SYSMESSAGELOC <def.tcolor_red>,600028 // Stone durumdayken bu işlemi yapamazsınız.
 	RETURN 1
 ELSEIF (<SRC.FLAGS>&statf_war)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Savaş durumdayken bunu kullanamazsınız.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300251
 	RETURN 1
 ELSEIF (<SRC.ISPOISONED>)
 	SRC.SYSMESSAGELOC <def.tcolor_red>,600031 // Zehirli durumdayken bu işlemi yapamazsınız.
 	RETURN 1
 ELSEIF !(<MORE1>)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu çek değersiz.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300252
 	// REMOVE
 	RETURN 1
 ELSEIF (<MORE1> > 20000000)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, 20.000.000 gp üzeri checkleri bozduramazsınız. Yetkiliye başvurunuz.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300253
 	RETURN 1
 ENDIF
 TARGET 
-SRC.SYSMESSAGELOC <def.tcolor_grey>,<def.empty_cliloc2>, Checki bozdurmak istediğiniz bankeri seçiniz.
+SRC.SYSMESSAGELOC <def.tcolor_grey>,3300254
 RETURN 1
 
 
@@ -157,19 +157,19 @@ ELSEIF (<SRC.IsNoFullHp>)
 	SRC.SYSMESSAGELOC <def.tcolor_red>,600075 // "Yaralı durumdayken bu işlemi yapamazsınız."
 	RETURN 1
 ELSEIF (<SRC.FINDTYPE.T_EQ_TRADE_WINDOW>)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Eşya transfer penceresi açıkken bunu kullanamazsınız.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300249
 	RETURN 1
 ELSEIF (<SRC.FLAGS>&statf_dead)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Ölüyken bunu kullanamazsınız.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300255
 	RETURN 1
 ELSEIF (<SRC.FLAGS>&statf_freeze)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Freeze bunu kullanamazsınız.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300250
 	RETURN 1
 ELSEIF (<SRC.FLAGS>&statf_stone)
 	SRC.SYSMESSAGELOC <def.tcolor_red>,600028 // Stone durumdayken bu işlemi yapamazsınız.
 	RETURN 1
 ELSEIF (<SRC.FLAGS>&statf_war)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Savaş durumdayken bunu kullanamazsınız.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300251
 	RETURN 1
 ELSEIF (<SRC.ISPOISONED>)
 	SRC.SYSMESSAGELOC <def.tcolor_red>,600031 // Zehirli durumdayken bu işlemi yapamazsınız.
@@ -185,7 +185,7 @@ IF (<SRC.TARG.NPC> == 5)
 	
 	REF1=<MORE2> // YAZAN
 	IF (<MORE1> > 0)
-		SRC.SYSMESSAGELOC <def.tcolor_grey>,<def.empty_cliloc2>, Çek miktarı (<NumberFormat <DMORE1>> gp) bankanıza aktarılmıştır.
+		SRC.SYSMESSAGELOC <def.tcolor_grey>,3300256,<NumberFormat <DMORE1>>
 		SRC.Logger CEK AKTARDI: <UID> [<NumberFormat <dMORE1>> gp] <QVAL (<REF1.ISVALIDE>)?YAZAN:<REF1.NAME> [<REF1>]:> SAHIBI:<TOPOBJ.NAME> (<TOPOBJ>)
 		
 		IF (<SERV.FeatureTOL>&02)
@@ -195,7 +195,7 @@ IF (<SRC.TARG.NPC> == 5)
 		ENDIF
 		
 	ELSE
-		SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Çek miktarı olmadığı için silindi.
+		SRC.SYSMESSAGELOC <def.tcolor_red>,3300257
 		SRC.Logger HATALI CHECK: <UID> (<MORE1>) YAZAN:<UID.<MORE2>.NAME> (<MORE2>) SAHIBI:<TOPOBJ.NAME> (<TOPOBJ>)
 	ENDIF
 	
@@ -207,7 +207,7 @@ IF (<SRC.TARG.NPC> == 5)
 	REMOVE
 	
 ELSE
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Checki sadece banker vendorunda bozdurabilirsiniz.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300258
 ENDIF
 RETURN 1
 

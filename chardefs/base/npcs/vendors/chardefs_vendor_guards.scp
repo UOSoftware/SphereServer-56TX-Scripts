@@ -55,7 +55,7 @@ ON=@Create
    ITEM=i_halberd
    ITEM=i_mt_horse_gray,1,R5
 ON=@NPCRefuseItem
-   SAY I cannot be bribed. be gone.
+   SAYLOC 0,3301044
    RETURN 1
 
 [CHARDEF c_guard_f]
@@ -107,7 +107,7 @@ ON=@Create
    ITEM=i_halberd
    ITEM=i_mt_horse_gray,1,R5
 ON=@NPCRefuseItem
-   SAY I cannot be bribed. be gone.
+   SAYLOC 0,3301044
    RETURN 1
 
 [EOF]

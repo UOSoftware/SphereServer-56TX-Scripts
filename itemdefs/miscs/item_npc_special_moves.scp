@@ -63,27 +63,27 @@ ON=@Timer
             REMOVE
          END
          BEGIN // MORE1=1
-            CONT.EMOTE bleed slowly
+            CONT.EMOTELOC 0,3301104
             CONT.DAMAGE {1 2} <DEF.dam_god> <QVAL <LINK>?<LINK>:0>
             TIMER=2
          END
          BEGIN // MORE1=2
-            CONT.EMOTE bleed slowly
+            CONT.EMOTELOC 0,3301104
             CONT.DAMAGE {2 4} <DEF.dam_god> <QVAL <LINK>?<LINK>:0>
             TIMER=2
          END
          BEGIN // MORE1=3
-            CONT.EMOTE bleed moderately
+            CONT.EMOTELOC 0,3301105
             CONT.DAMAGE {3 6} <DEF.dam_god> <QVAL <LINK>?<LINK>:0>
             TIMER=2
          END
          BEGIN // MORE1=4
-            CONT.EMOTE bleed heavily
+            CONT.EMOTELOC 0,3301106
             CONT.DAMAGE {4 9} <DEF.dam_god> <QVAL <LINK>?<LINK>:0>
             TIMER=2
          END
          BEGIN // MORE1=5
-            CONT.EMOTE bleed profusely
+            CONT.EMOTELOC 0,3301107
             CONT.DAMAGE {5 12} <DEF.dam_god> <QVAL <LINK>?<LINK>:0>
             TIMER=2
          END

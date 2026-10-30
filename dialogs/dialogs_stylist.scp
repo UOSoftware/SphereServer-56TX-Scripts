@@ -168,11 +168,11 @@ IF !(<SRC.CANSEELOS <UID>>)
  return 1
 ELIF !(<SRC.ISGM>)
  IF (<SRC.GOLD> < <SRC.CTAG0.Hairstylist.Price>)
-  SAY You cannot afford my services for that style.
+  SAYLOC 0,3301046
   return 1
  ENDIF
  SRC.GOLD -= <SRC.CTAG0.Hairstylist.Price>
- SRC.SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, <dSRC.CTAG0.Hairstylist.Price> gold has been removed from your bank box.
+ SRC.SYSMESSAGELOC <def.tcolor_text>,3300150,<dSRC.CTAG0.Hairstylist.Price>
 ENDIF
 
 LOCAL.Race=<QVAL (<SRC.f_iself>)? "Elf" : "Human">
@@ -216,11 +216,11 @@ IF !(<SRC.CANSEELOS <UID>>)
  return 1
 ELIF !(<SRC.ISGM>)
  IF (<SRC.GOLD> < <SRC.CTAG0.Hairstylist.Price>)
-  SAY You cannot afford my services for that style.
+  SAYLOC 0,3301046
   return 1
  ENDIF
  SRC.GOLD -= <SRC.CTAG0.Hairstylist.Price>
- SRC.SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, <dSRC.CTAG0.Hairstylist.Price> gold has been removed from your bank box.
+ SRC.SYSMESSAGELOC <def.tcolor_text>,3300150,<dSRC.CTAG0.Hairstylist.Price>
 ENDIF
 
 ARGS=<DEF.Beard.Style.Human.<ARGCHKID>>
@@ -269,11 +269,11 @@ IF !(<SRC.CANSEELOS <UID>>)
  return 1
 ELIF !(<SRC.ISGM>)
  IF (<SRC.GOLD> < <SRC.CTAG0.Hairstylist.Price>)
-  SAY You cannot afford my services for that style.
+  SAYLOC 0,3301046
   return 1
  ENDIF
  SRC.GOLD -= <SRC.CTAG0.Hairstylist.Price>
- SRC.SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, <dSRC.CTAG0.Hairstylist.Price> gold has been removed from your bank box.
+ SRC.SYSMESSAGELOC <def.tcolor_text>,3300150,<dSRC.CTAG0.Hairstylist.Price>
 ENDIF
 
 WHILE !(<isempty <DEF.Hair.Dye.<SRC.CTAG0.Hairstylist.Dye.Palette>.<eval <LOCAL._WHILE>+1>>>)

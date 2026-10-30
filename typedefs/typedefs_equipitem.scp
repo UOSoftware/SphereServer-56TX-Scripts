@@ -7,14 +7,14 @@
 ON=@CLICK
 IF (<SRC.ISGM>)
 	IF (<ISWEAPON>)
-		MESSAGE [dam: <DAM> speed: <SPEED>/<eval (2000/<weight>)>, wght: <FVAL <WEIGHT>>]
+		MESSAGELOC 0,3301187,<DAM>,<SPEED>,<eval (2000/<weight>)>,<FVAL <WEIGHT>>
 	ELSEIF (<ISARMOR>)
-		MESSAGE [ar: <ar>, real ar: <fRealAr>]
+		MESSAGELOC 0,3301188,<ar>,<fRealAr>
 	ENDIF
 ENDIF
 
 IF (<ATTR>&ATTR_MAGIC && <MOREY>)
-	MESSAGE a magical <SERV.ITEMDEF.<DISPID>.NAME>
+	MESSAGELOC 0,3301189,<SERV.ITEMDEF.<DISPID>.NAME>
 	IF (<ATTR>&attr_identified)
 		MESSAGE [<ColoredItemTitle>]
 	ENDIF
@@ -66,11 +66,11 @@ IF (<SRC.ISPLAYER>)
 	ENDIF
 	IF (<LOCAL.SPELLREMOVE>)
 		IF (<SRC.FINDID.I_RUNE_PROTECTION>)
-			SRC.SYSMESSAGELOC <def.tcolor_grey>,<def.empty_cliloc2>, Protection etkisi silindi.
+			SRC.SYSMESSAGELOC <def.tcolor_grey>,3301035
 			SRC.FINDID.I_RUNE_PROTECTION.REMOVE
 		ENDIF
 		IF (<SRC.FINDID.I_RUNE_REACTIVE_ARMOR>)
-			SRC.SYSMESSAGELOC <def.tcolor_grey>,<def.empty_cliloc2>, Reactive Armor etkisi silindi.
+			SRC.SYSMESSAGELOC <def.tcolor_grey>,3301036
 			SRC.FINDID.I_RUNE_REACTIVE_ARMOR.REMOVE
 		ENDIF
 	ENDIF
@@ -82,11 +82,11 @@ ENDIF
 ON=@EQUIPTEST
 IF (<SRC.ISPLAYER>)
 	IF (<SRC.FINDID.I_RUNE_PROTECTION>)
-		SRC.SYSMESSAGELOC <def.tcolor_grey>,<def.empty_cliloc2>, Protection etkisi silindi.
+		SRC.SYSMESSAGELOC <def.tcolor_grey>,3301035
 		SRC.FINDID.I_RUNE_PROTECTION.REMOVE
 	ENDIF
 	IF (<SRC.FINDID.I_RUNE_REACTIVE_ARMOR>)
-		SRC.SYSMESSAGELOC <def.tcolor_grey>,<def.empty_cliloc2>, Reactive Armor etkisi silindi.
+		SRC.SYSMESSAGELOC <def.tcolor_grey>,3301036
 		SRC.FINDID.I_RUNE_REACTIVE_ARMOR.REMOVE
 	ENDIF
 ENDIF
@@ -95,11 +95,11 @@ ENDIF
 ON=@EQUIPTEST
 IF (<SRC.ISPLAYER>)
 	IF (<SRC.FINDID.I_RUNE_PROTECTION>)
-		SRC.SYSMESSAGELOC <def.tcolor_grey>,<def.empty_cliloc2>, Protection etkisi silindi.
+		SRC.SYSMESSAGELOC <def.tcolor_grey>,3301035
 		SRC.FINDID.I_RUNE_PROTECTION.REMOVE
 	ENDIF
 	IF (<SRC.FINDID.I_RUNE_REACTIVE_ARMOR>)
-		SRC.SYSMESSAGELOC <def.tcolor_grey>,<def.empty_cliloc2>, Reactive Armor etkisi silindi.
+		SRC.SYSMESSAGELOC <def.tcolor_grey>,3301036
 		SRC.FINDID.I_RUNE_REACTIVE_ARMOR.REMOVE
 	ENDIF
 ENDIF
@@ -110,11 +110,11 @@ ENDIF
 ON=@EQUIPTEST
 IF (<SRC.ISPLAYER>)
 	IF (<SRC.FINDID.I_RUNE_PROTECTION>)
-		SRC.SYSMESSAGELOC <def.tcolor_grey>,<def.empty_cliloc2>, Protection etkisi silindi.
+		SRC.SYSMESSAGELOC <def.tcolor_grey>,3301035
 		SRC.FINDID.I_RUNE_PROTECTION.REMOVE
 	ENDIF
 	IF (<SRC.FINDID.I_RUNE_REACTIVE_ARMOR>)
-		SRC.SYSMESSAGELOC <def.tcolor_grey>,<def.empty_cliloc2>, Reactive Armor etkisi silindi.
+		SRC.SYSMESSAGELOC <def.tcolor_grey>,3301036
 		SRC.FINDID.I_RUNE_REACTIVE_ARMOR.REMOVE
 	ENDIF
 ENDIF
@@ -155,9 +155,9 @@ ENDIF
 
 ON=@CLICK
 IF (<SPELLCOUNT> <= 0)
-	MESSAGE a spellbook
+	MESSAGELOC 0,3301190
 ELSE
-	MESSAGE a spellbook [<spellcount>]
+	MESSAGELOC 0,3301191,<spellcount>
 ENDIF
 RETURN 1
 
@@ -168,9 +168,9 @@ RETURN 1
 
 ON=@CLICK
 IF (<SPELLCOUNT> <= 0)
-	MESSAGE a necromancer book
+	MESSAGELOC 0,3301192
 ELSE
-	MESSAGE a necromancer book [<spellcount>]
+	MESSAGELOC 0,3301193,<spellcount>
 ENDIF
 RETURN 1
 
@@ -197,7 +197,7 @@ RETURN 1
 
 ON=@CLICK
 IF (<TOPOBJ> == <SRC>)
-	MESSAGE [Arrows: <EVAL <TOPOBJ.RESCOUNT <TDATA3>>>]
+	MESSAGELOC 0,3301194,<EVAL <TOPOBJ.RESCOUNT <TDATA3>>>
 ENDIF
 
 
@@ -206,7 +206,7 @@ ENDIF
 
 ON=@CLICK
 IF (<TOPOBJ> == <SRC>)
-	MESSAGE [Bolts: <EVAL <TOPOBJ.RESCOUNT <TDATA3>>>]
+	MESSAGELOC 0,3301195,<EVAL <TOPOBJ.RESCOUNT <TDATA3>>>
 ENDIF
 
 
@@ -228,13 +228,13 @@ RETURN 1
 
 ON=@TARGON_CHAR
 IF !(<SRC.TARG.NPC> == brain_animal)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Sadece hayvanları sürebilirsiniz.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3301037
 	RETURN 1
 ELSEIF (<SRC.ISDISS 5,<SRC.TARG.UID>>)
 	SRC.SYSMESSAGELOC <def.tcolor_red>,600018,<SRC.TARG.NAME>
 	RETURN 1
 ELSEIF (<SRC.TARG.OWNER>)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Sahipli hayvanları süremezsiniz.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3301038
 	RETURN 1
 ENDIF
 TAG0.NPC=<SRC.TARG.UID>

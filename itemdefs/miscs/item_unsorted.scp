@@ -451,23 +451,23 @@ DESCRIPTION=Dice and Cup
 
 ON=@CLICK
 IF (<MOREX>)
-MESSAGE (Son atilan: <DMOREX> & <DMOREY> = <EVAL <DMOREX>+<DMOREY>>)
+MESSAGELOC 0,3301108,<DMOREX>,<DMOREY>,<EVAL <DMOREX>+<DMOREY>>
 ENDIF
 IF (<MORE1>)
-MESSAGE (Son atan: <UID.<MORE1>.NAME>)
+MESSAGELOC 0,3301109,<UID.<MORE1>.NAME>
 ENDIF
 
 ON=@DCLICK
 IF (<SRC.ISUSESKILL MAGERY>)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Büyü atarken bu eşyayı kullanamazsınız.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300485
 	RETURN 1
 ENDIF
 IF (<dMORE2> > <SERV.TIME>)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, (Item) Bu zarı bu kadar hızlı atamazsınız.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300486
 	RETURN 1
 ENDIF
 IF (<SRC.DCTAG0.DiceDelay> > <SERV.TIME>)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, (Char) Bu zarı bu kadar hızlı atamazsınız.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300487
 	RETURN 1
 ENDIF
 LOCAL.DEGER1 <R1,6>
@@ -477,7 +477,7 @@ MOREY=<DLOCAL.DEGER2>
 MORE1=<DSRC>
 MORE2=<EVAL <SERV.TIME> + 9>
 SRC.SAYU <DLOCAL.DEGER1> & <DLOCAL.DEGER2>
-SRC.SAYU Toplam : <EVAL <DLOCAL.DEGER1>+<DLOCAL.DEGER2>>
+SRC.SAYLOC 0,3301110,<EVAL <DLOCAL.DEGER1>+<DLOCAL.DEGER2>>
 SRC.CTAG0.DiceDelay = <EVAL <SERV.TIME> + 9>
 RETURN 1
 

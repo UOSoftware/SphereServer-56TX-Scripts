@@ -901,7 +901,7 @@ if (!<isempty <args>> && <serv.chardef.<dargs>>)
 	add <args>
 	return 1
 endif
-sysmessageloc <def.tcolor_text>, <def.empty_cliloc2>, <defmsg.cmd_invalid>
+sysmessageloc <def.tcolor_text>,3300090,<defmsg.cmd_invalid>
 
 
 [FUNCTION tweak]
@@ -933,10 +933,10 @@ args = <qval <isnum <args>> ? <args> : <resourceindex <args>>>
 // endif
 if (<serv.itemdef.<dargs>>)
 	targetfg f_static <args>
-	sysmessageloc <def.tcolor_text>, <def.empty_cliloc2>, <defmsg.where_to_place> <serv.itemdef.<args>.name>?
+	sysmessageloc <def.tcolor_text>,3300091,<defmsg.where_to_place>,<serv.itemdef.<args>.name>
 	return 1
 endif
-sysmessageloc <def.tcolor_text>, <def.empty_cliloc2>, <defmsg.cmd_invalid>
+sysmessageloc <def.tcolor_text>,3300090,<defmsg.cmd_invalid>
 
 
 
@@ -968,7 +968,7 @@ SERV.NEWITEM i_eq_followSrc
 NEW.LINK=<QVAL (<dARGS>)? <ARGS>:<UID>>
 NEW.TIMER=2
 NEW.EQUIP
-SRC.SYSMESSAGELOC <def.tcolor_grey>,<def.empty_cliloc2>, Following: <NEW.LINK.NAME> - Use war mode to stop following
+SRC.SYSMESSAGELOC <def.tcolor_grey>,3300092,<NEW.LINK.NAME>
 
 [ITEMDEF i_eq_followSrc]
 ID=i_handr_1
@@ -984,7 +984,7 @@ LINK=<ARGO>
 
 ON=@Timer
 IF !(<LINK.UID>) || (<CONT.FLAGS> & statf_war)
- CONT.SYSMESSAGELOC <def.tcolor_grey>,<def.empty_cliloc2>, Follow: off
+ CONT.SYSMESSAGELOC <def.tcolor_grey>,3300093
  REMOVE
  return 0
 ELIF STRCMP("'<CONT.P>'","'<LINK.P>'")

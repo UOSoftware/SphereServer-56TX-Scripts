@@ -8,13 +8,13 @@ ELSEIF (<SRC.ISOUTOFREACH 2,<UID>>)
 	SRC.SYSMESSAGELOC <def.tcolor_red>,600018,<JOB> <NAME>
 	RETURN 1
 ELSEIF (<SRC.ACTION> != -1 && <SERV.SKILL.<SRC.ACTION>.FLAGS>&SKF_CRAFT)
-	SRC.SYSMESSAGELOC <def.tcolor_grey>,<def.empty_cliloc2>,Esya üretimi yapiyorken esya satisi yapamazsiniz.
+	SRC.SYSMESSAGELOC <def.tcolor_grey>,3300535
 	RETURN 1
 ENDIF
 // SELL
 FACE <SRC>
 SRC.TARGETF Func_Generic_Npc_Vendor_Shopkeeper_Sell <UID>
-SRC.SYSMESSAGE Satmak istediginiz esyayi seciniz.
+SRC.SYSMESSAGELOC 0,3300536
 RETURN 1
 
 
@@ -42,19 +42,19 @@ ELSEIF !(<ARGO>)
 	SRC.SYSMESSAGELOC <def.tcolor_red>,600022 // Bir hata oluştu!
 	RETURN 1
 ELSEIF !(<ARGO.ISITEM>)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu bir eşya değil.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300537
 	RETURN 1
 ELSEIF !(<SRC.ISINPACK <ARGO>>)
 	SRC.SYSMESSAGELOC <def.tcolor_red>,600036,<ARGO.NAME>	// Bunu (~1_val~) kullanabilmek için çantanızda veya üzerinizde olmalıdır.
 	RETURN 1
 ELSEIF (<EVAL <ARGO.VALUE>*<ARGO.AMOUNT>> > 2000000)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Sattığınız eşyanın değeri 2.000.000 gpyi geçmemelidir.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300538
 	RETURN 1
 ELSEIF (<SRC.ISOUTOFREACH 2,<ref1>>)
 	SRC.SYSMESSAGELOC <def.tcolor_red>,600018,<ref1.JOB> <ref1.NAME>
 	RETURN 1
 ELSEIF !(<ARGO.IsSalableItem>)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu eşyayı satamazsınız.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300539
 	RETURN 1
 ELSEIF (<SRC.FLAGS>&STATF_DEAD) 
 	SRC.SYSMESSAGELOC <def.tcolor_red>,600027 // "Ölü durumdayken bu işlemi yapamazsınız."
@@ -62,7 +62,7 @@ ELSEIF (<SRC.FLAGS>&STATF_DEAD)
 ENDIF
 LOCAL.ESYADEGER <EVAL <ARGO.VALUE>*<ARGO.AMOUNT>>
 IF (<DLOCAL.ESYADEGER> <= 0)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Eşyanın bir değeri yok.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300540
 	RETURN 1
 ENDIF
 
@@ -70,8 +70,8 @@ ENDIF
 IF (<LDB.CONNECTED>)
 	LDB.QUERY "SELECT id FROM 'buylist' WHERE defname='<STRTOUPPER <ARGO.BASEID>>' AND job='<STRTOUPPER <REF1.JOBKEY>>'";
 	IF !(<LDB.ROW.NUMROWS>)
-		SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu eşya vendorun satın alabileceği bir eşya değil.
-		REF1.SAYU Bu eşyayı ben alamam.
+		SRC.SYSMESSAGELOC <def.tcolor_red>,3300541
+		REF1.SAYLOC 0,3301122
 		SRC.CTAG0.Dialog.Generic_Npc_Vendor_Shopkeepers_Buylist.Index 0
 		SRC.CTAG0.Dialog.Generic_Npc_Vendor_Shopkeepers_Buylist.ItemId <ARGO.BASEID>
 		
@@ -83,7 +83,7 @@ ENDIF
 // Usage: NEWGOLD amount, pile(1: the new gold is stacked on the existing pile in the pack; 0: stacked in a new pile)
 
 SRC.NEWGOLD <DLOCAL.ESYADEGER>,1
-SRC.SYSMESSAGELOC <def.tcolor_green>,<def.empty_cliloc2>, Satış bedeli: <NumberFormat <DLOCAL.ESYADEGER>> gp
+SRC.SYSMESSAGELOC <def.tcolor_green>,3300542,<NumberFormat <DLOCAL.ESYADEGER>>
 SRC.Logger <ARGO.NAME> isimli esyayi <NumberFormat <DLOCAL.ESYADEGER>> gpe satti. 
 TARGETF Func_Generic_Npc_Vendor_Shopkeeper_Sell <REF1>
 SOUND 032

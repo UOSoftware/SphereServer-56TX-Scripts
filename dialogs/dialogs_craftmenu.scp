@@ -130,7 +130,7 @@ LOCAL.Skill=<eval <ARGV[0]>>
 IF (<f_defs_connect>)
 	LDB.defs.QUERY "SELECT COUNT(*) AS n FROM crafts WHERE skill = <dLOCAL.Skill>"
 	IF (<dLDB.defs.ROW.0.n> == 0)
-		SYSMESSAGE Bu beceriyle üretilecek eşya yok.
+		SYSMESSAGELOC 0,3300104
 		RETURN 0
 	ENDIF
 ENDIF

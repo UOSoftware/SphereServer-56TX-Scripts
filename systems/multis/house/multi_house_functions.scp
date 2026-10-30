@@ -15,7 +15,7 @@ IF (<REF1.ISVALIDE> && <ARGV0> > 0)
 	NEW.CONT=<REF1.FINDLAYER.21>
 	NEW.ATTR=ATTR_NEWBIE
 	NEW.COLOR=<COLOR>
-	REF1.SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, Evinizi (<NAME>) tapu haline getirdiniz.
+	REF1.SYSMESSAGELOC <def.tcolor_text>,3300664,<NAME>
 ENDIF
 REMOVE 
 // Or
@@ -43,7 +43,7 @@ IF (<LINK.ISVALIDE>)
 ENDIF
 
 IF (<ARGN>)// && (<DLOCAL.TIME_OLD> <= <EVAL <LOCAL.TIME>-86400>)
-	SRC.SYSMESSAGELOC <def.tcolor_green>,<def.empty_cliloc2>, Ev yenilendi.
+	SRC.SYSMESSAGELOC <def.tcolor_green>,3300665
 ENDIF
 	
 
@@ -219,40 +219,40 @@ ENDFOR
 REF1=<REGION.UID> // EV
 
 IF !(<ARGO>)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Hatalı seçim.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300221
 	RETURN 1
 ELSEIF !(<ARGO.ISCHAR>)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Hatalı seçim.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300221
 	RETURN 1
 ELSEIF !(<ARGO.ISPLAYER>)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Hatalı seçim.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300221
 	RETURN 1
 ELSEIF !(<REF1.ISVALIDE>)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, #1 Ev bulunamadı!
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300666
 	RETURN 1
 ELSEIF !(<REF1.ISITEM>)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, #2 Ev bulunamadı!
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300667
 	RETURN 1
 ELSEIF !(<REF1.ISMULTI>)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, #3 Ev bulunamadı!
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300668
 	RETURN 1
 ELSEIF (<ARGO> == <SRC>)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Kendinizi seçemezsiniz.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300669
 	RETURN 1
 ELSEIF (<REF1.ISOWNER <ARGO>>)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, <ARGO.NAME> zaten evin sahibi.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300670,<ARGO.NAME>
 	RETURN 1
 ELIF (<REF1.GETCOOWNERPOS <ARGO>> >= 0)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, <ARGO.name> zaten eve ortak.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300671,<ARGO.name>
 	RETURN 1
 ELIF (<REF1.GETFRIENDPOS <REF2>> >= 0)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, <ARGO.name> zaten eve dost.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300672,<ARGO.name>
 	RETURN 1
 ELIF (<REF1.GETACCESSPOS <ARGO>> >= 0)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, <ARGO.name> zaten izin listesinde.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300673,<ARGO.name>
 	RETURN 1
 ELIF (<REF1.GETBANPOS <ARGO>> >= 0)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, <ARGO.name> yasaklı listesinde.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300674,<ARGO.name>
 	RETURN 1
 ENDIF
 ARGO.CTAG0.HOUSE_ACCESS_INVITE=<REF1>,<SRC>,<ARGV0>
@@ -260,31 +260,31 @@ ARGO.CTAG0.HOUSE_ACCESS_INVITE=<REF1>,<SRC>,<ARGV0>
 IF (<ARGV0> == 1) // ORTAK EKLE
 
 	IF (<REF1.COOWNERS> >= <DDEF.HS_MAX_CO_OWNERS>)
-		SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu evin ortak ekleme limiti dolmuş. (<REF1.COOWNERS>/<DDEF.HS_MAX_CO_OWNERS>)
+		SRC.SYSMESSAGELOC <def.tcolor_red>,3300650,<REF1.COOWNERS>,<DDEF.HS_MAX_CO_OWNERS>
 		RETURN 1
 	ENDIF
 	TRYSRC <ARGO> DIALOGCLOSE D_HOUSE_ACCESS_INVITE_PLAYER
 	TRYSRC <ARGO> DIALOG D_HOUSE_ACCESS_INVITE_PLAYER
-	ARGO.SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, <SRC.NAME> size <REF1.NAME> evi için ortaklık daveti gönderdi.
-	SRC.SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, <ARGO.NAME> sizinli kişiye <REF1.NAME> evi için ortaklık daveti gönderdin.
+	ARGO.SYSMESSAGELOC <def.tcolor_text>,3300675,<SRC.NAME>,<REF1.NAME>
+	SRC.SYSMESSAGELOC <def.tcolor_text>,3300676,<ARGO.NAME>,<REF1.NAME>
 		
 ELSEIF (<ARGV0> == 2) // dost ekle
 
 	IF (<REF1.Friends> >= <DDEF.hs_max_friends>)
-		SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu evin dost ekleme limiti dolmuş. (<REF1.Friends>/<DDEF.hs_max_friends>)
+		SRC.SYSMESSAGELOC <def.tcolor_red>,3300655,<REF1.Friends>,<DDEF.hs_max_friends>
 		RETURN 1
 	ENDIF
 	TRYSRC <ARGO> DIALOGCLOSE D_HOUSE_ACCESS_INVITE_PLAYER
 	TRYSRC <ARGO> DIALOG D_HOUSE_ACCESS_INVITE_PLAYER
-	ARGO.SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, <SRC.NAME> size <REF1.NAME> evi için ortaklık daveti gönderdi.
-	SRC.SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, <ARGO.NAME> sizinli kişiye <REF1.NAME> evi için ortaklık daveti gönderdin.
+	ARGO.SYSMESSAGELOC <def.tcolor_text>,3300675,<SRC.NAME>,<REF1.NAME>
+	SRC.SYSMESSAGELOC <def.tcolor_text>,3300676,<ARGO.NAME>,<REF1.NAME>
 		
 ELSEIF (<ARGV0> == 3) // Yasakli ekle
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Tanımsız işlem.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300661
 ELSEIF (<ARGV0> == 4) // Erişim ekle
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Tanımsız işlem.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300661
 ELSE
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Tanımsız işlem.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300661
 ENDIF
 
 
@@ -350,48 +350,48 @@ RETURN 1
 [FUNCTION F_HOUSE_ITEM_LOCK]
 REF1=<REGION.UID>
 IF !(<ARGO>)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Hatalı seçim.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300221
 	RETURN 1
 ELSEIF !(<ARGO.ISITEM>)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Sadece eşyaları seçebilirsiniz.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300677
 	RETURN 1
 	
 ELSEIF !((<REF1> == <ARGO.REGION.UID>) || (<ARGO.IsInHouse>))
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Sadece evdeki eşyaları sabitleyebilirsiniz.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300678
 	RETURN 1
 	
 ELSEIF (<ARGO.F_HOUSE_NEAR_DOOR 2>)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Kapıların yakınına eşya sabitleyemezsiniz.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300679
 	RETURN 1
 	
 ELSEIF !((<REF1.ISOWNER <SRC>>) || (<REF1.GETCOOWNERPOS <SRC>> >= 0) || (<REF1.GETFRIENDPOS <SRC>> >= 0) || (<SRC.ISGM>))
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Ev ile ilişkiniz yok. (Sahip - Ortak - Dost)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300680
 	RETURN 1
 	
 ELSEIF (<ARGO.DISTANCE <REF1.LINK>> < 2)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Tabelanın bu kadar yakınına eşya sabitleyemezsiniz.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300681
 	RETURN 1
 	
 ELSEIF !(<ARGO.IsHouseLockAllowedItem>)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu eşyayı sabitleyemezsiniz.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300682
 	RETURN 1
 	
 ELSEIF (<ARGO.CONT>)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu eşyayı bulunduğu yerde sabitleyemezsiniz.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300683
 	RETURN 1
 
 ELSEIF (<ARGO.ATTR>&ATTR_LOCKEDDOWN) || (<ARGO.ISEVENT.ei_house_lockdown>)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu eşya zaten sabit.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300684
 	RETURN 1
 	
 ELSEIF (<ARGO.TYPE> == T_CONTAINER)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Kutu&kasa türü eşyaları sabitleyemezsiniz. Bu eşyayı "secure" yapmalısınız.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300685
 	RETURN 1
 ENDIF
 
 IF (<DEF.HS_HS_SECURE_LOCKS_LIMIT>)
 	IF (<REF1.CURRENTSTORAGE> >= <REF1.MAXSTORAGE>)
-		SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Evin eşya sabitleme sınırı dolmuş.
+		SRC.SYSMESSAGELOC <def.tcolor_red>,3300686
 		RETURN 1
 	ENDIF
 ENDIF
@@ -403,48 +403,48 @@ ARGO.HouseItemSetLockedProps 1
 REF1=<REGION.UID> // Ev
 
 IF !(<ARGO>)
-	SRC.SYSMESSAGELOC 38,<DEF.EMPTY_CLILOC2>, Sadece eşyaları seçebilirsiniz.
+	SRC.SYSMESSAGELOC 38,3300677
 	RETURN 1
 	
 ELSEIF !(<ARGO.ISITEM>)
-	SRC.SYSMESSAGELOC 38,<DEF.EMPTY_CLILOC2>, Sadece eşyaları seçebilirsiniz.
+	SRC.SYSMESSAGELOC 38,3300677
 	RETURN 1
 
 ELSEIF !(<ARGO.IsHouseUnLockAllowedItem>) 
-	SRC.SYSMESSAGELOC 38,<DEF.EMPTY_CLILOC2>, Bunun sabitliğini kaldıramazsınız.
+	SRC.SYSMESSAGELOC 38,3300687
 	RETURN 1
 	
 ELSEIF !(<ARGO.REGION.UID> == <REF1>)
-	SRC.SYSMESSAGELOC 38,<DEF.EMPTY_CLILOC2>, <ARGO.NAME> bulunduğu yer bu ev değil.
+	SRC.SYSMESSAGELOC 38,3300688,<ARGO.NAME>
 	RETURN 1
 	
 ELSEIF (<ARGO.CONT>)
-	SRC.SYSMESSAGELOC 38,<DEF.EMPTY_CLILOC2>, Kutuların içindekilerini sabitleyemezsiniz.
+	SRC.SYSMESSAGELOC 38,3300689
 	RETURN 1
 	
 ELSEIF !((<REF1.ISOWNER <SRC>>) || (<REF1.GETCOOWNERPOS <SRC>> >= 0) || (<REF1.GETFRIENDPOS <SRC>> >= 0) || (<SRC.ISGM>))
-	SRC.SYSMESSAGELOC 38,<DEF.EMPTY_CLILOC2>, Ev ile ilişkiniz yok. (Sahip - Ortak - Dost)
+	SRC.SYSMESSAGELOC 38,3300680
 	RETURN 1
 
 ELSEIF (<ARGO.BASEID> == I_STRONGBOX)
 	IF (<ARGO.MORE2> != <SRC>)
-		SRC.SYSMESSAGELOC 38,<DEF.EMPTY_CLILOC2>, Bu Strongbox size ait değil.
+		SRC.SYSMESSAGELOC 38,3300690
 		RETURN 1
 	ELSEIF (<ARGO.MORE1> != <REF1>)
-			SRC.SYSMESSAGELOC 38,<DEF.EMPTY_CLILOC2>, Bu Strongbox bu eve ait değil.
+			SRC.SYSMESSAGELOC 38,3300691
 		RETURN 1
 	ENDIF
-	SRC.SYSMESSAGELOC 38,<DEF.EMPTY_CLILOC2>, <ARGO.NAME> silindi.
+	SRC.SYSMESSAGELOC 38,3300141,<ARGO.NAME>
 	ARGO.REMOVE
 	RETURN 1
 
 ELSEIF (<ARGO.BASEID> == I_TRASHCAN) || (<ARGO.BASEID> == i_reward_barrel)
-	SRC.SYSMESSAGELOC 38,<DEF.EMPTY_CLILOC2>, Bu eşyaların sabitliğini kaldıramayacağınız için silindi.
+	SRC.SYSMESSAGELOC 38,3300692
 	ARGO.REMOVE
 	RETURN 1
 	
 ELSEIF !((<ARGO.ATTR>&ATTR_LOCKEDDOWN) || (<ARGO.ISEVENT.ei_house_lockdown>))
-	SRC.SYSMESSAGELOC 38,<DEF.EMPTY_CLILOC2>, Bu eşya eve sabit değil.
+	SRC.SYSMESSAGELOC 38,3300693
 	RETURN 1
 
 ENDIF
@@ -456,7 +456,7 @@ IF (<REF1.GETSECUREDCONTAINERPOS <ARGO>> = 0) && ((<REF1.ISOWNER <UID>>) || (<IS
 	
 ELIF (<ARGO.ISITEM> && <ARGO.REGION.UID>==<REF1>)
 	IF (<REF1.GETFRIENDPOS <SRC>> >= 0) && (<ARGO.TAG0.LOCKEDBY> != <SRC>)
-		SRC.SYSMESSAGELOC 38,<DEF.EMPTY_CLILOC2>, Dostlar yalnızca kendi sabitlediği eşyaların sabitliğini kaldırabilir.
+		SRC.SYSMESSAGELOC 38,3300694
 		RETURN 1
 	ENDIF
 	ARGO.HOUSEITEMSETLOCKEDPROPS 0 
@@ -475,36 +475,36 @@ ENDIF
 REF1=<REGION.UID>
 
 IF !(<ARGO>)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Hatalı seçim.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300221
 	RETURN 1
 ELSEIF !(<ARGO.ISITEM>)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Sadece eşyaları seçebilirsiniz.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300677
 	RETURN 1
 ELSEIF !((<REF1> == <ARGO.REGION.UID>) || (<ARGO.IsInHouse>))
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Sadece evdeki kutu & kasaları sabitleyebilirsiniz.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300695
 	RETURN 1
 ELSEIF (<ARGO.F_HOUSE_NEAR_DOOR 2>)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Kapıların yakınına kutu & kasa sabitleyemezsiniz.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300696
 	RETURN 1
 ELSEIF !((<REF1.ISOWNER <SRC>>) || (<REF1.GETCOOWNERPOS <SRC>> >= 0) || (<SRC.ISGM>))
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Ev ile ilişkiniz yok. (Sahip - Ortak)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300697
 	RETURN 1
 ELSEIF !(<ARGO.TYPE> == T_CONTAINER)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Sadece kutu & kasaları güvenli yapabilirsiniz.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300698
 	RETURN 1
 ELIF (<ARGO.DISTANCE <REF1.LINK>> < 2)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Tabelanın bu kadar yakınına kutu & kasa sabitleyemezsiniz.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300699
 	RETURN 1
 ENDIF
 IF (<DEF.HS_HS_SECURE_LOCKS_LIMIT>)
 	IF (<REF1.CURRENTSTORAGE> >= <REF1.MAXSTORAGE>) || (<EVAL <ARGO.COUNT>+1> >= <REF1.MAXSTORAGE>)
-		SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Your house reached its storage limit.
+		SRC.SYSMESSAGELOC <def.tcolor_red>,3300700
 		RETURN 1
 	ENDIF
 ENDIF
 REF1.SECURE <ARGO>
 ARGO.TAG.ACCESS = 1
-ARGO.SAYU * güvenli *
+ARGO.SAYLOC 0,3301129
 IF ((<ARGO.ATTR>&ATTR_DECAY) && (<ARGO.TIMER> >= 0))
 	ARGO.TAG.DECAY=1
 	ARGO.TIMER -1
@@ -529,12 +529,12 @@ if <src> == <ref1.owner>
 			dialogclose D_HOUSE_ACCESS
 			argo.sdialog D_HOUSE_ACCESS
 		else
-			src.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, You can only modify containers which are secured.
+			src.SYSMESSAGELOC <def.tcolor_red>,3300701
 			return 1
 		endif
 	endif
 else
-	src.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, You can only modify items which are in your house.
+	src.SYSMESSAGELOC <def.tcolor_red>,3300702
 	return 1
 endif
 
@@ -549,52 +549,52 @@ endif
 REF1=<SRC.REGION.UID> // ev
 
 IF !(<ARGO>)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Hatalı seçim.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300221
 	RETURN 1
 	
 ELSEIF (<ARGO.ISITEM>)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Sadece oyuncuları seçebilirsiniz.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300703
 	RETURN 1
 	
 ELSEIF (<ARGO.ISGM>)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Yetkilileri evden kovamazsınız.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300704
 	RETURN 1
 	
 ELSEIF (<SRC.ISDEATH>)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Ölüyken bu komutu kullanamazsınız.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300705
 	RETURN 1
 	
 ELSEIF !(<ARGO.REGION.UID> == <REF1>)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, <ARGO.NAME> bulunduğu yer bu ev değil.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300688,<ARGO.NAME>
 	RETURN 1
 
 ELSEIF !(<ARGO.IsInHouse>)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, <ARGO.NAME> ev içinde değil.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300706,<ARGO.NAME>
 	RETURN 1
 	
 ELIF (<ARGO> == <SRC>)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Kendinizi evden atamazsınız.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300707
 	RETURN 1
 	
 ELSEIF (<ARGO.REGION.UID> != <REF1>)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, <ARGO.NAME> bu ev içinde değil.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300708,<ARGO.NAME>
 	RETURN 1
 	
 ELIF (<REF1.ISOWNER <ARGO>>) || (<REF1.GETCOOWNERPOS <ARGO>> >= 0) || (<REF1.GETFRIENDPOS <ARGO>> >= 0)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Ev ile ilişiği olan birini evden kovamazsınız.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300709
 	RETURN 1
 ENDIF
 REF2=<REF1.LINK> // TABELA
 IF !(<REF2.ISVALIDE>)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Ev tabelası bulunamadığı için evden kovulamadı.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300710
 	RETURN 1
 ENDIF
 ARGO.GO <REF2.P>
 ARGO.MOVE 0 <R1,2>
 ARGO.Func_House_BanishArea_Clear
 ARGO.FIX
-ARGO.SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, Evden kovuldunuz.
-SRC.SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, <ARGO.NAME> isimli varlık evden kovuldu.
+ARGO.SYSMESSAGELOC <def.tcolor_text>,3300711
+SRC.SYSMESSAGELOC <def.tcolor_text>,3300712,<ARGO.NAME>
 
 
 
@@ -622,28 +622,28 @@ ENDFOR
 [FUNCTION F_HOUSE_TRANSFER]
 REF1= <REGION.UID>
 IF !(<ARGO>)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Hatalı seçim.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300221
 	RETURN 1
 ELSEIF !(<ARGO.ISCHAR>)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Sadece varlıkları seçebilirsiniz.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300713
 	RETURN 1
 ELSEIF !(<ARGO.ISPLAYER>)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Sadece oyuncuları seçebilirsiniz.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300703
 	RETURN 1
 ELSEIF (<ARGO>==<SRC>)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Kendinizi seçemezsiniz.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300669
 	RETURN 1
 ELSEIF (<ARGO.HOUSES> >= 1)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, <ARGO.NAME> isimli oyuncunun zaten evi var. (<ARGO.HOUSES>/1)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300714,<ARGO.NAME>,<ARGO.HOUSES>
 	RETURN 1
 ELSEIF !(<SRC.IsInHouse>)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Evin içerisinde değilsiniz.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300715
 	RETURN 1
 ELSEIF !(<REF1.ISMULTI>)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bulunduğunuz yer bir ev değil.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300716
 	RETURN 1
 ELSEIF (<REF1.OWNER> != <SRC>)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bulunduğunuz evin sahibi değilisiniz.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300717
 	RETURN 1
 ENDIF
 ARGO.CTAG0.HOUSE_ACCESS_INVITE=<REF1>,<SRC>,3
@@ -651,8 +651,8 @@ ARGO.CTAG0.HOUSE_ACCESS_INVITE=<REF1>,<SRC>,3
 TRYSRC <ARGO> DIALOGCLOSE D_HOUSE_ACCESS_INVITE_PLAYER
 TRYSRC <ARGO> DIALOG D_HOUSE_ACCESS_INVITE_PLAYER
 
-ARGO.SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, <src.name> size <ref1.name> evini transfet etmek için davet gönderdi.
-SRC.SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, <ARGO.name> sizinli kişiye <ref1.name> evini transfer etmek için davet gönderdin.
+ARGO.SYSMESSAGELOC <def.tcolor_text>,3300718,<src.name>,<ref1.name>
+SRC.SYSMESSAGELOC <def.tcolor_text>,3300719,<ARGO.name>,<ref1.name>
 			
 
 
@@ -672,7 +672,7 @@ IF !<REF1.UID>
 	RETURN 1
 ENDIF
 	IF (<F_HOUSE_CHECKNEARAREA>)
-		REF1.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu alana ev kuramazsiniz.
+		REF1.SYSMESSAGELOC <def.tcolor_red>,3300720
 		IF !(<REF1.ISGM>)
 			LINK.FUNC_HOUSE_REDEED 1 
 			RETURN 1
@@ -951,7 +951,7 @@ IF (<REF1.ISVALIDE> && <REF1.ISMULTI>)
 	REF2=<REF1.OWNER>
 	
 	IF (<REF2.ISVALIDE>)
-		REF2.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Eve vendor kurulduğu için tüm kapıların kilidi açıldı ve ev halka açık hale geldi.
+		REF2.SYSMESSAGELOC <def.tcolor_red>,3300721
 	ENDIF
 	
 	ARGS=<REF1.MULTIREGION>
@@ -982,7 +982,7 @@ REF1=<REGION.UID>
 IF (<REF1.ISVALIDE> && <REF1.ISMULTI>)
 
 	IF (<ARGV> == 1) // SABİT
-		SAYU * sabit *
+		SAYLOC 0,3301130
 		TAG.LOCKEDBY=<SRC>	
 		ATTR |= ATTR_MOVE_NEVER
 		REF1.LOCKITEM <UID>
@@ -994,7 +994,7 @@ IF (<REF1.ISVALIDE> && <REF1.ISMULTI>)
 		ENDIF
 	
 	ELSE
-		SAYU * sabit değil *
+		SAYLOC 0,3301131
 		TAG.LOCKEDBY=
 		ATTR &= ~ATTR_MOVE_NEVER
 		REF1.UNLOCKITEM <UID>

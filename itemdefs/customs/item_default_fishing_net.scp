@@ -18,25 +18,25 @@ MORE1=1000
 
 on=@DClick
 IF !(<MORE1> == 1000)
-	MESSAGE [ag kurulu]
+	MESSAGELOC 0,3301065
 	RETURN 1
 
 ELSEIF (<SRC.FISHING> < 90.0)
-	SRC.SYSMESSAGE Bunu kullanmak icin 90 Fishing skilline sahip olmalisiniz!
+	SRC.SYSMESSAGELOC 0,3300333
 	RETURN 1
 	
 ELSEIF !(<SRC.REGION.FLAGS>&region_flag_ship)
-	SRC.SYSMESSAGE Bunu sadece gemilerde kullanabilirsiniz!
+	SRC.SYSMESSAGELOC 0,3300334
 	RETURN 1
 	
 ELSEIF !(<REGION.FLAGS>&region_flag_ship)
-	SRC.SYSMESSAGE Bunu sadece gemilerde kullanabilirsiniz!
+	SRC.SYSMESSAGELOC 0,3300334
 	RETURN 1
 	
 ELSEIF (<src.uid> == <cont.cont.uid>) 
 	DROP
 	
-	SRC.SAYU Hoyde rassgele! 
+	SRC.SAYLOC 0,3301066
 	MORE1=100
 	
 	SERV.NEWITEM i_fishnet_spawner
@@ -99,7 +99,7 @@ IF (<CONT>)
 			NEW.CONT <REF1>
 			NEW.TIMER 300
 			
-			CONT.sysmessage Aginiza buyuk birseyler takilir...
+			CONT.sysmessageloc 0,3300335
 		ENDIF
 		REMOVE
 		RETURN 1
@@ -127,7 +127,7 @@ ON=@TIMER
 IF !(<MORE2>)
 	CONT.FLAGS <CONT.FLAGS>|04
 	CONT.ANIM 4
-	CONT.SAYU * dibe doğru dalar... *
+	CONT.SAYLOC 0,3301067
 	MORE2 1
 	TIMER 4
 ELSE

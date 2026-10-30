@@ -17,7 +17,7 @@ COLOR=07fff
 LINK=<SRC>
 
 on=@click
-message @1153,,1,1 [İlk Oyuncu]
+messageloc 1153,3301114
 IF (<CONT>)
 	message @1153,,1,1 <TOPOBJ.NAME>
 ENDIF

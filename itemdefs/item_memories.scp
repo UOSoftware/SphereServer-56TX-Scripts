@@ -12,7 +12,7 @@ WEIGHT=0
 LAYER=LAYER_SPECIAL
 
 ON=@EQUIP
-SRC.SAYUA 025,0,0,0 * spazm gecirmeye baslar *
+SRC.SAYLOC 025,3301060
 TIMER 3
 	
 ON=@TIMER
@@ -33,13 +33,13 @@ LAYER=LAYER_SPECIAL
 
 ON=@EQUIP
 MOREY=1
-SRC.SAYUA 025,0,0,0 * spazm gecirmeye baslar *
+SRC.SAYLOC 025,3301060
 SRC.SFX SND_SPELL_POISON
 TIMER 2
 	
 ON=@TIMER
 IF (<MOREY> < 10)
-	CONT.SAYUA 025,0,0,0 * zehirin etkisiyle spazm gecirmeye devam eder *
+	CONT.SAYLOC 025,3301061
 	CONT.DAMAGE 60
 	MOREY ++
 	CONT.SFX SND_SPELL_POISON
@@ -63,7 +63,7 @@ ON=@EQUIP
 IF !(<SRC.ISGM>)
 	TIMER 3
 	SRC.FLAGS <SRC.FLAGS>|04
-	SRC.SAYUA 070d,0,0,0 * sorun cikardigi icin bir dakika boyunca hareketsiz kalacak *
+	SRC.SAYLOC 070d,3301062
 ELSE
 	MOREX 1
 	TIMER 1

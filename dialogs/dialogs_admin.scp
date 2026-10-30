@@ -461,11 +461,11 @@ DIALOG d_admin_player_tweak
 // Block
 ON=8
 IF (<SRC.ACCOUNT.PLEVEL> <= <ACCOUNT.PLEVEL>)
-	SRC.SYSMESSAGELOC <def.tcolor_grey>,<def.empty_cliloc2>, <DEFMSG.msg_acc_priv>
+	SRC.SYSMESSAGELOC <def.tcolor_grey>,3300090,<DEFMSG.msg_acc_priv>
 ELSE
 	ACCOUNT.BLOCK <QVAL (<ACCOUNT.BLOCK>)? 0:1>
 	ARGS="A'<ACCOUNT>' was <QVAL (<ACCOUNT.BLOCK>)? banned:unbanned> by '<SRC.NAME>'"
-	SRC.SYSMESSAGELOC <def.tcolor_grey>,<def.empty_cliloc2>, <ARGS>
+	SRC.SYSMESSAGELOC <def.tcolor_grey>,3300090,<ARGS>
 	SRC.Logger <ARGS>
 ENDIF
 DIALOG d_admin_player_tweak
@@ -506,7 +506,7 @@ REF1=<ACCOUNT.CHAR.<EVAL <DARGN>-100>.UID>
 IF (<REF1.ISVALIDE>)
 	REF1.DIALOG d_charprop1
 ELSE
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Oyuncu bulunamadı!
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300101
 ENDIF
 
 
@@ -554,13 +554,13 @@ DIALOG d_admin_player_tweak
 ON=1
 IF (<ACCOUNT.TAG0.NumNotes> < <DEF0.Admin.MaxAccountNotes>)
 	IF (<SRC.ACCOUNT.PLEVEL> < <ACCOUNT.PLEVEL>)
-		SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, <DEFMSG.msg_acc_priv>
+		SRC.SYSMESSAGELOC <def.tcolor_red>,3300090,<DEFMSG.msg_acc_priv>
 	ELIF !(<isempty <ARGTXT[0]>>)
 		ACCOUNT.TAG0.NumNotes ++
 		ACCOUNT.TAG.Note_<dACCOUNT.TAG0.NumNotes>="<ARGTXT[0]>"
 		ACCOUNT.TAG.Note_<dACCOUNT.TAG0.NumNotes>_By=<SRC.NAME>
 		ACCOUNT.TAG.Note_<dACCOUNT.TAG0.NumNotes>_Time=<SERV.RTIME>
-		SRC.SYSMESSAGELOC <def.tcolor_green>,<def.empty_cliloc2>, Not başarıyla eklendi.
+		SRC.SYSMESSAGELOC <def.tcolor_green>,3300102
 	ENDIF
 ENDIF
 DIALOGCLOSE d_admin_player_notes 
@@ -569,7 +569,7 @@ DIALOG d_admin_player_notes <eval 1+((<ACCOUNT.TAG0.NumNotes>-1)/4)>
 
 ON=10 65535
 IF (<SRC.ACCOUNT.PLEVEL> < <ACCOUNT.PLEVEL>)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, <DEFMSG.msg_acc_priv>
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300090,<DEFMSG.msg_acc_priv>
 ELSE
 	LOCAL.Note=<eval <ARGN>-9>
 	ACCOUNT.TAG.Note_<dLOCAL.Note>=
@@ -581,7 +581,7 @@ ELSE
 			ACCOUNT.TAG.Note_<dLOCAL._FOR>_Time=<ACCOUNT.TAG.Note_<eval <LOCAL._FOR>+1>_Time>
 		ENDFOR
 	ACCOUNT.TAG0.NumNotes --
-	SYSMESSAGELOC <def.tcolor_green>,<def.empty_cliloc2>, Note removed
+	SYSMESSAGELOC <def.tcolor_green>,3300103
 ENDIF
 
 LOCAL.Page=<eval 1+((<LOCAL.Note>-1)/4)>

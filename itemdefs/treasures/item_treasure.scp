@@ -53,7 +53,7 @@ ENDFOR
 
 [EVENTS e_dungeon_chest_guardian]
 ON=@CLICK
-MESSAGE (chest guardian)
+MESSAGELOC 0,3301115
 
 On=@Hit
 IF !(<SRC.ISPOISONED>)
@@ -104,11 +104,11 @@ REF1=<UID>
 FORCHARS 100
 	IF (<TAG0.CHEST> == <REF1>)
 		LOCAL.GUARDIANS ++
-		SRC.SYSMESSAGELOC <def.tcolor_yellow>,<def.empty_cliloc2>, <NAME>
+		SRC.SYSMESSAGELOC <def.tcolor_yellow>,3300090,<NAME>
 	ENDIF
 ENDFOR
 IF (<DLOCAL.GUARDIANS>)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Önce korumaları öldürmelisiniz. (<DLOCAL.GUARDIANS>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300524,<DLOCAL.GUARDIANS>
 	RETURN 1
 ENDIF
 
@@ -122,11 +122,11 @@ ENDIF
 ON=@CLICK
 IF (<SRC.ISGM>)
 
-	MESSAGE @,,1,1 (Level: <dmorex>) GM Only
+	MESSAGELOC 0,3301116,<dmorex>
 ENDIF
 IF !(<TYPE> == T_CONTAINER_LOCKED)
 	IF (<TIMER> > 0)
-		SRC.SYSMESSAGELOC <def.tcolor_yellow>,<def.empty_cliloc2>, <NAME> <DURATIONFORHUMANS <TIMER>,,short> sonra silinecektir.
+		SRC.SYSMESSAGELOC <def.tcolor_yellow>,3300525,<NAME>,<DURATIONFORHUMANS <TIMER>,,short>
 	ENDIF
 ENDIF
 

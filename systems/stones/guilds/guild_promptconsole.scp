@@ -3,7 +3,7 @@
 // ------------------------------------------------------
 [FUNCTION F_PROMPTHANDLER_GUILDNAME]
 IF (!<CTAG0.GUILD_PROMPTHANDLER_GUILDUID> || <ISEMPTY <ARGS>>)
-	SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Guild adını değiştirmekten vazgeçtin.
+	SYSMESSAGELOC <def.tcolor_red>,3300879
 	RETURN 1
 ENDIF
 
@@ -28,23 +28,23 @@ IF (<OBJ.MASTERUID>!=<UID>) && !(<ISGM>)
 ENDIF
 
 IF ((<LOCAL.GUILDLENGTH> < <DEF0.GUILDCONFIG_NAME_MINLENGTH>) || (<LOCAL.GUILDLENGTH> > <DEF0.GUILDCONFIG_NAME_MAXLENGTH>))
-	SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Guild adı adı en az <DEF0.GUILDCONFIG_NAME_MINLENGTH> en fazla <DEF0.GUILDCONFIG_NAME_MAXLENGTH> karakterden oluşabilir.
+	SYSMESSAGELOC <def.tcolor_red>,3300880,<DEF0.GUILDCONFIG_NAME_MINLENGTH>,<DEF0.GUILDCONFIG_NAME_MAXLENGTH>
 	RETURN 1
 ELSEIF (<OBJ.TAG0.CHANGENAME_TIME> >= <SERV.TIME>)
-	SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Tekrar işlem yapmak için bir süre beklemelisiniz.
+	SYSMESSAGELOC <def.tcolor_red>,3300881
 	RETURN 1
 
 ELSEIF (<ISBLANK <LOCAL.GUILDNAME>>)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, <def.systxt_only_empty>
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300090,<def.systxt_only_empty>
 	RETURN 1
 ELSEIF !(STRREGEX(^[a-zA-Z' ]+$,<LOCAL.GUILDNAME>))
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Yalnızca alfabetik karakter ve ( ' ) ve boşluk karakterini kullanabilirsiniz.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300882
 	RETURN 1
 ELSEIF (<ISFORBIDSTRING <LOCAL.GUILDNAME>>)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, <def.systxt_using_forbid>
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300090,<def.systxt_using_forbid>
 	RETURN 1
 ELSEIF (<F_GUILDSYS_ISNAMEUSED <LOCAL.GUILD>,<LOCAL.GUILDNAME>>)
-	SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu isim kullanılamaz.
+	SYSMESSAGELOC <def.tcolor_red>,3300883
 	RETURN 1
 ENDIF
 // CHANGE THE NAME
@@ -64,7 +64,7 @@ RETURN 1
 // ------------------------------------------------------
 [FUNCTION F_PROMPTHANDLER_GUILDABBREV]
 IF ( !<CTAG0.GUILD_PROMPTHANDLER_GUILDUID> || <ISEMPTY <ARGS>> )
-	SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Guild kısaltmasını değiştirmekten vazgeçtin.
+	SYSMESSAGELOC <def.tcolor_red>,3300884
 	RETURN 1
 ENDIF
 LOCAL.GUILDABBREV=<ARGS>
@@ -84,25 +84,25 @@ IF (<OBJ.MASTERUID>!=<UID>) && !(<ISGM>)
 	RETURN 1
 ENDIF
 IF ((<LOCAL.GUILDLENGTH> < <DEF0.GUILDCONFIG_ABBREV_MINLENGTH>) || (<LOCAL.GUILDLENGTH> > <DEF0.GUILDCONFIG_ABBREV_MAXLENGTH>))
-	SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Guild kısaltması adı en az <DEF0.GUILDCONFIG_ABBREV_MINLENGTH> en fazla <DEF0.GUILDCONFIG_ABBREV_MAXLENGTH> karakterden oluşabilir.
+	SYSMESSAGELOC <def.tcolor_red>,3300885,<DEF0.GUILDCONFIG_ABBREV_MINLENGTH>,<DEF0.GUILDCONFIG_ABBREV_MAXLENGTH>
 	RETURN 1
 ELSEIF (<OBJ.TAG0.CHANGEABBREV_TIME> >= <SERV.TIME>)
-	SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Tekrar işlem yapmak için bir süre beklemelisiniz.
+	SYSMESSAGELOC <def.tcolor_red>,3300881
 	RETURN 1
 ELSEIF (<ISBADCHAR <LOCAL.GUILDABBREV>>)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, <def.systxt_using_bad>
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300090,<def.systxt_using_bad>
 	RETURN 1
 ELSEIF (<ISBLANK <LOCAL.GUILDABBREV>>)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, <def.systxt_only_empty>
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300090,<def.systxt_only_empty>
 	RETURN 1
 ELSEIF !(STRREGEX(^[a-zA-Z]+$,<LOCAL.GUILDABBREV>))
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Yalnızca alfabetik karakter kullanabilirsiniz.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300282
 	RETURN 1
 ELSEIF (<ISFORBIDSTRING <LOCAL.GUILDABBREV>>)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, <def.systxt_using_forbid>
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300090,<def.systxt_using_forbid>
 	RETURN 1
 ELSEIF (<F_GUILDSYS_ISABBREVUSED <LOCAL.GUILD>,<LOCAL.GUILDABBREV>>)
-	SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu kısaltma kullanılamaz.
+	SYSMESSAGELOC <def.tcolor_red>,3300886
 	RETURN 1
 ENDIF
 // CHANGE THE ABBREV
@@ -141,33 +141,33 @@ IF (<OBJ.MASTERUID>!=<UID>) && !(<ISGM>)
 	RETURN 1
 ENDIF
 IF (<ISEMPTY <ARGS>>)
-	SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Ünvan değiştirmeyi iptal ettiğin için ünvan silindi.
+	SYSMESSAGELOC <def.tcolor_red>,3300887
 	OBJ.MEMBERFROMUID.<LOCAL.THISUID>.GUILDTITLE=
 ELSE
 	IF (<LOCAL.TITLELENGTH> > <DEF0.GUILDCONFIG_TITLE_MAXLENGTH>)
-		SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Ünvan en fazla <DEF0.GUILDCONFIG_TITLE_MAXLENGTH> karakterden oluşabilir.
+		SYSMESSAGELOC <def.tcolor_red>,3300888,<DEF0.GUILDCONFIG_TITLE_MAXLENGTH>
 		RETURN 1
 	ELSEIF (<LOCAL.TITLELENGTH> < 3)
-		SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Ünvan en az 3 karakterden oluşabilir.
+		SYSMESSAGELOC <def.tcolor_red>,3300889
 		RETURN 1
 	ELSEIF (<ISBADCHAR <LOCAL.TITLE>>)
-		SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, <def.systxt_using_bad>
+		SYSMESSAGELOC <def.tcolor_red>,3300090,<def.systxt_using_bad>
 		RETURN 1
 	ELSEIF (<ISBLANK <LOCAL.TITLE>>)
-		SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, <def.systxt_only_empty>
+		SYSMESSAGELOC <def.tcolor_red>,3300090,<def.systxt_only_empty>
 		RETURN 1
 	ELSEIF !(STRREGEX(^[a-zA-Z]+$,<LOCAL.TITLE>))
-		SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Yalnızca alfabetik karakter kullanabilirsiniz.
+		SYSMESSAGELOC <def.tcolor_red>,3300282
 		RETURN 1
 	ELSEIF (<ISFORBIDSTRING <LOCAL.TITLE>>)
-		SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, <def.systxt_using_forbid>
+		SYSMESSAGELOC <def.tcolor_red>,3300090,<def.systxt_using_forbid>
 		RETURN 1
 	ELSEIF (<OBJ.MEMBERFROMUID.<LOCAL.THISUID>.UID> != <LOCAL.THISUID>)
-		SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Seçili guild üyesi bulunamadı.
+		SYSMESSAGELOC <def.tcolor_red>,3300890
 		RETURN 1
 	ENDIF
 	// CHANGE THE GUIILD TITLE
-	SYSMESSAGELOC <def.tcolor_green>,<def.empty_cliloc2>, Ünvan: <UID.<LOCAL.THISUID>.NAME> > <LOCAL.TITLE>
+	SYSMESSAGELOC <def.tcolor_green>,3300891,<UID.<LOCAL.THISUID>.NAME>,<LOCAL.TITLE>
 	OBJ.MEMBERFROMUID.<LOCAL.THISUID>.GUILDTITLE=<LOCAL.TITLE>
 ENDIF
 
@@ -182,7 +182,7 @@ RETURN 1
 // ------------------------------------------------------
 [FUNCTION F_PROMPTHANDLER_GUILDDCLAREWAR]
 IF ( !<CTAG0.GUILD_PROMPTHANDLER_GUILDUID> || <ISEMPTY <ARGS>> )
-	SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, Guild aramaktan vazgeçtin.
+	SYSMESSAGELOC <def.tcolor_text>,3300892
 	RETURN 1
 ENDIF
 LOCAL.GUILDTEXT=<ARGS>

@@ -37,7 +37,7 @@ RETURN <LOCAL.JOB>
 	//RETURN 0
 
 IF (<TAG0.TAMETEKRAR> > 0)
-	SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Binek evcilleştirirken recall / gate / mark işlemi yapamazsınız.
+	SYSMESSAGELOC <def.tcolor_red>,3300232
 	RETURN 0
 	
 ELIF (<TAG0.NOMOVETILL>) 
@@ -57,39 +57,39 @@ ELIF (<FLAGS>&STATF_FREEZE)
 	RETURN 0
 	
 ELIF (<REGION.FLAGS>&REGION_FLAG_SAFE)
-	SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu bölgede bunu kullanamazsınız.
+	SYSMESSAGELOC <def.tcolor_red>,3300233
 	RETURN 0
 
 ELIF (<REGION.FLAGS>&REGION_ANTIMAGIC_RECALL_OUT)
-	SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu bölgeden ulaşımlar kapatılmıştır. (Anti-magic recall out)
+	SYSMESSAGELOC <def.tcolor_red>,3300234
 	RETURN 0
 
 ELIF (<REGION.FLAGS>&REGION_ANTIMAGIC_GATE)
-	SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu bölgeden ulaşımlar kapatılmıştır. (Anti-magic gate)
+	SYSMESSAGELOC <def.tcolor_red>,3300235
 	RETURN 0
 	
 ELIF (<REGION.FLAGS>&REGION_ANTIMAGIC_ALL)
-	SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu bölgeden ulaşımlar kapatılmıştır. (Anti-magic all)
+	SYSMESSAGELOC <def.tcolor_red>,3300236
 	RETURN 0
 	
 ELIF (<IsInHouse>)
-	SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu bölgede recall / gate / mark işlemi yapamazsınız.
+	SYSMESSAGELOC <def.tcolor_red>,3300237
 	RETURN 0
 
 ELIF (<IsInShip>) || (<ISINWATER>)
-	SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu bölgede recall / gate / mark işlemi yapamazsınız.
+	SYSMESSAGELOC <def.tcolor_red>,3300237
 	RETURN 0
 
 ELIF (strmatch('Logout','<REGION.NAME>')) || (strmatch(*Immortal City*,'<REGION.NAME>')) || (strmatch('Star','<REGION.NAME>')) || (strmatch(*Green Acres*,'<REGION.NAME>')) || (strmatch(*Jail*,'<REGION.NAME>'))
-	SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu bölgede recall / gate / mark işlemi yapamazsınız.
+	SYSMESSAGELOC <def.tcolor_red>,3300237
 	RETURN 0
 	
 ELIF (<ACCOUNT.PRIV>&PRIV_JAILED)
-	SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Hapis cezanız bitmedi bu yüzden recall / gate / mark işlemi yapamazsınız.
+	SYSMESSAGELOC <def.tcolor_red>,3300238
 	RETURN 0
 
 ELIF (<ISHELPSTUCK>)
-	SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Stuck halinde recall / gate / mark işlemi yapamazsınız.
+	SYSMESSAGELOC <def.tcolor_red>,3300239
 	RETURN 0
 ENDIF
 

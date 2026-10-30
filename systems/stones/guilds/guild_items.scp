@@ -24,7 +24,7 @@ HITPOINTS={128 154}
 ON=@EquipTest
 IF !(<SRC.ISGM>)
 	IF !(<SRC.GUILD>)
-		SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu eşyayı sadece guild üyeleri kullanabilir.
+		SRC.SYSMESSAGELOC <def.tcolor_red>,3300874
 		fUnequip
 		RETURN 1
 	ENDIF
@@ -48,7 +48,7 @@ MORE1={60 120}
 On=@Equip
 SRC.NOTICE 1-2 dakika içinde guildden tamamen ilişkiniz kesilecektir. DİKKAT: Bu süre içinde Guardzoneye girerseniz ayrılma süreci iptal olacaktır.
 SRC.GC 1-2 dakika içinde guild üyeliğinden ayrılmış olacağım.
-SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, 1-2 dakika içinde guildden tamamen ilişkiniz kesilecektir. DİKKAT: Bu süre içinde Guardzoneye girerseniz ayrılma süreci iptal olacaktır.
+SRC.SYSMESSAGELOC <def.tcolor_red>,3300875
 SRC.SAYUA 38,6,0,0 Guildden ayrılıyor...
 MORE1={60 120}
 TIMER 1
@@ -61,7 +61,7 @@ SRC.DIALOGCLOSEALL
 ON=@TIMER
 IF (<TOPOBJ.ISONLINE>)
 	IF (<TOPOBJ.REGION.GUARDED>)
-		TOPOBJ.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Guildden ayrılma sürecinde Guardzone içine girdiğiniz için ayrılma süreci iptal edildi.
+		TOPOBJ.SYSMESSAGELOC <def.tcolor_red>,3300876
 		//REMOVE
 		//RETURN 1
 	ENDIF
@@ -74,7 +74,7 @@ IF !(<MORE1>)
 	ENDIF
 	REMOVE
 ELSEIF (<MORE1> < 11)
-	TOPOBJ.SAYU *<DMORE1>. sn sonra guildden ayrılıyor*
+	TOPOBJ.SAYLOC 0,3301167,<DMORE1>
 ENDIF
 
 MORE1 --
@@ -102,15 +102,15 @@ COLOR=055
 ON=@DCLICK
 
 IF (<SERV.GUILDS> >= <DEF.SERVER_MAX_GUILDS>)
-	SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Şu an için sunucuda en fazla <DEF.SERVER_MAX_GUILDS> guild kurulumuna izin verilmektedir. (Kurulu guild: <SERV.GUILDS>/<DEF.SERVER_MAX_GUILDS>)
+	SYSMESSAGELOC <def.tcolor_red>,3300852,<DEF.SERVER_MAX_GUILDS>,<SERV.GUILDS>,<DEF.SERVER_MAX_GUILDS>
 	RETURN 1
 	
 ELSEIF (<SRC.GUILD>)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Sizin zaten bir guildiniz var.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300853
 	RETURN 1
 	
 ELSEIF (<SRC.HOUSES> <= 0)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bir eviniz yok.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300877
 	RETURN 1
 ENDIF
 IF (<SRC.HOUSES> > 0)
@@ -119,7 +119,7 @@ IF (<SRC.HOUSES> > 0)
 		IF (<REF1.ISVALIDE>)
 			IF ((<REF1.BASEID> == M_TOWER) || (<REF1.BASEID> == M_CASTLE) || (<REF1.BASEID> == M_SMALL_STONE_KEEP))
 				IF (<REF1.OWNER> != <SRC>)
-					SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Evlerinizden herhangi birinin sahibi değilsiniz.
+					SRC.SYSMESSAGELOC <def.tcolor_red>,3300878
 					RETURN 1
 				ENDIF	
 			ENDIF

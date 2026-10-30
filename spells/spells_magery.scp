@@ -353,19 +353,19 @@ INTERRUPT=100.0,100.0
 on=@Start
 SRC.SKILL FAIL
 SRC.ACTION -1
-src.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu büyü kapalıdır.
+src.SYSMESSAGELOC <def.tcolor_red>,3300544
 RETURN 1
 
 on=@Effect
 SRC.SKILL FAIL
 SRC.ACTION -1
-src.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu büyü kapalıdır.
+src.SYSMESSAGELOC <def.tcolor_red>,3300544
 RETURN 1
 
 on=@Success
 SRC.SKILL FAIL
 SRC.ACTION -1
-src.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu büyü kapalıdır.
+src.SYSMESSAGELOC <def.tcolor_red>,3300544
 RETURN 1
 
 [Spell 14]
@@ -388,19 +388,19 @@ INTERRUPT=100.0,100.0
 on=@Start
 SRC.SKILL FAIL
 SRC.ACTION -1
-src.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu büyü kapalıdır.
+src.SYSMESSAGELOC <def.tcolor_red>,3300544
 RETURN 1
 
 on=@Effect
 SRC.SKILL FAIL
 SRC.ACTION -1
-src.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu büyü kapalıdır.
+src.SYSMESSAGELOC <def.tcolor_red>,3300544
 RETURN 1
 
 on=@Success
 SRC.SKILL FAIL
 SRC.ACTION -1
-src.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu büyü kapalıdır.
+src.SYSMESSAGELOC <def.tcolor_red>,3300544
 RETURN 1
 
 [Spell 15]
@@ -426,7 +426,7 @@ IF (<ACT.ISVALID> && <ACT.ISCHAR>)
 	IF (<ACT.IsEquipTypeArmors>)
 		SRC.SKILL FAIL
 		SRC.ACTION -1
-		SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu büyüyü ağır zırhlılara uygulamayazsınız.
+		SRC.SYSMESSAGELOC <def.tcolor_red>,3300545
 		RETURN 1
 	ENDIF
 ENDIF
@@ -507,19 +507,19 @@ INTERRUPT=100.0,100.0
 on=@Start
 SRC.SKILL FAIL
 SRC.ACTION -1
-src.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu büyü kapalıdır.
+src.SYSMESSAGELOC <def.tcolor_red>,3300544
 RETURN 1
 
 on=@Effect
 SRC.SKILL FAIL
 SRC.ACTION -1
-src.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu büyü kapalıdır.
+src.SYSMESSAGELOC <def.tcolor_red>,3300544
 RETURN 1
 
 on=@Success
 SRC.SKILL FAIL
 SRC.ACTION -1
-src.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu büyü kapalıdır.
+src.SYSMESSAGELOC <def.tcolor_red>,3300544
 RETURN 1
 
 [Spell 20]
@@ -595,7 +595,7 @@ IF (<EVAL (<SRC.POISONING> + 100)> > <DLOCAL.PoisonMorey>)
 		LOCAL.PoisonPower <EVAL (<SRC.POISONING> + {-100 100} )>
 	ENDIF
 	LOCAL.EFFECT <DLOCAL.PoisonPower>
-	SRC.SYSMESSAGE Etki: <fval <dlocal.effect>> (Distance: <DISTANCE <SRC>>)
+	SRC.SYSMESSAGELOC 0,3300546,<fval <dlocal.effect>>,<DISTANCE <SRC>>
 ENDIF
 
 
@@ -621,7 +621,7 @@ IF (<ACT> && <ACT.ISVALID>)
 	IF (<ACT.TYPE> == T_CORPSE)
 		SRC.SKILL FAIL
 		SRC.ACTION -1
-		SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu büyüyü cesetler üzerinde kullanamazsınız.
+		SRC.SYSMESSAGELOC <def.tcolor_red>,3300547
 		RETURN 1
 	ENDIF
 ENDIF
@@ -647,7 +647,7 @@ ON=@SELECT
 IF (<SRC.REGION.FLAGS>&REGION_FLAG_SHIP)
 	SRC.SKILL FAIL
 	SRC.ACTION -1
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Burada bu büyüyü kullanamazsınız.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300548
 	RETURN 1
 ENDIF
 
@@ -655,21 +655,21 @@ ON=@SUCCESS
 IF (<SRC.DISTANCE <SRC.TARGP>> > 13)
 	SRC.SKILL FAIL
 	SRC.ACTION -1
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Hedef görüş alanınızda değil. (<SRC.DISTANCE <SRC.TARGP>>/13 mt.)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300549,<SRC.DISTANCE <SRC.TARGP>>
 	RETURN 1
 ENDIF
 	
 ON=@Start
 IF (<SRC.REGION.FLAGS>&REGION_FLAG_SHIP)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Burada bu büyüyü kullanamazsınız.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300548
 	RETURN 1
 ENDIF
 IF (<SRC.TARGP>) 
 	IF (<SRC.DISTANCE <SRC.TARGP>> > 13)
-		SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Hedef görüş alanınızda değil. (<SRC.DISTANCE <SRC.TARGP>>/13 mt.)
+		SRC.SYSMESSAGELOC <def.tcolor_red>,3300549,<SRC.DISTANCE <SRC.TARGP>>
 		RETURN 1
 	ELSEIF (<SRC.TARGP.Z> >= <EVAL <SRC.P.Z>+18>)
-		SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu kadar yükseğe teleport olamazsınız.
+		SRC.SYSMESSAGELOC <def.tcolor_red>,3300550
 		RETURN 1
 	ENDIF
 ENDIF
@@ -694,19 +694,19 @@ INTERRUPT=100.0,100.0
 on=@Start
 SRC.SKILL FAIL
 SRC.ACTION -1
-src.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu büyü kapalıdır.
+src.SYSMESSAGELOC <def.tcolor_red>,3300544
 RETURN 1
 
 on=@Effect
 SRC.SKILL FAIL
 SRC.ACTION -1
-src.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu büyü kapalıdır.
+src.SYSMESSAGELOC <def.tcolor_red>,3300544
 RETURN 1
 
 on=@Success
 SRC.SKILL FAIL
 SRC.ACTION -1
-src.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu büyü kapalıdır.
+src.SYSMESSAGELOC <def.tcolor_red>,3300544
 RETURN 1
 
 [Spell 24]
@@ -737,7 +737,7 @@ ENDFOR
 IF (<SRC.TARGP>)
 	IF (<SRC.TARGP.REGION>)
 		IF (<SRC.TARGP.REGION.flags>&REGION_FLAG_NO_PVP|REGION_FLAG_SHIP|REGION_FLAG_HOUSE|REGION_FLAG_SAFE)
-			SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu büyü buraya uygulanmaz.
+			SRC.SYSMESSAGELOC <def.tcolor_red>,3300551
 			SRC.SKILL FAIL
 			SRC.ACTION -1
 			SRC.ACTARG1=
@@ -745,7 +745,7 @@ IF (<SRC.TARGP>)
 		ENDIF
 	ENDIF
 	IF ((<SRC.TARGP.ISNEARTYPE T_DEED_UYARI_UNCLOSE <DLOCAL.KARE>>) || (<SRC.TARGP.ISNEARTYPE T_DEED_UYARI_UNCLOSE_BLOCK <DLOCAL.KARE>>) || (<SRC.TARGP.ISNEARTYPE T_DEED_UYARI_UNCLOSE_FIELD <DLOCAL.KARE>>))
-		SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu alanda <DLOCAL.KARE> kare field yasagi vardir.
+		SRC.SYSMESSAGELOC <def.tcolor_red>,3300552,<DLOCAL.KARE>
 		SRC.SKILL FAIL
 		SRC.ACTION -1
 		SRC.ACTARG1=
@@ -779,7 +779,7 @@ ENDIF
 IF (<ISPLAYER>)
 
 	IF (<MEMORYFINDTYPE.MEMORY_TOWN>) && !(<SRC.MEMORYFINDTYPE.MEMORY_TOWN>)
-		SRC.SYSMESSAGE Faction uyeleri baskasinin uyguladigi bu buyuden etkilenmez.
+		SRC.SYSMESSAGELOC 0,3300553
 		RETURN 1
 	ENDIF
 	
@@ -787,11 +787,11 @@ IF (<ISPLAYER>)
 	IF (<MEMORYFINDTYPE.MEMORY_GUILD> && <MEMORYFINDTYPE.MEMORY_GUILD.LINK.ALIGN> > 0)
 		// Src guildsiz mi?
 		IF !(<SRC.MEMORYFINDTYPE.MEMORY_GUILD>)
-			SRC.SYSMESSAGE Order/Chaos uyelerini etkilenmez.
+			SRC.SYSMESSAGELOC 0,3300554
 			RETURN 1
 		ELSE // Src guildi var, align > 0 ve farklı mı?
 			IF (<SRC.MEMORYFINDTYPE.MEMORY_GUILD.LINK.ALIGN> > 0 && <SRC.MEMORYFINDTYPE.MEMORY_GUILD.LINK.ALIGN> != <MEMORYFINDTYPE.MEMORY_GUILD.LINK.ALIGN>)
-				SRC.SYSMESSAGE Order/Chaos uyelerini etkilenmez.
+				SRC.SYSMESSAGELOC 0,3300554
 				RETURN 1
 			ENDIF
 		ENDIF
@@ -832,7 +832,7 @@ SKILLREQ=MAGERY 40.0
 INTERRUPT=100.0,100.0
 
 ON=@Success
-SRC.SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, Etki alani: <dLOCAL.AREARADIUS> mt. (kare)
+SRC.SYSMESSAGELOC <def.tcolor_text>,3300555,<dLOCAL.AREARADIUS>
 
 ON=@EFFECT
 IF (<ISITEM> || <NPC>)
@@ -840,7 +840,7 @@ IF (<ISITEM> || <NPC>)
 ENDIF
 
 IF (<IsEquipTypeArmors>)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu büyü etki alaninda agir zirhli karakter var. <NAME> bu büyüden etkilenmedi.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300556,<NAME>
 	RETURN 1
 ENDIF
 
@@ -895,7 +895,7 @@ ENDFOR
 IF (<SRC.TARGP>)
 	IF (<SRC.TARGP.REGION>)
 		IF (<SRC.TARGP.REGION.flags>&REGION_FLAG_NO_PVP|REGION_FLAG_SHIP|REGION_FLAG_HOUSE|REGION_FLAG_SAFE)
-			SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu büyü buraya uygulanmaz.
+			SRC.SYSMESSAGELOC <def.tcolor_red>,3300551
 			SRC.SKILL FAIL
 			SRC.ACTION -1
 			SRC.ACTARG1=
@@ -903,7 +903,7 @@ IF (<SRC.TARGP>)
 		ENDIF
 	ENDIF
 	IF ((<SRC.TARGP.ISNEARTYPE T_DEED_UYARI_UNCLOSE <DLOCAL.KARE>>) || (<SRC.TARGP.ISNEARTYPE T_DEED_UYARI_UNCLOSE_BLOCK <DLOCAL.KARE>>) || (<SRC.TARGP.ISNEARTYPE T_DEED_UYARI_UNCLOSE_FIELD <DLOCAL.KARE>>))
-		SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu alanda <DLOCAL.KARE> kare field yasagi vardir.
+		SRC.SYSMESSAGELOC <def.tcolor_red>,3300552,<DLOCAL.KARE>
 		SRC.SKILL FAIL
 		SRC.ACTION -1
 		SRC.ACTARG1=
@@ -932,14 +932,14 @@ on=@Effect
 IF (<MEMORYFINDTYPE.MEMORY_TOWN>) && !(<SRC.MEMORYFINDTYPE.MEMORY_TOWN>)
 	SRC.SKILL FAIL
 	SRC.ACTION -1
-	SRC.SYSMESSAGE Faction uyelerini iyilestiremezsiniz.
+	SRC.SYSMESSAGELOC 0,3300557
 	RETURN 1
 ENDIF
 // Hedefin guild memoryi var mı ve align > 0 mu?
 IF (<MEMORYFINDTYPE.MEMORY_GUILD> && <MEMORYFINDTYPE.MEMORY_GUILD.LINK.ALIGN> > 0)
 	// Src guildsiz mi?
 	IF !(<SRC.MEMORYFINDTYPE.MEMORY_GUILD>)
-		SRC.SYSMESSAGE Order/Chaos uyelerini iyilestiremezsiniz.
+		SRC.SYSMESSAGELOC 0,3300558
 		SRC.SKILL FAIL
 		SRC.ACTION -1
 		RETURN 1
@@ -947,14 +947,14 @@ IF (<MEMORYFINDTYPE.MEMORY_GUILD> && <MEMORYFINDTYPE.MEMORY_GUILD.LINK.ALIGN> > 
 		IF (<SRC.MEMORYFINDTYPE.MEMORY_GUILD.LINK.ALIGN> > 0 && <SRC.MEMORYFINDTYPE.MEMORY_GUILD.LINK.ALIGN> != <MEMORYFINDTYPE.MEMORY_GUILD.LINK.ALIGN>)
 			SRC.SKILL FAIL
 			SRC.ACTION -1
-			SRC.SYSMESSAGE Order/Chaos uyelerini iyilestiremezsiniz.
+			SRC.SYSMESSAGELOC 0,3300558
 			RETURN 1
 		ENDIF
 	ENDIF
 ENDIF
 
 IF (<FLAGS>&STATF_POISONED)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, <qval (<src.uid> == <uid>)?Zehirliyken bu büyüyü kullanamazsınız.:<name> zehir etkisindeyken bu büyüyü uygulayamazsınız.>
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300090,<qval (<src.uid> == <uid>)?Zehirliyken bu büyüyü kullanamazsınız.:<name> zehir etkisindeyken bu büyüyü uygulayamazsınız.>
 	SRC.EFFECT 3,0374A,1,15,1
 	SRC.SOUND SND_SPELL_POISON
 	RETURN 1
@@ -1004,19 +1004,19 @@ INTERRUPT=100.0,100.0
 on=@Start
 SRC.SKILL FAIL
 SRC.ACTION -1
-src.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu büyü kapalıdır.
+src.SYSMESSAGELOC <def.tcolor_red>,3300544
 RETURN 1
 
 on=@Effect
 SRC.SKILL FAIL
 SRC.ACTION -1
-src.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu büyü kapalıdır.
+src.SYSMESSAGELOC <def.tcolor_red>,3300544
 RETURN 1
 
 on=@Success
 SRC.SKILL FAIL
 SRC.ACTION -1
-src.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu büyü kapalıdır.
+src.SYSMESSAGELOC <def.tcolor_red>,3300544
 RETURN 1
 
 
@@ -1061,25 +1061,25 @@ IF (<ACT>)
 				LOCAL.SHIP_POS = <REF99.P.X>,<eval <REF99.P.Y>-1>,<eval <REF99.P.Z>+5>,<REF99.P.M>
 				ACT.MOREP = <LOCAL.SHIP_POS>
 			ELSE
-				SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Gemi tiller bulunamadı!
+				SRC.SYSMESSAGELOC <def.tcolor_red>,3300559
 				SRC.SKILL FAIL
 				RETURN 1	
 			ENDIF
 		ELSE
-			SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Gemi bulunamadı!
+			SRC.SYSMESSAGELOC <def.tcolor_red>,3300560
 			SRC.SKILL FAIL
 			RETURN 1		
 		ENDIF
 		
 	ELSEIF (<ACT.TYPE> == T_RUNE)
 		IF (<ACT.MOREX> <= 0)
-			SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu rune boş.
+			SRC.SYSMESSAGELOC <def.tcolor_red>,3300561
 			SRC.SKILL FAIL
 			RETURN 1
 		ENDIF
 		REF100=<ACT.LINK>
 	ELSE
-		SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bununla recall olamazsınız. (<act.type>)
+		SRC.SYSMESSAGELOC <def.tcolor_red>,3300562,<act.type>
 		SRC.SKILL FAIL
 		RETURN 1
 	ENDIF
@@ -1096,73 +1096,73 @@ NEW.FIX
 NEW.Func_Mark_Yasak_Item_Controller
 
 IF (<EVAL <SRC.P>> == <EVAL <ACT.MOREP>>)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Aynı noktaya recall olamazsınız. Şu an recall olmaya çalıştığınız noktada duruyorsunuz.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300563
 	REF1.REMOVE // INVISIBLE MAN REMOVE
 	SRC.ACTION -1
 	RETURN 1
 	
 ELSEIF (<REF1.dTAG0.MARK_YASAK_KARE>)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu alanda <REF1.dTAG0.MARK_YASAK_KARE> kare mark yasağı bulunmaktadır.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300564,<REF1.dTAG0.MARK_YASAK_KARE>
 	REF1.REMOVE // INVISIBLE MAN REMOVE
 	SRC.ACTION -1
 	RETURN 1
 	
 ELSEIF !(<REF1.IsCanMoveFullDir>)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu bölgede hareket edemezsiniz.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300565
 	REF1.REMOVE // INVISIBLE MAN REMOVE
 	RETURN 1	
 	
 ELSEIF (<REF1.ISNEARTYPE T_LAVA 2>)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu bölgeye ulaşımlar kapatılmıştır. (Lava yakın)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300566
 	REF1.REMOVE // INVISIBLE MAN REMOVE
 	RETURN 1
 	
 ELSEIF (<REF1.IsOnSea>)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu bölgeye ulaşımlar kapatılmıştır. (Suya yakın)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300567
 	RETURN 1
 	
 ELSEIF ((strmatch('Star','<REF1.REGION.NAME>')) || (strmatch(*Green Acres*,'<REF1.REGION.NAME>')) || (strmatch(*Jail*,'<REF1.REGION.NAME>')))
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu bölgeye ulaşımlar kapatılmıştır. (Güvenli & yasaklı veya yetkili bölgesi)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300568
 	REF1.REMOVE // INVISIBLE MAN REMOVE
 	RETURN 1
 	
 ELSEIF (<REF1.REGION.FLAGS>&REGION_ANTIMAGIC_RECALL_OUT)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu bölgeye ulaşımlar kapatılmıştır. (Anti-magic recall out)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300569
 	REF1.REMOVE // INVISIBLE MAN REMOVE
 	RETURN 1	
 	
 ELSEIF (<REF1.REGION.FLAGS>&REGION_ANTIMAGIC_RECALL_IN)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu bölgeye ulaşımlar kapatılmıştır. (Anti-magic recall in)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300570
 	REF1.REMOVE // INVISIBLE MAN REMOVE
 	RETURN 1	
 	
 ELSEIF (<REF1.REGION.FLAGS>&region_antimagic_gate)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu bölgeye ulaşımlar kapatılmıştır. (Anti-magic gate)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300571
 	REF1.REMOVE // INVISIBLE MAN REMOVE
 	RETURN 1
 	
 ELSEIF (<REF1.REGION.FLAGS>&REGION_ANTIMAGIC_ALL)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu bölgeye ulaşımlar kapatılmıştır. (Anti-magic all)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300572
 	REF1.REMOVE // INVISIBLE MAN REMOVE
 	RETURN 1	
 	
 ELSEIF (<REF1.REGION.FLAGS>&REGION_FLAG_SAFE)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu bölgeye ulaşımlar kapatılmıştır. (Safe)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300573
 	REF1.REMOVE // INVISIBLE MAN REMOVE
 	RETURN 1
 	
 ELSEIF (<REF1.REGION.FLAGS>&REGION_FLAG_NO_PVP)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu bölgeye ulaşımlar kapatılmıştır. (Nopvp)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300574
 	REF1.REMOVE // INVISIBLE MAN REMOVE
 	RETURN 1
 	
 ELSEIF (<REF1.IsInShip>)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu bölgeye ulaşımlar kapatılmıştır. (Gemi)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300575
 	REF1.REMOVE // INVISIBLE MAN REMOVE
 	RETURN 1
 	
 ELSEIF (<REF1.IsInHouse>)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu bölgeye ulaşımlar kapatılmıştır. (Ev)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300576
 	REF1.REMOVE // INVISIBLE MAN REMOVE
 	RETURN 1
 ENDIF
@@ -1203,13 +1203,13 @@ IF (<SRC.TARGP> && <SRC.TARGP.REGION>)
 	IF (<REF1>) && (<REF1.TYPE> == T_MULTI) || (<REF1.TYPE> == T_SHIP)
 		SRC.SKILL FAIL
 		SRC.ACTION -1
-		SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Ev veya gemilere bu büyüyü uygulayamazsınız.
+		SRC.SYSMESSAGELOC <def.tcolor_red>,3300577
 		RETURN 1
 	ENDIF
 	IF (<SRC.TARGP.STATICS.0.TYPE> == T_WATER) || (<SRC.TARGP.STATICS.0.TYPE> == T_LAVA) || (strmatch(*t_multi*,'<SRC.TARGP.REGION.TYPE>')) || (strmatch(*t_ship*,'<SRC.TARGP.REGION.TYPE>'))
 		SRC.SKILL FAIL
 		SRC.ACTION -1
-		SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Buraya bu büyüyü uygulayamazsınız.
+		SRC.SYSMESSAGELOC <def.tcolor_red>,3300578
 		RETURN 1
 	ENDIF
 ENDIF
@@ -1378,7 +1378,7 @@ ENDFOR
 IF (<SRC.TARGP>)
 	IF (<SRC.TARGP.REGION>)
 		IF (<SRC.TARGP.REGION.flags>&REGION_FLAG_NO_PVP|REGION_FLAG_SHIP|REGION_FLAG_HOUSE|REGION_FLAG_SAFE)
-			SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu büyü buraya uygulanmaz.
+			SRC.SYSMESSAGELOC <def.tcolor_red>,3300551
 			SRC.SKILL FAIL
 			SRC.ACTION -1
 			SRC.ACTARG1=
@@ -1386,7 +1386,7 @@ IF (<SRC.TARGP>)
 		ENDIF
 	ENDIF
 	IF ((<SRC.TARGP.ISNEARTYPE T_DEED_UYARI_UNCLOSE <DLOCAL.KARE>>) || (<SRC.TARGP.ISNEARTYPE T_DEED_UYARI_UNCLOSE_BLOCK <DLOCAL.KARE>>) || (<SRC.TARGP.ISNEARTYPE T_DEED_UYARI_UNCLOSE_FIELD <DLOCAL.KARE>>))
-		SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu alanda <DLOCAL.KARE> kare field yasagi vardir.
+		SRC.SYSMESSAGELOC <def.tcolor_red>,3300552,<DLOCAL.KARE>
 		SRC.SKILL FAIL
 		SRC.ACTION -1
 		SRC.ACTARG1=
@@ -1420,7 +1420,7 @@ FORITEMS <EVAL <SERV.MapViewSize>*10>
 		IF (<SRC.DISTANCE <UID>> <= <DTAG0.KARE>)
 			SRC.SKILL FAIL
 			SRC.ACTION -1
-			SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, <DTAG0.KARE> kare içerisinde bu büyüyü kullanamazsınız.
+			SRC.SYSMESSAGELOC <def.tcolor_red>,3300579,<DTAG0.KARE>
 			RETURN 1
 		ENDIF
 	ENDIF
@@ -1430,13 +1430,13 @@ REF1=<SRC.TARGP.REGION.UID>
 	IF (<REF1>) && (<REF1.TYPE> == T_MULTI) || (<REF1.TYPE> == T_SHIP)
 		SRC.SKILL FAIL
 		SRC.ACTION -1
-		SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Ev veya gemilere bu büyüyü uygulayamazsınız.
+		SRC.SYSMESSAGELOC <def.tcolor_red>,3300577
 		RETURN 1
 	ENDIF
 	IF (<SRC.TARGP.STATICS.0.TYPE> == T_WATER) || (<SRC.TARGP.STATICS.0.TYPE> == T_LAVA) || (strmatch(*t_multi*,'<SRC.TARGP.REGION.TYPE>')) || (strmatch(*t_ship*,'<SRC.TARGP.REGION.TYPE>'))
 		SRC.SKILL FAIL
 		SRC.ACTION -1
-		SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Buraya bu büyüyü uygulayamazsınız.
+		SRC.SYSMESSAGELOC <def.tcolor_red>,3300578
 		RETURN 1
 	ENDIF
 ENDIF
@@ -1463,7 +1463,7 @@ ON=@EFFECT
 IF (<MEMORYFINDTYPE.MEMORY_TOWN>) && !(<SRC.MEMORYFINDTYPE.MEMORY_TOWN>)
 	SRC.SKILL FAIL
 	SRC.ACTION -1
-	SRC.SYSMESSAGE Faction uyelerini iyilestiremezsiniz.
+	SRC.SYSMESSAGELOC 0,3300557
 	RETURN 1
 ENDIF
 
@@ -1473,13 +1473,13 @@ IF (<MEMORYFINDTYPE.MEMORY_GUILD> && <MEMORYFINDTYPE.MEMORY_GUILD.LINK.ALIGN> > 
 	IF !(<SRC.MEMORYFINDTYPE.MEMORY_GUILD>)
 		SRC.SKILL FAIL
 		SRC.ACTION -1
-		SRC.SYSMESSAGE Order/Chaos uyelerini iyilestiremezsiniz.
+		SRC.SYSMESSAGELOC 0,3300558
 		RETURN 1
 	ELSE // Src guildi var, align > 0 ve farklı mı?
 		IF (<SRC.MEMORYFINDTYPE.MEMORY_GUILD.LINK.ALIGN> > 0 && <SRC.MEMORYFINDTYPE.MEMORY_GUILD.LINK.ALIGN> != <MEMORYFINDTYPE.MEMORY_GUILD.LINK.ALIGN>)
 			SRC.SKILL FAIL
 			SRC.ACTION -1
-			SRC.SYSMESSAGE Order/Chaos uyelerini iyilestiremezsiniz.
+			SRC.SYSMESSAGELOC 0,3300558
 			RETURN 1
 		ENDIF
 	ENDIF
@@ -1567,14 +1567,14 @@ INTERRUPT=100.0,100.0
 ON=@START
 // Char check
 IF !(<SRC.IsCastUseSpell 45>)
-    SRC.SYSMESSAGE Mark buyusunu su an uygulayamazsiniz.
+    SRC.SYSMESSAGELOC 0,3300580
 	RETURN 1
 ENDIF
 
 // Check rune
 IF (<ACT>)
 	IF !(<ACT.TYPE> == t_rune)
-		SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu bir rune marker değil.
+		SRC.SYSMESSAGELOC <def.tcolor_red>,3300581
 		RETURN 1
 	ENDIF
 ENDIF
@@ -1585,11 +1585,11 @@ FORITEMS <EVAL <SERV.MapViewSize>*10>
 	ENDIF
 ENDFOR
 IF (<SRC.ISNEARTYPE T_DEED_UYARI_MARK <DLOCAL.KARE>>)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu bölge işaretlenemez. (<DLOCAL.KARE> kare mark yasağı)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300582,<DLOCAL.KARE>
 	RETURN 1
 	
 ELSEIF (<SERV.MAP(<SRC.P.X>,<SRC.P.Y>,<SRC.P.Z>,<SRC.P.M>).TERRAIN> == 0244)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu bölge işaretlenemez.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300583
 	RETURN 1
 ENDIF
 
@@ -1598,7 +1598,7 @@ ON=@EFFECT
 // Check rune
 IF (<SRC.ACT>)
 	IF !(<SRC.ACT.TYPE> == t_rune)
-		SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu bir rune marker değil.
+		SRC.SYSMESSAGELOC <def.tcolor_red>,3300581
 		RETURN 1
 	ENDIF
 ENDIF
@@ -1615,15 +1615,15 @@ FORITEMS <EVAL <SERV.MapViewSize>*10>
 ENDFOR
 
 IF (<SRC.ISNEARTYPE T_DEED_UYARI_MARK <DLOCAL.KARE>>)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu bölge işaretlenemez. (<DLOCAL.KARE> kare mark yasağı)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300582,<DLOCAL.KARE>
 	RETURN 1
 	
 ELSEIF (<SERV.MAP(<SRC.P.X>,<SRC.P.Y>,<SRC.P.Z>,<SRC.P.M>).TERRAIN> == 0244)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu bölge işaretlenemez.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300583
 	RETURN 1
 ENDIF
 
-SRC.SYSMESSAGELOC <def.tcolor_green>, <def.empty_cliloc2>,<SRC.REGION.NAME> (<SRC.ACT.MOREP>) basariyla isaretlendi.
+SRC.SYSMESSAGELOC <def.tcolor_green>,3300584,<SRC.REGION.NAME>,<SRC.ACT.MOREP>
 
 
 [Spell 46]
@@ -1703,7 +1703,7 @@ ENDFOR
 IF (<SRC.TARGP>)
 	IF (<SRC.TARGP.REGION>)
 		IF (<SRC.TARGP.REGION.flags>&REGION_FLAG_NO_PVP|REGION_FLAG_SHIP|REGION_FLAG_HOUSE|REGION_FLAG_SAFE)
-			SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu büyü buraya uygulanmaz.
+			SRC.SYSMESSAGELOC <def.tcolor_red>,3300551
 			SRC.SKILL FAIL
 			SRC.ACTION -1
 			SRC.ACTARG1=
@@ -1711,7 +1711,7 @@ IF (<SRC.TARGP>)
 		ENDIF
 	ENDIF
 	IF ((<SRC.TARGP.ISNEARTYPE T_DEED_UYARI_UNCLOSE <DLOCAL.KARE>>) || (<SRC.TARGP.ISNEARTYPE T_DEED_UYARI_UNCLOSE_BLOCK <DLOCAL.KARE>>) || (<SRC.TARGP.ISNEARTYPE T_DEED_UYARI_UNCLOSE_FIELD <DLOCAL.KARE>>))
-		SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu alanda <DLOCAL.KARE> kare field yasagi vardir.
+		SRC.SYSMESSAGELOC <def.tcolor_red>,3300552,<DLOCAL.KARE>
 		SRC.SKILL FAIL
 		SRC.ACTION -1
 		SRC.ACTARG1=
@@ -1780,7 +1780,7 @@ ENDFOR
 IF (<SRC.TARGP>)
 	IF (<SRC.TARGP.REGION>)
 		IF (<SRC.TARGP.REGION.flags>&REGION_FLAG_NO_PVP|REGION_FLAG_SHIP|REGION_FLAG_HOUSE|REGION_FLAG_SAFE)
-			SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu büyü buraya uygulanmaz.
+			SRC.SYSMESSAGELOC <def.tcolor_red>,3300551
 			SRC.SKILL FAIL
 			SRC.ACTION -1
 			SRC.ACTARG1=
@@ -1788,7 +1788,7 @@ IF (<SRC.TARGP>)
 		ENDIF
 	ENDIF
 	IF ((<SRC.TARGP.ISNEARTYPE T_DEED_UYARI_UNCLOSE <DLOCAL.KARE>>) || (<SRC.TARGP.ISNEARTYPE T_DEED_UYARI_UNCLOSE_BLOCK <DLOCAL.KARE>>) || (<SRC.TARGP.ISNEARTYPE T_DEED_UYARI_UNCLOSE_FIELD <DLOCAL.KARE>>))
-		SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu alanda <DLOCAL.KARE> kare field yasagi vardir.
+		SRC.SYSMESSAGELOC <def.tcolor_red>,3300552,<DLOCAL.KARE>
 		SRC.SKILL FAIL
 		SRC.ACTION -1
 		SRC.ACTARG1=
@@ -1840,13 +1840,13 @@ ENDIF
 REF100=<ACT.LINK>
 IF (<ACT.TYPE> == T_RUNE)
 	IF (<ACT.MOREX> <= 0)
-		SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu rune boş.
+		SRC.SYSMESSAGELOC <def.tcolor_red>,3300561
 		SRC.SKILL FAIL
 		RETURN 1
 	ENDIF
 	REF100=<ACT.LINK>
 ELSE
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bununla gate açamazsınız.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300585
 	SRC.SKILL FAIL
 	RETURN 1
 ENDIF
@@ -1862,73 +1862,73 @@ NEW.FIX
 NEW.Func_Mark_Yasak_Item_Controller
 
 IF (<EVAL <SRC.P>> == <EVAL <ACT.MOREP>>)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Aynı noktaya gate açamazsınız. Şu an gate açmaya çalıştığınız noktada duruyorsunuz.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300586
 	REF1.REMOVE // INVISIBLE MAN REMOVE
 	SRC.ACTION -1
 	RETURN 1
 	
 ELSEIF (<REF1.dTAG0.MARK_YASAK_KARE>)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu alanda <REF1.dTAG0.MARK_YASAK_KARE> kare mark yasağı bulunmaktadır.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300564,<REF1.dTAG0.MARK_YASAK_KARE>
 	REF1.REMOVE // INVISIBLE MAN REMOVE
 	SRC.ACTION -1
 	RETURN 1
 	
 ELSEIF !(<REF1.IsCanMoveFullDir>)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu bölgede hareket edemezsiniz.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300565
 	RETURN 1	
 	
 ELSEIF (<REF1.ISNEARTYPE T_LAVA 2>)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu bölgeye ulaşımlar kapatılmıştır. (Lava yakın)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300566
 	REF1.REMOVE // INVISIBLE MAN REMOVE
 	RETURN 1
 	
 ELSEIF (<REF1.IsOnSea>)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu bölgeye ulaşımlar kapatılmıştır. (Suya yakın)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300567
 	REF1.REMOVE // INVISIBLE MAN REMOVE
 	RETURN 1
 	
 ELSEIF ((strmatch('Star','<REF1.REGION.NAME>')) || (strmatch(*Green Acres*,'<REF1.REGION.NAME>')) || (strmatch(*Jail*,'<REF1.REGION.NAME>')))
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu bölgeye ulaşımlar kapatılmıştır. (Güvenli & yasaklı veya yetkili bölgesi)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300568
 	REF1.REMOVE // INVISIBLE MAN REMOVE
 	RETURN 1
 	
 ELSEIF (<REF1.REGION.FLAGS>&REGION_ANTIMAGIC_RECALL_OUT)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu bölgeye ulaşımlar kapatılmıştır. (Anti-magic recall out)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300569
 	REF1.REMOVE // INVISIBLE MAN REMOVE
 	RETURN 1	
 	
 ELSEIF (<REF1.REGION.FLAGS>&REGION_ANTIMAGIC_RECALL_IN)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu bölgeye ulaşımlar kapatılmıştır. (Anti-magic recall in)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300570
 	REF1.REMOVE // INVISIBLE MAN REMOVE
 	RETURN 1	
 	
 ELSEIF (<REF1.REGION.FLAGS>&region_antimagic_gate)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu bölgeye ulaşımlar kapatılmıştır. (Anti-magic gate)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300571
 	REF1.REMOVE // INVISIBLE MAN REMOVE
 	RETURN 1
 	
 ELSEIF (<REF1.REGION.FLAGS>&REGION_ANTIMAGIC_ALL)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu bölgeye ulaşımlar kapatılmıştır. (Anti-magic all)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300572
 	REF1.REMOVE // INVISIBLE MAN REMOVE
 	RETURN 1	
 	
 ELSEIF (<REF1.REGION.FLAGS>&REGION_FLAG_SAFE)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu bölgeye ulaşımlar kapatılmıştır. (Safe)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300573
 	REF1.REMOVE // INVISIBLE MAN REMOVE
 	RETURN 1
 	
 ELSEIF (<REF1.REGION.FLAGS>&REGION_FLAG_NO_PVP)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu bölgeye ulaşımlar kapatılmıştır. (Nopvp)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300574
 	REF1.REMOVE // INVISIBLE MAN REMOVE
 	RETURN 1
 	
 ELSEIF (<REF1.IsInShip>)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu bölgeye ulaşımlar kapatılmıştır. (Gemi)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300575
 	REF1.REMOVE // INVISIBLE MAN REMOVE
 	RETURN 1
 	
 ELSEIF (<REF1.IsInHouse>)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu bölgeye ulaşımlar kapatılmıştır. (Ev)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300576
 	REF1.REMOVE // INVISIBLE MAN REMOVE
 	RETURN 1
 ENDIF
@@ -1995,15 +1995,15 @@ SKILLREQ=MAGERY 70.0
 INTERRUPT=100.0,100.0
 
 on=@Start
-src.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu büyü kapalıdır.
+src.SYSMESSAGELOC <def.tcolor_red>,3300544
 RETURN 1
 
 on=@Effect
-src.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu büyü kapalıdır.
+src.SYSMESSAGELOC <def.tcolor_red>,3300544
 RETURN 1
 
 on=@Success
-src.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu büyü kapalıdır.
+src.SYSMESSAGELOC <def.tcolor_red>,3300544
 RETURN 1
 
 [Spell 54]
@@ -2143,7 +2143,7 @@ INTERRUPT=100.0,100.0
 
 ON=@EFFECT
 IF (<MEMORYFINDTYPE.MEMORY_TOWN>) && !(<SRC.MEMORYFINDTYPE.MEMORY_TOWN>)
-	SRC.SYSMESSAGE Faction uyelerini iyilestiremezsiniz.
+	SRC.SYSMESSAGELOC 0,3300557
 	SRC.SKILL FAIL
 	SRC.ACTION -1
 	RETURN 1
@@ -2153,15 +2153,15 @@ ENDIF
 IF (<MEMORYFINDTYPE.MEMORY_GUILD> && <MEMORYFINDTYPE.MEMORY_GUILD.LINK.ALIGN> > 0)
 	// Src guildsiz mi?
 	IF !(<SRC.MEMORYFINDTYPE.MEMORY_GUILD>)
-		SRC.SYSMESSAGE Order/Chaos uyelerini iyilestiremezsiniz.
-		ACT.SYSMESSAGE Faction uyesi oldugunuz icin <SRC.NAME> sizi hayata donduremedi.
+		SRC.SYSMESSAGELOC 0,3300558
+		ACT.SYSMESSAGELOC 0,3300587,<SRC.NAME>
 		SRC.SKILL FAIL
 		SRC.ACTION -1
 		RETURN 1
 	ELSE // Src guildi var, align > 0 ve farklı mı?
 		IF (<SRC.MEMORYFINDTYPE.MEMORY_GUILD.LINK.ALIGN> > 0 && <SRC.MEMORYFINDTYPE.MEMORY_GUILD.LINK.ALIGN> != <MEMORYFINDTYPE.MEMORY_GUILD.LINK.ALIGN>)
-			SRC.SYSMESSAGE Order/Chaos uyelerini iyilestiremezsiniz.
-			ACT.SYSMESSAGE Order/Chaos uyesi oldugunuz icin <SRC.NAME> sizi hayata donduremedi.
+			SRC.SYSMESSAGELOC 0,3300558
+			ACT.SYSMESSAGELOC 0,3300588,<SRC.NAME>
 			SRC.SKILL FAIL
 			SRC.ACTION -1
 			RETURN 1
@@ -2169,8 +2169,8 @@ IF (<MEMORYFINDTYPE.MEMORY_GUILD> && <MEMORYFINDTYPE.MEMORY_GUILD.LINK.ALIGN> > 
 	ENDIF
 ENDIF
 IF (<ISNEARTYPE T_DOOR 1>) || (<ISNEARTYPE T_DOOR_LOCKED 1>) || (<ISNEARTYPE T_DOOR_OPEN 1>)
-	SRC.SYSMESSAGELOC <def.tcolor_red>, <def.empty_cliloc2>, Kapıların yakınında hayata döndüremezsiniz.
-	SYSMESSAGELOC <def.tcolor_red>, <def.empty_cliloc2>, <SRC.NAME> sizi hayata döndürmeye çalıştı fakat kapıya çok yakın olduğun için başarısı oldu.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300589
+	SYSMESSAGELOC <def.tcolor_red>,3300590,<SRC.NAME>
 	SRC.ACTION -1
 	SRC.ACTARG1=
 	SRC.SKILL FAIL
@@ -2180,15 +2180,15 @@ ENDIF
 
 ON=@START
 IF (<ACT.ISNEARTYPE T_DOOR 1>) || (<ACT.ISNEARTYPE T_DOOR_LOCKED 1>) || (<ACT.ISNEARTYPE T_DOOR_OPEN 1>)
-	SRC.SYSMESSAGELOC <def.tcolor_red>, <def.empty_cliloc2>,Kapıların yakınında hayata döndüremezsiniz.
-	ACT.SYSMESSAGELOC <def.tcolor_red>, <def.empty_cliloc2>,<SRC.NAME> sizi hayata döndürmeye çalıştı fakat kapıya çok yakın olduğun için başarısı oldu.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300589
+	ACT.SYSMESSAGELOC <def.tcolor_red>,3300590,<SRC.NAME>
 	SRC.ACTION -1
 	SRC.ACTARG1=
 	// SRC.ACTPRV= // BU NIYE VAR AQ?
 	SRC.SKILL FAIL
 	RETURN 1
 ELSEIF (<ACT.FINDID.I_MEMORY_HELPPAGE_STUCK>)
-	SRC.SYSMESSAGELOC <def.tcolor_red>, <def.empty_cliloc2>, Stuck kullanan birisini canlandiramazsiniz.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300591
 	SRC.ACTION -1
 	SRC.ACTARG1=
 	// SRC.ACTPRV= // BU NIYE VAR AQ?

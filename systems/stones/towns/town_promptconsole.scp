@@ -118,7 +118,7 @@ elif ( <obj.memberfromuid.<local.thisuid>.uid> != <local.thisuid> )
 elif ( strregex([^A-Za-z0-9\s]+,<local.title>) == 1 )
 else
   // Change the title
-  SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, Title for <uid.<local.thisuid>.name> changed to: <local.title>
+  SYSMESSAGELOC <def.tcolor_text>,3300968,<uid.<local.thisuid>.name>,<local.title>
   try obj.memberfromuid.<local.thisuid>.guildtitle=<local.title>
 endif
 

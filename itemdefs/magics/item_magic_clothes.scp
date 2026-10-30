@@ -29,7 +29,7 @@ HITPOINTS={100 250}
 ON=@Equip
 IF !(<SRC.ISGM>)	
 	IF ((<SRC.MAGERY> < 800) || (<SRC.EVALUATINGINTEL> < 800))
-			SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu eşyayı kullanabilecek yeteneğe sahip değilsiniz. (80.0 Magery - Evaluating Int)
+			SRC.SYSMESSAGELOC <def.tcolor_red>,3300471
 			fUnequip
 		RETURN 1
 	ENDIF
@@ -62,7 +62,7 @@ HITPOINTS={100 250}
 ON=@Equip
 IF !(<SRC.ISGM>)	
 	IF ((<SRC.MAGERY> < 850) || (<SRC.EVALUATINGINTEL> < 850))
-			SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu eşyayı kullanabilecek yeteneğe sahip değilsiniz. (85.0 Magery - Evaluating Int)
+			SRC.SYSMESSAGELOC <def.tcolor_red>,3300472
 			fUnequip
 		RETURN 1
 	ENDIF
@@ -97,7 +97,7 @@ HITPOINTS={100 250}
 ON=@Equip
 IF !(<SRC.ISGM>)	
 	IF ((<SRC.MAGERY> < 900) || (<SRC.EVALUATINGINTEL> < 900))
-			SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu eşyayı kullanabilecek yeteneğe sahip değilsiniz. (90.0 Magery - Evaluating Int)
+			SRC.SYSMESSAGELOC <def.tcolor_red>,3300473
 			fUnequip
 		RETURN 1
 	ENDIF
@@ -132,7 +132,7 @@ HITPOINTS={100 250}
 ON=@Equip
 IF !(<SRC.ISGM>)	
 	IF ((<SRC.MAGERY> < 950) || (<SRC.EVALUATINGINTEL> < 95.0))
-			SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu eşyayı kullanabilecek yeteneğe sahip değilsiniz. (95.0 Magery - Evaluating Int)
+			SRC.SYSMESSAGELOC <def.tcolor_red>,3300474
 			fUnequip
 		RETURN 1
 	ENDIF
@@ -165,7 +165,7 @@ HITPOINTS={100 250}
 ON=@Equip
 IF !(<SRC.ISGM>)	
 	IF ((<SRC.MAGERY> < 98.9) || (<SRC.MEDITATION> < 98.9) || (<SRC.EVALUATINGINTEL> < 98.9))
-			SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu eşyayı kullanabilecek yeteneğe sahip değilsiniz. (99.0 Magery - Evaluating Int )
+			SRC.SYSMESSAGELOC <def.tcolor_red>,3300475
 			fUnequip
 		RETURN 1
 	ENDIF

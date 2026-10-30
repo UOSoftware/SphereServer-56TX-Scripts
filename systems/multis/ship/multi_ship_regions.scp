@@ -10,7 +10,7 @@ IF (<SRC.ISPLAYER>)
 	SRC.DIALOGCLOSEALL
 	
 	IF (<SRC.ACTION> == Magery) && ((<SRC.ACTARG1> == 32) || (<SRC.ACTARG1> == 52))
-		SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Gemi içinde recall veya gate travel yapamazsiniz.
+		SRC.SYSMESSAGELOC <def.tcolor_red>,3300829
 		SRC.SKILL FAIL
 	ENDIF
 	
@@ -24,7 +24,7 @@ IF (<SRC.ISPLAYER>)
 	IF (<REF1.ISVALIDE>)
 		IF ((<REF1.ISOWNER <SRC>>) || (<REF1.GETCOOWNERPOS <SRC>> >= 0) || (<REF1.GETFRIENDPOS <SRC>> >= 0) || (<SRC.ISGM>))
 			// gemiye uyeleri girerse	
-			SRC.SYSMESSAGELOC <def.tcolor_green>,<def.empty_cliloc2>, Geminize hosgeldiniz.
+			SRC.SYSMESSAGELOC <def.tcolor_green>,3300830
 		ELSE
 			REF1.TAG0.VISITS ++
 		ENDIF
@@ -53,7 +53,7 @@ IF (<SRC.ISPLAYER>)
 	IF (<SRC.ISDSPEECH.<DEF.ss_default_player_speech>>)
 		SRC.DSPEECH -<DEF.ss_default_player_speech>
 	ENDIF
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>,Gemiden ayrildiniz.  (<REF1.name>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300831,<REF1.name>
 	SRC.DIALOGCLOSEALL
 ENDIF
 

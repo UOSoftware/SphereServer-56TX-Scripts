@@ -31,27 +31,27 @@ IF (<LINK.ISVALIDE> && <LINK.ISMULTI>)
 	
 		IF (<SRC.TARG.IsDoor>)
 			IF (<LINK> != <REF1>)
-				SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu anahtar bu eve ait değil.
+				SRC.SYSMESSAGELOC <def.tcolor_red>,3300754
 				RETURN 1
 			ELSEIF (<LINK> != <SRC.TARG.LINK>)
-				SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu kapı bu eve ait değil.
+				SRC.SYSMESSAGELOC <def.tcolor_red>,3300755
 				RETURN 1
 			ENDIF
 			IF (<SRC.TARG.TYPE> == T_DOOR)
 				IF (<REF1.F_HOUSE_VENDOR_COUNT>)
-					SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Vendor kurulmuş evlerin kapıları kilitlenemez.
+					SRC.SYSMESSAGELOC <def.tcolor_red>,3300756
 					SRC.TARG.TYPE=T_DOOR
 					RETURN 1
 				ENDIF
 				SRC.TARG.TYPE T_DOOR_LOCKED
-				SRC.SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, Kapı kilitlendi.
+				SRC.SYSMESSAGELOC <def.tcolor_text>,3300757
 				SRC.TARG.TIMER=1
 				// SRC.TARG.MORE1=<SRC.TARG.LINK>
 				// SRC.TARG.MORE2=
 				// SRC.TARG.USEDOOR
 			ELSE
 				SRC.TARG.TYPE T_DOOR
-				SRC.SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, Kapı kilidi açıldı.
+				SRC.SYSMESSAGELOC <def.tcolor_text>,3300758
 				SRC.TARG.TIMER=1
 				// SRC.TARG.USEDOOR
 				// SRC.TARG.MORE1=<SRC.TARG.LINK>
@@ -88,7 +88,7 @@ IF (!<SRC.ISGM>)
 ENDIF
 
 ON=@CLICK
-MESSAGE @38,,1,1 (sabit)
+MESSAGELOC 38,3301144
 
 ON=@TIMER
 IF (<BASEID> != I_TRASHCAN)
@@ -128,7 +128,7 @@ IF (<LINK.ISVALIDE>) && (<LINK.ISMULTI>)
 	ENDIF
 ENDIF
 IF (<dTAG0.ACCESS>)
-	MESSAGE @,,1 [Sınırlı Erişim]
+	MESSAGELOC 0,3301145
 ENDIF
 
 // IF (<TAG0.ACCESS>==house_access_none)
@@ -185,7 +185,7 @@ ENDIF
 [TYPEDEF ei_house_container]
 
 ON=@CLICK
-MESSAGE @38,,1,1 (container)
+MESSAGELOC 38,3301146
 
 
 
@@ -196,7 +196,7 @@ MESSAGE @38,,1,1 (container)
 [TYPEDEF ei_house_component]
 
 ON=@CLICK
-MESSAGE @38,,1,1 (component)
+MESSAGELOC 38,3301147
 
 
 
@@ -237,7 +237,7 @@ IF (<REF1.ISVALIDE>)
 		DIALOG d_house_access
 	ENDIF
 ENDIF
-message @044,,1,1 (güvenli)
+messageloc 044,3301148
 
 
 
@@ -251,7 +251,7 @@ RETURN 1
 
 
 ON=@CLICK
-MESSAGE @38,,1,1 (teleporter)
+MESSAGELOC 38,3301149
 
 
 
@@ -262,7 +262,7 @@ MESSAGE @38,,1,1 (teleporter)
 ON=@CLICK
 ATTR |=ATTR_NEWBIE
 MESSAGE [<SERV.ITEMDEF.<MORE1>.NAME>]
-MESSAGE @,,1 Ev Kontratı
+MESSAGELOC 0,3301150
 RETURN 1
 
 
@@ -274,28 +274,28 @@ IF !(<SRC.ISINPACK <UID>>)
 	SRC.SYSMESSAGELOC <def.tcolor_red>,600036,<NAME>	// Bunu (~1_val~) kullanabilmek için çantanızda veya üzerinizde olmalıdır.
 	RETURN 1
 ELSEIF (<SRC.HITS> < <DLOCAL.HITS>)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Hitsiniz %50 altinda olduğu için bunu kullanamazsınız.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300759
 	RETURN 1
 ELSEIF (<SRC.ISPOISONED>)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Zehirliyken bunu kullanamazsınız.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300342
 	RETURN 1
 ELSEIF (<SRC.FLAGS>&STATF_WAR)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Savaş halindeyken bunu kullanamazsınız.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300760
 	RETURN 1
 ELSEIF (<SRC.FLAGS>&STATF_INVISIBLE) || (<SRC.FLAGS>&STATF_INSUBSTANTIAL) || (<SRC.FLAGS>&STATF_HIDDEN)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Görünmezken bunu kullanamazsınız.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300761
 	RETURN 1
 ELSEIF (<SRC.REGION.FLAGS>&REGION_FLAG_UNDERGROUND|REGION_FLAG_NOBUILDING|REGION_FLAG_SAFE|REGION_ANTIMAGIC_ALL|REGION_ANTIMAGIC_RECALL_IN|REGION_ANTIMAGIC_RECALL_OUT|REGION_ANTIMAGIC_GATE|REGION_ANTIMAGIC_TELEPORT|REGION_ANTIMAGIC_DAMAGE|REGION_FLAG_SHIP|REGION_FLAG_NO_PVP) 
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu bölgeye yapı kuramazsınız. (<SRC.REGION.NAME>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300762,<SRC.REGION.NAME>
 	RETURN 1
 ELSEIF (strmatch('Star','<SRC.REGION.NAME>')) || (strmatch(*Green Acres*,'<SRC.REGION.NAME>'))
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu bölgeye yapı kuramazsınız. (<SRC.REGION.NAME>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300762,<SRC.REGION.NAME>
 	RETURN 1
 ELSEIF (<SRC.HOUSES> >= 1)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu karakterin zaten evi var. (<SRC.HOUSES>/1)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300763,<SRC.HOUSES>
 	RETURN 1
 ELSEIF (<SRC.ISNEARPLAYERS>)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Etrafınızda oyuncu varken yapı kuramazsınız.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300764
 	RETURN 1
 ENDIF
 
@@ -317,22 +317,22 @@ IF !(<SRC.ISINPACK <UID>>)
 	SRC.SYSMESSAGELOC <def.tcolor_red>,600036,<NAME>	// Bunu (~1_val~) kullanabilmek için çantanızda veya üzerinizde olmalıdır.
 	RETURN 1
 ELSEIF (<SRC.HITS> < <DLOCAL.HITS>)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Hitsiniz %50 altinda olduğu için bunu kullanamazsınız.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300759
 	RETURN 1
 ELSEIF (<SRC.ISPOISONED>)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Zehirliyken bunu kullanamazsınız.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300342
 	RETURN 1
 ELSEIF (<SRC.FLAGS>&STATF_WAR)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Savaş halindeyken bunu kullanamazsınız.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300760
 	RETURN 1
 ELSEIF (<SRC.REGION.FLAGS>&region_flag_underground|region_flag_nobuilding|region_flag_safe|region_antimagic_all|region_antimagic_recall_in|region_antimagic_recall_out|region_antimagic_gate|region_antimagic_teleport|region_antimagic_damage|region_flag_ship|region_flag_no_pvp) 
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, 1. Bu bölgeye yapı kuramazsınız. (<SRC.REGION.NAME>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300765,<SRC.REGION.NAME>
 	RETURN 1
 ELSEIF (strmatch('Star','<SRC.REGION.NAME>')) || (strmatch(*Green Acres*,'<SRC.REGION.NAME>'))
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu bölgeye yapı kuramazsınız. Yasaklı bolge. (<SRC.REGION.NAME>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300766,<SRC.REGION.NAME>
 	RETURN 1
 ELSEIF (<SRC.HOUSES> >= 1)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu karakterin zaten evi var. (<SRC.HOUSES>/1)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300763,<SRC.HOUSES>
 	RETURN 1
 ENDIF
 
@@ -342,31 +342,31 @@ ENDIF
 IF (<SRC.TARGP>)
 	IF (<SRC.TARGP.REGION>)
 		IF (<SRC.TARGP.REGION.FLAGS>&region_flag_underground|region_flag_nobuilding|region_flag_safe|region_antimagic_all|region_antimagic_recall_in|region_antimagic_recall_out|region_antimagic_gate|region_antimagic_teleport|region_antimagic_damage|region_flag_ship|region_flag_no_pvp) 
-			SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, 2. Bu bölgeye kuramazsınız. (<SRC.TARGP.REGION.NAME>)
+			SRC.SYSMESSAGELOC <def.tcolor_red>,3300767,<SRC.TARGP.REGION.NAME>
 			RETURN 1 
 		ELSEIF (strmatch('Star','<SRC.TARGP.REGION.NAME>')) || (strmatch(*Green Acres*,'<SRC.TARGP.REGION.NAME>'))
-			SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu bölgeye kuramazsınız. Yasaklı bolge. (<SRC.TARGP.REGION.NAME>)
+			SRC.SYSMESSAGELOC <def.tcolor_red>,3300768,<SRC.TARGP.REGION.NAME>
 			RETURN 1
 		ENDIF
 	ENDIF
 	IF (<SRC.TARGP.ISNEARTYPE t_DEED_UYARI_MULTI <DLOCAL.KARE>>)
-		SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu alanda yapı kurulamaz uyarısı mevcut. (<DLOCAL.KARE> mt.)
+		SRC.SYSMESSAGELOC <def.tcolor_red>,3300769,<DLOCAL.KARE>
 		RETURN 1
 	ENDIF
 ENDIF
 IF (<SRC.ISNEARPLAYERS>)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Etrafınızda oyuncu varken yapı kuramazsınız.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300764
 	RETURN 1
 ENDIF
 
 
 
 ON=@TARGON_CHAR
-SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Hatalı seçim.
+SRC.SYSMESSAGELOC <def.tcolor_red>,3300221
 RETURN 1
 
 ON=@TARGON_ITEM
-SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Hatalı seçim.
+SRC.SYSMESSAGELOC <def.tcolor_red>,3300221
 RETURN 1
 
 

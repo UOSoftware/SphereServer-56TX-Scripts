@@ -6,9 +6,9 @@ SRC.OPENBANK
 
 ON=*balance*
 IF (<SERV.FeatureTOL>&02)
-	SAY Thy current bank balance is <NumberFormat <SRC.VIRTUALGOLD>> virtual gold.
+	SAYLOC 0,3301119,<NumberFormat <SRC.VIRTUALGOLD>>
 ELSE
-	SAY Thy current bank balance is <NumberFormat <SRC.BANKBALANCE>> gold pieces.
+	SAYLOC 0,3301120,<NumberFormat <SRC.BANKBALANCE>>
 ENDIF
 
 

@@ -32,18 +32,18 @@ RETURN 1
 
 ON=@TARGON_ITEM
 IF (<SRC.TARG.TOPOBJ.UID> != <SRC.UID>)
-	SRC.SYSMESSAGE Sadece ustunuzdeki esyalari kullanabilirsiniz.
+	SRC.SYSMESSAGELOC 0,3300496
 ENDIF
 
 IF (<SRC.TARG.BASEID> == i_bottle_empty)
 
 	IF (<MOREX> = 0)
-		SRC.SYSMESSAGE Ficidaki iksiri siseye doldurmaya calistiniz ama ficida iksir yok.
+		SRC.SYSMESSAGELOC 0,3300497
 		TARGET Ficiyi doldurmak icin lutfen dolu bir iksir sisesi seciniz.
 		RETURN 1
 	ENDIF
 	
-	SRC.SYSMESSAGE Ficidaki iksirin bir kismini bos bir siseye bosalttiniz.
+	SRC.SYSMESSAGELOC 0,3300498
 	
 	SRC.SOUND snd_Z_END_LIQUID
 	SERV.NEWITEM <MORE1>,1,<SRC>,1
@@ -63,17 +63,17 @@ IF (<SRC.TARG.BASEID> == i_bottle_empty)
 	RETURN 1
 	
 ELSEIF (<SRC.TARG.TYPE> != T_POTION)
-	SRC.SYSMESSAGE Bu bir iksir degil!
+	SRC.SYSMESSAGELOC 0,3300499
 	TARGET
 	RETURN 1
 ELSEIF (<MORE1>) && (<SRC.TARG.BASEID> != <MORE1>)
-	SRC.SYSMESSAGE Ficiya sadece bir cesit iksir koyabilirsiniz!
+	SRC.SYSMESSAGELOC 0,3300500
 	TARGET
 	RETURN 1
 	
 ELSEIF (<MOREX> = 250)
-	SRC.SYSMESSAGE Fici agzina kadar dolmus.
-	SRC.SYSMESSAGE Icindekileri bosaltmak icin bos sise seciniz.
+	SRC.SYSMESSAGELOC 0,3300501
+	SRC.SYSMESSAGELOC 0,3300502
 	TARGET
 	RETURN 1
 	
@@ -85,7 +85,7 @@ MORE2=<SRC.TARG.MORE2>
 MOREX +=<SRC.TARG.AMOUNT>
 NAME=a <SRC.TARG.NAME> keg (<MOREX>)
 SRC.SOUND=snd_Z_END_LIQUID
-SRC.SYSMESSAGE Ficiyi <SRC.TARG.AMOUNT> adet <SRC.TARG.NAME> ile doldurdunuz.
+SRC.SYSMESSAGELOC 0,3300503,<SRC.TARG.AMOUNT>,<SRC.TARG.NAME>
 SRC.TARG.REMOVE
 
 SERV.NEWITEM i_bottle_empty,<SRC.TARG.AMOUNT>,<SRC>,1
@@ -231,7 +231,7 @@ IF (<AMOUNT> = 0)
 	REMOVE
 	RETURN 1
 ENDIF
-MESSAGE @0481,,1 <AMOUNT> adet <NAME>
+MESSAGELOC 0481,3301112,<AMOUNT>,<NAME>
 RETURN 1
 
 ON=@DCLICK
@@ -240,13 +240,13 @@ IF (<AMOUNT> = 0)
 	RETURN 1
 ENDIF
 IF !(<SRC.FINDID.i_bonus_bleed_equiped_mem>)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Yaranız kanamıyor.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300504
 	RETURN 1
 ENDIF
 MORE1=0
 // IF (<SRC.FINDLAYER(layer_flag_potionused)>)
 IF (<SRC.FINDID.i_potion_bleed_cooldown>)
-	SRC.sysmessageloc <def.tcolor_red>, <def.empty_cliloc2>, You can't drink another potion yet
+	SRC.sysmessageloc <def.tcolor_red>,3300505
 	RETURN 1
 ENDIF
 
@@ -396,7 +396,7 @@ ON=@DClick
 IF (<SRC.FINDID.I_RUNE_POISON>)
 	IF (<SRC.FINDID.I_RUNE_POISON.MOREY> > <MORE2>)
 		SRC.EFFECT SND_SPELL_POISON
-		SRC.SYSMESSAGELOC <def.tcolor_grey>,<def.empty_cliloc2>, Bu iksir uzerinizdeki zehir etkisini gecirecek kadar etkili olmadi.
+		SRC.SYSMESSAGELOC <def.tcolor_grey>,3300506
 		// REMOVE
 		CONSUME 
 		RETURN 1
@@ -406,7 +406,7 @@ ENDIF
 IF (<SRC.FINDID.I_RUNE_POISON_FIELD>)
 	IF (<SRC.FINDID.I_RUNE_POISON_FIELD.MOREY> > <MORE2>)
 		SRC.EFFECT SND_SPELL_POISON
-		SRC.SYSMESSAGELOC <def.tcolor_grey>,<def.empty_cliloc2>, Bu iksir uzerinizdeki zehir etkisini gecirecek kadar etkili olmadi.
+		SRC.SYSMESSAGELOC <def.tcolor_grey>,3300506
 		// REMOVE
 		CONSUME
 		RETURN 1
@@ -472,12 +472,12 @@ MORE2=50.0
 
 [typedef ei_potions_explosion]
 ON=@DClick
-SRC.SYSMESSAGELOC <def.tcolor_grey>,<def.empty_cliloc2>, Gecici olarak kullanimi kapalidir.
+SRC.SYSMESSAGELOC <def.tcolor_grey>,3300507
 RETURN 1
 
 ON=@DROPON_GROUND
 REMOVE
-SRC.SYSMESSAGELOC <def.tcolor_grey>,<def.empty_cliloc2>, Gecici olarak kullanimi kapalidir.
+SRC.SYSMESSAGELOC <def.tcolor_grey>,3300507
 
 
 [ITEMDEF i_potion_HealLess]
@@ -540,10 +540,10 @@ MORE2=80.0
 
 ON=@DClick
 IF (<SRC.FLAGS>&STATF_POISONED)
-	SRC.SYSMESSAGELOC <def.tcolor_grey>,<def.empty_cliloc2>, Uzerinizde bulunan zehir, bu iksiri kullanmanizi engelliyor.
+	SRC.SYSMESSAGELOC <def.tcolor_grey>,3300508
 	RETURN 1
 ELSEIF (<SRC.FINDID.i_bonus_bleed_equiped_mem>)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Kanamanız varken içemezsiniz.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300509
 	RETURN 1
 ENDIF
 
@@ -642,7 +642,7 @@ MORE2=105.0
 
 ON=@DCLICK
 IF !(<SRC.ISINPACK <UID>>)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, <NAME>: <DEF.UNPACKMSG>
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300510,<NAME>,<DEF.UNPACKMSG>
 	RETURN 1
 ELSEIF (<SRC.ACTION> == Poisoning)
 	SRC.SYSMESSAGE <DEFMSG.skillwait_3>
@@ -653,12 +653,12 @@ ELSEIF (<SRC.FLAGS>&STATF_WAR)
 ENDIF
 // TARGET
 // SRC.SYSMESSAGE Zehir surmek istediginiz silahi seciniz.
-SRC.SYSMESSAGE Zehir surmek icin Poisoning becerisini kullaniniz.
+SRC.SYSMESSAGELOC 0,3300511
 RETURN 1
 
 ON=@TARGON_CHAR
 IF (<SRC.TARG.UID> != <SRC>)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, <def.msg_invalid_target_tr> Sadece kendinizi seçebilirsiniz.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300512,<def.msg_invalid_target_tr>
 ELSE
 	REF1=<SRC.WEAPON>
 	IF (<REF1>)
@@ -669,17 +669,17 @@ ELSE
 		SRC.ACTARG2 = 0
 		SRC.ACTARG3 = 0
 		SRC.ACTION = 30
-		SRC.SYSMESSAGELOC <def.tcolor_blue>,<def.empty_cliloc2>, <REF1.NAME> silahını zehirlemeye başladın!
+		SRC.SYSMESSAGELOC <def.tcolor_blue>,3300513,<REF1.NAME>
 	ELSE
-		SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Elinizde silah yok.
+		SRC.SYSMESSAGELOC <def.tcolor_red>,3300514
 	ENDIF
 ENDIF
 RETURN 1
 
 ON=@TARGON_GROUND
-SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Hatalı seçim
+SRC.SYSMESSAGELOC <def.tcolor_red>,3300515
 TARGET
-SRC.SYSMESSAGE Zehir surmek istediginiz silahi seciniz.
+SRC.SYSMESSAGELOC 0,3300516
 RETURN 1
 
 ON=@TARGON_ITEM
@@ -693,24 +693,24 @@ IF (<SRC.TARG.UID> == <UID>)
 		SRC.ACTARG2 = 0
 		SRC.ACTARG3 = 0
 		SRC.ACTION = 30
-		SRC.SYSMESSAGELOC <def.tcolor_blue>,<def.empty_cliloc2>, <REF1.NAME> silahını zehirlemeye başladın!
+		SRC.SYSMESSAGELOC <def.tcolor_blue>,3300513,<REF1.NAME>
 	ELSE
-		SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Elinizde silah yok.
+		SRC.SYSMESSAGELOC <def.tcolor_red>,3300514
 	ENDIF
 	
 ELSE
 
 	IF !(<SRC.TARG.ISWEAPON>)
-		SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu bir silah değil.
+		SRC.SYSMESSAGELOC <def.tcolor_red>,3300356
 		RETURN 1
 		
 	ELSEIF ((<SRC.TARG.BASEID> == I_STAFF_MAGE) || (<SRC.TARG.TYPE> == T_WEAPON_XBOW) || (<SRC.TARG.TYPE> == T_WEAPON_BOW) || (<SRC.TARG.TYPE> == T_WEAPON_AXE) || (<SRC.TARG.TYPE> == T_WEAPON_MACE_SMITH) || (<SRC.TARG.TYPE> == T_WEAPON_MACE_STAFF))
 		IF !(<SRC.TARG.BASEID> == I_BOW_ELVEN)
-			SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu zehirlenebilir bir silah türü değil.
+			SRC.SYSMESSAGELOC <def.tcolor_red>,3300517
 			RETURN 1
 		ENDIF
 	ELSEIF (<SRC.TARG.TOPOBJ> != <SRC>)
-		SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, <SRC.TARG.NAME>: <DEF.UNPACKMSG>
+		SRC.SYSMESSAGELOC <def.tcolor_red>,3300510,<SRC.TARG.NAME>,<DEF.UNPACKMSG>
 		RETURN 1
 	ELSEIF (<SRC.ACTION> == Poisoning)
 		SRC.SYSMESSAGE <DEFMSG.skillwait_3>
@@ -723,7 +723,7 @@ ELSE
 	SRC.ACTARG2 = 0
 	SRC.ACTARG3 = 0
 	SRC.ACTION = 30
-	SRC.SYSMESSAGE @50 <SRC.TARG.NAME>: Zehri surmeye basladin!
+	SRC.SYSMESSAGELOC 50,3300518,<SRC.TARG.NAME>
 ENDIF
 RETURN 1
 
@@ -863,7 +863,7 @@ COLOR=color_gray_lt
 [typedef ei_potions_mana]
 
 on=@DClick
-src.sysmessageloc <def.tcolor_red>, <def.empty_cliloc2>, Bu esya kullanilmamaktadir.
+src.sysmessageloc <def.tcolor_red>,3300519
 RETURN 1
 
 

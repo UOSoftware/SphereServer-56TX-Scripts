@@ -18,21 +18,21 @@ ATTR=0
 
 ON=@DClick
 TARGET 
-SRC.SYSMESSAGE Sayfa eklemek istediginiz runebooku seciniz.
+SRC.SYSMESSAGELOC 0,3300392
 RETURN 1
 
 ON=@TARGON_ITEM
 IF (<SRC.TARG.BASEID> == i_runebook)
 	IF (<SRC.TARG.CONT>) && (<SRC.TARG.TOPOBJ.UID> != <SRC.UID>) && (<SRC.ACCOUNT.PLEVEL> < 6)
-		SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Sadece yerdeki veya kendi çantanızdaki Runebookları açabilirsiniz.
+		SRC.SYSMESSAGELOC <def.tcolor_red>,3300393
 		RETURN 1
 	ENDIF
 	SRC.TARG.TAG0.RUNEBOOK_PAGE +=1
-	SRC.SYSMESSAGE Runebooka bir sayfa eklendi. Runebook toplam sayfasi <SRC.TARG.dTAG0.RUNEBOOK_PAGE> oldu.
+	SRC.SYSMESSAGELOC 0,3300394,<SRC.TARG.dTAG0.RUNEBOOK_PAGE>
 	CONSUME 1
 	SRC.DCLICK <SRC.TARG.UID>
 ELSE
-	SRC.SYSMESSAGE Bu bir runebook degil.
+	SRC.SYSMESSAGELOC 0,3300395
 ENDIF
 RETURN 1
 
@@ -63,7 +63,7 @@ IF (<REF99>) && (<REF99.ISITEM>)
 ELSE
 	REF1=<UID>
 ENDIF
-MESSAGE @1,1 (<REF1.RESCOUNT> Rune, Sarj: <REF1.MOREX>)
+MESSAGELOC 1,3301088,<REF1.RESCOUNT>,<REF1.MOREX>
 IF !(STRMATCH('0','<REF1.TAG0.NAME>'))
 	LOCAL.NAME <REF1.NAME> (<REF1.TAG0.NAME>)
 ELSE
@@ -81,13 +81,13 @@ RETURN 1
 ON=@DClick
 ATTR=ATTR_NEWBIE|ATTR_MAGIC
 IF (<CONT>) && (<TOPOBJ.UID> != <SRC.UID>) && (<SRC.ACCOUNT.PLEVEL> < 6)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Sadece yerdeki veya kendi çantanızdaki Runebookları açabilirsiniz.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300393
 	RETURN 1
 ELSEIF (<SRC.ISUSESKILL Magery>)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Büyü yaparken runebook kullanamazsınız.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300396
 	RETURN 1
 ELSEIF (<SRC.ISUSESKILL Necromancy>)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Büyü yaparken runebook kullanamazsınız.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300396
 	RETURN 1
 ENDIF
 
@@ -115,7 +115,7 @@ RETURN <QVAL (<SRC.ISGM>)?0:1>
 ON=@DROPON_GROUND
 IF (<SRC.ISUSESKILL Magery>)
 	SRC.SKILL FAIL
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>,  Runebook kullanımı esnasında Runebooku yere attığınız için işlem başarısız oldu.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300397
 ENDIF
 
 ON=@DESTROY
@@ -137,7 +137,7 @@ ENDIF
 IF ((<ARGO.BASEID> == I_RUNE_MARKER) || (<ARGO.TYPE> == T_RUNE))
 	Func_Runebook_Add_Rune <ARGO.UID>
 ELSE
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>,  Bu eşyanın Runebook ile bir ilgisi yok.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300398
 ENDIF
 RETURN 1
 
@@ -146,13 +146,13 @@ ON=@TARGON_ITEM
 // ADD RUNE
 IF (<MORE2> == 1)
 	IF !(<SRC.TARG.TYPE> == T_RUNE)
-		SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu bir rune değil.
+		SRC.SYSMESSAGELOC <def.tcolor_red>,3300399
 		MORE2=1
 		TARGET
 		RETURN 1
 		
 	ELSEIF (<SRC.TARG.MOREX>==0)
-		SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu rune boş. Bunu kullanamazsınız.
+		SRC.SYSMESSAGELOC <def.tcolor_red>,3300400
 		MORE2=1
 		TARGET
 		RETURN 1
@@ -165,37 +165,37 @@ ELSEIF (<MORE2> == 2)
 
 
 	IF !(<SRC.TARG.ISRUNEBOOK>)
-		SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu bir runebook değil.
+		SRC.SYSMESSAGELOC <def.tcolor_red>,3300395
 		MORE2=2
 		TARGET
 		RETURN 1
 		
 	ELSEIF !(<ISBLANK <TAG0.COPY>>)
-		SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Kaynak runebook bir kopya, baglayamazsiniz.
+		SRC.SYSMESSAGELOC <def.tcolor_red>,3300401
 		MORE2=2
 		TARGET
 		RETURN 1
 		
 	ELSEIF !(<ISBLANK <TAG0.LINK>>)
-		SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Kaynak runebook zaten bagli bir runebook, baglayamazsiniz.
+		SRC.SYSMESSAGELOC <def.tcolor_red>,3300402
 		MORE2=2
 		TARGET
 		RETURN 1
 		
 	ELSEIF !(<ISBLANK <SRC.TARG.TAG0.COPY>>)
-		SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Hedef runebook bir kopya, baglayamazsiniz.
+		SRC.SYSMESSAGELOC <def.tcolor_red>,3300403
 		MORE2=2
 		TARGET
 		RETURN 1
 		
 	ELSEIF !(<ISBLANK <SRC.TARG.TAG0.LINK>>)
-		SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Hedef runebook zaten bagli bir runebook, baglayamazsiniz.
+		SRC.SYSMESSAGELOC <def.tcolor_red>,3300404
 		MORE2=2
 		TARGET
 		RETURN 1
 		
 	ELSEIF (<SRC.TARG.RESCOUNT>)
-		SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Hedef runebookta mark var.
+		SRC.SYSMESSAGELOC <def.tcolor_red>,3300405
 		MORE2=2
 		TARGET
 		RETURN 1
@@ -211,37 +211,37 @@ ELSEIF (<MORE2> == 2)
 ELSEIF (<MORE2> == 3)
 
 	IF !(<SRC.TARG.ISRUNEBOOK>)
-		SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu bir runebook değil.
+		SRC.SYSMESSAGELOC <def.tcolor_red>,3300395
 		MORE2=3
 		TARGET
 		RETURN 1
 		
 	ELSEIF !(<ISBLANK <TAG0.COPY>>)
-		SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Kaynak runebook bir kopya, baglayamazsiniz.
+		SRC.SYSMESSAGELOC <def.tcolor_red>,3300401
 		MORE2=3
 		TARGET
 		RETURN 1
 		
 	ELSEIF !(<ISBLANK <TAG0.LINK>>)
-		SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Kaynak runebook zaten bagli bir runebook, baglayamazsiniz.
+		SRC.SYSMESSAGELOC <def.tcolor_red>,3300402
 		MORE2=3
 		TARGET
 		RETURN 1
 		
 	ELSEIF !(<ISBLANK <SRC.TARG.TAG0.COPY>>)
-		SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Hedef runebook bir kopya, baglayamazsiniz.
+		SRC.SYSMESSAGELOC <def.tcolor_red>,3300403
 		MORE2=3
 		TARGET
 		RETURN 1
 		
 	ELSEIF !(<ISBLANK <SRC.TARG.TAG0.LINK>>)
-		SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Hedef runebook zaten bagli bir runebook, baglayamazsiniz.
+		SRC.SYSMESSAGELOC <def.tcolor_red>,3300404
 		MORE2=3
 		TARGET
 		RETURN 1
 		
 	ELSEIF (<SRC.TARG.RESCOUNT>)
-		SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Hedef runebookta mark var.
+		SRC.SYSMESSAGELOC <def.tcolor_red>,3300405
 		MORE2=3
 		TARGET
 		RETURN 1
@@ -249,18 +249,18 @@ ELSEIF (<MORE2> == 3)
 	
 	SRC.TARG.TAG0.LINK=<UID>
 	MORE2=
-	SRC.SYSMESSAGELOC <def.tcolor_text>, <def.empty_cliloc2>, Runebooklar basariyla baglandi.
+	SRC.SYSMESSAGELOC <def.tcolor_text>,3300406
 	
 // Disa aktar
 ELSEIF (<MORE2> == 4)
 
 	IF !(<SRC.TARG.TYPE> == T_CONTAINER)
-		SRC.SYSMESSAGELOC <def.tcolor_text>, <def.empty_cliloc2>, Bu bir kutu & kasa degil.
+		SRC.SYSMESSAGELOC <def.tcolor_text>,3300407
 		MORE2=4
 		TARGET
 		RETURN 1
 	ELSEIF (<SRC.TARG.RESCOUNT>)
-		SRC.SYSMESSAGELOC <def.tcolor_text>, <def.empty_cliloc2>, Disa aktarilacak kutu & kasa bos olmali.
+		SRC.SYSMESSAGELOC <def.tcolor_text>,3300408
 		MORE2=4
 		TARGET
 		RETURN 1
@@ -271,13 +271,13 @@ ELSEIF (<MORE2> == 4)
 ELSEIF (<MORE2> == 5)
 
 	IF !(<SRC.TARG.TYPE> == T_CONTAINER)
-		SRC.SYSMESSAGELOC <def.tcolor_text>, <def.empty_cliloc2>, Bu bir kutu & kasa degil.
+		SRC.SYSMESSAGELOC <def.tcolor_text>,3300407
 		MORE2=5
 		TARGET
 		RETURN 1
 
 	ELSEIF !(<SRC.TARG.RESCOUNT>)
-		SRC.SYSMESSAGELOC <def.tcolor_text>, <def.empty_cliloc2>, Bu kutu & kasa bos.
+		SRC.SYSMESSAGELOC <def.tcolor_text>,3300409
 		MORE2=5
 		TARGET
 		RETURN 1
@@ -320,16 +320,16 @@ ELSEIF !(<REF1.ISITEM>) || !(<ISITEM>)
 	SRC.SYSMESSAGELOC 38,600021 //"Bir hata oluştu!"
 	RETURN 1
 ELSEIF !(<REF1.TYPE> == T_RUNE)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>,  Bu bir rune değil.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300399
 	RETURN 1
 ELSEIF !(<ISRUNEBOOK>)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>,  Bu bir Runebook değil.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300410
 	RETURN 1
 ELSEIF (<TAG0.LINK>)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>,  Bu başka bir Runebooka linklendiği için rune ekleyemezsiniz.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300411
 	RETURN 1
 ELSEIF (<REF1.MOREX> <= 0)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>,  Bu rune boş. Bunu kullanamazsınız.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300400
 	RETURN 1
 ELSEIF !(<SRC.ISINPACK <REF1>>)
 	SRC.SYSMESSAGELOC <def.tcolor_red>,600036,<REF1.NAME>
@@ -345,13 +345,13 @@ IF (<LDB.CONNECTED>)
 	
 	local.maxrune = <eval <dTAG0.RUNEBOOK_PAGE> * 16>
 	IF (<dlDB.ROW.NUMROWS> >= <dlocal.maxrune>)
-		SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Kitapta bunun icin bos yer kalmamis. (En fazla: <dlocal.maxrune>/<dlDB.ROW.NUMROWS> rune - Mevcut sayfa: <dTAG0.RUNEBOOK_PAGE>)
+		SRC.SYSMESSAGELOC <def.tcolor_red>,3300412,<dlocal.maxrune>,<dlDB.ROW.NUMROWS>,<dTAG0.RUNEBOOK_PAGE>
 		RETURN 1
 	ENDIF
 	
 	LDB.Query "SELECT id FROM 'runebooks' WHERE runebook_uid='<UID>' AND rune_uid='<REF1>'"
 	IF (<lDB.ROW.NUMROWS>)
-		SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu rune zaten runebookta var.
+		SRC.SYSMESSAGELOC <def.tcolor_red>,3300413
 		RETURN 1
 	ENDIF
 	
@@ -374,7 +374,7 @@ IF (<LDB.CONNECTED>)
 	
 ENDIF
 
-SRC.SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, Runeyi kitaba eklediniz.
+SRC.SYSMESSAGELOC <def.tcolor_text>,3300414
 SRC.SOUND=79
 IF (<REF1.ISITEM>) && (<REF1.TYPE> == T_RUNE)
 	REF1.CONT = <UID>
@@ -390,7 +390,7 @@ RETURN 0
 
 [TYPEDEF ei_runebook_rune]
 ON=@CLICK
-MESSAGE (Runebook Rune)
+MESSAGELOC 0,3301089
 
 ON=@PICKUP_PACK
 IF (<CONT> && <CONT.BASEID> == I_RUNEBOOK)
@@ -649,15 +649,15 @@ PAGE 4
 
 [DIALOG d_runebook PREBUTTON]
 IF (<SRC.FLAGS>&STATF_FREEZE)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu durumda kullanamazsin.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300415
 	RETURN 1
 	
 ELSEIF (<SRC.FLAGS>&Statf_Stone)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu durumda kullanamazsin.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300415
 	RETURN 1
 	
 ELSEIF (<SRC.FLAGS>&statf_dead)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu durumda kullanamazsin.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300415
 	RETURN 1
 	
 ELSEIF (<SRC.ISUSESKILL Magery>)
@@ -677,7 +677,7 @@ ON=10,17
 TAG0.RUNEBOOK_LASTPAGE <EVAL <DARGN>-9>
 MORE2=
 IF (<DTAG0.RUNEBOOK_PAGE> < <DTAG0.RUNEBOOK_LASTPAGE>)
-	SRC.SYSMESSAGE Runebookta bu sayfa yok.
+	SRC.SYSMESSAGELOC 0,3300416
 	TAG0.RUNEBOOK_LASTPAGE = <eval <DTAG0.RUNEBOOK_PAGE>>
 	DCLICK
 	RETURN 1
@@ -685,7 +685,7 @@ ENDIF
 TAG0.RUNEBOOK_PAGE_INDEX <EVAL (<TAG0.RUNEBOOK_LASTPAGE>*18)-18>
 DIALOGCLOSE D_RUNEBOOK
 DIALOG D_RUNEBOOK
-SRC.SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, <DTAG0.RUNEBOOK_LASTPAGE>. sayfa
+SRC.SYSMESSAGELOC <def.tcolor_text>,3300417,<DTAG0.RUNEBOOK_LASTPAGE>
 
 
 
@@ -694,11 +694,11 @@ ON=18
 TAG0.RUNEBOOK_LASTPAGE +=1
 MORE2=
 IF (<DTAG0.RUNEBOOK_PAGE> < <DTAG0.RUNEBOOK_LASTPAGE>)
-	SRC.SYSMESSAGE Runebookta bu sayfa yok.
+	SRC.SYSMESSAGELOC 0,3300416
 	TAG0.RUNEBOOK_LASTPAGE = <eval <DTAG0.RUNEBOOK_PAGE>>
 ELSE
 	TAG0.RUNEBOOK_PAGE_INDEX +=18
-	SRC.SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, Ileri > <DTAG0.RUNEBOOK_LASTPAGE>. sayfa
+	SRC.SYSMESSAGELOC <def.tcolor_text>,3300418,<DTAG0.RUNEBOOK_LASTPAGE>
 ENDIF
 DCLICK
 
@@ -718,7 +718,7 @@ ELSE
 	TAG0.RUNEBOOK_PAGE_INDEX 0
 ENDIF
 DCLICK
-SRC.SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, Geri < <DTAG0.RUNEBOOK_LASTPAGE>. sayfa
+SRC.SYSMESSAGELOC <def.tcolor_text>,3300419,<DTAG0.RUNEBOOK_LASTPAGE>
 
 
 // Page 2
@@ -726,13 +726,13 @@ SRC.SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, Geri < <DTAG0.RUNEBOOK_
 // Runebook: Rune Ekle
 ON=20
 IF !(<TOPOBJ.UID> == <SRC.UID>)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu işlemi yapabilmeniz için runebookun çantanızda olması gerekmektedir.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300420
 	RETURN 1
 ENDIF
 MORE2=1
 TARGET 
-SRC.SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, Mark olarak Eklemek istediğiniz Runeyi seçin.
-SRC.SYSMESSAGELOC <def.tcolor_yellow>,<def.empty_cliloc2>, NOT : Runeyi sürükleyip Runebook üzerine bırakarak da kitaba rune ekleyebilirsiniz.
+SRC.SYSMESSAGELOC <def.tcolor_text>,3300421
+SRC.SYSMESSAGELOC <def.tcolor_yellow>,3300422
 RETURN 1
 
 // Runebook: Sarj et
@@ -744,15 +744,15 @@ TARGET Lutfen sarj etmek uzere kullanacaginiz bir recall scroll secin.
 // Runebook: Bağla
 ON=22
 IF !(<RESCOUNT>)
-	SRC.SYSMESSAGELOC <def.tcolor_text>, <def.empty_cliloc2>, Icerisinde mark olmayan runebooklar baska bir runebook ile baglanamaz.
+	SRC.SYSMESSAGELOC <def.tcolor_text>,3300423
 	RETURN 1
 ELSEIF !(<ISBLANK <TAG0.COPY>>)
-	SRC.SYSMESSAGELOC <def.tcolor_text>, <def.empty_cliloc2>, Kopya runebooklari baska bir runebook ile baglayamazsiniz.
+	SRC.SYSMESSAGELOC <def.tcolor_text>,3300424
 	RETURN 1
 ENDIF
 MORE2=3 // link
 TARGET
-SRC.SYSMESSAGELOC <def.tcolor_text>, <def.empty_cliloc2>, Baglamak istediginiz runebooku seciniz.
+SRC.SYSMESSAGELOC <def.tcolor_text>,3300425
 DIALOGCLOSE D_RUNEBOOK
 DIALOG D_RUNEBOOK
 
@@ -761,7 +761,7 @@ DIALOG D_RUNEBOOK
 ON=23
 MORE2=2 // cogalt
 TARGET
-SRC.SYSMESSAGELOC <def.tcolor_text>, <def.empty_cliloc2>, Cogaltmak istediginiz runebooku seciniz.
+SRC.SYSMESSAGELOC <def.tcolor_text>,3300426
 DIALOGCLOSE D_RUNEBOOK
 DIALOG D_RUNEBOOK
 
@@ -770,11 +770,11 @@ DIALOG D_RUNEBOOK
 ON=24
 MORE2=
 IF !(<RESCOUNT>)
-	SRC.SYSMESSAGELOC <def.tcolor_text>, <def.empty_cliloc2>, Bu Runebook zaten bos.
+	SRC.SYSMESSAGELOC <def.tcolor_text>,3300427
 	RETURN 1
 ENDIF
 EMPTY
-SRC.SYSMESSAGELOC <def.tcolor_text>, <def.empty_cliloc2>, Runebook icindeki tum marklar bosaltildi.
+SRC.SYSMESSAGELOC <def.tcolor_text>,3300428
 DIALOGCLOSE D_RUNEBOOK
 DIALOG D_RUNEBOOK
 
@@ -798,27 +798,27 @@ DIALOG D_RUNEBOOK
 // Runebook: Rename Apply
 ON=30
 IF !(<TOPOBJ.UID> == <SRC.UID>)
-	SRC.SYSMESSAGE Bu islem icin runebook'un cantanizda olmasi gerekiyor.
+	SRC.SYSMESSAGELOC 0,3300429
 	RETURN 1
 ELSEIF (<ISEMPTY <ARGTXT[0]>>)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, <def.systxt_only_empty>
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300090,<def.systxt_only_empty>
 	RETURN 1
 ELSEIF (<ISBADCHAR <ARGTXT[0]>>)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, <def.systxt_using_bad>
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300090,<def.systxt_using_bad>
 	RETURN 1
 ELSEIF (<ISBLANK <ARGTXT[0]>>)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, <def.systxt_only_empty>
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300090,<def.systxt_only_empty>
 	RETURN 1
 ELSEIF !(<ISALPHANUMERIC <ARGTXT[0]>>)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, <DEF.systxt_only_str_or_int>
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300090,<DEF.systxt_only_str_or_int>
 	RETURN 1
 ELSEIF (<EVAL STRLEN(<ARGTXT[0]>)> < 3) || (<EVAL STRLEN(<ARGTXT[0]>)> > 25)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Runebook adı en az 3 en fazla 25 karakterden oluşabilir.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300430
 	RETURN 1
 ENDIF
 TAG.NAME=<ARGTXT[0]>
 MORE2=
-SRC.SYSMESSAGE Runebook adi degisti.
+SRC.SYSMESSAGELOC 0,3300431
 DIALOGCLOSE d_runebook
 DIALOG d_runebook, 3
 
@@ -833,12 +833,12 @@ DIALOG d_runebook, 3
 // Runebook: Rename Reset
 ON=32
 IF !(<TOPOBJ.UID> == <SRC.UID>)
-	SRC.SYSMESSAGE Bu islem icin runebook'un cantanizda olmasi gerekiyor.
+	SRC.SYSMESSAGELOC 0,3300429
 	RETURN 1
 ENDIF
 MORE2=
 TAG.NAME=
-SRC.SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, Runebook adı varsayılan olarak değişti.
+SRC.SYSMESSAGELOC <def.tcolor_text>,3300432
 DIALOGCLOSE d_runebook
 DIALOG d_runebook, 3
 
@@ -851,13 +851,13 @@ DIALOG d_runebook, 3
 ON=100,99999
 MORE2=
 IF (<SRC.MAGERY> < 250)
-	SRC.SYSMESSAGE Yeterli skill puanina sahip degilsiniz. (25.0 Magery Gerekli)
+	SRC.SYSMESSAGELOC 0,3300433
 	SRC.SOUND=92
 	RETURN 1
 ENDIF
 IF (<SRC.MANA> < 15)
 	SRC.SOUND=92
-	SRC.SYSMESSAGE Yeterli mananiz yok. (15 Mana Gerekli)
+	SRC.SYSMESSAGELOC 0,3300434
 	RETURN 1
 ENDIF
 
@@ -872,7 +872,7 @@ IF (<LDB.CONNECTED>)
 
 		ELSEIF (<SRC.RESTEST 1 i_reag_black_pearl>) && (<SRC.RESTEST 1 i_reag_mandrake_root>) && (<SRC.RESTEST 1 i_reag_blood_moss>)
 			IF (<SRC.MAGERY> < 400)
-				SRC.SYSMESSAGE Yeterli skill puanina sahip degilsiniz. (40.0 Magery Gerekli)
+				SRC.SYSMESSAGELOC 0,3300435
 				SRC.SOUND=92
 				RETURN 1
 			ENDIF
@@ -881,7 +881,7 @@ IF (<LDB.CONNECTED>)
 			SRC.CONSUME 1 I_REAG_BLOOD_MOSS
 			SRC.CONSUME 1 I_REAG_MANDRAKE_ROOT
 		ELSE
-			SRC.SYSMESSAGE Kitapta sarj kalmamis ve uzerinizde buyuyu yapacak malzeme yok.
+			SRC.SYSMESSAGELOC 0,3300436
 			SRC.SOUND 92
 			RETURN 1
 		ENDIF
@@ -924,11 +924,11 @@ IF (<LDB.CONNECTED>)
 			SRC.ACTION = 25	
 			SRC.ACTDIFF=<ddef.SKILL_ACTION_DIFF_NOFAIL>
 		ELSE
-			SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu slotta geçerli bir rune bulunamadı!
+			SRC.SYSMESSAGELOC <def.tcolor_red>,3300437
 		ENDIF
 
 	ELSE
-		SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu slotta geçerli bir rune bulunamadı!
+		SRC.SYSMESSAGELOC <def.tcolor_red>,3300437
 	ENDIF
 ENDIF
 
@@ -939,22 +939,22 @@ ON=100000,199999
 MORE2=
 IF !(<SRC.REGION.FLAGS>&region_flag_house)
 	IF (<SRC.REGION.FLAGS>&0e)
-		SRC.SYSMESSAGE Bu bolgede recall kullanamazsiniz.
+		SRC.SYSMESSAGELOC 0,3300438
 		RETURN 1
 	ENDIF
 ENDIF
 IF (<SRC.MAGERY> < 750)
-	SRC.SYSMESSAGE Yeterli beceriye sahip degilsiniz. (75.0 Magery Gerekli)
+	SRC.SYSMESSAGELOC 0,3300439
 	SRC.SOUND=92
 	RETURN 1
 ENDIF
 IF (<SRC.MANA> < 40)
 	SRC.SOUND=92
-	SRC.SYSMESSAGE Yeterli mananiz yok. (40 Mana Gerekli)
+	SRC.SYSMESSAGELOC 0,3300440
 	RETURN 1
 ENDIF
 IF !(<SRC.RESTEST 1 i_reag_mandrake_root>) || !(<SRC.RESTEST 1 i_reag_sulfur_ash>) || !(<SRC.RESTEST 1 i_reag_black_pearl>)
-	SRC.SYSMESSAGE Yeterli malzemeye sahip degilsiniz. (1 Mandrake Root & 1 Sulfur Ash & 1 Black Pearl)
+	SRC.SYSMESSAGELOC 0,3300441
 	SRC.SOUND=92
 	RETURN 1
 ENDIF
@@ -989,10 +989,10 @@ IF (<LDB.CONNECTED>)
 			SRC.CONSUME 1 i_reag_sulfur_ash
 
 		ELSE
-			SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu slotta geçerli bir rune bulunamadı!
+			SRC.SYSMESSAGELOC <def.tcolor_red>,3300437
 		ENDIF
 	ELSE
-		SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu slotta geçerli bir rune bulunamadı!
+		SRC.SYSMESSAGELOC <def.tcolor_red>,3300437
 	ENDIF
 ENDIF
 
@@ -1021,10 +1021,10 @@ IF (<LDB.CONNECTED>)
 			MORE2=
 			SRC.DCLICK <UID>
 		ELSE
-			SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu slotta geçerli bir rune bulunamadı!
+			SRC.SYSMESSAGELOC <def.tcolor_red>,3300437
 		ENDIF
 	ELSE
-		SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu slotta geçerli bir rune bulunamadı!
+		SRC.SYSMESSAGELOC <def.tcolor_red>,3300437
 	ENDIF
 ENDIF
 
@@ -1035,7 +1035,7 @@ ENDIF
 ON=300000 399999
 MORE2=
 IF !(<TOPOBJ.UID> == <SRC.UID>)
-	SRC.SYSMESSAGE Bu islem icin runebook'un cantanizda olmasi gerekiyor.
+	SRC.SYSMESSAGELOC 0,3300429
 	RETURN 1
 ENDIF
 IF (<LDB.CONNECTED>)	
@@ -1049,11 +1049,11 @@ IF (<LDB.CONNECTED>)
 			REF1.DIALOGCLOSE D_RUNEBOOK_LOCALNAME
 			REF1.DIALOG D_RUNEBOOK_LOCALNAME
 		ELSE
-			SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu slotta geçerli bir rune bulunamadı!
+			SRC.SYSMESSAGELOC <def.tcolor_red>,3300437
 		ENDIF
 
 	ELSE
-		SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu slotta geçerli bir rune bulunamadı!
+		SRC.SYSMESSAGELOC <def.tcolor_red>,3300437
 	ENDIF
 ENDIF
 
@@ -1061,7 +1061,7 @@ ENDIF
 ON=400000,499999
 MORE2=
 IF !(<TOPOBJ.UID> == <SRC.UID>)
-    SRC.SYSMESSAGE Bu islem icin runebook'un cantanizda olmasi gerekiyor.
+    SRC.SYSMESSAGELOC 0,3300429
     RETURN 1
 ENDIF
 LOCAL.RUNE_ID = <EVAL <DARGN>-400000>
@@ -1093,7 +1093,7 @@ RETURN 1
 ON=500000 599999
 MORE2=
 IF !(<TOPOBJ.UID> == <SRC.UID>)
-    SRC.SYSMESSAGE Bu islem icin runebook'un cantanizda olmasi gerekiyor.
+    SRC.SYSMESSAGELOC 0,3300429
     RETURN 1
 ENDIF
 LOCAL.RUNE_ID = <EVAL <DARGN>-500000>
@@ -1156,16 +1156,16 @@ DTEXT +250 +80 <def.tcolor_text> Iptal
 ON=1
 
 IF (<ISBADCHAR <ARGTXT[0]>>)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Hatalı karakter.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300442
 	RETURN 1
 ELSEIF (<ISBLANK <ARGTXT[0]>>)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Boş giriş yapamazsınız.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300323
 	RETURN 1
 // ELSEIF !(<ISALPHANUMERIC <ARGTXT[0]>>)
 	// SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Sadece rakam ve harf.
 	// RETURN 1
 ELSEIF (<EVAL STRLEN(<ARGTXT[0]>)> < 3) || (<EVAL STRLEN(<ARGTXT[0]>)> > 25)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Rune adı en az 3 en fazla 25 karakterden oluşabilir.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300443
 	RETURN 1
 ENDIF
 
@@ -1182,7 +1182,7 @@ IF (<LDB.CONNECTED>)
         ENDIF
 		
 		LDB.EXECUTE "UPDATE 'runebooks' SET region_text='<LOCAL.FINAL_NAME>' WHERE rune_uid='<UID>'"
-		SRC.SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, Rune adı (rn:<StrReplaceSql <ARGTXT[0]>>) olarak değişti.
+		SRC.SYSMESSAGELOC <def.tcolor_text>,3300444,<StrReplaceSql <ARGTXT[0]>>
 	ENDIF
 ENDIF
 
@@ -1195,7 +1195,7 @@ IF (<LDB.CONNECTED>)
 	LDB.Query "SELECT id, region_text FROM 'runebooks' WHERE rune_uid='<UID>'"
 	IF (<LDB.ROW.NUMROWS>)
 		LDB.EXECUTE "UPDATE 'runebooks' SET region_text='<StrReplaceSql <SERV.MAP(<MOREP>).REGION.NAME>>' WHERE rune_uid='<UID>'"
-		SRC.SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, Rune adı varsayılan (<StrReplaceSql <SERV.MAP(<MOREP>).REGION.NAME>>) olarak değişti.
+		SRC.SYSMESSAGELOC <def.tcolor_text>,3300445,<StrReplaceSql <SERV.MAP(<MOREP>).REGION.NAME>>
 	ENDIF
 ENDIF
 DIALOGCLOSE D_RUNEBOOK
@@ -1203,7 +1203,7 @@ DIALOG D_RUNEBOOK
 
 // Cancel
 ON=3
-SRC.SYSMESSAGELOC <def.tcolor_text>,<def.empty_cliloc2>, Rune ismini değiştirmekten vazgeçtin.
+SRC.SYSMESSAGELOC <def.tcolor_text>,3300446
 DIALOGCLOSE D_RUNEBOOK
 DIALOG D_RUNEBOOK
 
@@ -1223,11 +1223,11 @@ ENDIF
 
 ON=@SPELLFAIL
 SRC.EVENTS -e_runebook_casts
-SYSMESSAGE Konsantrasyonunuzu kaybettiniz.
+SYSMESSAGELOC 0,3300447
 
 ON=@SPELLABORT
 SRC.EVENTS -e_runebook_casts
-SYSMESSAGE Konsantrasyonunuzu kaybettiniz.
+SYSMESSAGELOC 0,3300447
 
 
 
@@ -1254,7 +1254,7 @@ ATTR=ATTR_MOVE_NEVER
 
 ON=@DCLICK
 IF (<DISTANCE> > 3)
-	SRC.SYSMESSAGE Gate'e ulasamiyorsunuz.
+	SRC.SYSMESSAGELOC 0,3300336
 ELSE
 	IF (<SRC.FINDID.I_RB_GATER>)
 		SRC.FINDID.I_RB_GATER.REMOVE
@@ -1315,10 +1315,10 @@ BUTTON +0 +20 4018 4019 1 0 0
 
 [DIALOG D_RUNEBOOK_GATE PREBUTTON]
 IF (<SRC.FLAGS>&STATF_FREEZE)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu durumda bunu kullanamazsınız.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300341
 	RETURN 1
 ELSEIF (<SRC.FLAGS>&STATF_STONE)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Bu durumda bunu kullanamazsınız.
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300341
 	RETURN 1
 ENDIF
 
@@ -1330,21 +1330,21 @@ ENDIF
 
 ON=1
 IF !(<FINDID.I_RB_GATER>)
-	SYSMESSAGE Gate gecemeden kapanmis.
+	SYSMESSAGELOC 0,3300448
 	
 ELSEIF !(<FINDID.I_RB_GATER.LINK.ISITEM>)
-	SYSMESSAGE Gate gecemeden kapanmis.
+	SYSMESSAGELOC 0,3300448
 	FINDID.I_RB_GATER.REMOVE
 	
 ELSEIF (<FINDID.I_RB_GATER.LINK.DISTANCE> > 3)
-	SYSMESSAGE Gate'e ulasamiyorsunuz.
+	SYSMESSAGELOC 0,3300336
 	FINDID.I_RB_GATER.REMOVE
 ELSE
 	IF (<FINDID.I_RB_GATER>)
 		GO <FINDID.I_RB_GATER.MOREP>
 		FINDID.I_RB_GATER.TIMER 2
 	ELSE
-		SYSMESSAGE Bir hata olustu.
+		SYSMESSAGELOC 0,3300354
 	ENDIF
 ENDIF
 
