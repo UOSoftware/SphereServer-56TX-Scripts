@@ -111,16 +111,6 @@ ENDIF
 
 
 
-// args = charname
-// argo = npc
-// src/i = player
-ON=@RENAME
-IF (<ARGO.NPC>)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Varlıkların isimlerini değiştirmezsiniz.
-	RETURN 1
-ENDIF
-
-
 //*****************************************
 // Spell Triggers
 //*****************************************
