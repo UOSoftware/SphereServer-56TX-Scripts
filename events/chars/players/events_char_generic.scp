@@ -626,6 +626,8 @@ IF !(<SRC.ISGM>)
 			ENDIF
 		ENDIF
 	ENDIF
+	
+ENDIF
 
 
 // ClasscUO clientte büyü atarken attığı yöne dönmesi durumunda bazen atlama yapıyor,

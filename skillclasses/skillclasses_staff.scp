@@ -74,22 +74,10 @@ Mysticism=100.0
 Imbuing=100.0
 Throwing=100.0
 
-ON=@LOGOUT
-SRC.Func_Char_Default_Set
-// SRC.TITLE <SERV.NAME> Staff
-
-
-ON=@LOGIN
-SRC.Func_Char_Default_Set
-
-
 ON=@ItemClick
 IF (<ACT.ATTR>&ATTR_STATIC)
 	ACT.MESSAGE @0,3 (static)
 ENDIF
-
-// ON=@click
-
 
 ON=@DEATH
 IF (<ISGM>)

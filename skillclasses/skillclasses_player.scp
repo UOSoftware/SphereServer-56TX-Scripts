@@ -79,9 +79,6 @@ ENDIF
 IF (<SRC.HEARALL>)
 	SRC.HEARALL=0
 ENDIF
-SRC.Func_Char_Default_Set
-
-
 IF !(<SRC.FINDLAYER(32)> || <SRC.FINDLAYER(44)> || <SRC.FINDLAYER(47)>)
 	IF (<SRC.STATTOTAL> > <SRC.SKILLCLASS.STATSUM>)
 		SRC.STR 75
@@ -93,9 +90,6 @@ IF !(<SRC.FINDLAYER(32)> || <SRC.FINDLAYER(44)> || <SRC.FINDLAYER(47)>)
 		SRC.NOTICE <DEF.BFONT_NOTICE_DRED>Statlarınız <SRC.SKILLCLASS.STATSUM> aşmış. Statlarınız varsayılan haline alınmıştır. Tekrar ayarlayınız.
 	ENDIF
 ENDIF
-
-ON=@LOGOUT
-SRC.Func_Char_Default_Set
 
 
 

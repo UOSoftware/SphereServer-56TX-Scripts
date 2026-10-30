@@ -39,7 +39,7 @@ if (<src> == <src.targ.uid>)
 endif
 
 
-on=@targon_İTEM
+on=@targon_ITEM
 if (<uid> == <src.targ.uid>)
     // SRC.ACTARG1 = 0    
     SRC.ACTARG2 = 1    
