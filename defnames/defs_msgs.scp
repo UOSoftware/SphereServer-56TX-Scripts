@@ -6,9 +6,9 @@ VERSION=X1
 
 [COMMENT sphere_msgs]
 Emulatörün mesajlarının metinleri client dosyalarının klasöründeki (MulFiles) Cliloc.enu ve Cliloc.trk'de,
-3200000-3299999 numaralarında; [DEFMESSAGE] bölümleri okunmaz. Bir mesajın metni sunucu çalışırken
-değiştirilir ve hemen geçerli olur: SERV.CLILOCSET <numara>,<dil>,<metin>. Boş metin ("") mesajı kapatır.
-Mesajın numarasını <SERV.CLILOCFIND metin> bulur, metnini SERV.CLILOCLIST <numara> gösterir.
+3200000-3299999 numaralarında (sphere.ini'de MessageSource=0, varsayılan; [DEFMESSAGE] bölümleri okunmaz). Bir
+mesajın metni sunucu çalışırken değiştirilir ve hemen geçerli olur: SERV.CLILOCSET <numara>,<dil>,<metin>. Boş metin
+("") mesajı kapatır. Mesajın numarasını <SERV.CLILOCFIND metin> bulur, metnini SERV.CLILOCLIST <numara> gösterir.
 
 Bu dosyada sadece mesajların varsayılan rengi, yazı tipi ve unicode'u var (messages_settings).
 
