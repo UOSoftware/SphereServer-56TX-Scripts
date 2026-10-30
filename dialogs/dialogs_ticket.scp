@@ -1,0 +1,402 @@
+VERSION=TX
+
+// Destek ticket'ları: arayüz. Ticket'lar emulatöre gömülüdür (0.56TX), GM page'in yanındadır (GM page ve .page olduğu
+//  gibi kalır): oyuncu bir ticket açar, oyuncu ve istenen sayıda staff kapanana kadar ona yazar; staff oyuncunun
+//  görmediği notlar da bırakabilir. Kurallar, yetki, kayıt (world save) ve mesajlar emulatörün ([DEFMESSAGE] ticket_*,
+//  sphere.ini'de TicketMaxOpen, TicketMaxLength, TicketMaxMessages, TicketStaffPlevel). Emulatörün anahtarları:
+// - Char: TICKETNEW <metin> (char'ın hesabına yeni ticket; numarası <SERV.LASTNEWTICKET>). .ticket (oyuncu komutu)
+//   d_ticket'ı açar.
+// - Sunucu: <SERV.TICKET.<id>> (ticket varsa 1), <SERV.TICKET.<id>.<anahtar>>, SERV.TICKET.<id>.<komut>,
+//   <SERV.TICKETCOUNT maske,hesap>, <SERV.TICKETLIST maske,hesap,baş,en çok> (son değişikliği en yeni olan önce,
+//   virgülle numaralar; en çok 200). Maske ticket_mask_* (0 hepsi), hesap boşsa bütün hesaplar.
+// - Ticket: ID, ACCOUNT, CHARUID, CHARNAME, CHAR.<anahtar> (açan char), P, STATUS (ticket_status_*), STATUSNAME,
+//   CREATED, UPDATED, CLOSED (Unix zamanı), MESSAGES (notlar dahil), MESSAGE.n.TEXT/ACCOUNT/CHARUID/CHARNAME/STAFF/
+//   NOTE/TIME, UNREAD (oyuncunun okumadığı staff cevabı), WAITING (son mesaj oyuncunun: staff'tan cevap bekliyor),
+//   PLAYERREAD; komutlar REPLY <metin>, NOTE <metin>, CLOSE, REOPEN, STATUS <n>, DELETE, READ.
+// - Yetki emulatörün: PLEVEL'i TicketStaffPlevel'den küçük SRC sadece kendi hesabının ticket'larına REPLY, CLOSE,
+//   REOPEN ve READ yapar; NOTE, STATUS ve DELETE staff'ın. Olaylar f_onserver_ticket'te.
+// Dialog'ların nesnesi dialog'u açan char'dır; gösterilen ticket'ın numarası SRC.CTAG0.TicketView'da, listedeki
+//  satırlarınki SRC.CTAG0.TicketRow.<n>'de (butonlar client'ın gönderdiği numaraya güvenmez).
+
+
+// Ticket listesi (.ticket). Oyuncu kendi hesabının ticket'larını, staff hepsini süzgeçle görür.
+[DIALOG d_ticket]
+<DEF.DlgStartPos>
+LOCAL.STAFF=0
+IF (<ACCOUNT.PLEVEL> >= <SERV.TICKETSTAFFPLEVEL>)
+	LOCAL.STAFF=1
+ENDIF
+LOCAL.PAGELEN=10
+// Süzgeç: oyuncuya kendi hesabı (bütün durumlar); staff'a bütün hesaplar ve durum: 0 kapalı olmayanlar, 1 cevap
+//  bekleyenler, 2 kapalılar, 3 hepsi. Boş hesap LOCAL'e yazılmaz (boş LOCAL 0 okunur): staff'ın satırları hesapsız.
+LOCAL.MASK=0
+IF (<LOCAL.STAFF>)
+	IF (<SRC.DCTAG0.TicketFilter> == 0)
+		LOCAL.MASK=<DEF.ticket_mask_active>
+	ELSEIF (<SRC.DCTAG0.TicketFilter> == 1)
+		LOCAL.MASK=<DEF.ticket_mask_waiting>
+	ELSEIF (<SRC.DCTAG0.TicketFilter> == 2)
+		LOCAL.MASK=<DEF.ticket_mask_closed>
+	ENDIF
+	LOCAL.COUNT=<SERV.TICKETCOUNT <dLOCAL.MASK>>
+ELSE
+	LOCAL.COUNT=<SERV.TICKETCOUNT 0,<ACCOUNT.NAME>>
+ENDIF
+LOCAL.PAGES=<EVAL ((<LOCAL.COUNT>-1)/<LOCAL.PAGELEN>)+1>
+IF (<LOCAL.PAGES> < 1)
+	LOCAL.PAGES=1
+ENDIF
+IF (<SRC.DCTAG0.TicketPage> >= <LOCAL.PAGES>)
+	SRC.CTAG0.TicketPage=<EVAL <LOCAL.PAGES>-1>
+ENDIF
+LOCAL.FIRST=<EVAL <SRC.DCTAG0.TicketPage>*<LOCAL.PAGELEN>>
+
+RESIZE 0,0,600,<EVAL 210+(<LOCAL.PAGELEN>*28)>,Destek
+DORIGIN 25 50
+IF (<LOCAL.STAFF>)
+	BUTTON +0 +0 4005 4007 1 0 20
+	DTEXT +35 +0 <QVAL (<SRC.DCTAG0.TicketFilter> == 0) ? 044 : 0> Açık
+	BUTTON +110 +0 4005 4007 1 0 21
+	DTEXT +145 +0 <QVAL (<SRC.DCTAG0.TicketFilter> == 1) ? 044 : 0> Cevap bekleyen
+	BUTTON +290 +0 4005 4007 1 0 22
+	DTEXT +325 +0 <QVAL (<SRC.DCTAG0.TicketFilter> == 2) ? 044 : 0> Kapalı
+	BUTTON +420 +0 4005 4007 1 0 23
+	DTEXT +455 +0 <QVAL (<SRC.DCTAG0.TicketFilter> == 3) ? 044 : 0> Hepsi
+	DHTMLGUMP +35 +35 60 22 1 0 <DEF.CENTER>NO<DEF.CENTERE>
+	DHTMLGUMP +100 +35 170 22 1 0 <DEF.CENTER>HESAP (KARAKTER)<DEF.CENTERE>
+	DHTMLGUMP +275 +35 90 22 1 0 <DEF.CENTER>DURUM<DEF.CENTERE>
+	DHTMLGUMP +370 +35 175 22 1 0 <DEF.CENTER>SON DEĞİŞİKLİK<DEF.CENTERE>
+ELSE
+	BUTTON +0 +0 4005 4007 1 0 2
+	DTEXT +35 +0 044 Yeni ticket aç
+	DHTMLGUMP +35 +35 60 22 1 0 <DEF.CENTER>NO<DEF.CENTERE>
+	DHTMLGUMP +100 +35 90 22 1 0 <DEF.CENTER>DURUM<DEF.CENTERE>
+	DHTMLGUMP +195 +35 350 22 1 0 <DEF.CENTER>KONU<DEF.CENTERE>
+ENDIF
+
+LOCAL.Y=62
+FOR 0 <EVAL <LOCAL.PAGELEN>-1>
+	SRC.CTAG0.TicketRow.<dLOCAL._FOR>=
+	IF (<LOCAL.STAFF>)
+		LOCAL.ID=<SERV.TICKETLIST <dLOCAL.MASK>,,<EVAL <LOCAL.FIRST>+<LOCAL._FOR>>,1>
+	ELSE
+		LOCAL.ID=<SERV.TICKETLIST 0,<ACCOUNT.NAME>,<EVAL <LOCAL.FIRST>+<LOCAL._FOR>>,1>
+	ENDIF
+	IF (<LOCAL.ID>)
+		SRC.CTAG0.TicketRow.<dLOCAL._FOR>=<dLOCAL.ID>
+		BUTTON +0 +<dLOCAL.Y> 4005 4007 1 0 <EVAL 100+<LOCAL._FOR>>
+		DTEXT +40 +<dLOCAL.Y> 0 #<dLOCAL.ID>
+		IF (<LOCAL.STAFF>)
+			DTEXT +100 +<dLOCAL.Y> 0 <STRLIMIT 26,<SERV.TICKET.<dLOCAL.ID>.ACCOUNT> (<SERV.TICKET.<dLOCAL.ID>.CHARNAME>)>
+			IF (<SERV.TICKET.<dLOCAL.ID>.WAITING>)
+				DTEXT +275 +<dLOCAL.Y> 038 <SERV.TICKET.<dLOCAL.ID>.STATUSNAME> *
+			ELSE
+				DTEXT +275 +<dLOCAL.Y> 0 <SERV.TICKET.<dLOCAL.ID>.STATUSNAME>
+			ENDIF
+			DTEXT +370 +<dLOCAL.Y> 0 <SERV.RTICKS.FORMAT <SERV.TICKET.<dLOCAL.ID>.UPDATED>,%d.%m.%Y %H:%M>
+		ELSE
+			DTEXT +100 +<dLOCAL.Y> 0 <SERV.TICKET.<dLOCAL.ID>.STATUSNAME>
+			IF (<SERV.TICKET.<dLOCAL.ID>.UNREAD>)
+				DTEXT +195 +<dLOCAL.Y> 044 (<SERV.TICKET.<dLOCAL.ID>.UNREAD> yeni) <STRLIMIT 34,<SERV.TICKET.<dLOCAL.ID>.MESSAGE.0.TEXT>>
+			ELSE
+				DTEXT +195 +<dLOCAL.Y> 0 <STRLIMIT 44,<SERV.TICKET.<dLOCAL.ID>.MESSAGE.0.TEXT>>
+			ENDIF
+		ENDIF
+		LOCAL.Y=<EVAL <LOCAL.Y>+28>
+	ENDIF
+ENDFOR
+IF !(<LOCAL.COUNT>)
+	DTEXT +40 +62 0389 Ticket yok.
+ENDIF
+
+LOCAL.Y=<EVAL 72+(<LOCAL.PAGELEN>*28)>
+IF (<LOCAL.PAGES> > 1)
+	IF (<SRC.DCTAG0.TicketPage> > 0)
+		BUTTON +0 +<dLOCAL.Y> 5603 5607 1 0 10
+	ENDIF
+	DTEXT +25 +<dLOCAL.Y> 0 Sayfa <EVAL <SRC.DCTAG0.TicketPage>+1> / <dLOCAL.PAGES>
+	IF (<EVAL <SRC.DCTAG0.TicketPage>+1> < <LOCAL.PAGES>)
+		BUTTON +110 +<dLOCAL.Y> 5601 5605 1 0 11
+	ENDIF
+ENDIF
+IF (<LOCAL.STAFF>)
+	DTEXT +200 +<dLOCAL.Y> 0389 * staff'tan cevap bekliyor
+ENDIF
+
+[DIALOG d_ticket BUTTON]
+ON=0
+
+// Yeni ticket
+ON=2
+SRC.DIALOGCLOSE d_ticket_new
+SRC.DIALOG d_ticket_new
+
+// Sayfalar
+ON=10
+IF (<SRC.DCTAG0.TicketPage> > 0)
+	SRC.CTAG0.TicketPage=<EVAL <SRC.DCTAG0.TicketPage>-1>
+ENDIF
+SRC.TICKET
+
+ON=11
+SRC.CTAG0.TicketPage=<EVAL <SRC.DCTAG0.TicketPage>+1>
+SRC.TICKET
+
+// Staff'ın süzgeci
+ON=20 23
+SRC.CTAG0.TicketFilter=<EVAL <ARGN>-20>
+SRC.CTAG0.TicketPage=
+SRC.TICKET
+
+// Bir ticket
+ON=100 199
+LOCAL.ID=<SRC.CTAG0.TicketRow.<EVAL <ARGN>-100>>
+IF (<LOCAL.ID>)
+	SRC.CTAG0.TicketView=<dLOCAL.ID>
+	SRC.CTAG0.TicketConfirm=
+	SRC.DIALOGCLOSE d_ticket_view
+	SRC.DIALOG d_ticket_view
+ENDIF
+
+
+// Yeni ticket.
+[DIALOG d_ticket_new]
+<DEF.DlgStartPos>
+RESIZE 0,0,460,270,Yeni Ticket
+DORIGIN 25 50
+DHTMLGUMP +0 +0 410 40 0 0 Sorununu ya da isteğini yaz (en çok <EVAL <SERV.TICKETMAXLENGTH>> harf). Staff cevap verince haber alırsın; .ticket ile takip edebilirsin.
+RESIZEPIC +0 +45 3000 410 110
+DTEXTENTRYLIMITED +5 +50 400 100 0 1 <EVAL <SERV.TICKETMAXLENGTH>>
+BUTTON +0 +170 4023 4024 1 0 1
+DTEXT +35 +170 044 Gönder
+BUTTON +230 +170 4017 4018 1 0 0
+DTEXT +265 +170 038 Vazgeç
+
+[DIALOG d_ticket_new BUTTON]
+ON=0
+
+ON=1
+// Kurallar (boş, çok uzun, açık ticket sınırı) ve mesajlar emulatörün; açıldıysa ticket gösterilir.
+LOCAL.LAST=<SERV.LASTNEWTICKET>
+SRC.TICKETNEW <ARGTXT[1]>
+IF (<SERV.LASTNEWTICKET> != <LOCAL.LAST>)
+	SRC.CTAG0.TicketView=<SERV.LASTNEWTICKET>
+	SRC.CTAG0.TicketConfirm=
+	SRC.DIALOGCLOSE d_ticket_view
+	SRC.DIALOG d_ticket_view
+ENDIF
+
+
+// Bir ticket: bilgiler, mesajlar (en yeni önce, sayfa başına 3), cevap ve komutlar. Numarası SRC.CTAG0.TicketView.
+[DIALOG d_ticket_view]
+<DEF.DlgStartPos>
+LOCAL.ID=<SRC.DCTAG0.TicketView>
+LOCAL.STAFF=0
+IF (<ACCOUNT.PLEVEL> >= <SERV.TICKETSTAFFPLEVEL>)
+	LOCAL.STAFF=1
+ENDIF
+LOCAL.OK=0
+IF (<LOCAL.ID>)
+	IF (<SERV.TICKET.<dLOCAL.ID>>)
+		IF (<LOCAL.STAFF>)
+			LOCAL.OK=1
+		ELSEIF !(STRCMPI("<SERV.TICKET.<dLOCAL.ID>.ACCOUNT>","<ACCOUNT.NAME>"))
+			LOCAL.OK=1
+		ENDIF
+	ENDIF
+ENDIF
+IF !(<LOCAL.OK>)
+	RESIZE 0,0,360,140,Destek
+	DHTMLGUMP 30 60 300 40 0 0 <DEF.CENTER>Ticket bulunamadı.<DEF.CENTERE>
+ELSE
+	// Okunmamış cevaplar okundu (sadece sahibinin okuması sayılır).
+	SERV.TICKET.<dLOCAL.ID>.READ
+	LOCAL.CLOSED=0
+	IF (<SERV.TICKET.<dLOCAL.ID>.STATUS> == <DEF.ticket_status_closed>)
+		LOCAL.CLOSED=1
+	ENDIF
+	RESIZE 0,0,560,<QVAL (<LOCAL.STAFF>) ? 600 : 560>,Ticket #<dLOCAL.ID>
+	DTEXT 25 50 0 Durum: <SERV.TICKET.<dLOCAL.ID>.STATUSNAME>
+	DTEXT 280 50 0 Açılış: <SERV.RTICKS.FORMAT <SERV.TICKET.<dLOCAL.ID>.CREATED>,%d.%m.%Y %H:%M>
+	DTEXT 280 70 0 Son: <SERV.RTICKS.FORMAT <SERV.TICKET.<dLOCAL.ID>.UPDATED>,%d.%m.%Y %H:%M>
+	IF (<LOCAL.STAFF>)
+		REF1=<SERV.TICKET.<dLOCAL.ID>.CHARUID>
+		IF (<REF1>)
+			IF (<REF1.ISONLINE>)
+				DTEXT 25 70 044 <SERV.TICKET.<dLOCAL.ID>.ACCOUNT> (<REF1.NAME>, çevrimiçi)
+			ELSE
+				DTEXT 25 70 0 <SERV.TICKET.<dLOCAL.ID>.ACCOUNT> (<REF1.NAME>, çevrimdışı)
+			ENDIF
+			BUTTON 25 92 4005 4007 1 0 6
+			DTEXT 60 92 0 Karaktere git
+		ELSE
+			DTEXT 25 70 0389 <SERV.TICKET.<dLOCAL.ID>.ACCOUNT> (<SERV.TICKET.<dLOCAL.ID>.CHARNAME>, silinmiş)
+		ENDIF
+		IF !(<ISEMPTY <SERV.TICKET.<dLOCAL.ID>.P>>)
+			BUTTON 180 92 4005 4007 1 0 7
+			DTEXT 215 92 0 Açıldığı yere git (<SERV.TICKET.<dLOCAL.ID>.P>)
+		ENDIF
+	ENDIF
+
+	// Cevap ve komutlar (bütün sayfalarda).
+	RESIZEPIC 25 400 3000 510 75
+	DTEXTENTRYLIMITED 30 405 500 65 0 1 <EVAL <SERV.TICKETMAXLENGTH>>
+	IF !(<LOCAL.CLOSED>) || (<LOCAL.STAFF>)
+		BUTTON 25 485 4023 4024 1 0 1
+		DTEXT 60 485 044 Gönder
+	ENDIF
+	IF (<LOCAL.STAFF>)
+		BUTTON 140 485 4011 4012 1 0 2
+		DTEXT 175 485 0 Not ekle (oyuncu görmez)
+	ENDIF
+	IF (<LOCAL.CLOSED>)
+		BUTTON 360 485 4005 4007 1 0 4
+		DTEXT 395 485 044 Yeniden aç
+	ELSE
+		BUTTON 360 485 4017 4018 1 0 3
+		DTEXT 395 485 038 Kapat
+	ENDIF
+	BUTTON 25 515 4014 4015 1 0 8
+	DTEXT 60 515 0 Listeye dön
+	IF (<LOCAL.STAFF>)
+		DTEXT 25 545 0 Durum:
+		BUTTON 80 545 4005 4007 1 0 10
+		DTEXT 115 545 0 <DEFMSG.ticket_status_new>
+		BUTTON 180 545 4005 4007 1 0 11
+		DTEXT 215 545 0 <DEFMSG.ticket_status_open>
+		BUTTON 280 545 4005 4007 1 0 12
+		DTEXT 315 545 0 <DEFMSG.ticket_status_progress>
+		BUTTON 420 545 4017 4018 1 0 5
+		IF (<SRC.DCTAG0.TicketConfirm> == <LOCAL.ID>)
+			DTEXT 455 545 038 Emin misin?
+		ELSE
+			DTEXT 455 545 038 Sil
+		ENDIF
+	ENDIF
+
+	// Mesajlar: en yeni önce, sayfa başına 3; oyuncu notları görmez.
+	LOCAL.N=<SERV.TICKET.<dLOCAL.ID>.MESSAGES>
+	LOCAL.SHOWN=0
+	LOCAL.GPAGE=1
+	PAGE 1
+	FOR 0 <EVAL <LOCAL.N>-1>
+		LOCAL.M=<EVAL <LOCAL.N>-1-<LOCAL._FOR>>
+		LOCAL.NOTE=<SERV.TICKET.<dLOCAL.ID>.MESSAGE.<dLOCAL.M>.NOTE>
+		IF !(<LOCAL.NOTE>) || (<LOCAL.STAFF>)
+			IF (<LOCAL.SHOWN> > 0) && !(<EVAL <LOCAL.SHOWN>%3>)
+				BUTTON 510 370 5601 5605 0 <EVAL <LOCAL.GPAGE>+1> 0
+				LOCAL.GPAGE=<EVAL <LOCAL.GPAGE>+1>
+				PAGE <dLOCAL.GPAGE>
+				BUTTON 25 370 5603 5607 0 <EVAL <LOCAL.GPAGE>-1> 0
+			ENDIF
+			LOCAL.Y=<EVAL 120+((<LOCAL.SHOWN>%3)*83)>
+			LOCAL.NAME=<SERV.TICKET.<dLOCAL.ID>.MESSAGE.<dLOCAL.M>.CHARNAME>
+			IF (<ISEMPTY <LOCAL.NAME>>)
+				LOCAL.NAME=Sistem
+			ENDIF
+			LOCAL.WHEN=<SERV.RTICKS.FORMAT <SERV.TICKET.<dLOCAL.ID>.MESSAGE.<dLOCAL.M>.TIME>,%d.%m.%Y %H:%M>
+			IF (<LOCAL.NOTE>)
+				DTEXT 25 <dLOCAL.Y> 0389 [Not] <LOCAL.NAME> - <LOCAL.WHEN>
+			ELSEIF (<SERV.TICKET.<dLOCAL.ID>.MESSAGE.<dLOCAL.M>.STAFF>)
+				DTEXT 25 <dLOCAL.Y> 044 <LOCAL.NAME> (staff) - <LOCAL.WHEN>
+			ELSE
+				DTEXT 25 <dLOCAL.Y> 0 <LOCAL.NAME> - <LOCAL.WHEN>
+			ENDIF
+			DHTMLGUMP 25 <EVAL <LOCAL.Y>+20> 510 58 1 1 <SERV.TICKET.<dLOCAL.ID>.MESSAGE.<dLOCAL.M>.TEXT>
+			LOCAL.SHOWN=<EVAL <LOCAL.SHOWN>+1>
+		ENDIF
+	ENDFOR
+ENDIF
+
+[DIALOG d_ticket_view BUTTON]
+ON=0
+SRC.CTAG0.TicketConfirm=
+
+// Cevap
+ON=1
+SRC.CTAG0.TicketConfirm=
+LOCAL.ID=<SRC.DCTAG0.TicketView>
+IF (<LOCAL.ID>)
+	SERV.TICKET.<dLOCAL.ID>.REPLY <ARGTXT[1]>
+	SRC.DIALOG d_ticket_view
+ENDIF
+
+// Staff notu
+ON=2
+SRC.CTAG0.TicketConfirm=
+LOCAL.ID=<SRC.DCTAG0.TicketView>
+IF (<LOCAL.ID>)
+	SERV.TICKET.<dLOCAL.ID>.NOTE <ARGTXT[1]>
+	SRC.DIALOG d_ticket_view
+ENDIF
+
+// Kapat
+ON=3
+SRC.CTAG0.TicketConfirm=
+LOCAL.ID=<SRC.DCTAG0.TicketView>
+IF (<LOCAL.ID>)
+	SERV.TICKET.<dLOCAL.ID>.CLOSE
+	SRC.DIALOG d_ticket_view
+ENDIF
+
+// Yeniden aç
+ON=4
+SRC.CTAG0.TicketConfirm=
+LOCAL.ID=<SRC.DCTAG0.TicketView>
+IF (<LOCAL.ID>)
+	SERV.TICKET.<dLOCAL.ID>.REOPEN
+	SRC.DIALOG d_ticket_view
+ENDIF
+
+// Sil (staff, ikinci basışta)
+ON=5
+LOCAL.ID=<SRC.DCTAG0.TicketView>
+IF !(<LOCAL.ID>)
+	RETURN 1
+ENDIF
+IF (<SRC.DCTAG0.TicketConfirm> != <LOCAL.ID>)
+	SRC.CTAG0.TicketConfirm=<dLOCAL.ID>
+	SRC.DIALOG d_ticket_view
+	RETURN 1
+ENDIF
+SRC.CTAG0.TicketConfirm=
+SERV.TICKET.<dLOCAL.ID>.DELETE
+SRC.TICKET
+
+// Karaktere git (staff)
+ON=6
+LOCAL.ID=<SRC.DCTAG0.TicketView>
+IF (<ACCOUNT.PLEVEL> < <SERV.TICKETSTAFFPLEVEL>) || !(<SERV.TICKET.<dLOCAL.ID>>)
+	RETURN 1
+ENDIF
+REF1=<SERV.TICKET.<dLOCAL.ID>.CHARUID>
+IF (<REF1>)
+	SRC.GO <REF1.P>
+ENDIF
+SRC.DIALOG d_ticket_view
+
+// Açıldığı yere git (staff)
+ON=7
+LOCAL.ID=<SRC.DCTAG0.TicketView>
+IF (<ACCOUNT.PLEVEL> < <SERV.TICKETSTAFFPLEVEL>) || !(<SERV.TICKET.<dLOCAL.ID>>)
+	RETURN 1
+ENDIF
+SRC.GO <SERV.TICKET.<dLOCAL.ID>.P>
+SRC.DIALOG d_ticket_view
+
+// Listeye dön
+ON=8
+SRC.CTAG0.TicketConfirm=
+SRC.TICKET
+
+// Durum (staff): 10 yeni, 11 açık, 12 işlemde
+ON=10 12
+SRC.CTAG0.TicketConfirm=
+LOCAL.ID=<SRC.DCTAG0.TicketView>
+IF (<LOCAL.ID>)
+	SERV.TICKET.<dLOCAL.ID>.STATUS <EVAL <ARGN>-10>
+	SRC.DIALOG d_ticket_view
+ENDIF
+
+
+[EOF]

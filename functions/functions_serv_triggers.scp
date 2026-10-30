@@ -90,6 +90,7 @@ f_onserver_restock
 f_onserver_tick_slow
 f_onserver_gc
 f_onserver_gmpage
+f_onserver_ticket
 f_onserver_console_cmd
 f_onserver_http_request
 f_onserver_script_error
@@ -890,6 +891,33 @@ ENDIF
 //       ARGO          --> page (<ARGO.REASON>, <ARGO.P>, <ARGO.TIME>, <ARGO.ACCOUNT>)
 //       LOCAL.Account --> page'i açan hesap
 //       LOCAL.Char    --> page'i açan karakter (UID)
+
+
+[FUNCTION f_onserver_ticket]
+// EN: 56TX. Called when a ticket is opened, a message or a note is written to it, its status changes (closing and
+//     reopening included) or it is about to be deleted. Called after the action; when deleting, before the ticket
+//     leaves the list (its values can be read, commands are refused). Tickets: dialogs/dialogs_ticket.scp.
+//     Variables:
+//       SRC           --> who did it: a player, staff or the server
+//       ARGS          --> text of the message (opened, message, note)
+//       ARGN1         --> 0 deleting, 1 opened, 2 message, 3 note, 4 status (ticket_event_*)
+//       ARGN2         --> status: the old status (ticket_status_*); opened, message, note: index of the message
+//       ARGN3         --> 1 if staff did it
+//       ARGO          --> the ticket (<ARGO.ID>, <ARGO.STATUS>, <ARGO.MESSAGE.n.TEXT>, ARGO.REPLY ...)
+//       LOCAL.Account --> the ticket's account
+//       LOCAL.Char    --> character that opened the ticket (UID)
+// TR: 56TX. Ticket açılınca, ona mesaj ya da not yazılınca, durumu değişince (kapatma ve yeniden açma dahil) ya da
+//     silinecekken çağrılır. İşten sonra; silmede ticket listeden çıkmadan önce (değerleri okunur, komut verilemez).
+//     Ticket'lar: dialogs/dialogs_ticket.scp.
+//     Değişkenler:
+//       SRC           --> işi yapan: oyuncu, staff ya da sunucu
+//       ARGS          --> mesajın metni (açılış, mesaj, not)
+//       ARGN1         --> 0 silinecek, 1 açıldı, 2 mesaj, 3 not, 4 durum (ticket_event_*)
+//       ARGN2         --> durum: eski durum (ticket_status_*); açılış, mesaj, not: mesajın sırası
+//       ARGN3         --> işi staff yaptıysa 1
+//       ARGO          --> ticket (<ARGO.ID>, <ARGO.STATUS>, <ARGO.MESSAGE.n.TEXT>, ARGO.REPLY ...)
+//       LOCAL.Account --> ticket'ın hesabı
+//       LOCAL.Char    --> ticket'ı açan karakter (UID)
 
 
 [FUNCTION f_onserver_console_cmd]

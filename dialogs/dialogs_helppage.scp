@@ -21,8 +21,8 @@ DHTMLGUMP 10 10 400 25 1 0 <DEF.CENTER><serv.name> Help Menu<DEF.CENTERE>
 
 DORIGIN 20 40
 
-BUTTON +0 +0 4006 4007 0 2 2 
-DHTMLGUMP +30 +0 100 25 1 0 GMPage
+BUTTON +0 +0 4006 4007 0 2 2
+DHTMLGUMP +30 +0 100 25 1 0 Destek
 
 BUTTON +0 +30 4006 4007 0 3 3
 DHTMLGUMP +30 +30 100 25 1 0 Stuck
@@ -33,6 +33,9 @@ DHTMLGUMP +30 +60 100 25 1 0 Durum
 BUTTON +0 +90 4006 4007 1 0 1
 DHTMLGUMP +30 +90 100 25 1 0 Web
 
+BUTTON +0 +120 4006 4007 1 0 23
+DHTMLGUMP +30 +120 100 25 1 0 Ticket'larım
+
 
 // MAIN
 PAGE 1
@@ -40,25 +43,17 @@ DORIGIN 160 40
 DHTMLGUMP +0 +0 240 115 1 1 <DEF.CENTER><SERV.NAME> sunucusuna hoşgeldin <SRC.NAME>!<DEF.CENTERE><DEF.BR>Skillcap: <FVAL <SRC.SKILLCLASS.SKILLSUM>>, Statcap: <SRC.SKILLCLASS.STATSUM> olarak ayarlanmıştır.
 
 
-// GMPAGE
+// Destek: yeni ticket (dialogs/dialogs_ticket.scp; emulatörün ticket'ları, GM page değil)
 PAGE 2
 DORIGIN 160 40
 
-IF !(<FINDID.I_GMPAGE>)
-    DHTMLGUMP +0 +0 230 40 0 0 <DEF.CENTER>Lütfen sorununuzun kısa bir açıklamasını (en fazla 240 karakter) girin:<DEF.CENTERE>
-    RESIZEPIC +0 +50 2620 230 100
+DHTMLGUMP +0 +0 230 40 0 0 <DEF.CENTER>Sorununu kısaca yaz (en çok <EVAL <SERV.TICKETMAXLENGTH>> harf):<DEF.CENTERE>
+RESIZEPIC +0 +50 2620 230 100
 
-    DTEXTENTRYLIMITED +10 +60 230 100 1153 0 240
+DTEXTENTRYLIMITED +10 +60 210 80 1153 0 <EVAL <SERV.TICKETMAXLENGTH>>
 
-    BUTTON +0 +160 2076 2075 1 0 20
-    BUTTON +170 +160 2073 2072 1 0 21
-ELSE
-    DHTMLGUMP +0 +0 230 40 0 0 <DEF.CENTER>Zaten bir GMPage göndermişsiniz. Lütfen yanıtlanamsını bekleyin veya GMPagenizi silin.<DEF.CENTERE>
-    RESIZEPIC +0 +50 2620 230 100
-	DHTMLGUMP +10 +60 230 100 0 0 <DEF.BFONT_WHITE><FINDID.I_GMPAGE.TAG0.CONTENT>
-
-    BUTTON +170 +160 2073 2072 1 0 22
-ENDIF
+BUTTON +0 +160 2076 2075 1 0 20
+BUTTON +170 +160 2073 2072 1 0 21
 
 
 
@@ -81,7 +76,7 @@ DHTMLGUMP +0 +0 120 25 1 0 Clients: <SERV.CLIENTS>
 DHTMLGUMP +0 +30 120 25 1 0 Accounts: <NumberFormat <SERV.ACCOUNTS>>
 DHTMLGUMP +0 +60 120 25 1 0 Items: <NumberFormat <SERV.ITEMS>>
 DHTMLGUMP +0 +90 120 25 1 0 Chars: <NumberFormat <SERV.CHARS>>
-DHTMLGUMP +0 +120 120 25 1 0 Page: <GMPAGESEQ>
+DHTMLGUMP +0 +120 120 25 1 0 Ticket: <SERV.TICKETCOUNT <DEF.ticket_mask_waiting>>
 DHTMLGUMP +0 +150 120 25 1 0 Guild: <SERV.GUILDS>
 
 DORIGIN 283 40
@@ -96,22 +91,17 @@ DHTMLGUMP +0 +120 120 25 1 0 Memory: <EVAL <SERV.MEM>/1024> MB
 ON=1
 Weblink <SERV.URL>
 
-// GMPage: Send
+// Destek: gönder (kurallar ve mesajlar emulatörün)
 ON=20
-GMPAGEADD <ARGTXT[0]>
+TICKETNEW <ARGTXT[0]>
 
-// GMPage: Cancel
+// Destek: vazgeç
 ON=21
-SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, GMPage'den vazgecildi.
+SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Destek isteğinden vazgeçildi.
 
-// GMPage: Delete
-ON=22
-IF (<FINDID.I_GMPAGE>)
-    FINDID.I_GMPAGE.REMOVE
-    SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Gönderdiginiz GMPageyi sildiniz.
-ELSE
-    SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, Göndermis oldugunuz GMPage bulunmuyor.
-ENDIF
+// Ticket'larım
+ON=23
+TICKET
 
 
 // Stuck
