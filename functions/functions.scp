@@ -648,28 +648,6 @@ DIALOG D_SPELLBOOK
 
 
 
-// Packet Build
-// BYTE[1] type (See Notes)
-// BYTE[1] num (number of weather effects on screen)
-// BYTE[1] temperature
-[FUNCTION FUNC_WEATHER]
-IF (<ISPLAYER> && <ISONLINE>)
-	IF (<ISEMPTY <ARGS>>)
-		SENDPACKET 065 0FF 00 00  // WT_INVALID_0
-		SENDPACKET 065 0FE 00 00  // WT_INVALID_1
-	ELSEIF (<ARGS> == 1)
-		SENDPACKET 065 000 50 00 // It starts to rain // WT_RAIN
-	ELSEIF (<ARGS> == 2)
-		SENDPACKET 065 001 50 00 // A fierce storm approaches. // WT_STORM_APPROACH
-	ELSEIF (<ARGS> == 3)
-		SENDPACKET 065 002 50 00 // It begins to snow // WT_SNOW
-	ELSEIF (<ARGS> >= 4)
-		SENDPACKET 065 003 50 00 // "A storm is brewing. // WT_STORM_BREWING
-	ENDIF
-ENDIF
-
-
-
 // Season Flag:
 // 0: Spring == ilkbahar
 // 1: Summer == yaz
@@ -731,16 +709,6 @@ ENDIF
 
 
 
-
-
-
-[FUNCTION SPELLCIRCLE] // Büyülerin kaçıncı circle olduğunu döndürür.
-//ARGN1=SPELL NUMBER
-IF (<ARGN1> >= 1) && (<ARGN1> <= 64) //ONLY WITH DEFAULT (MAGE) SPELLS
-	RETURN <EVAL ((<ARGN1>-1)/8)+1>
-ELSE
-	RETURN 1
-ENDIF
 
 
 
@@ -1007,18 +975,6 @@ ENDIF
 
 UpdateAllForce
 
-
-
-
-
-
-
-[function PaperdollReOpen]
-IF (<ISONLINE>)
-	CLOSEPAPERDOLL
-	OPENPAPERDOLL
-	// UPDATE
-ENDIF
 
 
 

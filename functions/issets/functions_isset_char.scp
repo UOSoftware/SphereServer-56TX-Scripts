@@ -2,17 +2,6 @@
 
 
 
-[FUNCTION Food_GetLevelPercent]
-LOCAL.MAX = <MAXFOOD>
-IF (<DLOCAL.MAX> == 0)
-	RETURN 100
-ENDIF
-return <MulDiv <food>, 100, <dLOCAL.MAX>>
-
-
-
-
-
 [FUNCTION JobKey]
 IF (STRMATCH('Animal Trainer','<JOB>'))
 	LOCAL.Job Animal_Trainer
