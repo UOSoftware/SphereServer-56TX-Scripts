@@ -14,6 +14,44 @@ This file contains custom monsters that are NOT based on human/elf bodies.
 /////////////
 
 
+[CHARDEF c_elemental_lava_aos]
+DEFNAME=c_elemental_lava_aos
+DEFNAME2=c_m_elem_lava
+NAME=Lava Elemental
+ID=c_elemental_water_summoned
+SOUND=snd_ELEMENTL_WATREL1
+DAM=8,24
+ARMOR=20
+RESOURCES=
+CAN=MT_WALK|MT_FIRE_IMMUNE
+CATEGORY=Monsters
+SUBSECTION=Elementals
+DESCRIPTION=Lava Elemental
+BLOODCOLOR=-1
+TEVENTS=e_generic_npcs
+
+ON=@Create
+NPC=BRAIN_MONSTER
+
+COLOR=colors_blood
+
+STR={230 290}
+DEX={76 85}
+INT={190 315}
+
+PARRYING={85.0 95.0}
+MAGERY={85.0 100.0}
+MAGICRESISTANCE={80.0 95.0}
+TACTICS={80.0 100.0}
+WRESTLING={80.0 100.0}
+
+FAME={1000 2000}
+KARMA={-5000 -5999}
+
+ON=@NPCRESTOCK
+TAG0.LOOT=loot_elem_blood
+ITEM=loot_elem_blood
+
 // Wyvern
 
 [CHARDEF c_wyvern_aos]
@@ -311,7 +349,7 @@ ITEM=loot_ancient_wyrm
 // Ice Wyrm
 [CHARDEF c_dragon_ice_aos]
 DEFNAME=c_dragon_ice_aos
-DEFNAME2=c_dragon_ice
+//DEFNAME2=c_dragon_ice
 NAME=Ice Dragon
 ID=C_DRAGON
 DAM=25,40

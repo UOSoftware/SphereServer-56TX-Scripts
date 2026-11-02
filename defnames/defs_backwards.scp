@@ -287,7 +287,6 @@ bufficon_gargoylefly			passivebufficon_gargoylefly
 
 NAMES_SAVAGE={ NAMES_SAVAGE_MALE 1 NAMES_SAVAGE_FEMALE 1 }
 
-
 // 56d
 // Miscellaneous
 i_map							i_map_blank
@@ -432,6 +431,10 @@ i_CHECKERS_PILE_RED i_checkers_red
 i_BRUSH_HORSE_3 i_brush_horse_2
 i_bench_5 i_bench_stone
 
+
+
+
+
 //////////////////
 // Chardefs 
 //////////////////
@@ -563,8 +566,10 @@ c_elem_snow c_elemental_snow
 i_pet_ostard_zostrich I_PET_OSTARD_FRENZIED_2
 c_ice_serpent c_serpent_ice
 c_lava_serpent c_serpent_lava
-
 c_h_frostelf_archer c_frostelf_archer
+
+
+
 
 
 // Translate defnames used in 56c to the currently used ones

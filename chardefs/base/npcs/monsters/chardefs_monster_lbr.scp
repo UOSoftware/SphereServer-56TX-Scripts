@@ -4301,7 +4301,7 @@ ITEM=loot_bogle
 
 [CHARDEF 0308]
 DEFNAME=c_daemon_horde_minion
-DEFNAME2=c_horde_minion_small
+DEFNAMES=c_demon_horde_minion,c_horde_minion_small
 NAME=Horde Minion
 SOUND=357
 ICON=i_pet_demon_horde

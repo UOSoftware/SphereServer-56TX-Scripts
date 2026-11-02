@@ -362,6 +362,7 @@ ITEM=random_reagent,3
 
 [CHARDEF 09]
 DEFNAME=c_daemon
+DEFNAME2=c_demon_summoned
 NAME=#NAMES_DAEMON the Daemon
 SOUND=snd_monster_daemon1
 ICON=i_pet_demon
@@ -412,6 +413,7 @@ ITEM=random_second_circle
 
 [CHARDEF 0a]	//This is the  LBR graphic of the daemon that replaced the cooler sword-wielding daemon.
 DEFNAME=c_daemon_2
+DEFNAME2=c_demon
 NAME=#NAMES_DAEMON
 SOUND=snd_monster_daemon1
 ICON=i_pet_demon

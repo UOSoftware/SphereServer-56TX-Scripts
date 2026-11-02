@@ -4,6 +4,93 @@
 //****************************************************************************
 VERSION=TX
 
+
+[CHARDEF c_teacher]
+ID=c_man
+NAME=#NAMES_HUMANMALE the Teacher
+CATEGORY=Civilized
+SUBSECTION=Teacher
+DESCRIPTION=Teacher (human male)
+// TSPEECH=spk_generic_npc_vendor_teachers
+// TSPEECH=spk_generic_npc_vendors
+// TEVENTS=e_generic_npcs
+// TEVENTS=e_generic_npc_vendors
+// TEVENTS=e_generic_npc_vendor_teachers
+TAG0.SIGNID=0B95
+BLOODCOLOR=-1
+
+ON=@Create
+COLOR=colors_skin
+
+NPC=Brain_NONE
+
+NEED=i_gold
+STR={85 95}
+DEX={45 55}
+INT={45 55}
+
+ALLSKILLS=300
+THROWING=0
+NECROMANCY=0
+
+ITEMNEWBIE=random_light
+ITEMNEWBIE=random_male_hair
+COLOR=colors_hair
+ITEMNEWBIE=random_facial_hair,1,R5
+COLOR=match_hair
+ITEM=random_shirts_human
+COLOR=colors_all
+ITEM=random_pants_human
+COLOR=colors_all
+ITEM=random_boots_human
+COLOR=colors_neutral
+ITEM=i_apron_full
+COLOR=colors_red
+ITEM={ i_cap 1 i_bandana 1 i_skull_cap 1 }
+COLOR=colors_red
+
+ 
+[CHARDEF c_teacher_f]
+ID=c_woman
+NAME=#NAMES_HUMANFEMALE the Teacher
+CATEGORY=Teacher
+SUBSECTION=Teacher
+DESCRIPTION=Teacher (human female)
+// TSPEECH=spk_generic_npc_vendor_teachers
+// TEVENTS=e_generic_npcs
+// TEVENTS=e_generic_npc_vendors
+// TEVENTS=e_generic_npc_vendor_teachers
+TAG0.SIGNID=0B95
+BLOODCOLOR=-1
+
+ON=@Create
+COLOR=colors_skin
+
+NPC=Brain_NONE
+
+NEED=i_gold
+STR={85 95}
+DEX={45 55}
+INT={45 55}
+
+ALLSKILLS=300
+THROWING=0
+NECROMANCY=0
+
+ITEMNEWBIE=random_light
+ITEMNEWBIE=random_female_hair
+COLOR=colors_hair
+ITEM=random_shirts_human
+COLOR=colors_all
+ITEM=random_skirts_human
+COLOR=colors_all
+ITEM=i_boots_calf
+COLOR=colors_neutral
+ITEM=i_apron_full
+COLOR=colors_red
+ITEM={ i_cap 1 i_bandana 1 i_skull_cap 1 }
+COLOR=colors_red
+
 [CHARDEF c_vendor]
 ID=C_MAN
 NAME=#NAMES_HUMANMALE the Vendor
@@ -2505,6 +2592,108 @@ ON=@NPCRestock
    BUY=i_axe_battle_large,{5 10}
    BUY=i_axe_two_hand,{5 10}
    BUY=i_ornate_axe,{5 10}
+
+
+[CHARDEF C_MAGE_HIGH]
+DEFNAME=C_MAGE_HIGH
+DEFNAME2=C_HIGHMAGE
+ID=c_man
+NAME=#NAMES_HUMANMALE the High Mage
+CATEGORY=Civilized
+SUBSECTION=Tradesmen
+DESCRIPTION=High Mage (human male)
+TSPEECH=spk_generic_npc_vendors
+TSPEECH=spk_generic_npc_vendor_shopkeepers
+TSPEECH=spk_generic_npc_vendor_teachers
+
+TEVENTS=e_generic_npcs
+TEVENTS=e_generic_npc_vendors
+TEVENTS=e_generic_npc_vendor_shopkeepers
+BLOODCOLOR=-1
+
+ON=@Create
+NPC=brain_vendor
+COLOR=colors_skin
+NEED=i_gold
+
+STR={996 998}
+DEX=190
+INT={466 480}
+
+FENCING={15.0 38.0}
+PARRYING={45.0 68.0}
+SWORDSMANSHIP={15.0 38.0}
+WRESTLING={95.0 98.0}
+MACEFIGHTING={15.0 38.0}
+MAGICRESISTANCE={45.0 68.0}
+TACTICS={95.0 98.0}
+
+ITEMNEWBIE=i_lantern
+ITEMNEWBIE=random_male_hair
+COLOR=colors_hair
+ITEMNEWBIE=random_facial_hair
+COLOR=match_hair
+ITEM=i_shirt_plain
+COLOR=colors_all
+ITEM=random_pants
+COLOR=colors_all
+ITEM=random_shoes
+COLOR=colors_neutral
+ITEM=random_coin_purse
+
+ON=@NPCRESTOCK
+SELL=VENDOR_S_MAGE_HIGH
+
+
+[CHARDEF c_mage_high_f]
+DEFNAME=c_mage_high_f
+DEFNAME2=c_highmage_f
+ID=c_woman
+NAME=#NAMES_HUMANFEMALE the High Mage
+CATEGORY=Civilized
+SUBSECTION=Tradesmen
+DESCRIPTION=High Mage (human female)
+TSPEECH=spk_generic_npc_vendors
+TSPEECH=spk_generic_npc_vendor_shopkeepers
+TSPEECH=spk_generic_npc_vendor_teachers
+
+TEVENTS=e_generic_npcs
+TEVENTS=e_generic_npc_vendors
+TEVENTS=e_generic_npc_vendor_shopkeepers
+BLOODCOLOR=-1
+
+
+ON=@Create
+COLOR=colors_skin
+NPC=brain_vendor
+NEED=i_gold
+STR={45 55}
+DEX={45 55}
+INT={45 55}
+
+EVALUATINGINTEL={20.0 30.0}
+FENCING={20.0 30.0}
+INSCRIPTION={50.0 75.0}
+MAGICRESISTANCE={20.0 30.0}
+MEDITATION={20.0 30.0}
+TACTICS={20.0 30.0}
+WRESTLING={20.0 30.0}
+
+ITEMNEWBIE=i_lantern
+
+ITEMNEWBIE=random_female_hair
+COLOR=colors_hair
+
+ITEM=i_shirt_plain
+COLOR=colors_all
+ITEM=random_pants
+COLOR=colors_all
+ITEM=random_shoes
+COLOR=colors_neutral
+ITEM=random_coin_purse
+
+ON=@NPCRESTOCK
+SELL=VENDOR_S_MAGE_HIGH
 
 
 [CHARDEF c_mageshop]
