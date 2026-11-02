@@ -1,0 +1,680 @@
+VERSION=TX
+
+[COMMENT]
+İhbar sistemi: arayüz. İhbarlar emulatöre gömülüdür (0.56TX, Reports): kurallar, sınırlar, yetki, kayıt (world save),
+ delil (olay kaydının audit.db'si) ve mesajlar emulatörün (sphere.ini'de Report*, AuditDatabase). Emulatörün anahtarları:
+ - Char: REPORTNEW <hedef uid ya da 0>,<tür>[,<açıklama>] (numarası <SERV.LASTNEWREPORT>). .report (oyuncu komutu)
+   d_report'u açar; .ihbar aynısı (bu dosya).
+ - Sunucu: <SERV.REPORT.<id>> (SRC görüyorsa 1), <SERV.REPORT.<id>.<anahtar>>, SERV.REPORT.<id>.<komut>,
+   <SERV.REPORTCOUNT maske,hedef,ihbar eden,tür>, <SERV.REPORTLIST maske,hedef,ihbar eden,tür,baş,en çok> (en yeni
+   önce, virgülle numaralar). Maske report_mask_*; hedef rakamla başlarsa uid, değilse hesap. Oyuncu sadece kendi
+   ihbarlarını görür ve sadece durumunu okur.
+ - İhbar: ID, AUTO (kelime filtresinin otomatik ihbarı), ACCOUNT, CHARUID, CHARNAME, P, TARGETKIND (report_target_*),
+   TARGETUID, TARGETACCOUNT, TARGETNAME, TARGETP, TARGETPLEVEL, CATEGORY, TEXT, STATUS (report_status_*), STATUSNAME,
+   CREATED, UPDATED, CLOSED, ASSIGNED, DECISION, NOTIFIED, EVIDENCE (report_evidence_*), EVIDENCESPEECH, ...LISTENERS,
+   ...MOVES, ...EVENTS, ...FROM, ...TO, ENTRIES, ENTRY.n.KIND/VALUE/TEXT/TIME/ACCOUNT/CHARNAME/CHARUID; komutlar
+   (staff) VIEW, ASSIGN [hesap], NOTE <metin>, SANCTION <metin>, STATUS <n>, RESOLVE [karar], REJECT [karar], REOPEN.
+ - Delil audit.db'nin report_* tablolarında (bağlantı LDB.audit, sadece okunur): report_speech (party: 1 ihbar edenin
+   satırı, 2 hedefin satırı, 4 ihbar eden duydu, 8 hedef duydu), report_listeners (satırı duyanlar), report_moves,
+   report_events, report_evidence. Olayın saklama süresi (AuditRetention) delili silmez.
+ Türler report_categories'de (REPORTNEW'in türü ve dialog'daki metni). Cezayı paket verir (MUTE), ihbara SANCTION ile
+ yazılır. Dialog'ların nesnesi açan char; gösterilen ihbar CTAG0.Report.View'da, listedeki satırlar CTAG0.Report.Row.<n>'de
+ (butonlar client'ın gönderdiği numaraya güvenmez), hedef imlecinin seçtiği CTAG0.Report.Target'ta.
+
+[DEFNAME report_categories]
+// Oyuncunun seçtiği türler, dialog'daki sırasıyla: REPORTNEW'in türü (harf, rakam, _) ve metni.
+report_cat_count            8
+report_cat_1                "kufur"
+report_cat_1_text           "Küfür ve hakaret"
+report_cat_2                "hile"
+report_cat_2_text           "Hile (speed, makro, bot)"
+report_cat_3                "isim"
+report_cat_3_text           "Uygunsuz isim"
+report_cat_4                "reklam"
+report_cat_4_text           "Reklam"
+report_cat_5                "dolandiricilik"
+report_cat_5_text           "Dolandırıcılık"
+report_cat_6                "bug"
+report_cat_6_text           "Bug istismarı"
+report_cat_7                "staff"
+report_cat_7_text           "Staff şikayeti"
+report_cat_8                "diger"
+report_cat_8_text           "Diğer"
+// Kelime filtresinin otomatik ihbarı (seçilmez).
+report_cat_wordfilter_text  "Kelime filtresi (otomatik)"
+// Staff'ın susturmasının varsayılan süresi (dakika).
+report_mute_default         30
+
+[PLEVEL 1]
+ihbar
+
+// .ihbar: .report'un Türkçesi.
+[FUNCTION ihbar]
+REPORT
+
+// Türün dialog'daki metni (ARGS tür).
+[FUNCTION f_report_cat_text]
+IF (STRMATCH(wordfilter,<ARGS>))
+	RETURN <DEF.report_cat_wordfilter_text>
+ENDIF
+FOR 1 <DEF.report_cat_count>
+	IF (STRMATCH(<DEF.report_cat_<dLOCAL._FOR>>,<ARGS>))
+		RETURN <DEF.report_cat_<dLOCAL._FOR>_text>
+	ENDIF
+ENDFOR
+RETURN <ARGS>
+
+// Durumun adı (ARGN durum), okuyanın dilinde.
+[FUNCTION f_report_status_text]
+IF (<ARGN> == <DEF.report_status_open>)
+	RETURN <DEFMSG.report_status_open>
+ELSEIF (<ARGN> == <DEF.report_status_investigating>)
+	RETURN <DEFMSG.report_status_investigating>
+ELSEIF (<ARGN> == <DEF.report_status_resolved>)
+	RETURN <DEFMSG.report_status_resolved>
+ELSEIF (<ARGN> == <DEF.report_status_rejected>)
+	RETURN <DEFMSG.report_status_rejected>
+ENDIF
+RETURN <DEFMSG.report_status_new>
+
+// Olay kaydına (sphere.ini: AuditDatabase) bağlanır, sadece okumak için. 0: kayıt kapalı ya da dosya açılamadı.
+[FUNCTION f_report_audit_connect]
+IF (<LDB.audit.CONNECTED>)
+	RETURN 1
+ENDIF
+IF (<ISEMPTY <SERV.AUDITDATABASE>>)
+	RETURN 0
+ENDIF
+LDB.audit.CONNECT <SERV.AUDITDATABASE>
+RETURN <LDB.audit.CONNECTED>
+
+// Hedef imleci: ARGO seçilen oyuncu, NPC ya da eşya; yer seçildiyse ARGO yok (ihbar edenin bulunduğu yer).
+[FUNCTION f_report_target]
+IF (<ARGO>)
+	SRC.CTAG.Report.Target=<ARGO.UID>
+ELSE
+	SRC.CTAG.Report.Target=
+ENDIF
+SRC.DIALOGCLOSE d_report_new
+SRC.DIALOG d_report_new
+
+
+// İhbar listesi (.report, .ihbar). Oyuncu kendi ihbarlarını ve durumlarını, staff hepsini süzgeçle görür.
+[DIALOG d_report]
+<DEF.DlgStartPos>
+LOCAL.STAFF=0
+IF (<ACCOUNT.PLEVEL> >= <SERV.REPORTSTAFFPLEVEL>)
+	LOCAL.STAFF=1
+ENDIF
+LOCAL.PAGELEN=10
+// Staff'ın süzgeci: 0 bekleyenler (kapanmamış), 1 bana atanan, 2 otomatik, 3 kapanmış, 4 hepsi.
+LOCAL.MASK=0
+IF (<LOCAL.STAFF>)
+	IF (<SRC.DCTAG0.Report.Filter> == 0)
+		LOCAL.MASK=<DEF.report_mask_active>
+	ELSEIF (<SRC.DCTAG0.Report.Filter> == 1)
+		LOCAL.MASK=<EVAL <DEF.report_mask_active>|<DEF.report_mask_mine>>
+	ELSEIF (<SRC.DCTAG0.Report.Filter> == 2)
+		LOCAL.MASK=<EVAL <DEF.report_mask_active>|<DEF.report_mask_auto>>
+	ELSEIF (<SRC.DCTAG0.Report.Filter> == 3)
+		LOCAL.MASK=<DEF.report_mask_closed>
+	ENDIF
+ENDIF
+LOCAL.COUNT=<SERV.REPORTCOUNT <dLOCAL.MASK>>
+LOCAL.PAGES=<EVAL ((<LOCAL.COUNT>-1)/<LOCAL.PAGELEN>)+1>
+IF (<LOCAL.PAGES> < 1)
+	LOCAL.PAGES=1
+ENDIF
+IF (<SRC.DCTAG0.Report.Page> >= <LOCAL.PAGES>)
+	SRC.CTAG0.Report.Page=<EVAL <LOCAL.PAGES>-1>
+ENDIF
+LOCAL.FIRST=<EVAL <SRC.DCTAG0.Report.Page>*<LOCAL.PAGELEN>>
+
+RESIZE 0,0,<QVAL (<LOCAL.STAFF>) ? 780 : 640>,<EVAL 210+(<LOCAL.PAGELEN>*28)>,İhbar
+DORIGIN 25 50
+BUTTON +0 +0 4005 4007 1 0 2
+DTEXT +35 +0 044 Bir oyuncuyu, NPC'yi, eşyayı ya da bulunduğun yeri ihbar et
+IF (<LOCAL.STAFF>)
+	BUTTON +0 +25 4005 4007 1 0 20
+	DTEXT +35 +25 <QVAL (<SRC.DCTAG0.Report.Filter> == 0) ? 044 : 0> Bekleyen
+	BUTTON +130 +25 4005 4007 1 0 21
+	DTEXT +165 +25 <QVAL (<SRC.DCTAG0.Report.Filter> == 1) ? 044 : 0> Bana atanan
+	BUTTON +290 +25 4005 4007 1 0 22
+	DTEXT +325 +25 <QVAL (<SRC.DCTAG0.Report.Filter> == 2) ? 044 : 0> Otomatik
+	BUTTON +430 +25 4005 4007 1 0 23
+	DTEXT +465 +25 <QVAL (<SRC.DCTAG0.Report.Filter> == 3) ? 044 : 0> Kapanmış
+	BUTTON +580 +25 4005 4007 1 0 24
+	DTEXT +615 +25 <QVAL (<SRC.DCTAG0.Report.Filter> == 4) ? 044 : 0> Hepsi
+	DHTMLGUMP +35 +55 50 22 1 0 <DEF.CENTER>NO<DEF.CENTERE>
+	DHTMLGUMP +90 +55 135 22 1 0 <DEF.CENTER>TÜR<DEF.CENTERE>
+	DHTMLGUMP +230 +55 135 22 1 0 <DEF.CENTER>İHBAR EDEN<DEF.CENTERE>
+	DHTMLGUMP +370 +55 120 22 1 0 <DEF.CENTER>HAKKINDA<DEF.CENTERE>
+	DHTMLGUMP +495 +55 110 22 1 0 <DEF.CENTER>DURUM<DEF.CENTERE>
+	DHTMLGUMP +610 +55 115 22 1 0 <DEF.CENTER>TARİH<DEF.CENTERE>
+ELSE
+	DHTMLGUMP +35 +55 50 22 1 0 <DEF.CENTER>NO<DEF.CENTERE>
+	DHTMLGUMP +90 +55 160 22 1 0 <DEF.CENTER>TÜR<DEF.CENTERE>
+	DHTMLGUMP +255 +55 120 22 1 0 <DEF.CENTER>HAKKINDA<DEF.CENTERE>
+	DHTMLGUMP +380 +55 100 22 1 0 <DEF.CENTER>DURUM<DEF.CENTERE>
+	DHTMLGUMP +485 +55 105 22 1 0 <DEF.CENTER>TARİH<DEF.CENTERE>
+ENDIF
+
+LOCAL.Y=82
+FOR 0 <EVAL <LOCAL.PAGELEN>-1>
+	SRC.CTAG0.Report.Row.<dLOCAL._FOR>=
+	LOCAL.ID=<SERV.REPORTLIST <dLOCAL.MASK>,,,,<EVAL <LOCAL.FIRST>+<LOCAL._FOR>>,1>
+	IF (<LOCAL.ID>)
+		SRC.CTAG0.Report.Row.<dLOCAL._FOR>=<dLOCAL.ID>
+		LOCAL.R=SERV.REPORT.<dLOCAL.ID>
+		LOCAL.HUE=0
+		IF (<<LOCAL.R>.STATUS> == <DEF.report_status_new>)
+			LOCAL.HUE=044
+		ENDIF
+		IF (<<LOCAL.R>.TARGETKIND> == <DEF.report_target_none>)
+			LOCAL.ABOUT=yer
+		ELSE
+			LOCAL.ABOUT=<<LOCAL.R>.TARGETNAME>
+		ENDIF
+		IF (<LOCAL.STAFF>)
+			BUTTON +0 +<dLOCAL.Y> 4005 4007 1 0 <EVAL 100+<LOCAL._FOR>>
+			DTEXT +40 +<dLOCAL.Y> <dLOCAL.HUE> #<dLOCAL.ID>
+			DCROPPEDTEXT +90 +<dLOCAL.Y> 135 20 <dLOCAL.HUE> <f_report_cat_text <<LOCAL.R>.CATEGORY>>
+			IF (<<LOCAL.R>.AUTO>)
+				DCROPPEDTEXT +230 +<dLOCAL.Y> 135 20 0389 Otomatik
+			ELSE
+				DCROPPEDTEXT +230 +<dLOCAL.Y> 135 20 <dLOCAL.HUE> <<LOCAL.R>.ACCOUNT> (<<LOCAL.R>.CHARNAME>)
+			ENDIF
+			DCROPPEDTEXT +370 +<dLOCAL.Y> 120 20 <dLOCAL.HUE> <LOCAL.ABOUT>
+			DCROPPEDTEXT +495 +<dLOCAL.Y> 110 20 <dLOCAL.HUE> <<LOCAL.R>.STATUSNAME>
+			DTEXT +610 +<dLOCAL.Y> <dLOCAL.HUE> <SERV.RTICKS.FORMAT <<LOCAL.R>.CREATED>,%d.%m.%Y %H:%M>
+		ELSE
+			DTEXT +40 +<dLOCAL.Y> 0 #<dLOCAL.ID>
+			DCROPPEDTEXT +90 +<dLOCAL.Y> 160 20 0 <f_report_cat_text <<LOCAL.R>.CATEGORY>>
+			DCROPPEDTEXT +255 +<dLOCAL.Y> 120 20 0 <LOCAL.ABOUT>
+			DCROPPEDTEXT +380 +<dLOCAL.Y> 100 20 0 <<LOCAL.R>.STATUSNAME>
+			DTEXT +485 +<dLOCAL.Y> 0 <SERV.RTICKS.FORMAT <<LOCAL.R>.CREATED>,%d.%m.%Y %H:%M>
+		ENDIF
+		LOCAL.Y=<EVAL <LOCAL.Y>+28>
+	ENDIF
+ENDFOR
+IF !(<LOCAL.COUNT>)
+	DTEXT +40 +82 0389 İhbar yok.
+ENDIF
+
+LOCAL.Y=<EVAL 92+(<LOCAL.PAGELEN>*28)>
+IF (<LOCAL.PAGES> > 1)
+	IF (<SRC.DCTAG0.Report.Page> > 0)
+		BUTTON +0 +<dLOCAL.Y> 5603 5607 1 0 10
+	ENDIF
+	DTEXT +25 +<dLOCAL.Y> 0 Sayfa <EVAL <SRC.DCTAG0.Report.Page>+1> / <dLOCAL.PAGES>
+	IF (<EVAL <SRC.DCTAG0.Report.Page>+1> < <LOCAL.PAGES>)
+		BUTTON +110 +<dLOCAL.Y> 5601 5605 1 0 11
+	ENDIF
+ENDIF
+IF !(<LOCAL.STAFF>)
+	DTEXT +200 +<dLOCAL.Y> 0389 Sonuçlanınca haber alırsın.
+ENDIF
+
+[DIALOG d_report BUTTON]
+ON=0
+
+// Yeni ihbar: hedef imleci
+ON=2
+SRC.SYSMESSAGELOC <DEF.tcolor_yellow>,3301199
+SRC.TARGETF f_report_target
+
+// Sayfalar
+ON=10
+IF (<SRC.DCTAG0.Report.Page> > 0)
+	SRC.CTAG0.Report.Page=<EVAL <SRC.DCTAG0.Report.Page>-1>
+ENDIF
+SRC.REPORT
+
+ON=11
+SRC.CTAG0.Report.Page=<EVAL <SRC.DCTAG0.Report.Page>+1>
+SRC.REPORT
+
+// Staff'ın süzgeci
+ON=20 24
+SRC.CTAG0.Report.Filter=<EVAL <ARGN>-20>
+SRC.CTAG0.Report.Page=
+SRC.REPORT
+
+// Bir ihbar (staff): açılması olay kaydına, yeni ihbar açık olur (VIEW).
+ON=100 199
+IF (<ACCOUNT.PLEVEL> < <SERV.REPORTSTAFFPLEVEL>)
+	RETURN 1
+ENDIF
+LOCAL.ID=<SRC.CTAG0.Report.Row.<EVAL <ARGN>-100>>
+IF (<LOCAL.ID>)
+	SERV.REPORT.<dLOCAL.ID>.VIEW
+	SRC.CTAG0.Report.View=<dLOCAL.ID>
+	SRC.CTAG0.Report.SpeechPage=
+	IF !(<f_report_audit_connect>)
+		SRC.SYSMESSAGELOC <DEF.tcolor_red>,3301201
+	ENDIF
+	SRC.DIALOGCLOSE d_report_view
+	SRC.DIALOG d_report_view
+ENDIF
+
+
+// Yeni ihbar: hedef (CTAG0.Report.Target; boşsa bulunduğun yer), tür ve açıklama.
+[DIALOG d_report_new]
+<DEF.DlgStartPos>
+LOCAL.Y=<EVAL 75+(<DEF.report_cat_count>*24)>
+RESIZE 0,0,460,<EVAL <LOCAL.Y>+200>,İhbar
+DORIGIN 25 50
+REF1=<SRC.CTAG0.Report.Target>
+IF (<REF1>)
+	IF (<REF1.ISPLAYER>)
+		DCROPPEDTEXT +0 +0 410 20 044 Hakkında: <REF1.NAME> (oyuncu)
+	ELSEIF (<REF1.ISCHAR>)
+		DCROPPEDTEXT +0 +0 410 20 044 Hakkında: <REF1.NAME> (NPC)
+	ELSE
+		DCROPPEDTEXT +0 +0 410 20 044 Hakkında: <REF1.NAME> (eşya)
+	ENDIF
+ELSE
+	DCROPPEDTEXT +0 +0 410 20 044 Hakkında: bulunduğun yer (<P>)
+ENDIF
+DTEXT +0 +30 0 Neyi ihbar ediyorsun?
+GROUP 1
+FOR 1 <DEF.report_cat_count>
+	RADIO +0 +<EVAL 30+(<LOCAL._FOR>*24)> 208 209 0 <dLOCAL._FOR>
+	DTEXT +30 +<EVAL 30+(<LOCAL._FOR>*24)> 0 <DEF.report_cat_<dLOCAL._FOR>_text>
+ENDFOR
+DTEXT +0 +<dLOCAL.Y> 0 Açıklama (isteğe bağlı, en çok <EVAL <SERV.REPORTMAXLENGTH>> harf):
+RESIZEPIC +0 +<EVAL <LOCAL.Y>+22> 3000 410 80
+DTEXTENTRYLIMITED +5 +<EVAL <LOCAL.Y>+27> 400 70 0 1 <EVAL <SERV.REPORTMAXLENGTH>>
+DTEXT +0 +<EVAL <LOCAL.Y>+108> 0389 Son konuşmalar ve hareketler delil olarak kaydedilir.
+BUTTON +0 +<EVAL <LOCAL.Y>+135> 4023 4024 1 0 1
+DTEXT +35 +<EVAL <LOCAL.Y>+135> 044 Gönder
+BUTTON +230 +<EVAL <LOCAL.Y>+135> 4017 4018 1 0 0
+DTEXT +265 +<EVAL <LOCAL.Y>+135> 038 Vazgeç
+
+[DIALOG d_report_new BUTTON]
+ON=0
+
+ON=1
+// Kurallar (kendini, sınırlar, tekrar, uzunluk) ve mesajlar emulatörün; açıldıysa liste gösterilir.
+LOCAL.CAT=<ARGCHKID>
+IF (<LOCAL.CAT> < 1) || (<LOCAL.CAT> > <DEF.report_cat_count>)
+	SRC.SYSMESSAGELOC <DEF.tcolor_red>,3301200
+	SRC.DIALOG d_report_new
+	RETURN 1
+ENDIF
+LOCAL.LAST=<SERV.LASTNEWREPORT>
+IF (<SRC.CTAG0.Report.Target>)
+	SRC.REPORTNEW <SRC.CTAG0.Report.Target>,<DEF.report_cat_<dLOCAL.CAT>>,<ARGTXT[1]>
+ELSE
+	SRC.REPORTNEW 0,<DEF.report_cat_<dLOCAL.CAT>>,<ARGTXT[1]>
+ENDIF
+SRC.CTAG0.Report.Target=
+IF (<SERV.LASTNEWREPORT> != <LOCAL.LAST>)
+	SRC.CTAG0.Report.Page=
+	SRC.REPORT
+ENDIF
+
+
+// Bir ihbar (staff): 1 özet ve işlemler, 2 konuşmalar (delil), 3 sahne, konumlar ve olaylar. Numarası CTAG0.Report.View.
+[DIALOG d_report_view]
+<DEF.DlgStartPos>
+LOCAL.ID=<SRC.DCTAG0.Report.View>
+LOCAL.OK=0
+IF (<ACCOUNT.PLEVEL> >= <SERV.REPORTSTAFFPLEVEL>) && (<LOCAL.ID>)
+	IF (<SERV.REPORT.<dLOCAL.ID>>)
+		LOCAL.OK=1
+	ENDIF
+ENDIF
+IF !(<LOCAL.OK>)
+	RESIZE 0,0,360,140,İhbar
+	DHTMLGUMP 30 60 300 40 0 0 <DEF.CENTER>İhbar bulunamadı.<DEF.CENTERE>
+ELSE
+	LOCAL.R=SERV.REPORT.<dLOCAL.ID>
+	LOCAL.DB=<f_report_audit_connect>
+	RESIZE 0,0,760,620,İhbar #<dLOCAL.ID>
+	BUTTON 25 50 4005 4007 0 1 0
+	DTEXT 60 50 044 Özet
+	BUTTON 140 50 4005 4007 0 2 0
+	DTEXT 175 50 044 Konuşmalar (<<LOCAL.R>.EVIDENCESPEECH>)
+	BUTTON 330 50 4005 4007 0 3 0
+	DTEXT 365 50 044 Sahne, konumlar ve olaylar
+	BUTTON 600 50 4014 4015 1 0 8
+	DTEXT 635 50 0 Listeye dön
+
+	// ---- 1: özet ve işlemler ----
+	PAGE 1
+	DTEXT 25 85 0 Tür: <f_report_cat_text <<LOCAL.R>.CATEGORY>>
+	DTEXT 300 85 0 Durum: <<LOCAL.R>.STATUSNAME>
+	DTEXT 500 85 0 Açılış: <SERV.RTICKS.FORMAT <<LOCAL.R>.CREATED>,%d.%m.%Y %H:%M>
+	// İhbar eden
+	IF (<<LOCAL.R>.AUTO>)
+		DTEXT 25 110 0389 İhbar eden: otomatik (kelime filtresi)
+	ELSE
+		REF1=<<LOCAL.R>.CHARUID>
+		IF (<REF1>)
+			LOCAL.ON=çevrimdışı
+			IF (<REF1.ISONLINE>)
+				LOCAL.ON=çevrimiçi
+			ENDIF
+			DCROPPEDTEXT 25 110 420 20 044 İhbar eden: <<LOCAL.R>.ACCOUNT> (<REF1.NAME>, <LOCAL.ON>)
+			BUTTON 450 110 4005 4007 1 0 6
+			DTEXT 485 110 0 Git
+		ELSE
+			DCROPPEDTEXT 25 110 420 20 0389 İhbar eden: <<LOCAL.R>.ACCOUNT> (<<LOCAL.R>.CHARNAME>, silinmiş)
+		ENDIF
+		DTEXT 530 110 0389 ihbarları: <SERV.REPORTCOUNT 0,,<<LOCAL.R>.ACCOUNT>>, reddedilen: <SERV.REPORTCOUNT <DEF.report_mask_rejected>,,<<LOCAL.R>.ACCOUNT>>
+	ENDIF
+	// Hakkında
+	IF (<<LOCAL.R>.TARGETKIND> == <DEF.report_target_none>)
+		DCROPPEDTEXT 25 135 420 20 038 Hakkında: ihbar edenin bulunduğu yer (<<LOCAL.R>.P>)
+		BUTTON 450 135 4005 4007 1 0 7
+		DTEXT 485 135 0 Git
+	ELSE
+		REF2=<<LOCAL.R>.TARGETUID>
+		IF (<<LOCAL.R>.TARGETKIND> == <DEF.report_target_player>)
+			LOCAL.KIND=<<LOCAL.R>.TARGETACCOUNT>
+		ELSEIF (<<LOCAL.R>.TARGETKIND> == <DEF.report_target_npc>)
+			LOCAL.KIND=NPC
+		ELSE
+			LOCAL.KIND=eşya
+		ENDIF
+		IF (<REF2>)
+			IF (<REF2.ISCHAR>)
+				LOCAL.ON=çevrimdışı
+				IF (<REF2.ISONLINE>)
+					LOCAL.ON=çevrimiçi
+				ENDIF
+				DCROPPEDTEXT 25 135 420 20 038 Hakkında: <<LOCAL.R>.TARGETNAME> (<LOCAL.KIND>, <LOCAL.ON>)
+			ELSE
+				DCROPPEDTEXT 25 135 420 20 038 Hakkında: <<LOCAL.R>.TARGETNAME> (<LOCAL.KIND>)
+			ENDIF
+		ELSE
+			DCROPPEDTEXT 25 135 420 20 0389 Hakkında: <<LOCAL.R>.TARGETNAME> (<LOCAL.KIND>, artık yok)
+		ENDIF
+		BUTTON 450 135 4005 4007 1 0 7
+		DTEXT 485 135 0 Git
+		IF (<<LOCAL.R>.TARGETKIND> == <DEF.report_target_player>)
+			DTEXT 530 135 0389 hakkında: <SERV.REPORTCOUNT 0,<<LOCAL.R>.TARGETACCOUNT>>, sonuçlanan: <SERV.REPORTCOUNT <DEF.report_mask_resolved>,<<LOCAL.R>.TARGETACCOUNT>>
+		ENDIF
+	ENDIF
+	IF (<ISEMPTY <<LOCAL.R>.ASSIGNED>>)
+		DTEXT 25 160 0 İlgilenen: -
+	ELSE
+		DTEXT 25 160 0 İlgilenen: <<LOCAL.R>.ASSIGNED>
+	ENDIF
+	IF (<<LOCAL.R>.EVIDENCE> == <DEF.report_evidence_frozen>)
+		DTEXT 300 160 0 Delil: <<LOCAL.R>.EVIDENCESPEECH> satır, <<LOCAL.R>.EVIDENCELISTENERS> duyan, <<LOCAL.R>.EVIDENCEMOVES> konum, <<LOCAL.R>.EVIDENCEEVENTS> olay
+	ELSEIF (<<LOCAL.R>.EVIDENCE> == <DEF.report_evidence_pending>)
+		DTEXT 300 160 0389 Delil: kaydediliyor
+	ELSE
+		DTEXT 300 160 038 Delil: yok (olay kaydı kapalı)
+	ENDIF
+	DHTMLGUMP 25 185 710 55 1 1 <<LOCAL.R>.TEXT>
+	IF !(<ISEMPTY <<LOCAL.R>.DECISION>>)
+		DCROPPEDTEXT 25 245 710 20 044 Karar: <<LOCAL.R>.DECISION>
+	ENDIF
+
+	// İşlemler: metin not, karar ya da cezanın nedeni; süre susturmanın dakikası.
+	BUTTON 25 272 4005 4007 1 0 11
+	DTEXT 60 272 0 Bana ata
+	BUTTON 170 272 4005 4007 1 0 12
+	DTEXT 205 272 0 <DEFMSG.report_status_open>
+	BUTTON 300 272 4005 4007 1 0 13
+	DTEXT 335 272 0 <DEFMSG.report_status_investigating>
+	RESIZEPIC 25 298 3000 710 50
+	DTEXTENTRYLIMITED 30 303 700 40 0 1 <EVAL <SERV.REPORTMAXLENGTH>>
+	BUTTON 25 355 4011 4012 1 0 14
+	DTEXT 60 355 0 Not ekle
+	IF (<<LOCAL.R>.STATUS> >= <DEF.report_status_resolved>)
+		BUTTON 170 355 4005 4007 1 0 17
+		DTEXT 205 355 044 Yeniden aç
+	ELSE
+		BUTTON 170 355 4023 4024 1 0 15
+		DTEXT 205 355 044 Sonuçlandır (karar)
+		BUTTON 370 355 4017 4018 1 0 16
+		DTEXT 405 355 038 Reddet (karar)
+	ENDIF
+	BUTTON 560 355 4005 4007 1 0 19
+	DTEXT 595 355 0 Cezayı yaz
+	IF (<<LOCAL.R>.TARGETKIND> == <DEF.report_target_player>)
+		DTEXT 25 382 0 Sustur (dakika):
+		RESIZEPIC 140 380 3000 60 24
+		DTEXTENTRYLIMITED 145 382 50 20 0 2 4 <EVAL <DEF.report_mute_default>>
+		BUTTON 210 382 4005 4007 1 0 18
+		DTEXT 245 382 0 Hedefi sustur (neden: metin)
+	ENDIF
+
+	// Geçmiş: en yeni önce, en çok 7.
+	DTEXT 25 410 0 Geçmiş:
+	LOCAL.N=<<LOCAL.R>.ENTRIES>
+	LOCAL.SHOWN=0
+	FOR 0 <EVAL <LOCAL.N>-1>
+		IF (<LOCAL.SHOWN> < 7)
+			LOCAL.E=<EVAL <LOCAL.N>-1-<LOCAL._FOR>>
+			LOCAL.KIND=<<LOCAL.R>.ENTRY.<dLOCAL.E>.KIND>
+			IF (<LOCAL.KIND> == <DEF.report_entry_note>)
+				LOCAL.WHAT=not
+			ELSEIF (<LOCAL.KIND> == <DEF.report_entry_status>)
+				LOCAL.WHAT=durum <f_report_status_text <<LOCAL.R>.ENTRY.<dLOCAL.E>.VALUE>>
+			ELSEIF (<LOCAL.KIND> == <DEF.report_entry_assign>)
+				LOCAL.WHAT=atama
+			ELSEIF (<LOCAL.KIND> == <DEF.report_entry_sanction>)
+				LOCAL.WHAT=ceza
+			ELSE
+				LOCAL.WHAT=tekrar
+			ENDIF
+			LOCAL.WHO=<<LOCAL.R>.ENTRY.<dLOCAL.E>.CHARNAME>
+			IF (<ISEMPTY <LOCAL.WHO>>)
+				LOCAL.WHO=sistem
+			ENDIF
+			DCROPPEDTEXT 25 <EVAL 432+(<LOCAL.SHOWN>*22)> 710 20 0389 <SERV.RTICKS.FORMAT <<LOCAL.R>.ENTRY.<dLOCAL.E>.TIME>,%d.%m %H:%M> <LOCAL.WHO> - <LOCAL.WHAT>: <<LOCAL.R>.ENTRY.<dLOCAL.E>.TEXT>
+			LOCAL.SHOWN=<EVAL <LOCAL.SHOWN>+1>
+		ENDIF
+	ENDFOR
+	IF !(<LOCAL.N>)
+		DTEXT 25 432 0389 Henüz yok.
+	ENDIF
+
+	// ---- 2: konuşmalar (delil; sayfa başına 16 satır) ----
+	PAGE 2
+	DTEXT 25 85 0389 Sarı: ihbar eden, kırmızı: hedef, gri: etraftakiler. * kelime filtresine takıldı, [x] kimseye gitmedi.
+	IF (<LOCAL.DB>)
+		LOCAL.OFF=<EVAL <SRC.DCTAG0.Report.SpeechPage>*16>
+		LDB.audit.QUERY "SELECT strftime('%d.%m %H:%M:%S', time / 1000, 'unixepoch', 'localtime') AS t, name, channel, (CASE WHEN filtered IS NULL THEN '' ELSE '* ' END) || (CASE WHEN muted THEN '[x] ' ELSE '' END) || replace(replace(text, char(60), '('), char(62), ')') AS txt, party, listeners FROM report_speech WHERE report = <dLOCAL.ID> ORDER BY line LIMIT 17 OFFSET <dLOCAL.OFF>"
+		LOCAL.ROWS=<dLDB.audit.ROW.NUMROWS>
+		FOR 0 <EVAL <LOCAL.ROWS>-1>
+			IF (<LOCAL._FOR> < 16)
+				LOCAL.Y=<EVAL 110+(<LOCAL._FOR>*28)>
+				LOCAL.P=<dLDB.audit.ROW.<dLOCAL._FOR>.party>
+				LOCAL.HUE=0389
+				IF (<LOCAL.P> & 1)
+					LOCAL.HUE=044
+				ELSEIF (<LOCAL.P> & 2)
+					LOCAL.HUE=038
+				ENDIF
+				DTEXT 25 <dLOCAL.Y> <dLOCAL.HUE> <LDB.audit.ROW.<dLOCAL._FOR>.t>
+				DCROPPEDTEXT 135 <dLOCAL.Y> 120 20 <dLOCAL.HUE> <LDB.audit.ROW.<dLOCAL._FOR>.name>
+				DCROPPEDTEXT 260 <dLOCAL.Y> 60 20 0389 <LDB.audit.ROW.<dLOCAL._FOR>.channel>
+				DCROPPEDTEXT 325 <dLOCAL.Y> 380 20 <dLOCAL.HUE> <LDB.audit.ROW.<dLOCAL._FOR>.txt>
+				DTEXT 710 <dLOCAL.Y> 0389 <dLDB.audit.ROW.<dLOCAL._FOR>.listeners>
+			ENDIF
+		ENDFOR
+		IF !(<LOCAL.ROWS>)
+			DTEXT 25 110 0389 Konuşma yok.
+		ENDIF
+		IF (<SRC.DCTAG0.Report.SpeechPage> > 0)
+			BUTTON 25 565 5603 5607 1 0 30
+		ENDIF
+		DTEXT 50 565 0 Sayfa <EVAL <SRC.DCTAG0.Report.SpeechPage>+1>
+		IF (<LOCAL.ROWS> > 16)
+			BUTTON 130 565 5601 5605 1 0 31
+		ENDIF
+		DTEXT 600 565 0389 sağdaki sayı: duyan
+	ELSE
+		DTEXT 25 110 038 Olay kaydı açılamadı (AuditDatabase).
+	ENDIF
+
+	// ---- 3: sahne, konumlar ve olaylar ----
+	PAGE 3
+	IF (<LOCAL.DB>)
+		DTEXT 25 85 044 Sahne: satırları duyanlar (satır sayısı)
+		LDB.audit.QUERY "SELECT listener, COUNT(*) AS n FROM report_listeners WHERE report = <dLOCAL.ID> GROUP BY listener ORDER BY n DESC LIMIT 10"
+		LOCAL.ROWS=<dLDB.audit.ROW.NUMROWS>
+		FOR 0 <EVAL <LOCAL.ROWS>-1>
+			REF3=<dLDB.audit.ROW.<dLOCAL._FOR>.listener>
+			LOCAL.X=<EVAL 25+((<LOCAL._FOR>%2)*180)>
+			LOCAL.Y=<EVAL 108+((<LOCAL._FOR>/2)*22)>
+			IF (<REF3>)
+				DCROPPEDTEXT <dLOCAL.X> <dLOCAL.Y> 175 20 0 <REF3.NAME> (<dLDB.audit.ROW.<dLOCAL._FOR>.n>)
+			ELSE
+				DCROPPEDTEXT <dLOCAL.X> <dLOCAL.Y> 175 20 0389 0<HVAL <dLDB.audit.ROW.<dLOCAL._FOR>.listener>> (<dLDB.audit.ROW.<dLOCAL._FOR>.n>)
+			ENDIF
+		ENDFOR
+		IF !(<LOCAL.ROWS>)
+			DTEXT 25 108 0389 Kimse yok.
+		ENDIF
+
+		DTEXT 400 85 044 Konumlar (en yeni önce)
+		LDB.audit.QUERY "SELECT strftime('%d.%m %H:%M:%S', time / 1000, 'unixepoch', 'localtime') AS t, char, x, y, z, map, flags FROM report_moves WHERE report = <dLOCAL.ID> ORDER BY time DESC LIMIT 10"
+		LOCAL.ROWS=<dLDB.audit.ROW.NUMROWS>
+		FOR 0 <EVAL <LOCAL.ROWS>-1>
+			REF3=<dLDB.audit.ROW.<dLOCAL._FOR>.char>
+			LOCAL.WHO=0<HVAL <dLDB.audit.ROW.<dLOCAL._FOR>.char>>
+			IF (<REF3>)
+				LOCAL.WHO=<REF3.NAME>
+			ENDIF
+			DCROPPEDTEXT 400 <EVAL 108+(<LOCAL._FOR>*22)> 340 20 0 <LDB.audit.ROW.<dLOCAL._FOR>.t> <LOCAL.WHO> <dLDB.audit.ROW.<dLOCAL._FOR>.x>,<dLDB.audit.ROW.<dLOCAL._FOR>.y>,<dLDB.audit.ROW.<dLOCAL._FOR>.z>,<dLDB.audit.ROW.<dLOCAL._FOR>.map>
+		ENDFOR
+		IF !(<LOCAL.ROWS>)
+			DTEXT 400 108 0389 Kayıt yok.
+		ENDIF
+
+		DTEXT 25 340 044 Olaylar (en yeni önce)
+		LDB.audit.QUERY "SELECT strftime('%d.%m %H:%M:%S', time / 1000, 'unixepoch', 'localtime') AS t, type, replace(replace(COALESCE(name, json_extract(data, '$.text'), ''), char(60), '('), char(62), ')') AS what, char_name FROM report_events WHERE report = <dLOCAL.ID> ORDER BY time DESC LIMIT 10"
+		LOCAL.ROWS=<dLDB.audit.ROW.NUMROWS>
+		FOR 0 <EVAL <LOCAL.ROWS>-1>
+			DCROPPEDTEXT 25 <EVAL 363+(<LOCAL._FOR>*22)> 710 20 0 <LDB.audit.ROW.<dLOCAL._FOR>.t> <LDB.audit.ROW.<dLOCAL._FOR>.type> <LDB.audit.ROW.<dLOCAL._FOR>.what> (yapan: <LDB.audit.ROW.<dLOCAL._FOR>.char_name>)
+		ENDFOR
+		IF !(<LOCAL.ROWS>)
+			DTEXT 25 363 0389 Olay yok.
+		ENDIF
+	ELSE
+		DTEXT 25 85 038 Olay kaydı açılamadı (AuditDatabase).
+	ENDIF
+ENDIF
+
+[DIALOG d_report_view BUTTON]
+ON=0
+
+// İhbar eden ve hedefe (ya da yere) git
+ON=6 7
+LOCAL.ID=<SRC.DCTAG0.Report.View>
+IF (<ACCOUNT.PLEVEL> < <SERV.REPORTSTAFFPLEVEL>) || !(<SERV.REPORT.<dLOCAL.ID>>)
+	RETURN 1
+ENDIF
+IF (<ARGN> == 6)
+	REF1=<SERV.REPORT.<dLOCAL.ID>.CHARUID>
+	IF (<REF1>)
+		SRC.GO <REF1.P>
+	ENDIF
+ELSEIF (<SERV.REPORT.<dLOCAL.ID>.TARGETKIND> == <DEF.report_target_none>)
+	SRC.GO <SERV.REPORT.<dLOCAL.ID>.P>
+ELSE
+	REF1=<SERV.REPORT.<dLOCAL.ID>.TARGETUID>
+	IF (<REF1>)
+		SRC.GO <REF1.TOPOBJ.P>
+	ELSE
+		SRC.SYSMESSAGELOC <DEF.tcolor_red>,3301202
+		SRC.GO <SERV.REPORT.<dLOCAL.ID>.TARGETP>
+	ENDIF
+ENDIF
+SRC.DIALOG d_report_view
+
+// Listeye dön
+ON=8
+SRC.REPORT
+
+// Bana ata, durum (12 açık, 13 inceleniyor)
+ON=11
+LOCAL.ID=<SRC.DCTAG0.Report.View>
+SERV.REPORT.<dLOCAL.ID>.ASSIGN
+SRC.DIALOG d_report_view
+
+ON=12 13
+LOCAL.ID=<SRC.DCTAG0.Report.View>
+SERV.REPORT.<dLOCAL.ID>.STATUS <EVAL <ARGN>-11>
+SRC.DIALOG d_report_view
+
+// Not, karar, yeniden açma, cezanın kaydı (metin)
+ON=14
+LOCAL.ID=<SRC.DCTAG0.Report.View>
+SERV.REPORT.<dLOCAL.ID>.NOTE <ARGTXT[1]>
+SRC.DIALOG d_report_view
+
+ON=15
+LOCAL.ID=<SRC.DCTAG0.Report.View>
+SERV.REPORT.<dLOCAL.ID>.RESOLVE <ARGTXT[1]>
+SRC.DIALOG d_report_view
+
+ON=16
+LOCAL.ID=<SRC.DCTAG0.Report.View>
+SERV.REPORT.<dLOCAL.ID>.REJECT <ARGTXT[1]>
+SRC.DIALOG d_report_view
+
+ON=17
+LOCAL.ID=<SRC.DCTAG0.Report.View>
+SERV.REPORT.<dLOCAL.ID>.REOPEN
+SRC.DIALOG d_report_view
+
+ON=19
+LOCAL.ID=<SRC.DCTAG0.Report.View>
+SERV.REPORT.<dLOCAL.ID>.SANCTION <ARGTXT[1]>
+SRC.DIALOG d_report_view
+
+// Hedefi sustur: MUTE (emulatör; staff kendi seviyesindekini susturamaz), süresi kutudan, nedeni metinden; tuttuysa
+//  ihbara ceza olarak yazılır.
+ON=18
+LOCAL.ID=<SRC.DCTAG0.Report.View>
+IF (<ACCOUNT.PLEVEL> < <SERV.REPORTSTAFFPLEVEL>) || !(<SERV.REPORT.<dLOCAL.ID>>)
+	RETURN 1
+ENDIF
+REF1=<SERV.REPORT.<dLOCAL.ID>.TARGETUID>
+LOCAL.OK=0
+IF (<REF1>)
+	IF (<REF1.ISPLAYER>)
+		LOCAL.OK=1
+	ENDIF
+ENDIF
+IF !(<LOCAL.OK>)
+	SRC.SYSMESSAGELOC <DEF.tcolor_red>,3301202
+	SRC.DIALOG d_report_view
+	RETURN 1
+ENDIF
+LOCAL.MIN=<EVAL <ARGTXT[2]>>
+IF (<LOCAL.MIN> < 1)
+	LOCAL.MIN=<DEF.report_mute_default>
+ENDIF
+LOCAL.WHY=<ARGTXT[1]>
+IF (<ISEMPTY <LOCAL.WHY>>)
+	LOCAL.WHY=ihbar #<dLOCAL.ID>
+ENDIF
+LOCAL.COUNT=<REF1.ACCOUNT.MUTECOUNT>
+REF1.MUTE <dLOCAL.MIN>,<LOCAL.WHY>
+IF (<REF1.ACCOUNT.MUTECOUNT> != <LOCAL.COUNT>)
+	SERV.REPORT.<dLOCAL.ID>.SANCTION mute <dLOCAL.MIN> dk: <LOCAL.WHY>
+ENDIF
+SRC.DIALOG d_report_view
+
+// Konuşmaların sayfaları
+ON=30
+IF (<SRC.DCTAG0.Report.SpeechPage> > 0)
+	SRC.CTAG0.Report.SpeechPage=<EVAL <SRC.DCTAG0.Report.SpeechPage>-1>
+ENDIF
+SRC.DIALOG d_report_view,2
+
+ON=31
+SRC.CTAG0.Report.SpeechPage=<EVAL <SRC.DCTAG0.Report.SpeechPage>+1>
+SRC.DIALOG d_report_view,2
+
+
+[EOF]

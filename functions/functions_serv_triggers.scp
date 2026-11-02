@@ -91,6 +91,7 @@ f_onserver_tick_slow
 f_onserver_gc
 f_onserver_gmpage
 f_onserver_ticket
+f_onserver_report
 f_onserver_console_cmd
 f_onserver_http_request
 f_onserver_script_error
@@ -919,6 +920,35 @@ SRC.F_BUGTRACK_BAR // ekranın altındaki bugtrack bar'ı (dialogs/dialogs_bugtr
 //       ARGO          --> ticket (<ARGO.ID>, <ARGO.STATUS>, <ARGO.MESSAGE.n.TEXT>, ARGO.REPLY ...)
 //       LOCAL.Account --> ticket'ın hesabı
 //       LOCAL.Char    --> ticket'ı açan karakter (UID)
+
+
+[FUNCTION f_onserver_report]
+// EN: 56TX. Called when a report is opened (by a player or automatically by the word filter), its status changes, a
+//     note, an assignment or a sanction is written to it, or the target of an automatic report does it again. Called
+//     after the action. Reports: dialogs/dialogs_report.scp.
+//     Variables:
+//       SRC            --> who did it: a player, staff or the server (the server for an automatic report)
+//       ARGS           --> the text (report, note, sanction or decision; the assigned account; the new line)
+//       ARGN1          --> 1 opened, 2 status, 3 note, 4 assigned, 5 sanction, 6 repeated (report_event_*)
+//       ARGN2          --> status: the old status (report_status_*); note, assigned, sanction, repeated: ENTRY.n
+//       ARGN3          --> 1 if staff did it
+//       ARGO           --> the report (<ARGO.ID>, <ARGO.STATUS>, <ARGO.CATEGORY>, <ARGO.TARGETNAME> ...)
+//       LOCAL.Account  --> the reporter's account (empty for an automatic report)
+//       LOCAL.Target   --> UID of the target (0 for a place)
+//       LOCAL.Category --> the report's category
+// TR: 56TX. İhbar açılınca (oyuncunun ya da kelime filtresinin otomatik ihbarı), durumu değişince, not, atama ya da
+//     ceza yazılınca, otomatik ihbarın hedefi aynı şeyi yeniden yapınca çağrılır. İşten sonra. İhbarlar:
+//     dialogs/dialogs_report.scp.
+//     Değişkenler:
+//       SRC            --> işi yapan: oyuncu, staff ya da sunucu (otomatik ihbarda sunucu)
+//       ARGS           --> metin (açıklama, not, ceza ya da karar; atanan hesap; yeni satır)
+//       ARGN1          --> 1 açıldı, 2 durum, 3 not, 4 atama, 5 ceza, 6 tekrar (report_event_*)
+//       ARGN2          --> durum: eski durum (report_status_*); not, atama, ceza, tekrar: ENTRY.n
+//       ARGN3          --> işi staff yaptıysa 1
+//       ARGO           --> ihbar (<ARGO.ID>, <ARGO.STATUS>, <ARGO.CATEGORY>, <ARGO.TARGETNAME> ...)
+//       LOCAL.Account  --> ihbar edenin hesabı (otomatik ihbarda boş)
+//       LOCAL.Target   --> hedefin UID'si (yer ihbarında 0)
+//       LOCAL.Category --> ihbarın türü
 
 
 [FUNCTION f_onserver_console_cmd]
