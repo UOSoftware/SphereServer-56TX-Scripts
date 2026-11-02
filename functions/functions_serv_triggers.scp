@@ -494,6 +494,7 @@ ENDIF
 //     Değişkenler:
 //       ARGN1 --> 1: client hâlâ dünyada olan (linger'daki) karakterini geri aldı
 //       ARGN2 --> 1: mesajsız giriş
+SRC.F_BUGTRACK_BAR // ekranın altındaki bugtrack bar'ı (dialogs/dialogs_bugtrack.scp)
 
 
 [FUNCTION f_onchar_logout_client]

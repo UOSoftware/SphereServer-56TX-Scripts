@@ -1,0 +1,327 @@
+VERSION=TX
+
+[COMMENT]
+Bugtrack: geliştirme döneminde oyuncu ve staff'ın oyunun içinden hızlıca hata ve öneri bildirmesi.
+ Bar: ekranın altında sabit duran tek satırlık yazma alanı (d_bugtrack_bar). Girişte açılır (e_generic_chars
+     @LOGIN), sağ tıkla ve gump kapatma makrosuyla kapanmaz; yazılıp oka basılınca kaydedilir, bar boş açılır.
+     Bar taşınabilir: sunucu oyuncunun pencere boyutunu bilmez, ClassicUO taşınan bar'ı client kapanana kadar
+     aynı yerde açar. Yeri ve genişliği bugtrack_bar_*.
+ .bugtrack: staff'a (bugtrack_staff_plevel) kayıtların listesi (d_bugtrack: süzgeç, çözüldü işareti, kaydın
+     yazıldığı yere gitme, silme); öteki oyunculara kendi bar'ını kapatır ya da açar (hesabın TAG.BugTrack.Off'u).
+ Kayıtlar SQLite'ta: sphere.ini'nin LDBFiles klasöründe bugtrack_db (main.db), bugtrack tablosu; bağlantı LDB.main.
+     Tablo yoksa kurulur. Satır: id, created_at (yerel saat), account, char_uid, char_name, plevel, p, region,
+     cliver (client'ın bildirdiği sürüm), text, status (0 açık, 1 çözüldü), resolved_by, resolved_at. Metindeki < ve > ( ve ) olarak yazılır.
+ Yeni kayıt bugtrack_notify_plevel'deki çevrimiçi staff'a sistem mesajıyla bildirilir.
+Dialog'ların nesnesi açan char; listedeki satırların id'leri CTAG0.BugTrack.Row.<n>'de (butonlar client'ın
+ gönderdiği numaraya güvenmez).
+
+[DEFNAME bugtrack_settings]
+bugtrack_enabled		1		// 0: bar kimseye açılmaz (staff listesi yine çalışır)
+bugtrack_bar_plevel		1		// bar'ı gören en düşük PLEVEL
+bugtrack_staff_plevel	4		// .bugtrack'te listeyi gören en düşük PLEVEL; altındakiler .bugtrack ile bar'ı kapatıp açar
+bugtrack_notify_plevel	4		// yeni kayıt bu PLEVEL'deki ve üstündeki çevrimiçi hesaplara bildirilir; 0: kimseye
+bugtrack_db				main.db	// SQLite dosyası, LDBFiles klasöründe (sphere.ini)
+bugtrack_max_length		240		// bir kaydın en çok harfi
+bugtrack_cooldown		3		// bir oyuncunun iki kaydı arasında en az saniye
+bugtrack_bar_x			660		// bar'ın sol üst köşesi (piksel): 1920x1080 pencerede alt orta
+bugtrack_bar_y			950
+bugtrack_bar_width		600
+
+[PLEVEL 1]
+BUGTRACK
+
+
+// .bugtrack: staff'a liste, öteki oyunculara bar'ı kapatır ya da açar.
+[FUNCTION bugtrack]
+IF (<ACCOUNT.PLEVEL> >= <DEF.bugtrack_staff_plevel>)
+	CTAG.BugTrack.Page=
+	CTAG.BugTrack.Confirm=
+	DIALOGCLOSE d_bugtrack
+	DIALOG d_bugtrack
+	RETURN 1
+ENDIF
+f_bugtrack_toggle
+
+// Bar'ı açar (açıksa yeniden kurar). Kapalıysa (ayar, PLEVEL, hesabın tercihi) bir şey yapmaz, 0 döner.
+[FUNCTION f_bugtrack_bar]
+IF !(<DEF.bugtrack_enabled>) || (<ACCOUNT.PLEVEL> < <DEF.bugtrack_bar_plevel>) || (<ACCOUNT.TAG0.BugTrack.Off>)
+	RETURN 0
+ENDIF
+DIALOGCLOSE d_bugtrack_bar
+DIALOG d_bugtrack_bar
+RETURN 1
+
+// Hesabın bar'ını kapatır ya da açar.
+[FUNCTION f_bugtrack_toggle]
+IF !(<DEF.bugtrack_enabled>) || (<ACCOUNT.PLEVEL> < <DEF.bugtrack_bar_plevel>)
+	SYSMESSAGELOC <def.tcolor_red>,3300090,Bugtrack kapalı.
+	RETURN 0
+ENDIF
+IF (<ACCOUNT.TAG0.BugTrack.Off>)
+	ACCOUNT.TAG.BugTrack.Off=
+	f_bugtrack_bar
+	SYSMESSAGELOC <def.tcolor_green>,3300090,Bugtrack açıldı. Kapatmak için .bugtrack
+ELSE
+	ACCOUNT.TAG.BugTrack.Off=1
+	DIALOGCLOSE d_bugtrack_bar
+	SYSMESSAGELOC <def.tcolor_yellow>,3300090,Bugtrack kapandı. Açmak için .bugtrack
+ENDIF
+RETURN 1
+
+[FUNCTION f_bugtrack_isstaff]
+IF (<ACCOUNT.PLEVEL> >= <DEF.bugtrack_staff_plevel>)
+	RETURN 1
+ENDIF
+RETURN 0
+
+// main.db'ye bağlanır (açıksa bir şey yapmaz) ve tabloyu kurar. 0: dosya açılamadı.
+[FUNCTION f_bugtrack_connect]
+IF !(<LDB.main.CONNECTED>)
+	LDB.main.CONNECT <SERV.LDBFILES><DEF.bugtrack_db>
+	IF !(<LDB.main.CONNECTED>)
+		RETURN 0
+	ENDIF
+ENDIF
+LDB.main.EXECUTE "CREATE TABLE IF NOT EXISTS bugtrack (id INTEGER PRIMARY KEY AUTOINCREMENT, created_at TEXT NOT NULL DEFAULT (datetime('now', 'localtime')), account TEXT, char_uid TEXT, char_name TEXT, plevel INTEGER, p TEXT, region TEXT, cliver TEXT, text TEXT NOT NULL, status INTEGER NOT NULL DEFAULT 0, resolved_by TEXT, resolved_at TEXT)"
+LDB.main.EXECUTE "CREATE INDEX IF NOT EXISTS bugtrack_status ON bugtrack (status, id)"
+RETURN 1
+
+// Char'ın kaydını yazar: ARGS metin (boş olmamalı). Kaydın id'si; 0: yazılamadı.
+[FUNCTION f_bugtrack_send]
+IF !(<f_bugtrack_connect>)
+	RETURN 0
+ENDIF
+LOCAL.Region=
+IF (<REGION>)
+	LOCAL.Region=<REGION.NAME>
+ENDIF
+LDB.main.QUERY "INSERT INTO bugtrack (account, char_uid, char_name, plevel, p, region, cliver, text) VALUES ('<STRREPLACE "'","''",<ACCOUNT.NAME>>', '<UID>', '<STRREPLACE "'","''",<NAME>>', <dACCOUNT.PLEVEL>, '<P>', NULLIF('<STRREPLACE "'","''",<LOCAL.Region>>', '0'), '<REPORTEDCLIVER>', replace(replace('<STRREPLACE "'","''",<ARGS>>', char(60), '('), char(62), ')')) RETURNING id, substr(text, 1, 80) AS short"
+IF (<dLDB.main.ROW.NUMROWS> < 1)
+	RETURN 0
+ENDIF
+LOCAL.Id=<dLDB.main.ROW.0.id>
+IF (<DEF.bugtrack_notify_plevel>)
+	SERV.ALLCLIENTS f_bugtrack_notify #<dLOCAL.Id> <NAME>: <STRREPLACE ",",";",<LDB.main.ROW.0.short>>
+ENDIF
+RETURN <dLOCAL.Id>
+
+// Yeni kaydın bildirimi (SERV.ALLCLIENTS her çevrimiçi char'da çağırır). ARGS: #id ad: metnin başı.
+[FUNCTION f_bugtrack_notify]
+IF (<ACCOUNT.PLEVEL> >= <DEF.bugtrack_notify_plevel>)
+	SYSMESSAGELOC <def.tcolor_yellow>,3300090,Bugtrack <ARGS>
+ENDIF
+
+
+// Bar: başlık (ya da son gönderimin sonucu), yazma alanı ve gönder oku. Gönderilemeyen metin alana geri yazılır.
+[DIALOG d_bugtrack_bar]
+<EVAL <DEF.bugtrack_bar_x>>,<EVAL <DEF.bugtrack_bar_y>>
+noclose
+nodispose
+LOCAL.W=<EVAL <DEF.bugtrack_bar_width>>
+RESIZEPIC 0 0 9200 <dLOCAL.W> 52
+IF (<ISEMPTY <CTAG.BugTrack.Msg>>)
+	DTEXT 12 4 0 Bugtrack: hata ya da öneri yaz, oka bas.
+ELSE
+	DTEXT 12 4 <dCTAG0.BugTrack.MsgHue> <CTAG.BugTrack.Msg>
+	CTAG.BugTrack.Msg=
+	CTAG.BugTrack.MsgHue=
+ENDIF
+RESIZEPIC 10 24 3000 <EVAL <LOCAL.W>-56> 22
+DTEXTENTRYLIMITED 15 25 <EVAL <LOCAL.W>-66> 20 0 1 <EVAL <DEF.bugtrack_max_length>> <CTAG.BugTrack.Draft>
+CTAG.BugTrack.Draft=
+BUTTON <EVAL <LOCAL.W>-40> 24 4005 4007 1 0 1
+
+[DIALOG d_bugtrack_bar BUTTON]
+// noclose ve nodispose: client bar'ı kendisi kapatmaz; DIALOGCLOSE'un kapatması da buraya gelir, bir şey yapılmaz.
+ON=0
+
+// Gönder
+ON=1
+IF (<ISEMPTY <STRSQUISH <ARGTXT[1]>>>)
+	f_bugtrack_bar
+	RETURN 1
+ENDIF
+IF (<SERV.RTICKS> < <CTAG0.BugTrack.Next>)
+	CTAG.BugTrack.Draft=<ARGTXT[1]>
+	CTAG.BugTrack.Msg=Biraz bekle: <EVAL <CTAG0.BugTrack.Next>-<SERV.RTICKS>> sn sonra gönderebilirsin.
+	CTAG.BugTrack.MsgHue=<DEF.tcolor_red>
+	f_bugtrack_bar
+	RETURN 1
+ENDIF
+LOCAL.Id=<f_bugtrack_send <STRLIMIT <EVAL <DEF.bugtrack_max_length>>,"",<STRSQUISH <ARGTXT[1]>>>>
+IF (<LOCAL.Id>)
+	CTAG.BugTrack.Next=<EVAL <SERV.RTICKS>+<DEF.bugtrack_cooldown>>
+	CTAG.BugTrack.Msg=Kaydedildi (#<dLOCAL.Id>). Teşekkürler!
+	CTAG.BugTrack.MsgHue=<DEF.tcolor_green>
+ELSE
+	CTAG.BugTrack.Draft=<ARGTXT[1]>
+	CTAG.BugTrack.Msg=Kaydedilemedi (veritabanı). Tekrar dene.
+	CTAG.BugTrack.MsgHue=<DEF.tcolor_red>
+ENDIF
+f_bugtrack_bar
+
+
+// Kayıtların listesi (.bugtrack, staff). Süzgeç CTAG0.BugTrack.Filter: 0 açık, 1 çözüldü, 2 hepsi; en yeni önce.
+[DIALOG d_bugtrack]
+<DEF.DlgStartPos>
+IF !(<f_bugtrack_connect>)
+	RESIZE 0,0,460,110,Bugtrack
+	DTEXT 25 55 <DEF.tcolor_red> Veritabanı açılamadı: <SERV.LDBFILES><DEF.bugtrack_db>
+ELSE
+	LOCAL.PAGELEN=8
+	LDB.main.QUERY "SELECT COALESCE(SUM(status = 0), 0) AS open, COALESCE(SUM(status = 1), 0) AS done, COUNT(*) AS total FROM bugtrack"
+	LOCAL.Open=<dLDB.main.ROW.0.open>
+	LOCAL.Done=<dLDB.main.ROW.0.done>
+	LOCAL.Total=<dLDB.main.ROW.0.total>
+	LOCAL.COUNT=<dLOCAL.Open>
+	IF (<CTAG0.BugTrack.Filter> == 1)
+		LOCAL.COUNT=<dLOCAL.Done>
+	ELSEIF (<CTAG0.BugTrack.Filter> == 2)
+		LOCAL.COUNT=<dLOCAL.Total>
+	ENDIF
+	LOCAL.PAGES=<EVAL ((<LOCAL.COUNT>-1)/<LOCAL.PAGELEN>)+1>
+	IF (<LOCAL.PAGES> < 1)
+		LOCAL.PAGES=1
+	ENDIF
+	IF (<CTAG0.BugTrack.Page> >= <LOCAL.PAGES>)
+		CTAG.BugTrack.Page=<EVAL <LOCAL.PAGES>-1>
+	ENDIF
+	LOCAL.FIRST=<EVAL <dCTAG0.BugTrack.Page>*<LOCAL.PAGELEN>>
+
+	RESIZE 0,0,790,<EVAL 165+(<LOCAL.PAGELEN>*58)>,Bugtrack
+	DORIGIN 25 50
+	BUTTON +0 +0 4005 4007 1 0 20
+	DTEXT +35 +0 <QVAL (<CTAG0.BugTrack.Filter> == 0) ? 044 : 0> Açık (<dLOCAL.Open>)
+	BUTTON +140 +0 4005 4007 1 0 21
+	DTEXT +175 +0 <QVAL (<CTAG0.BugTrack.Filter> == 1) ? 044 : 0> Çözüldü (<dLOCAL.Done>)
+	BUTTON +300 +0 4005 4007 1 0 22
+	DTEXT +335 +0 <QVAL (<CTAG0.BugTrack.Filter> == 2) ? 044 : 0> Hepsi (<dLOCAL.Total>)
+	BUTTON +450 +0 4014 4015 1 0 6
+	DTEXT +485 +0 0 Yenile
+	BUTTON +570 +0 4005 4007 1 0 5
+	IF (<ACCOUNT.TAG0.BugTrack.Off>)
+		DTEXT +605 +0 0389 Bar'ım: kapalı
+	ELSE
+		DTEXT +605 +0 0 Bar'ım: açık
+	ENDIF
+
+	LDB.main.QUERY "SELECT id, strftime('%d.%m.%Y %H:%M', created_at) AS t, COALESCE(account, '') AS account, COALESCE(char_name, '') AS char_name, COALESCE(region, '-') AS region, status, COALESCE(resolved_by, '') AS resolved_by, text FROM bugtrack WHERE (<dCTAG0.BugTrack.Filter> = 2 OR status = <dCTAG0.BugTrack.Filter>) ORDER BY id DESC LIMIT <dLOCAL.PAGELEN> OFFSET <dLOCAL.FIRST>"
+	LOCAL.Rows=<dLDB.main.ROW.NUMROWS>
+	LOCAL.Y=35
+	FOR 0 <EVAL <LOCAL.PAGELEN>-1>
+		CTAG.BugTrack.Row.<dLOCAL._FOR>=
+		IF (<LOCAL._FOR> < <LOCAL.Rows>)
+			LOCAL.Id=<dLDB.main.ROW.<dLOCAL._FOR>.id>
+			CTAG.BugTrack.Row.<dLOCAL._FOR>=<dLOCAL.Id>
+			IF (<LDB.main.ROW.<dLOCAL._FOR>.status> == 1)
+				DCROPPEDTEXT +0 +<dLOCAL.Y> 545 18 0389 #<dLOCAL.Id>  <LDB.main.ROW.<dLOCAL._FOR>.t>  <LDB.main.ROW.<dLOCAL._FOR>.account> (<LDB.main.ROW.<dLOCAL._FOR>.char_name>)  <LDB.main.ROW.<dLOCAL._FOR>.region>  - çözen: <LDB.main.ROW.<dLOCAL._FOR>.resolved_by>
+				BUTTON +555 +<dLOCAL.Y> 4014 4015 1 0 <EVAL 100+<LOCAL._FOR>>
+				DTEXT +590 +<dLOCAL.Y> 0 Yeniden aç
+			ELSE
+				DCROPPEDTEXT +0 +<dLOCAL.Y> 545 18 0 #<dLOCAL.Id>  <LDB.main.ROW.<dLOCAL._FOR>.t>  <LDB.main.ROW.<dLOCAL._FOR>.account> (<LDB.main.ROW.<dLOCAL._FOR>.char_name>)  <LDB.main.ROW.<dLOCAL._FOR>.region>
+				BUTTON +555 +<dLOCAL.Y> 4023 4024 1 0 <EVAL 100+<LOCAL._FOR>>
+				DTEXT +590 +<dLOCAL.Y> 044 Çözüldü
+			ENDIF
+			DHTMLGUMP +0 +<EVAL <LOCAL.Y>+19> 545 34 1 1 <LDB.main.ROW.<dLOCAL._FOR>.text>
+			BUTTON +555 +<EVAL <LOCAL.Y>+26> 4005 4007 1 0 <EVAL 200+<LOCAL._FOR>>
+			DTEXT +590 +<EVAL <LOCAL.Y>+26> 0 Git
+			BUTTON +630 +<EVAL <LOCAL.Y>+26> 4017 4018 1 0 <EVAL 300+<LOCAL._FOR>>
+			IF (<dCTAG0.BugTrack.Confirm> == <LOCAL.Id>)
+				DTEXT +665 +<EVAL <LOCAL.Y>+26> 038 Emin misin?
+			ELSE
+				DTEXT +665 +<EVAL <LOCAL.Y>+26> 038 Sil
+			ENDIF
+			LOCAL.Y=<EVAL <LOCAL.Y>+58>
+		ENDIF
+	ENDFOR
+	IF !(<LOCAL.Rows>)
+		DTEXT +0 +35 0389 Kayıt yok.
+	ENDIF
+
+	LOCAL.Y=<EVAL 45+(<LOCAL.PAGELEN>*58)>
+	IF (<LOCAL.PAGES> > 1)
+		IF (<CTAG0.BugTrack.Page> > 0)
+			BUTTON +0 +<dLOCAL.Y> 5603 5607 1 0 10
+		ENDIF
+		DTEXT +25 +<dLOCAL.Y> 0 Sayfa <EVAL <CTAG0.BugTrack.Page>+1> / <dLOCAL.PAGES>
+		IF (<EVAL <CTAG0.BugTrack.Page>+1> < <LOCAL.PAGES>)
+			BUTTON +110 +<dLOCAL.Y> 5601 5605 1 0 11
+		ENDIF
+	ENDIF
+ENDIF
+
+[DIALOG d_bugtrack BUTTON]
+ON=0
+CTAG.BugTrack.Confirm=
+
+// Kendi bar'ı
+ON=5
+CTAG.BugTrack.Confirm=
+f_bugtrack_toggle
+DIALOG d_bugtrack
+
+// Yenile
+ON=6
+CTAG.BugTrack.Confirm=
+DIALOG d_bugtrack
+
+// Sayfalar
+ON=10
+CTAG.BugTrack.Confirm=
+IF (<CTAG0.BugTrack.Page> > 0)
+	CTAG.BugTrack.Page=<EVAL <CTAG0.BugTrack.Page>-1>
+ENDIF
+DIALOG d_bugtrack
+
+ON=11
+CTAG.BugTrack.Confirm=
+CTAG.BugTrack.Page=<EVAL <CTAG0.BugTrack.Page>+1>
+DIALOG d_bugtrack
+
+// Süzgeç
+ON=20 22
+CTAG.BugTrack.Confirm=
+CTAG.BugTrack.Filter=<EVAL <ARGN>-20>
+CTAG.BugTrack.Page=
+DIALOG d_bugtrack
+
+// Çözüldü / yeniden aç
+ON=100 199
+CTAG.BugTrack.Confirm=
+LOCAL.Id=<dCTAG0.BugTrack.Row.<EVAL <ARGN>-100>>
+IF (<LOCAL.Id>) && (<f_bugtrack_isstaff>) && (<f_bugtrack_connect>)
+	LDB.main.EXECUTE "UPDATE bugtrack SET status = 1 - status, resolved_by = CASE WHEN status = 0 THEN '<STRREPLACE "'","''",<ACCOUNT.NAME>>' END, resolved_at = CASE WHEN status = 0 THEN datetime('now', 'localtime') END WHERE id = <dLOCAL.Id>"
+ENDIF
+DIALOG d_bugtrack
+
+// Kaydın yazıldığı yere git
+ON=200 299
+CTAG.BugTrack.Confirm=
+LOCAL.Id=<dCTAG0.BugTrack.Row.<EVAL <ARGN>-200>>
+IF (<LOCAL.Id>) && (<f_bugtrack_isstaff>) && (<f_bugtrack_connect>)
+	LDB.main.QUERY "SELECT COALESCE(p, '') AS p FROM bugtrack WHERE id = <dLOCAL.Id>"
+	IF (<dLDB.main.ROW.NUMROWS>) && !(<ISEMPTY <LDB.main.ROW.0.p>>)
+		GO <LDB.main.ROW.0.p>
+	ENDIF
+ENDIF
+DIALOG d_bugtrack
+
+// Sil (ikinci basışta)
+ON=300 399
+LOCAL.Id=<dCTAG0.BugTrack.Row.<EVAL <ARGN>-300>>
+IF !(<LOCAL.Id>) || !(<f_bugtrack_isstaff>)
+	RETURN 1
+ENDIF
+IF (<dCTAG0.BugTrack.Confirm> != <LOCAL.Id>)
+	CTAG.BugTrack.Confirm=<dLOCAL.Id>
+	DIALOG d_bugtrack
+	RETURN 1
+ENDIF
+CTAG.BugTrack.Confirm=
+IF (<f_bugtrack_connect>)
+	LDB.main.EXECUTE "DELETE FROM bugtrack WHERE id = <dLOCAL.Id>"
+ENDIF
+DIALOG d_bugtrack
+
+
+[EOF]
