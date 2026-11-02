@@ -1151,6 +1151,11 @@ ELSEIF (<SRC.IsOnRide>)
 ENDIF
 
 ON=@Success
+// Gizli yürünecek adım (STEPSTEALTH): StealthStepMode=0'da (0.56T) motor Stealth başlarken doldurur (Stealth/51),
+//  1'de (X) burada doldurulur (X'in paketi gibi Stealth/50); 2'de (0.56b) sayaç kullanılmaz.
+IF !(<STEPSTEALTH>) && (<FLAGS> & statf_hidden)
+	STEPSTEALTH=<EVAL <STEALTH>/50>
+ENDIF
 SPEEDSET=2
 SYSMESSAGELOC <def.tcolor_grey>,3300083,<STEPSTEALTH>
 
