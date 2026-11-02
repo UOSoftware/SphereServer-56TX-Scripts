@@ -1,0 +1,22 @@
+// Yolculuk yasağı (Scripts-T'nin I_DEED_UYARI_MARK'ı): yere konan deed'in TAG.TRAVELBLOCK karesi içine recall ve gate
+//  açılmaz, orada mark yapılmaz, gate'ten girilmez. Kontrolü motor yapar: sphere.ini'nin RecallSpellFlags,
+//  GateSpellFlags ve MarkSpellFlags'inde TRAVELF_DST_BLOCKER (0200) olmalı; aranan uzaklık en çok 50 kare. Staff:
+//  .add i_deed_travelblock, sonra .xTAG.TRAVELBLOCK <kare>. TAG.TRAVELBLOCK'u olan her eşya ve char (ör. bir boss) aynı
+//  işi görür.
+
+[ITEMDEF i_deed_travelblock]
+DEFNAME=i_deed_travelblock
+NAME=yolculuk yasagi
+ID=i_deed
+TYPE=t_normal
+WEIGHT=0
+CATEGORY=Staff
+SUBSECTION=Deeds
+DESCRIPTION=Travel block
+
+ON=@Create
+COLOR=0480
+ATTR=attr_move_never
+TAG.TRAVELBLOCK=10
+
+[EOF]

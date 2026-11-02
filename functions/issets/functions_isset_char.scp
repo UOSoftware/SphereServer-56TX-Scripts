@@ -31,61 +31,14 @@ RETURN <LOCAL.JOB>
 // 45 = Mark
 // 32 = Recall
 // 52 = Gate
-
-//IF (<MANA> < <SERV.SPELL.<ARGS>.MANAUSE>)
-	//SRC.SYSMESSAGELOC <def.tcolor_red>,<def.empty_cliloc2>, <DEFMSG.spell_try_nomana> (<SERV.SPELL.<ARGS>.NAME> için Gereken mana: <SERV.SPELL.<ARGS>.MANAUSE>)
-	//RETURN 0
+// Yolculuk büyülerinin paketteki ek koşulları. Donma, ölüm, jail, güvenli bölge, ev, gemi, su, bölgenin antimagic
+//  bayrakları ve hedefin kontrolleri motorda: sphere.ini'nin RecallSpellFlags, GateSpellFlags ve MarkSpellFlags'i
+//  (TRAVELF_* bitleri, mesajları motor verir). Eski kontrollerin bitleri: atan 07f, hedef (recall, gate) 01fff00,
+//  mark'ın yasak deed'i 0200 ve boşluk zemini 0200000. Bölge adıyla yapılan yasak (Star, Green Acres, Jail) bölgelerin
+//  antimagic bayraklarında.
 
 IF (<TAG0.TAMETEKRAR> > 0)
 	SYSMESSAGELOC <def.tcolor_red>,3300232
-	RETURN 0
-	
-ELIF (<TAG0.NOMOVETILL>) 
-	SYSMESSAGELOC <def.tcolor_red>,600029 // "Freeze durumdayken bu işlemi yapamazsınız."
-	RETURN 0
-
-ELIF (<FLAGS>&STATF_DEAD)
-	SYSMESSAGELOC <def.tcolor_red>,600027 // "Ölü durumdayken bu işlemi yapamazsınız."
-	RETURN 0
-
-ELIF (<FLAGS>&STATF_STONE)
-	SYSMESSAGELOC <def.tcolor_red>,600028 // "Stone durumdayken bu işlemi yapamazsınız."
-	RETURN 0
-
-ELIF (<FLAGS>&STATF_FREEZE)
-	SYSMESSAGELOC <def.tcolor_red>,600029 // "Freeze durumdayken bu işlemi yapamazsınız."
-	RETURN 0
-	
-ELIF (<REGION.FLAGS>&REGION_FLAG_SAFE)
-	SYSMESSAGELOC <def.tcolor_red>,3300233
-	RETURN 0
-
-ELIF (<REGION.FLAGS>&REGION_ANTIMAGIC_RECALL_OUT)
-	SYSMESSAGELOC <def.tcolor_red>,3300234
-	RETURN 0
-
-ELIF (<REGION.FLAGS>&REGION_ANTIMAGIC_GATE)
-	SYSMESSAGELOC <def.tcolor_red>,3300235
-	RETURN 0
-	
-ELIF (<REGION.FLAGS>&REGION_ANTIMAGIC_ALL)
-	SYSMESSAGELOC <def.tcolor_red>,3300236
-	RETURN 0
-	
-ELIF (<IsInHouse>)
-	SYSMESSAGELOC <def.tcolor_red>,3300237
-	RETURN 0
-
-ELIF (<IsInShip>) || (<ISINWATER>)
-	SYSMESSAGELOC <def.tcolor_red>,3300237
-	RETURN 0
-
-ELIF (strmatch('Logout','<REGION.NAME>')) || (strmatch(*Immortal City*,'<REGION.NAME>')) || (strmatch('Star','<REGION.NAME>')) || (strmatch(*Green Acres*,'<REGION.NAME>')) || (strmatch(*Jail*,'<REGION.NAME>'))
-	SYSMESSAGELOC <def.tcolor_red>,3300237
-	RETURN 0
-	
-ELIF (<ACCOUNT.PRIV>&PRIV_JAILED)
-	SYSMESSAGELOC <def.tcolor_red>,3300238
 	RETURN 0
 
 ELIF (<ISHELPSTUCK>)

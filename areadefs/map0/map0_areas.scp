@@ -2291,7 +2291,8 @@ TAG.GUARDOWNER=Hell\'s Helpers
 EVENTS=r_default,r_default_rock,r_default_water,r_default_tree,r_default_grass
 NAME=Star
 GROUP=Green Acres
-FLAGS=REGION_FLAG_NOBUILDING
+// Recall, gate ve mark ne içine ne dışına (eskiden spells_magery.scp'de bölge adıyla).
+FLAGS=REGION_ANTIMAGIC_GATE|REGION_ANTIMAGIC_RECALL_OUT|REGION_ANTIMAGIC_RECALL_IN|REGION_FLAG_NOBUILDING
 P=5147,1759,31,0
 RECT=5123,1743,5171,1792,0
 

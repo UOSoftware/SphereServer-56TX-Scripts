@@ -147,4 +147,21 @@ IF (<ACT.TOPOBJ.BASEID> == C_H_VENDOR) && (<ACT.TYPE>==T_CONTAINER)
 	RETURN 1
 ENDIF
 
+ON=@TravelCheck
+// Yolculuk büyüsünün motordaki kontrolü (sphere.ini'nin RecallSpellFlags'i...): ARGN1 büyü, ARGN2 bakılacak bitler,
+//  ARGN3 aşama, ARGO hedef eşya. Gemi anahtarıyla recall: s_recall'ın @Start'ı anahtarın MOREP'ini geminin bugünkü
+//  yerine çeker, cast başlarken hedef henüz eski yer: sadece atanın bitleri (07f). Anahtar kendi gemisine götürür:
+//  hedefin gemi kontrolü yok.
+IF (<ARGN1> == 32)
+	IF (<ARGO>)
+		IF (<ARGO.TYPE> == t_key)
+			IF (<ARGN3> == travel_stage_caststart)
+				ARGN2=<EVAL <ARGN2>&07f>
+			ELSE
+				ARGN2=<EVAL <ARGN2>&~travelf_dst_ship>
+			ENDIF
+		ENDIF
+	ENDIF
+ENDIF
+
 [EOF]
