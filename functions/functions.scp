@@ -104,7 +104,7 @@ ENDFOR
 [FUNCTION fUnequip]
 IF (<SRC.WEIGHT> >= <SRC.MAXWEIGHT>)
 	DROP
-	SRC.LOGGER <SRC.NAME> agirligi cok fazla oldugu icin <NAME> (<UID>) yere dustu.
+	AUDIT item.overweight_drop,ağırlık sınırı (<SRC.WEIGHT>/<SRC.MAXWEIGHT>)
 ELSE
 	UNEQUIP
 ENDIF
@@ -468,7 +468,7 @@ IF (<ISPLAYER>) && (<ISONLINE>)
 	SENDPACKET 085 B01 // ReceiveLoginRejection
 	SENDPACKET 053 B04 // ReceiveLoginRejection
 	
-	SERV.LOGGER Logout Force: <name>
+	AUDIT char.logout_force
 	
 	DISCONNECT
 	
@@ -580,82 +580,6 @@ ENDIF
 
 
 
-
-
-
-
-
-[FUNCTION Logger]
-// TREF_SERV          000001
-// TREF_FILE          000002
-// TREF_NEWFILE       000004
-// TREF_DB            000008
-// TREF_RESDEF        000010
-// TREF_RESBASE       000020
-// TREF_FUNCTIONARGS  000040
-// TREF_FILEOBJ       000080
-// TREF_FILEOBJCONT   000100
-// TREF_ACCOUNT       000200
-// TREF_STONEMEMBER   000800
-// TREF_SERVERDEF     001000
-// TREF_SECTOR        002000
-// TREF_WORLD         004000
-// TREF_GMPAGE        008000
-// TREF_CLIENT        010000
-// TREF_OBJECT        020000
-// TREF_CHAR          040000
-// TREF_ITEM          080000
-//EXAMPLE: @
-// CTCOL_RED, 
-// LOGL_EVENT, 
-// LOGM_NOCONTEXT|LOGM_KILLS 
-// MESSAGE
-
-IF (<GETREFTYPE> == <def.tref_account> || <GETREFTYPE> == <def.tref_client> || <GETREFTYPE> == <def.tref_world> || <GETREFTYPE> == <def.tref_char> || <GETREFTYPE> == <def.tref_item> || <GETREFTYPE> == <def.tref_object>)
-	
-	IF (<GETREFTYPE> == <def.tref_world>)
-	
-		// Item
-		IF (<ISITEM>)
-			LOCAL.OBJINFO = ItemLog - [BaseID=<BASEID>, Type=<TYPE>, Name=<NAME>, UID=<UID>, P=<P>, Region=<QVAL (<REGION>)?<REGION.NAME>:->, Topobj=<TOPOBJ>(<TOPOBJ.NAME>)]
-			LOCAL.COLOR=<def.CTCOL_DEFAULT>
-			CALL ContanerAllInsideLog 
-			
-		// Char
-		ELSEIF (<ISCHAR>)
-			IF (<ISPLAYER>)
-				LOCAL.COLOR=<QVAL (<ACCOUNT.PLEVEL> == 1)?<def.CTCOL_YELLOW>:<DEF.CTCOL_CYAN>>
-				LOCAL.OBJINFO <QVAL (<ACCOUNT.PLEVEL> == 1)?Player:Staff>Log - [Priv=<ACCOUNT.PLEVEL>, Account=<ACCOUNT>, Name=<NAME>, UID=<UID>, Region=<QVAL (<REGION>)?<REGION.NAME>/<P>:>, IP=<ACCOUNT.LASTIP>, ClientVersion=<REPORTEDCLIVER>]
-			ELSE
-				LOCAL.COLOR=<def.CTCOL_WHITE>
-				LOCAL.OBJINFO NPCLog - [Name=<NAME>, UID=<UID>, Food=<FOOD>/<MAXFOOD>, Owner=<qval (<owner>)?<owner.NAME>:Yok>, Region=<QVAL (<REGION>)?<REGION.NAME>/<P>:>]
-			ENDIF
-		ENDIF
-	ENDIF
-	
-	SERV.LOG @<LOCAL.COLOR>,<def.LOGL_EVENT>,(<def.LOGM_NOCONTEXT>) [<GETREFTYPE>] <LOCAL.OBJINFO> == <ARGS>
-ELSE
-	SERV.LOG @<def.CTCOL_DEFAULT>,<def.LOGL_EVENT>,(<def.LOGM_NOCONTEXT>) [<GETREFTYPE>] <ARGS>
-ENDIF
-
-
-
-
-
-
-
-[FUNCTION ContanerAllInsideLog]
-REF1=<UID>
-IF (<REF1.ISCONT>)
-	IF (<REF1.RESCOUNT> > 0)
-		LOCAL.OBJINFO .= [Container Items / Rescont=<RESCOUNT>];
-		FORCONT <UID> 99999999
-			LOCAL.x ++
-			LOCAL.OBJINFO .= * <DLOCAL.x>. BaseID=<BASEID>, Type=<TYPE>, Name=<NAME>, UID=<UID> , 
-		ENDFOR
-		LOCAL.OBJINFO .= ]
-	ENDIF
-ENDIF
 
 
 

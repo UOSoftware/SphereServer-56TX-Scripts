@@ -84,7 +84,7 @@ ENDIF
 
 SRC.NEWGOLD <DLOCAL.ESYADEGER>,1
 SRC.SYSMESSAGELOC <def.tcolor_green>,3300542,<NumberFormat <DLOCAL.ESYADEGER>>
-SRC.Logger <ARGO.NAME> isimli esyayi <NumberFormat <DLOCAL.ESYADEGER>> gpe satti. 
+ARGO.AUDIT vendor.sell,<DLOCAL.ESYADEGER> gp
 TARGETF Func_Generic_Npc_Vendor_Shopkeeper_Sell <REF1>
 SOUND 032
 ARGO.REMOVE

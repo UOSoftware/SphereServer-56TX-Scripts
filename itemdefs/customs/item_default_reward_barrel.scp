@@ -156,7 +156,7 @@ IF (<MORE> == 1)
 	ELSE
 		SRC.TAG.REWARDCOINS +=<DLOCAL.REWARDGAIN>
 		SRC.SAYLOC 0520,3301083,<SRC.TARG.NAME>,<NumberFormat <DLOCAL.REWARDGAIN>>
-		SRC.LOGGER <src.targ.amount> <SRC.TARG.NAME> [<src.targ.uid>] isimli esya <NumberFormat <DLOCAL.REWARD>> reward coin kazandirdi.
+		SRC.TARG.AUDIT reward.deposit,<SRC.TARG.AMOUNT> adet, <DLOCAL.REWARD> reward coin
 		SRC.TARG.REMOVE
 		
 		IF (<DISTANCE> < 4)
@@ -343,7 +343,7 @@ NEW.BOUNCE
 NEW.TAG0.Reward_Item=1
 SRC.TAG0.REWARDCOINS -=<DLOCAL.ITEMREWARD>
 SRC.SOUND 0F7
-SRC.LOGGER Hediye stogundan <DLOCAL.ITEMREWARD> bilet karsiliginda <NEW.NAME> isimli esyayi aldi.
+NEW.AUDIT reward.buy,<DLOCAL.ITEMREWARD> bilet
 SRC.DIALOGCLOSEALL
 
 
@@ -371,7 +371,7 @@ SERV.NEWITEM <LOCAL.ITEMDEF>,1,<REF1>,1
 NEW.TAG0.Reward_Item=1
 
 SRC.SOUND 0F7
-SRC.LOGGER Hediye stogundan <DLOCAL.REWARD> bilet karsiliginda <NEW.NAME> isimli esyayi aldi.
+NEW.AUDIT reward.buy,<DLOCAL.REWARD> bilet
 SRC.DIALOGCLOSEALL
 
 
@@ -400,7 +400,7 @@ SERV.NEWITEM <LOCAL.ITEMDEF>,1,<REF1>,1
 NEW.TAG0.Reward_Item=1
 
 SRC.SOUND 0F7
-SRC.LOGGER Hediye stogundan <DLOCAL.REWARD> bilet karsiliginda <NEW.NAME> isimli esyayi aldi.
+NEW.AUDIT reward.buy,<DLOCAL.REWARD> bilet
 SRC.DIALOGCLOSEALL
 
 
@@ -474,7 +474,7 @@ FORCONT <REF1> 0
 	ELSE
 		SRC.TAG0.REWARDCOINS +=<DLOCAL.REWARD> // value değerinin yarısı kadar reward coin ver.
 		SRC.SYSMESSAGELOC <def.tcolor_green>,3300378,<AMOUNT>,<NAME>,<BolukAyir <DLOCAL.REWARD>>
-		SRC.LOGGER <amount> <NAME> [<uid>] isimli esya <BolukAyir <DLOCAL.REWARD>> reward coin kazandirdi.
+		AUDIT reward.deposit,<AMOUNT> adet, <DLOCAL.REWARD> reward coin
 		UPDATE
 		REMOVE
 	ENDIF	

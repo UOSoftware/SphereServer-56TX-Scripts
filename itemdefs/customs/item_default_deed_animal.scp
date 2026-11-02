@@ -161,7 +161,7 @@ IF (<MORE2>) // DOLUYSA
 	
 	NEW.ANIM <R5,6>
 	NEW.BARK <R1,2> // buna gerek var mi? npc olustugunda ses cikartiyor zaten.
-	SRC.LOGGER <new.name>[<new.uid>] shrinkten cikartildi. [Str: <new.str> - Dex: <new.dex> - Food: <new.food>]
+	NEW.AUDIT pet.unshrink,deed <UID>, Str <NEW.STR>, Dex <NEW.DEX>, Food <NEW.FOOD>
 	
 	NEW.MAKEMYPET <SRC>
 	CONSUME
@@ -281,7 +281,7 @@ ELSE // BOŞSA
 	ENDIF
 	
 	SRC.SOUND <SRC.TARG.SOUND>
-	SRC.LOGGER <src.targ.name>[<src.targ.uid>] shrink yapildi. [Str: <src.targ.str> - Dex: <src.targ.dex> - Food: <src.targ.food>]
+	SRC.TARG.AUDIT pet.shrink,deed <UID>, Str <SRC.TARG.STR>, Dex <SRC.TARG.DEX>, Food <SRC.TARG.FOOD>
 	SRC.TARG.REMOVE
 
 ENDIF

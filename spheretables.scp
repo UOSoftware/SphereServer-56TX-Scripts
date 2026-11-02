@@ -37,7 +37,7 @@ Folders: a file goes to the folder of its main section type.
   roomdefs/      ROOMDEF
   teleporters/   TELEPORTERS
   moongates/     MOONGATES
-  core/          section types with a single file: NAMES, SKILL, NEWBIE, STARTS, BONUS, OBJSDBEXCLUDE
+  core/          section types with a single file: NAMES, SKILL, NEWBIE, STARTS, BONUS, OBJSDBEXCLUDE, WORDFILTER
   systems/       whole systems kept together (guilds, towns, houses, ships)
 A folder line below loads the .scp files of that folder only, not of its
 subfolders. File names must be unique in the whole pack: a second file with the
@@ -78,6 +78,7 @@ core/newbies.scp // sonra newbies yukle.
 core/starts.scp
 core/bonuses.scp // [BONUS]: ITEMDEF ve CHARDEF'lerin BONUSES='inden önce
 core/objsdbexclude.scp // [OBJSDBEXCLUDE]: nesne veritabanına (ObjsDatabase) yazılmayanlar
+core/wordfilter.scp // [WORDFILTER]: kelime filtresinin listeleri (WordFilter)
 
 // Server functions (f_on*)
 functions/functions_serv_triggers.scp

@@ -466,7 +466,7 @@ ELSE
 	ACCOUNT.BLOCK <QVAL (<ACCOUNT.BLOCK>)? 0:1>
 	ARGS="A'<ACCOUNT>' was <QVAL (<ACCOUNT.BLOCK>)? banned:unbanned> by '<SRC.NAME>'"
 	SRC.SYSMESSAGELOC <def.tcolor_grey>,3300090,<ARGS>
-	SRC.Logger <ARGS>
+	AUDIT account.block,<ARGS>
 ENDIF
 DIALOG d_admin_player_tweak
 
@@ -484,7 +484,7 @@ ON=10
 //ENDIF
 //ARGS="P'<NAME>' was <QVAL (<ACCOUNT.JAIL>)? jailed:forgiven> by '<SRC.NAME>'"
 //SRC.SYSMESSAGELOC <def.tcolor_grey>,<def.empty_cliloc2>, <ARGS>
-//SRC.LOGGER <ARGS>
+//AUDIT account.jail,<ARGS>
 DIALOG d_admin_player_tweak
 
 // Kill

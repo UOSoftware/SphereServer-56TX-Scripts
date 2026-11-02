@@ -1403,7 +1403,7 @@ ENDFOR
 
 ON=@DCLICK
 IF (<SRC.ACCOUNT.PLEVEL> < 5)
-	SRC.Logger (Typedef:T_SPAWN_ITEM, Trigger:Dclick) (Name:<NAME> UID:<UID> Location:<REGION.NAME> [<P>])
+	AUDIT spawn.dclick_denied,t_spawn_item
 	RETURN 1
 ELSE
 	SRC.CTAG0.SPAWN_ITEM.MORE1=<MORE1>
@@ -1434,7 +1434,7 @@ TAG0.MORE1=<MORE1>
 
 ON=@DCLICK
 IF (<SRC.ACCOUNT.PLEVEL> < 5)
-	SRC.Logger (Typedef:T_SPAWN_CHAR, Trigger:Dclick) (Name:<NAME> UID:<UID> Location:<REGION.NAME> [<P>])
+	AUDIT spawn.dclick_denied,t_spawn_char
 	RETURN 1
 ELSE
 	SRC.CTAG0.SPAWN_CHAR.MORE1=<MORE1>

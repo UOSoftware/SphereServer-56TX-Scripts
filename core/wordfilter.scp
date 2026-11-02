@@ -1,0 +1,97 @@
+VERSION=TX
+
+[COMMENT wordfilter]
+Kelime filtresinin listeleri (emulatörün WordFilter'ı; sphere.ini: WordFilter=1). Her [WORDFILTER <ad>] bir liste:
+ CONTEXTS= speech (say, emote, whisper, yell, party, chat), name (karakter, pet, eşya, guild, chat ve sunucu adları:
+ eşleşen ad reddedilir), text (paketin metinleri, SERV.WORDFILTERMASK ile); yazılmazsa üçü.
+ SEVERITY= 1 maskelenir; 2 maskelenir ve otomatik susturmada (AutoMute) uyarı sayılır; 3 ayrıca konuşan hakkında
+ otomatik ihbar açar (tür wordfilter, delili satırla birlikte).
+ Kalıp: kelime (kelimenin tamamı), kelime* (ile başlayan), *kelime (ile biten), *kelime* (içeren). ALLOW=kalıp istisnadır.
+ Karşılaştırma normalize edilmiş harflerle: büyük-küçük harf, Türkçe harfler katlanır (ş s, ı i, ğ g, ç c, ö o, ü u),
+ leet (0 o, 1 i, 3 e, 4 a, 5 s, 7 t, @ a, $ s), tekrar eden harf, ayrılmış tek harfler (a m k, a.m.k). Bu yüzden kısa
+ kökler başka kelimeleri de yakalar: sik, sık ve şık; sikis, sıkış (sıkıştım); got, İngilizce got; pic, İngilizce pic.
+ Onlar listede yok, uzun biçimleri var. Yanlış eşleşen kelime ALLOW ile bırakılır. Denemek için
+ SERV.WORDFILTERCHECK speech,metin (en yüksek seviye, 0 temiz) ve SERV.WORDFILTERMASK speech,metin.
+ Bu bir başlangıç listesidir, sunucuya göre genişletilir. Eşleşmeler olay kaydına yazılır (wordfilter.hit).
+
+
+// Türkçe küfürler: konuşmada maskelenir, adlarda reddedilir.
+[WORDFILTER kufur_tr]
+SEVERITY=2
+orospu*
+oruspu*
+orosbu*
+yarrak*
+amcik*
+siktir*
+sikerim
+sikeyim
+sikiyim
+sikim
+sikimi
+sikimin
+sikik
+sikecem
+sikecegim
+sikicem
+yavsak*
+pezevenk*
+kahpe*
+kaltak*
+kancik*
+gavat
+ibne*
+pust
+gotveren*
+gotlek*
+gotunu
+gotune
+
+// Kısaltmalar ve ad olabilenler (Amina, Amini): sadece konuşmada ve metinlerde.
+[WORDFILTER kufur_tr_kisa]
+CONTEXTS=speech,text
+SEVERITY=2
+amk
+amq
+aq
+mk
+amina
+amini
+aminiza
+
+// İngilizce küfürler.
+[WORDFILTER kufur_en]
+SEVERITY=2
+*fuck*
+shit*
+*shit
+cunt*
+bitch*
+asshole*
+whore*
+slut*
+bastard*
+dickhead*
+// Tekrar eden harf teke iner: shiitake, shitake olur.
+ALLOW=shitake*
+
+// Hafif hakaretler: sadece maskelenir, uyarı sayılmaz. İstenmezse liste silinir.
+[WORDFILTER hakaret_hafif]
+CONTEXTS=speech
+SEVERITY=1
+gerizekali*
+dangalak*
+aptal
+salak
+retard*
+
+// Irkçı ve nefret içeren sözler: otomatik ihbar açar.
+[WORDFILTER agir]
+SEVERITY=3
+nigger*
+nigga*
+faggot*
+kike
+
+
+[EOF]

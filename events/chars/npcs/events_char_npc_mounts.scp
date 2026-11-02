@@ -19,13 +19,12 @@ IF (<DLOCAL.StatID> == 3)
 	// REF1.SYSMESSAGE <NAME> food level: <FOOD>/<MAXFOOD> ( Regeneration time: <REGENFOOD> [<REGENFOODD>] )
 	// SERV.B <NAME> food level: <FOOD>/<MAXFOOD> ( Regeneration time: <REGENFOOD> [<REGENFOODD>] )
 	
+	// Çevrimdışı oyuncunun bineği ve spawn'ı olan binek acıkmaz.
 	IF !(<ISONLINE>)
-		LOGGER Offline mount does not get hungry. (<name>, <uid>)
 		FOOD=<QVAL (<MAXFOOD>)?<MAXFOOD>:64>
 		RETURN 1
 	ENDIF
 	IF (<SPAWNITEM>)
-		LOGGER Binek spawni varken acikmaz. (<name>, <uid>)
 		FOOD=<QVAL (<MAXFOOD>)?<MAXFOOD>:64>
 		RETURN 1
 	ENDIF

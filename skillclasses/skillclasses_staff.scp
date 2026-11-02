@@ -91,7 +91,7 @@ REF1=<ACT>
 IF (<SRC.ACCOUNT.PLEVEL> > 2)
 	IF (<REF1.ISVALID>) && !((<REF1.CAN>&can_i_pile) || (<REF1.TYPE> == T_NORMAL) || (<REF1.ISEVENT.T_ROBE_GM>) || (<REF1.TYPE> == T_WALL) || (<REF1.TYPE> == T_SCRIPT) || (STRMATCH(*T_EQ*,'<REF1.TYPE>')) || (STRMATCH(*Missing*,'<REF1.NAME>')))
 		REF1.TAG0.CREAT <SRC>
-		SRC.LOGGER Esya olusturdu : <REF1.NAME> (<REF1>)
+		REF1.AUDIT staff.item_create
 	ENDIF
 ENDIF
 

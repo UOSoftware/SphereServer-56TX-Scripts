@@ -85,14 +85,12 @@ IF (<ARGO.ISCHAR>)
 		SRC.SYSMESSAGELOC <def.tcolor_red>,3300213
 		RETURN 1
 	ELSE
-		IF (<ARGO.OWNER>)
-			SRC.Logger [Char Removed]: Name=<ARGO.NAME>, Serial=<ARGO.UID>, <QVAL (<ARGO.OWNER>) ? Owner=<ARGO.OWNER.NAME> : Sahipsiz>
-		ENDIF
+		// Silme olay kaydına emulatörden gider: komut (command.target) ve silinen NPC, pet'in sahibiyle (char.delete).
 		SRC.SYSMESSAGELOC <def.tcolor_red>,3300214,<ARGO.NAME>
 		ARGO.REMOVE
 	ENDIF
 ELSEIF (<ARGO.ISITEM>)
-	SRC.Logger [Item Removed]: <QVAL (<ARGO.TOPOBJ>)?:Sahibi=<ARGO.TOPOBJ.NAME>>, Topobj Serial=<ARGO.TOPOBJ.UID>, Name=<ARGO.NAME> Serial=<ARGO.UID>
+	// Silme olay kaydına emulatörden gider: komut (command.target) ve silinen eşya, içindekiler ve sahibiyle (item.delete).
 	SRC.SYSMESSAGELOC <def.tcolor_red>,3300215,<ARGO.NAME>
 	ARGO.REMOVE
 ELSE
