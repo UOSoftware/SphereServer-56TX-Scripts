@@ -1,0 +1,294 @@
+VERSION=0.56TX
+
+[COMMENT]
+Emulatörün loot tablosunu (sphere.ini: LootDatabase) oyundan düzenleyen dialog.
+ .LOOT: bir NPC seçilir, onun CHARDEF'inin satırları açılır. Satırlar o CHARDEF'ten her NPC'de geçerlidir ve ölümde
+     script'in @CreateLoot'una ek olarak düşer.
+Satırlar ve kuralları emulatörün (LOOTADD, LOOT.n.ITEM=..., LOOTDELETE; değişiklik hemen geçerli, dosyaya arka planda
+ yazılır); geçersiz eşya ve değeri emulatör reddeder, nedeni konsolda. Dialog'un nesnesi açan char; düzenlenen CHARDEF
+ CTAG0.LootDef'te, listedeki satırların id'leri CTAG0.LootRow.<n>'de (tablo bu arada değişse de doğru satıra yazılır).
+
+[PLEVEL 4]
+LOOT
+
+// .loot: NPC seçtirir.
+[FUNCTION loot]
+SRC.TARGETF f_loot_target
+
+[FUNCTION f_loot_target]
+IF !(<ARGO>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300221
+	RETURN 1
+ELSEIF !(<ARGO.ISCHAR>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300713
+	RETURN 1
+ELSEIF (<ARGO.ISPLAYER>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3300221
+	RETURN 1
+ENDIF
+CTAG.LootDef=<ARGO.BASEID>
+CTAG.LootPage=
+CTAG.LootMsg=
+DIALOGCLOSE d_loot
+DIALOG d_loot
+
+// Satırın şimdiki sırası: ARGS satırın id'si; yoksa -1 (silinmiş ya da dosya dışarıdan değişmiş).
+[FUNCTION f_loot_find]
+LOCAL.N=<SERV.CHARDEF.<CTAG.LootDef>.LOOT.COUNT>
+IF (<LOCAL.N> > 0)
+	FOR 0 <EVAL <LOCAL.N>-1>
+		IF (<SERV.CHARDEF.<CTAG.LootDef>.LOOT.<dLOCAL._FOR>.ID> == <ARGS>)
+			RETURN <dLOCAL._FOR>
+		ENDIF
+	ENDFOR
+ENDIF
+RETURN -1
+
+// Yazılmamış miktar ve şans: en az 1, en çok en az kadar, şans 1 (her zaman). ARGS: en az,en çok,şans (yazıldığı
+//  gibi); sonuç CTAG0.LootMin, LootMax, LootChance'ta.
+[FUNCTION f_loot_values]
+CTAG.LootMin=1
+IF !(<ISEMPTY <ARGV[0]>>)
+	CTAG.LootMin=<EVAL <ARGV[0]>>
+ENDIF
+CTAG.LootMax=<DCTAG0.LootMin>
+IF !(<ISEMPTY <ARGV[1]>>)
+	CTAG.LootMax=<EVAL <ARGV[1]>>
+ENDIF
+CTAG.LootChance=1
+IF !(<ISEMPTY <ARGV[2]>>)
+	CTAG.LootChance=<EVAL <ARGV[2]>>
+ENDIF
+
+// Kim öldürünce: -1 sphere.ini'nin LootPlayerKillOnly'si, 0 herkes, 1 sadece oyuncu.
+[FUNCTION f_loot_pkname]
+IF (<ARGS> == 0)
+	RETURN herkes
+ELSEIF (<ARGS> == 1)
+	RETURN oyuncu
+ENDIF
+RETURN ayar
+
+[DIALOG d_loot]
+<DEF.DlgStartPos>
+IF (<ISEMPTY <SERV.LOOTDATABASE>>)
+	RESIZE 0,0,440,110,Loot
+	DTEXT 25 55 <DEF.tcolor_red> LootDatabase kapalı (sphere.ini).
+ELSE
+	LOCAL.PAGELEN=10
+	LOCAL.COUNT=<SERV.CHARDEF.<CTAG.LootDef>.LOOT.COUNT>
+	LOCAL.PAGES=<EVAL ((<LOCAL.COUNT>-1)/<LOCAL.PAGELEN>)+1>
+	IF (<LOCAL.PAGES> < 1)
+		LOCAL.PAGES=1
+	ENDIF
+	IF (<DCTAG0.LootPage> >= <LOCAL.PAGES>)
+		CTAG.LootPage=<EVAL <LOCAL.PAGES>-1>
+	ENDIF
+	LOCAL.FIRST=<EVAL <DCTAG0.LootPage>*<LOCAL.PAGELEN>>
+
+	RESIZE 0,0,730,<EVAL 230+(<LOCAL.PAGELEN>*28)>,Loot: <SERV.CHARDEF.<CTAG.LootDef>.NAME> (<CTAG.LootDef>)
+	DORIGIN 25 50
+	DTEXT +0 +0 0 <dLOCAL.COUNT> satır; o CHARDEF'ten her NPC'de geçerli, script'in @CreateLoot'una ek olarak düşer.
+	IF !(<ISEMPTY <CTAG.LootMsg>>)
+		DTEXT +0 +20 044 <CTAG.LootMsg>
+	ENDIF
+
+	DHTMLGUMP +0 +45 170 22 1 0 <DEF.CENTER>EŞYA<DEF.CENTERE>
+	DHTMLGUMP +175 +45 55 22 1 0 <DEF.CENTER>EN AZ<DEF.CENTERE>
+	DHTMLGUMP +235 +45 55 22 1 0 <DEF.CENTER>EN ÇOK<DEF.CENTERE>
+	DHTMLGUMP +295 +45 70 22 1 0 <DEF.CENTER>ŞANS 1/n<DEF.CENTERE>
+	DHTMLGUMP +370 +45 60 22 1 0 <DEF.CENTER>RENK<DEF.CENTERE>
+	DHTMLGUMP +435 +45 95 22 1 0 <DEF.CENTER>KİM ÖLDÜRÜNCE<DEF.CENTERE>
+	DHTMLGUMP +535 +45 70 22 1 0 <DEF.CENTER>DURUM<DEF.CENTERE>
+
+	// Yeni satır
+	RESIZEPIC +0 +72 3000 170 24
+	DTEXTENTRYLIMITED +4 +74 162 20 0 1 60
+	RESIZEPIC +175 +72 3000 55 24
+	DTEXTENTRYLIMITED +179 +74 47 20 0 2 6
+	RESIZEPIC +235 +72 3000 55 24
+	DTEXTENTRYLIMITED +239 +74 47 20 0 3 6
+	RESIZEPIC +295 +72 3000 70 24
+	DTEXTENTRYLIMITED +299 +74 62 20 0 4 10
+	RESIZEPIC +370 +72 3000 60 24
+	DTEXTENTRYLIMITED +374 +74 52 20 0 5 20
+	BUTTON +610 +73 4005 4007 1 0 1
+	DTEXT +645 +73 044 Ekle
+
+	LOCAL.Y=110
+	FOR 0 <EVAL <LOCAL.PAGELEN>-1>
+		CTAG.LootRow.<dLOCAL._FOR>=
+		LOCAL.I=<EVAL <LOCAL.FIRST>+<LOCAL._FOR>>
+		IF (<LOCAL.I> < <LOCAL.COUNT>)
+			CTAG.LootRow.<dLOCAL._FOR>=<SERV.CHARDEF.<CTAG.LootDef>.LOOT.<dLOCAL.I>.ID>
+			LOCAL.HUE=0
+			IF !(<SERV.CHARDEF.<CTAG.LootDef>.LOOT.<dLOCAL.I>.VALID>)
+				LOCAL.HUE=021
+			ELSEIF !(<SERV.CHARDEF.<CTAG.LootDef>.LOOT.<dLOCAL.I>.ENABLED>)
+				LOCAL.HUE=0389
+			ENDIF
+			RESIZEPIC +0 +<dLOCAL.Y> 3000 170 24
+			DTEXTENTRYLIMITED +4 +<EVAL <LOCAL.Y>+2> 162 20 <LOCAL.HUE> <EVAL 1000+<LOCAL._FOR>> 60 <SERV.CHARDEF.<CTAG.LootDef>.LOOT.<dLOCAL.I>.ITEM>
+			RESIZEPIC +175 +<dLOCAL.Y> 3000 55 24
+			DTEXTENTRYLIMITED +179 +<EVAL <LOCAL.Y>+2> 47 20 <LOCAL.HUE> <EVAL 2000+<LOCAL._FOR>> 6 <SERV.CHARDEF.<CTAG.LootDef>.LOOT.<dLOCAL.I>.AMOUNT.MIN>
+			RESIZEPIC +235 +<dLOCAL.Y> 3000 55 24
+			DTEXTENTRYLIMITED +239 +<EVAL <LOCAL.Y>+2> 47 20 <LOCAL.HUE> <EVAL 3000+<LOCAL._FOR>> 6 <SERV.CHARDEF.<CTAG.LootDef>.LOOT.<dLOCAL.I>.AMOUNT.MAX>
+			RESIZEPIC +295 +<dLOCAL.Y> 3000 70 24
+			DTEXTENTRYLIMITED +299 +<EVAL <LOCAL.Y>+2> 62 20 <LOCAL.HUE> <EVAL 4000+<LOCAL._FOR>> 10 <SERV.CHARDEF.<CTAG.LootDef>.LOOT.<dLOCAL.I>.CHANCE>
+			RESIZEPIC +370 +<dLOCAL.Y> 3000 60 24
+			DTEXTENTRYLIMITED +374 +<EVAL <LOCAL.Y>+2> 52 20 <LOCAL.HUE> <EVAL 5000+<LOCAL._FOR>> 20 <SERV.CHARDEF.<CTAG.LootDef>.LOOT.<dLOCAL.I>.COLOR>
+			BUTTON +435 +<dLOCAL.Y> 4005 4007 1 0 <EVAL 300+<LOCAL._FOR>>
+			DTEXT +470 +<dLOCAL.Y> 0 <f_loot_pkname <SERV.CHARDEF.<CTAG.LootDef>.LOOT.<dLOCAL.I>.PLAYERKILL>>
+			BUTTON +535 +<dLOCAL.Y> 4005 4007 1 0 <EVAL 400+<LOCAL._FOR>>
+			IF (<SERV.CHARDEF.<CTAG.LootDef>.LOOT.<dLOCAL.I>.ENABLED>)
+				DTEXT +570 +<dLOCAL.Y> 0 açık
+			ELSE
+				DTEXT +570 +<dLOCAL.Y> 0389 kapalı
+			ENDIF
+			BUTTON +610 +<dLOCAL.Y> 4023 4024 1 0 <EVAL 100+<LOCAL._FOR>>
+			BUTTON +645 +<dLOCAL.Y> 4017 4018 1 0 <EVAL 200+<LOCAL._FOR>>
+			LOCAL.Y=<EVAL <LOCAL.Y>+28>
+		ENDIF
+	ENDFOR
+	IF !(<LOCAL.COUNT>)
+		DTEXT +0 +110 0389 Bu CHARDEF'in tabloda satırı yok.
+	ENDIF
+
+	LOCAL.Y=<EVAL 120+(<LOCAL.PAGELEN>*28)>
+	IF (<LOCAL.PAGES> > 1)
+		IF (<DCTAG0.LootPage> > 0)
+			BUTTON +0 +<dLOCAL.Y> 5603 5607 1 0 10
+		ENDIF
+		DTEXT +25 +<dLOCAL.Y> 0 Sayfa <EVAL <DCTAG0.LootPage>+1> / <dLOCAL.PAGES>
+		IF (<EVAL <DCTAG0.LootPage>+1> < <LOCAL.PAGES>)
+			BUTTON +110 +<dLOCAL.Y> 5601 5605 1 0 11
+		ENDIF
+	ENDIF
+	BUTTON +200 +<dLOCAL.Y> 4005 4007 1 0 6
+	DTEXT +235 +<dLOCAL.Y> 0 Yenile
+	BUTTON +320 +<dLOCAL.Y> 4005 4007 1 0 5
+	DTEXT +355 +<dLOCAL.Y> 0 Dosyayı yeniden oku
+	DTEXT +0 +<EVAL <LOCAL.Y>+30> 0389 Kırmızı: eşya ya da değer geçersiz, düşmez. Renk boş: eşyanın kendi rengi.
+ENDIF
+
+[DIALOG d_loot BUTTON]
+ON=0
+
+// Yeni satır: sona eklenir.
+ON=1
+IF (<ISEMPTY <ARGTXT[1]>>)
+	CTAG.LootMsg=Eşya yazılmadı.
+ELSE
+	LOCAL.N=<SERV.CHARDEF.<CTAG.LootDef>.LOOT.COUNT>
+	f_loot_values <ARGTXT[2]>,<ARGTXT[3]>,<ARGTXT[4]>
+	SERV.CHARDEF.<CTAG.LootDef>.LOOTADD <ARGTXT[1]>,<DCTAG0.LootMin>,<DCTAG0.LootMax>,<DCTAG0.LootChance>
+	IF (<SERV.CHARDEF.<CTAG.LootDef>.LOOT.COUNT> > <LOCAL.N>)
+		IF !(<ISEMPTY <ARGTXT[5]>>)
+			SERV.CHARDEF.<CTAG.LootDef>.LOOT.<dLOCAL.N>.COLOR=<ARGTXT[5]>
+		ENDIF
+		CTAG.LootMsg=Eklendi: <ARGTXT[1]>
+		CTAG.LootPage=999
+	ELSE
+		CTAG.LootMsg=Eklenmedi: eşya ya da değer geçersiz (nedeni konsolda).
+	ENDIF
+ENDIF
+DIALOGCLOSE d_loot
+DIALOG d_loot
+
+// Sayfalar
+ON=10
+IF (<DCTAG0.LootPage> > 0)
+	CTAG.LootPage=<EVAL <DCTAG0.LootPage>-1>
+ENDIF
+CTAG.LootMsg=
+DIALOGCLOSE d_loot
+DIALOG d_loot
+
+ON=11
+CTAG.LootPage=<EVAL <DCTAG0.LootPage>+1>
+CTAG.LootMsg=
+DIALOGCLOSE d_loot
+DIALOG d_loot
+
+// Dosyayı yeniden oku (panelde yapılan değişiklik kendiliğinden de birkaç saniyede okunur)
+ON=5
+SERV.LOOTRELOAD
+CTAG.LootMsg=Dosya yeniden okunuyor; birkaç saniye sonra Yenile.
+DIALOGCLOSE d_loot
+DIALOG d_loot
+
+ON=6
+CTAG.LootMsg=
+DIALOGCLOSE d_loot
+DIALOG d_loot
+
+// Kaydet: satırın eşyası, miktarı, şansı ve rengi
+ON=100 199
+LOCAL.R=<EVAL <ARGN>-100>
+LOCAL.I=<f_loot_find <CTAG0.LootRow.<dLOCAL.R>>>
+IF (<LOCAL.I> < 0)
+	CTAG.LootMsg=Satır artık yok (tablo değişti).
+ELSE
+	// Eşya, miktar ve şans birlikte (biri geçersizse hiçbiri yazılmaz), renk ayrıca.
+	f_loot_values <ARGTXT[<EVAL 2000+<LOCAL.R>>]>,<ARGTXT[<EVAL 3000+<LOCAL.R>>]>,<ARGTXT[<EVAL 4000+<LOCAL.R>>]>
+	SERV.CHARDEF.<CTAG.LootDef>.LOOT.<dLOCAL.I>=<ARGTXT[<EVAL 1000+<LOCAL.R>>]>,<DCTAG0.LootMin>,<DCTAG0.LootMax>,<DCTAG0.LootChance>
+	SERV.CHARDEF.<CTAG.LootDef>.LOOT.<dLOCAL.I>.COLOR=<ARGTXT[<EVAL 5000+<LOCAL.R>>]>
+	CTAG.LootMsg=Kaydedildi: <SERV.CHARDEF.<CTAG.LootDef>.LOOT.<dLOCAL.I>.ITEM>
+	IF (STRCMPI(<SERV.CHARDEF.<CTAG.LootDef>.LOOT.<dLOCAL.I>.ITEM>,<ARGTXT[<EVAL 1000+<LOCAL.R>>]>) != 0)
+		CTAG.LootMsg=Kaydedilmedi: eşya ya da değer geçersiz (nedeni konsolda).
+	ELSEIF !(<ISEMPTY <ARGTXT[<EVAL 5000+<LOCAL.R>>]>>)
+		IF (STRCMPI(<SERV.CHARDEF.<CTAG.LootDef>.LOOT.<dLOCAL.I>.COLOR>,<ARGTXT[<EVAL 5000+<LOCAL.R>>]>) != 0)
+			CTAG.LootMsg=Renk kaydedilmedi: geçersiz (nedeni konsolda).
+		ENDIF
+	ENDIF
+ENDIF
+DIALOGCLOSE d_loot
+DIALOG d_loot
+
+// Sil
+ON=200 299
+LOCAL.I=<f_loot_find <CTAG0.LootRow.<EVAL <ARGN>-200>>>
+IF (<LOCAL.I> < 0)
+	CTAG.LootMsg=Satır artık yok (tablo değişti).
+ELSE
+	CTAG.LootMsg=Silindi: <SERV.CHARDEF.<CTAG.LootDef>.LOOT.<dLOCAL.I>.ITEM>
+	SERV.CHARDEF.<CTAG.LootDef>.LOOTDELETE <dLOCAL.I>
+ENDIF
+DIALOGCLOSE d_loot
+DIALOG d_loot
+
+// Kim öldürünce: ayar, herkes, oyuncu sırayla
+ON=300 399
+LOCAL.I=<f_loot_find <CTAG0.LootRow.<EVAL <ARGN>-300>>>
+IF (<LOCAL.I> < 0)
+	CTAG.LootMsg=Satır artık yok (tablo değişti).
+ELSE
+	LOCAL.PK=<SERV.CHARDEF.<CTAG.LootDef>.LOOT.<dLOCAL.I>.PLAYERKILL>
+	IF (<LOCAL.PK> < 0)
+		SERV.CHARDEF.<CTAG.LootDef>.LOOT.<dLOCAL.I>.PLAYERKILL=0
+	ELSEIF (<LOCAL.PK> == 0)
+		SERV.CHARDEF.<CTAG.LootDef>.LOOT.<dLOCAL.I>.PLAYERKILL=1
+	ELSE
+		SERV.CHARDEF.<CTAG.LootDef>.LOOT.<dLOCAL.I>.PLAYERKILL=-1
+	ENDIF
+	CTAG.LootMsg=
+ENDIF
+DIALOGCLOSE d_loot
+DIALOG d_loot
+
+// Açık / kapalı
+ON=400 499
+LOCAL.I=<f_loot_find <CTAG0.LootRow.<EVAL <ARGN>-400>>>
+IF (<LOCAL.I> < 0)
+	CTAG.LootMsg=Satır artık yok (tablo değişti).
+ELSEIF (<SERV.CHARDEF.<CTAG.LootDef>.LOOT.<dLOCAL.I>.ENABLED>)
+	SERV.CHARDEF.<CTAG.LootDef>.LOOT.<dLOCAL.I>.ENABLED=0
+	CTAG.LootMsg=
+ELSE
+	SERV.CHARDEF.<CTAG.LootDef>.LOOT.<dLOCAL.I>.ENABLED=1
+	CTAG.LootMsg=
+ENDIF
+DIALOGCLOSE d_loot
+DIALOG d_loot
+
+[EOF]
