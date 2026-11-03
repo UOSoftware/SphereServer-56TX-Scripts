@@ -1544,8 +1544,9 @@ ON=@SUCCESS
 LOCAL.FieldWidth=7
 
 ON=@EFFECT
-// Atan kendi field'ından etkilenmez; magic reflection'dan yansıyan field atana işler (LOCAL.IsSpellReflected).
-IF ((<SRC.UID> == <UID>) && (<LOCAL.IsSpellReflected> == 0)) || (<ISITEM>)
+// Atan kendi field'ından sadece FieldOwnerImmune=1'de korunur (motor da durdurur); 0'da (varsayılan) etkilenir.
+// Magic reflection'dan yansıyan field atana iki modda da işler (LOCAL.IsSpellReflected).
+IF ((<SRC.UID> == <UID>) && (<LOCAL.IsSpellReflected> == 0) && (<SERV.FIELDOWNERIMMUNE>)) || (<ISITEM>)
 	RETURN 1
 ENDIF
 IF (<FINDID.I_RUNE_POISON>)
