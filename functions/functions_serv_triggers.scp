@@ -84,6 +84,7 @@ f_onserver_exit
 f_onserver_exit_later
 f_onserver_mode
 f_onserver_shutdown
+f_onserver_restart
 f_onserver_timer
 f_onserver_broadcast
 f_onserver_restock
@@ -810,6 +811,27 @@ SRC.F_BUGTRACK_BAR // ekranın altındaki bugtrack bar'ı (dialogs/dialogs_bugtr
 //     Dönüş:
 //       0 --> sunucu herkese duyurur (varsayılan)
 //       1 --> duyurulmaz (kapanış yine zamanlanır; script kendisi duyurur)
+
+
+[FUNCTION f_onserver_restart]
+// EN: 56TX. Called on each announcement of a RESTART countdown: when it starts, when
+//     5 minutes, 1 minute, 30, 10, 5, 4, 3, 2 and 1 seconds are left, when it is
+//     cancelled and when the server saves the world and restarts.
+//     Variables:
+//       ARGN1 --> seconds left (0 when cancelled and when restarting now)
+//       ARGN2 --> 0 started, 1 reminder, 2 cancelled, 3 restarting now
+//     Return:
+//       0 --> the server announces it to everyone (default)
+//       1 --> no announcement (the countdown goes on; the script announces it)
+// TR: 56TX. RESTART geri sayımının her duyurusunda çağrılır: başlayınca, 5 dakika,
+//     1 dakika, 30, 10, 5, 4, 3, 2 ve 1 saniye kalınca, iptal edilince ve sunucu
+//     world'ü kaydedip yeniden başlarken.
+//     Değişkenler:
+//       ARGN1 --> kalan saniye (iptalde ve yeniden başlama anında 0)
+//       ARGN2 --> 0 başladı, 1 hatırlatma, 2 iptal, 3 şimdi yeniden başlıyor
+//     Dönüş:
+//       0 --> sunucu herkese duyurur (varsayılan)
+//       1 --> duyurulmaz (geri sayım sürer; script kendisi duyurur)
 
 
 [FUNCTION f_onserver_timer]
