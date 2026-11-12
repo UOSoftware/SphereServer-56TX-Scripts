@@ -90,6 +90,7 @@ f_onserver_broadcast
 f_onserver_restock
 f_onserver_tick_slow
 f_onserver_gc
+f_onserver_ldbbackup
 f_onserver_gmpage
 f_onserver_ticket
 f_onserver_report
@@ -895,6 +896,29 @@ SRC.F_BUGTRACK_BAR // ekranın altındaki bugtrack bar'ı (dialogs/dialogs_bugtr
 //       ARGN1 --> silinen nesne
 //       ARGN2 --> süre (ms)
 //       ARGN3 --> kalan nesne
+
+
+[FUNCTION f_onserver_ldbbackup]
+// EN: 56TX. Called when a backup of the SQLite files is done (LDBBackupFrequency or LDBBACKUP; not for a backup
+//     cancelled at shutdown).
+//     Variables:
+//       ARGS         --> folder of the backup (empty if none was written)
+//       ARGN1        --> 1: every file was written
+//       ARGN2        --> files written
+//       ARGN3        --> length (ms)
+//       LOCAL.Failed --> files with errors
+//       LOCAL.Size   --> bytes written to disk
+//       LOCAL.Manual --> 1: started by LDBBACKUP
+// TR: 56TX. SQLite dosyalarının yedeği bitince çağrılır (LDBBackupFrequency ya da LDBBACKUP; kapanışta bırakılan
+//     yedekte çağrılmaz).
+//     Değişkenler:
+//       ARGS         --> yedeğin klasörü (yazılmadıysa boş)
+//       ARGN1        --> 1: bütün dosyalar yazıldı
+//       ARGN2        --> yazılan dosya
+//       ARGN3        --> süre (ms)
+//       LOCAL.Failed --> hatalı dosya
+//       LOCAL.Size   --> diske yazılan byte
+//       LOCAL.Manual --> 1: LDBBACKUP komutuyla başladı
 
 
 [FUNCTION f_onserver_gmpage]
