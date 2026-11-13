@@ -199,6 +199,7 @@ TYPENAME_t_weapon_wrest				Weapon Wrest
 
 TYPENAME_t_spawn_champion			Champion Spawns
 TYPENAME_t_multi_addon				Multi AddOns
+TYPENAME_t_multi_movable			Movable multis (caravans)
 
 TYPENAME_t_forest					Forest Tiles
 TYPENAME_t_jungle					Jungle Tiles

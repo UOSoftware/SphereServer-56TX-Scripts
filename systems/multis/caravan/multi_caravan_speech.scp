@@ -1,0 +1,66 @@
+// Kervan (TYPE=t_multi_movable, çekilen kara aracı): konuşma komutları. MULTIDEF'e TSPEECH=spk_caravan_cmds yazılır.
+// Kervanın üstündeki sahibi ya da GM söyler. Kervan sadece ileri gider: geri, yana ve demir komutu yok; dönüşler var.
+// Sürücü yerinden (TYPE=t_pilot, kervanın parçası) çift tıklayıp sağ tıkla da sürülür (HS client).
+
+[FUNCTION f_caravan_cmd_denied]
+// Kervanın üstünde çalışır (SRC söyleyen): SRC kervanı süremiyorsa mesajını verip 1 döner.
+IF (<SRC.FLAGS>&STATF_DEAD)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,600027 // "Ölü durumdayken bu işlemi yapamazsınız."
+	RETURN 1
+ELSEIF !((<OWNER> == <SRC>) || (<SRC.ISGM>))
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3301203 // "Bu kervanı sürme iznin yok."
+	RETURN 1
+ENDIF
+LOCAL.HITS = <EVAL (30*<SRC.STR>)/100>
+IF (<SRC.HITS> < <DLOCAL.HITS>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3301204 // "Kervanı sürmek için canının en az %30'u dolu olmalı."
+	RETURN 1
+ENDIF
+RETURN 0
+
+
+[SPEECH spk_caravan_cmds]
+ON=Stop
+IF !((<OWNER> == <SRC>) || (<SRC.ISGM>))
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3301203
+	RETURN 1
+ENDIF
+SHIPSTOP
+
+ON=Forward
+IF (<f_caravan_cmd_denied>)
+	RETURN 1
+ENDIF
+SHIPFORE
+
+ON=Forward left
+IF (<f_caravan_cmd_denied>)
+	RETURN 1
+ENDIF
+SHIPFORELEFT
+
+ON=Forward right
+IF (<f_caravan_cmd_denied>)
+	RETURN 1
+ENDIF
+SHIPFORERIGHT
+
+ON=Turn left
+IF (<f_caravan_cmd_denied>)
+	RETURN 1
+ENDIF
+SHIPTURNLEFT
+
+ON=Turn right
+IF (<f_caravan_cmd_denied>)
+	RETURN 1
+ENDIF
+SHIPTURNRIGHT
+
+ON=Turn around
+IF (<f_caravan_cmd_denied>)
+	RETURN 1
+ENDIF
+SHIPTURN
+
+[EOF]

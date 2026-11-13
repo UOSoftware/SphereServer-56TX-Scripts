@@ -256,6 +256,7 @@ t_armor_chain           302
 t_armor_ring            303
 t_talisman              304
 t_armor_bone			305
+t_multi_movable			312   // 0.56TX: hareket eden kara multi'si (kervan; SHIPPULLER), gemi (t_ship) değil
 
 //Add custom types after 500 to leave room for future hardcoded types
 t_forest                500   // Forest Tiles
