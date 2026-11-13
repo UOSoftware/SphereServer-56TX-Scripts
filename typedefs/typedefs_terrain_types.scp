@@ -140,4 +140,16 @@ TERRAIN = 0715	071c
 TERRAIN = 02e02	02e5f
 TERRAIN = 03f45	03f50
 
+// Yol: toprak yol, parke taşı ve aralarındaki geçiş karoları. Çekilen kara aracı (kervan; MULTIDEF'te
+// SHIPPULLER) SHIPTERRAIN=t_road ile sadece bu karolarda gider. Haritaya göre genişletilip daraltılır;
+// yol kenarındaki çim geçişleri (085-08c) t_grass'ta kaldı. Köprü gibi statikler ITEMDEF'lerine
+// TYPE=t_road verilerek yola katılır.
+[TYPEDEF t_road]
+TERRAIN = 071	07c
+TERRAIN = 03e9	03ec
+TERRAIN = 03f9	0405
+TERRAIN = 0685	0688
+TERRAIN = 068d	0694
+TERRAIN = 069d	06a0
+
 [EOF]
