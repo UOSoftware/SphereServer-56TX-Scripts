@@ -394,7 +394,7 @@ ELIF (<REGION.FLAGS> & region_flag_guarded|region_flag_safe|region_flag_undergro
  return 0
 ELIF !((<P.TYPE> == t_dirt) || (<P.TYPE> == t_grass) || (<P.TYPE> == t_forest) || (<P.TYPE> == t_jungle) || (<P.TYPE> == t_sand) || (<P.TYPE> == t_snow))
  return 0
-ELIF (<ISNEARTYPE t_tree 2 0 1>) || (<ISNEARTYPE t_rock 2 0 1>) || (<ISNEARTYPE t_wall 2 0 1>)
+ELIF (<ISNEARTYPE t_tree 2 0>) || (<ISNEARTYPE t_rock 2 0>) || (<ISNEARTYPE t_wall 2 0>)
  return 0
 ENDIF
 return 1
