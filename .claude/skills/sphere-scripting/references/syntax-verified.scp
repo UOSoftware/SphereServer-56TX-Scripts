@@ -475,6 +475,50 @@ DORAND 2
 	LOCAL.d=b
 ENDDO
 SERV.LOG TEST|dorand_picks_one|<LOCAL.d>|*
+// Birden çok satırlık seçenek BEGIN ... END bloğuyla: blok tek seçenek sayılır
+LOCAL.c=0
+LOCAL.d=0
+DOSWITCH 1
+BEGIN
+	LOCAL.c=1
+	LOCAL.d=1
+END
+BEGIN
+	LOCAL.c=2
+	LOCAL.d=2
+END
+BEGIN
+	LOCAL.c=3
+	LOCAL.d=3
+END
+ENDDO
+SERV.LOG TEST|doswitch_begin_end_block|<dLOCAL.c><dLOCAL.d>|22
+LOCAL.c=0
+LOCAL.d=0
+DORAND 2
+BEGIN
+	LOCAL.c=1
+	LOCAL.d=1
+END
+BEGIN
+	LOCAL.c=2
+	LOCAL.d=2
+END
+ENDDO
+SERV.LOG TEST|dorand_begin_end_consistent|<EVAL <LOCAL.c> == <LOCAL.d>>|1
+SERV.LOG TEST|dorand_begin_end_picked|<EVAL (<LOCAL.c> == 1) || (<LOCAL.c> == 2)>|1
+// Tek satırlık ve bloklu seçenek karışık, bloğun içinde IF
+LOCAL.c=0
+DOSWITCH 1
+	LOCAL.c=1
+BEGIN
+	IF (<LOCAL.a> == 1)
+		LOCAL.c=5
+	ENDIF
+END
+	LOCAL.c=3
+ENDDO
+SERV.LOG TEST|doswitch_mixed_block_if|<dLOCAL.c>|5
 // Nesne döngüleri: nesnenin üstünde çalışan fonksiyon (REF1.f_zz_loops)
 SERV.NEWNPC c_man
 REF4=<NEW.UID>

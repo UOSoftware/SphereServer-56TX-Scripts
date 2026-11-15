@@ -24,6 +24,9 @@ var olup olmadığını oradan doğrula, uydurma.
 Emulatörün kaynağı yanındaysa (`../../Servers/SphereServer-56TX`) bir anahtar kelimenin ne yaptığını ve bir
 tetikleyicinin argümanlarını orada ara (`Grep "\"ANAHTAR\"" src/`, `Grep "CTRIG_Ad\b" src/game`); yoksa paketteki
 kullanımlarına bak (`Grep "ON=@Ad" -i`). 0.56b/T ile X'in ayrıldığı kurallar emulatörün `docs/Comparison.md`'sinde.
+Source-X wiki'si (https://github.com/Sphereserver/Source-X/wiki) anahtar kelime ve tetikleyici argümanlarının anlamı
+için ikinci kaynaktır; bir kısmı 0.56b döneminden kalmadır ve X'e bile uymaz. Oradan okuduğunu `references/`,
+motor kaynağı ya da bir testle doğrulamadan kural sayma; çelişkide exe haklıdır.
 
 ## İş akışı
 
@@ -86,9 +89,9 @@ ENDIF
 | `FORCONT <uid> [derinlik]` / `FORCONTID i_x` / `FORCONTTYPE t_x` | bir container'ın içindekiler / nesnenin çantasındaki o ID'liler / o türdekiler. Yığılan eşya tek nesnedir: iki altın bir yığın, `<AMOUNT>` 2 |
 | `FORCHARLAYER n`, `FORCHARMEMORYTYPE n`, `FORINSTANCES defname`, `FORTIMERF`, `FORTYPES`, `FORALL*` | ayrıntısı keywords.md; `FORALLITEMS`/`FORALLCHARS` bütün dünyayı dolaşır, pahalıdır |
 | `BREAK`, `CONTINUE` | döngüden çıkar / sonraki tura geçer |
-| `DOSWITCH n` ... `ENDDO` | n'inci satır çalışır, **0'dan** sayılır (`DOSWITCH 1` ikinci satır) |
-| `DORAND n` ... `ENDDO` | n satırdan rastgele biri |
-| `BEGIN` ... `END` | sadece gruplama |
+| `DOSWITCH n` ... `ENDDO` | n'inci seçenek çalışır, **0'dan** sayılır (`DOSWITCH 1` ikincisi). Her satır bir seçenek; birden çok satırlık seçenek `BEGIN` ... `END` bloğu (içinde IF olabilir), tek satır ve blok karışabilir |
+| `DORAND n` ... `ENDDO` | n seçenekten rastgele biri; seçenekler DOSWITCH'teki gibi satır ya da `BEGIN`/`END` bloğu |
+| `BEGIN` ... `END` | satır grubu: DORAND ve DOSWITCH'te çok satırlı seçenek; başka yerde sadece gruplama |
 | `RETURN [değer]` | fonksiyondan ya da tetikleyiciden çıkar; tetikleyicide `RETURN 1` motorun varsayılan işini durdurur, `RETURN 0` sürdürür; fonksiyonun değeri `<f_ad args>` ile okunur |
 
 Döngü ve blok anahtar kelimeleri satır başında, argümanları köşeli parantezsiz. Nesne döngüsü, döngüyü çalıştıran
