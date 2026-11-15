@@ -23,11 +23,11 @@ ID=i_zz_coin
 
 [EVENTS e_zz_test]
 ON=@zz_hello
-TAG.zz_got=<ARGN1>
-TAG.zz_args=<ARGS>
+TAG0.zz_got=<ARGN1>
+TAG0.zz_args=<ARGS>
 
 ON=@zz_src
-TAG.zz_srcuid=<SRC.UID>
+TAG0.zz_srcuid=<SRC.UID>
 
 [FUNCTION f_zz_never]
 // TIMERF testi için: çalışması beklenmez
@@ -317,14 +317,64 @@ SERV.LOG TEST|local_digits_concat_is_number|<LOCAL.e>|0c34
 VAR.zz_test=abc
 SERV.LOG TEST|var_text|<VAR.zz_test>|abc
 SERV.LOG TEST|var0_unset|<VAR0.zz_none>|0
-REF1.TAG.zz_num=10
-REF1.TAG.zz_txt=merhaba dunya
-SERV.LOG TEST|tag_num_prints_hex|<REF1.TAG.zz_num>|0a
-SERV.LOG TEST|tag_num_d|<dREF1.TAG.zz_num>|10
-SERV.LOG TEST|tag_text|<REF1.TAG.zz_txt>|merhaba dunya
+// Kural: yazarken ve koşulda okurken TAG0. TAG0.x=0 tag'i siler (save'e 0 yazılmaz), TAG.x=0 0'ı saklar;
+//  tanımsız tag <TAG0.x> ile 0, <TAG.x> ile boş okunur ve boş değer IF'te "Empty subexpression" hatası verir.
+REF1.TAG0.zz_num=10
+REF1.TAG0.zz_txt=merhaba dunya
+SERV.LOG TEST|tag_num_prints_hex|<REF1.TAG0.zz_num>|0a
+SERV.LOG TEST|tag_num_d|<dREF1.TAG0.zz_num>|10
+SERV.LOG TEST|tag_text|<REF1.TAG0.zz_txt>|merhaba dunya
 SERV.LOG TEST|tag_unset_empty|[<REF1.TAG.zz_none>]|[]
 SERV.LOG TEST|tag0_unset_zero|<REF1.TAG0.zz_none>|0
-REF1.TAG.zz_num=
+LOCAL.r=0
+IF (<REF1.TAG0.zz_none>)
+	LOCAL.r=1
+ENDIF
+SERV.LOG TEST|if_tag0_unset_false|<dLOCAL.r>|0
+LOCAL.r=0
+IF (<REF1.TAG.zz_none>)
+	LOCAL.r=1
+ENDIF
+SERV.LOG TEST|if_tag_unset_false|<dLOCAL.r>|0
+// Hiç set edilmemiş tag karşılaştırmada boş kalır: "( == 1)". TAG0 ile 0 karşılaştırılır.
+LOCAL.r=0
+IF (<REF1.TAG.zz_none> == 1)
+	LOCAL.r=1
+ENDIF
+SERV.LOG TEST|wrong_if_tag_unset_eq_one|<dLOCAL.r>|0
+LOCAL.r=0
+IF (<REF1.TAG.zz_none> == 0)
+	LOCAL.r=1
+ENDIF
+SERV.LOG TEST|wrong_if_tag_unset_eq_zero|<dLOCAL.r>|1
+LOCAL.r=0
+IF (<REF1.TAG.zz_none> < 5)
+	LOCAL.r=1
+ENDIF
+SERV.LOG TEST|wrong_if_tag_unset_lt|<dLOCAL.r>|1
+LOCAL.r=0
+IF (<REF1.TAG0.zz_none> == 0)
+	LOCAL.r=1
+ENDIF
+SERV.LOG TEST|if_tag0_unset_eq_zero|<dLOCAL.r>|1
+LOCAL.r=0
+IF (<REF1.TAG0.zz_none> < 5)
+	LOCAL.r=1
+ENDIF
+SERV.LOG TEST|if_tag0_unset_lt|<dLOCAL.r>|1
+SERV.LOG TEST|qval_tag_unset|[<QVAL <REF1.TAG.zz_none> ? a:b>]|[b]
+SERV.LOG TEST|qval_tag0_unset|[<QVAL <REF1.TAG0.zz_none> ? a:b>]|[b]
+SERV.LOG TEST|wrong_eval_tag_unset|[<EVAL <REF1.TAG.zz_none>+1>]|[0]
+SERV.LOG TEST|eval_tag0_unset|[<EVAL <REF1.TAG0.zz_none>+1>]|[1]
+LOCAL.c=<REF1.TAGCOUNT>
+REF1.TAG0.zz_zero=0
+SERV.LOG TEST|tag0_write_zero_deletes|[<REF1.TAG.zz_zero>]|[]
+SERV.LOG TEST|tag0_write_zero_count|<EVAL <REF1.TAGCOUNT>-<LOCAL.c>>|0
+REF1.TAG.zz_zero=0
+SERV.LOG TEST|tag_write_zero_stores|[<REF1.TAG.zz_zero>]|[00]
+SERV.LOG TEST|tag_write_zero_count|<EVAL <REF1.TAGCOUNT>-<LOCAL.c>>|1
+REF1.TAG0.zz_zero=
+REF1.TAG0.zz_num=
 SERV.LOG TEST|tag_cleared|[<REF1.TAG.zz_num>]|[]
 SERV.LOG TEST|tagcount_after_clear|<REF1.TAGCOUNT>|1
 LOCAL.u=http://example.com/x
@@ -342,9 +392,9 @@ f_zz_argn 255,7
 REF1.EVENTS +e_zz_test
 SERV.LOG TEST|events_added|<REF1.EVENTS>|e_zz_test
 REF1.TRIGGER @zz_hello,1,7
-SERV.LOG TEST|trigger_argn|<dREF1.TAG.zz_got>|7
+SERV.LOG TEST|trigger_argn|<dREF1.TAG0.zz_got>|7
 REF1.TRIGGER @zz_hello,2,x y z
-SERV.LOG TEST|trigger_args|<REF1.TAG.zz_args>|x y z
+SERV.LOG TEST|trigger_args|<REF1.TAG0.zz_args>|x y z
 
 // ---- ITEMDEF: ID= ile kalıtım, @Create, BASEID ----
 SERV.NEWITEM i_zz_coin
@@ -443,7 +493,7 @@ NEW.CONT=<REF1.UID>
 SERV.LOG TEST|cont_char_puts_in_pack|<ISEMPTY <REF1.FINDLAYER.21.UID>>|0
 // TRYSRC <uid> <komut>: komutu SRC o karakter olarak çalıştırır (client'sız testte oyuncunun yerine NPC)
 REF1.TRYSRC <REF4.UID> TRIGGER @zz_src
-SERV.LOG TEST|trysrc_sets_src|<REF1.TAG.zz_srcuid>|<REF4.UID>
+SERV.LOG TEST|trysrc_sets_src|<REF1.TAG0.zz_srcuid>|<REF4.UID>
 // ISTIMERF.f_ad: bekleyen TIMERF'in kalan süresi (ms), yoksa 0
 REF4.TIMERF 30,f_zz_never
 LOCAL.r=0

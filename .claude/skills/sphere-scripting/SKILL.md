@@ -96,7 +96,7 @@ nesnenin konumuna bakar: `f_onserver_start` gibi nesnesiz yerden `REF1.f_ad` ile
 
 ### İfadeler ve sayılar
 
-- `<...>` içindeki her şey hesaplanır ve yerine metni konur; iç içe olabilir (`<REF1.TAG.<LOCAL.anahtar>>`). Satırda
+- `<...>` içindeki her şey hesaplanır ve yerine metni konur; iç içe olabilir (`<REF1.TAG0.<LOCAL.anahtar>>`). Satırda
   düz `<` ya da `>` karakteri yazma (ifade sanılır); gerekirse `<CHR 60>`/`<CHR 62>`.
 - Öncelik yok, sağdan sola: `2*3+1` = 8, `10-2-3` = 5. Parantezle sırala: `(2*3)+1` = 7. Bölme tam sayı (`7/2` = 3),
   `%` kalan. Ondalık hesap `<FLOATVAL 7.0/2.0>` (3.500000); `<FVAL 35>` onda birlik (3.5).
@@ -105,7 +105,7 @@ nesnenin konumuna bakar: `f_onserver_start` gibi nesnesiz yerden `REF1.f_ad` ile
 - **Sayılar onaltılık yazdırılır:** `LOCAL`, `VAR`, `TAG` ve `DEF`'teki sayı okununca `0` önekli onaltılık gelir
   (`LOCAL.x=255` → `<LOCAL.x>` `0ff`, `LOCAL.r=1` → `01`, `zz_val 42` → `02a`). Nesne özellikleri (`AMOUNT`, `ARGN1`,
   `HITS`...) çoğunlukla ondalık. Oyuncuya göstermek ya da metin birleştirmek için **ondalık okut:** `<dLOCAL.x>`,
-  `<dTAG.x>`, `<dAMOUNT>`, `<EVAL <DEF.x>>`. Karşılaştırmada fark etmez: `IF (<LOCAL.x> == 255)` doğru çalışır.
+  `<dTAG0.x>`, `<dAMOUNT>`, `<EVAL <DEF.x>>`. Karşılaştırmada fark etmez: `IF (<LOCAL.x> == 255)` doğru çalışır.
 - Rakamlardan oluşan metin sayı olur: `LOCAL.e=12` sonra `LOCAL.e=<LOCAL.e>34` → `0c34`. Metin birleştirmede harf
   bulundur ya da `<dLOCAL.e>` kullan.
 - Rastgele: `<R5,10>` 5-10; `{1 5}` iki değerli küme **aralıktır** (1..5 rastgele), ağırlıklı seçim en az iki çift:
@@ -139,8 +139,8 @@ nesnenin konumuna bakar: `f_onserver_start` gibi nesnesiz yerden `REF1.f_ad` ile
 |---|---|---|
 | `LOCAL.x` | çalışan fonksiyon/tetikleyici; çağrılan fonksiyona geçmez (ARGS ile ver) | `0` (boşaltılan da `0`) |
 | `VAR.x` / `VAR0.x` | sunucu geneli, save'e girer | boş / `0` |
-| `TAG.x` / `TAG0.x` | nesnede (eşya, karakter, bölge, hesap), save'e girer; `TAG.x=` siler | boş / `0` |
-| `CTAG.x` / `CTAG0.x` | client'ta, bağlantı süresince | boş / `0` |
+| `TAG0.x` | nesnede (eşya, karakter, bölge, hesap), save'e girer. **Tag'i her zaman `TAG0` ile yaz ve oku:** `TAG0.x=değer`; `TAG0.x=0` ya da `TAG0.x=` tag'i siler (save'e 0 girmez; `TAG.x=0` 0'ı saklar). Hiç set edilmemiş tag `<TAG0.x>` ile 0 okunur, `<TAG.x>` ile boş: `IF (<TAG.x> == 1)` `( == 1)` olur, "Undefined symbol ''" hatası verir ve sonucu rastgeledir (`== 0` doğru, `== 1` yanlış, `< 5` doğru çıkar). `<TAG.x>` sadece boş metinle 0'ı ayırmak gerekince | `0` (`TAG.x` boş) |
+| `CTAG0.x` | client'ta, bağlantı süresince; aynı kural (`CTAG.x` tanımsızken boş) | `0` |
 | `ARGS`, `ARGV[n]`, `ARGV` | fonksiyonun argüman metni, virgülle bölünmüşü, sayısı | |
 | `ARGN1-3`, `ARGO`, `ARGS` | tetikleyicinin sayı, nesne ve metin argümanları (anlamı tetikleyiciye göre) | |
 | `REF1`..`REFn` | nesne tutucu, fonksiyon başına: `REF1=<NEW.UID>`, sonra `REF1.NAME=...`, `<REF1.P>`; çağrılan fonksiyon görmez | |
@@ -159,7 +159,7 @@ nesnenin konumuna bakar: `f_onserver_start` gibi nesnesiz yerden `REF1.f_ad` ile
   `FLAGREMOVE statf_dead` (motorun defname'leri `references/engine-defnames.md`).
 - Fonksiyon çağrısı: `f_ad a,b,c` (çalışan nesnenin üstünde), `REF1.f_ad` (o nesnenin üstünde; `SRC` aynı kalır),
   `SERV.f_ad`. Değeri `<f_ad a,b>` ya da `<SERV.f_ad>` ile okunur (`RETURN 42` → `42`).
-- `+=`, `-=` çalışır (`LOCAL.c += 1`, `TAG.kills += 1`).
+- `+=`, `-=` çalışır (`LOCAL.c += 1`, `TAG0.kills += 1`).
 - Tetikleyiciyi elle tetiklemek: `TRIGGER @ad,1,sayı1,sayı2,sayı3` (ARGN olarak) ya da `TRIGGER @ad,2,metin` (ARGS
   olarak); kendi tetikleyici adların `@` ile başlar, `[EVENTS]`'te `ON=@ad` ile yakalanır.
 - `EVENTS +e_ad` / `EVENTS -e_ad` nesneye olay kümesi ekler ya da çıkarır; `<EVENTS>` listesi.
@@ -308,7 +308,10 @@ dosyana ait hata yok; test satırları beklendiği gibi.
 - `IF (<NAME> == Ali)` her zaman doğru çıkar (iki ad da tanımsız, 0 == 0). `STRCMP` kullan.
 - `LOCAL.x=1` sonra `<LOCAL.x>` `01` yazar; oyuncuya `<dLOCAL.x>`.
 - `010` on altıdır; ondalık 10 için `10`.
-- Tanımsız `LOCAL` `0`, tanımsız `TAG` boş, `TAG0` `0`; `ISEMPTY` tanımsız LOCAL'de 0 verir, `ISBLANK` 1.
+- Tag'i hep `TAG0` ile yaz ve oku. Hiç set edilmemiş `TAG.x` koşulda ve hesapta boş işlenen bırakır:
+  `IF (<TAG.x> == 1)` "Undefined symbol ''" verir, `== 0` doğru ve `== 1` yanlış çıkar, `<EVAL <TAG.x>+1>` 0 olur;
+  `TAG0.x` 0 verir ve hepsi doğru çalışır. `TAG0.x=0` tag'i siler, `TAG.x=0` saklar.
+- Tanımsız `LOCAL` `0`; `ISEMPTY` tanımsız LOCAL'de 0 verir, `ISBLANK` 1.
 - `{a b}` iki değerli küme aralıktır, ağırlıklı seçim için en az `{a 1 b 1}`.
 - `<QVAL c ? a : b>` ilk dalı `"a "` (boşluklu) döndürür; `? a:b` yaz.
 - `DOSWITCH` 0'dan sayar.
