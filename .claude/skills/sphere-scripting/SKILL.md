@@ -181,9 +181,12 @@ SRC.SYSMESSAGELOC <def.tcolor_green>,3300120,<NAME>
 RETURN 1
 ```
 
-- `ID=` başka bir ITEMDEF ya da art numarası (`0eed`): görüntü ve tiledata oradan; **kalıtım alan alan:** `NAME`,
-  `TYPE`, `FLAGS`, `CAN`, `LAYER`, `WEIGHT`, `TDATA`, `RESOURCES`, `SKILLMAKE` gelir, `VALUE`, `TEVENTS`, `CATEGORY`
-  gelmez (tanımda yazılan kazanır). `ID=` satırını tetikleyicilerden önce yaz. Numarayla başlıklı tanım
+- `ID=` başka bir ITEMDEF ya da art numarası (`0eed`): görüntü ve tiledata oradan; **kalıtım alan alan** (envanteri
+  emulatörün `docs/Comparison.md`'sinde): eşyada `NAME`, `TYPE`, `CAN`, `CANUSE`, `LAYER`, `WEIGHT`, `SPEED`, `RANGE`,
+  `DAM`/`ARMOR`, `HEIGHT`, `TDATA1-4`, `SOUND` ve bileşen özellikleri gelir; `VALUE`, `RESOURCES`, `SKILLMAKE`,
+  `TEVENTS`, `CATEGORY`/`SUBSECTION`/`DESCRIPTION` ve `TAG`'ler gelmez (tanımda yazılan her zaman kazanır). CHARDEF'te
+  ek olarak `ICON`, `BLOODCOLOR`, `MAXFOOD`, `FOODTYPE`, `DESIRES`, `ANIM`, `RESOURCES` gelir; `STR`/`DEX`/`INT` ve
+  `AVERSIONS` gelmez. `ID=` satırını tetikleyicilerden önce yaz: önceki satırları ezer. Numarayla başlıklı tanım
   (`[ITEMDEF 04542]`) bir art'ın kendisidir; özel eşyaya defname başlığı ver.
 - `DEFNAME=` eş ad, 56TX'te `DEFNAMES=ad1,ad2` birden çok. `DUPELIST=`, `DUPEITEM=` benzer art'lar.
 - `TYPE=t_x` davranış ailesi (`t_potion`, `t_weapon_sword`, `t_container`, `t_food`, `t_light_lit`...; paketin
