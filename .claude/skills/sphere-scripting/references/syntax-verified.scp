@@ -1,0 +1,486 @@
+// Script sözdizimi takımı: script yazma skill'inin (paketin .claude/skills/sphere-scripting klasörü) anlattığı her
+//  sözdizimi kuralı burada exe'yle doğrulanır. Skill'deki bir kural değişecekse önce bu test, sonra skill güncellenir.
+//  "wrong_" ile başlayan testler bilerek yanlış yazımdır: log'a hata düşer, değeri ölçülür.
+// Sonuçlar: SERV.LOG TEST|ad|alınan|beklenen
+
+[DEFNAME zz_defs]
+zz_val 42
+zz_hex 0ff
+zz_txt merhaba
+zz_list {1 1 2 1}
+
+[ITEMDEF i_zz_coin]
+ID=i_gold
+NAME=Zz Coin
+TYPE=t_normal
+VALUE=5
+
+ON=@Create
+COLOR=0481
+
+[ITEMDEF i_zz_coin2]
+ID=i_zz_coin
+
+[EVENTS e_zz_test]
+ON=@zz_hello
+TAG.zz_got=<ARGN1>
+TAG.zz_args=<ARGS>
+
+[FUNCTION f_zz_side]
+VAR.zz_side += 1
+RETURN 1
+
+[FUNCTION f_zz_ret]
+RETURN 42
+
+[FUNCTION f_zz_args]
+SERV.LOG TEST|argv_count|<ARGV>|3
+SERV.LOG TEST|argv_1|<ARGV[1]>|b
+SERV.LOG TEST|args_all|<ARGS>|a,b,c
+
+[FUNCTION f_zz_argn]
+SERV.LOG TEST|argn1_print|<ARGN1>|255
+SERV.LOG TEST|argn1_dec|<dARGN1>|255
+SERV.LOG TEST|argn1_eval|<EVAL <ARGN1>>|255
+SERV.LOG TEST|argn2|<ARGN2>|7
+
+[FUNCTION f_onserver_start]
+// ---- IF biçimleri: parantez, && ve || ----
+LOCAL.a=1
+LOCAL.b=5
+LOCAL.r=0
+IF (<LOCAL.a>) && (<LOCAL.b> > 3)
+	LOCAL.r=1
+ENDIF
+SERV.LOG TEST|if_and_spaced|<dLOCAL.r>|1
+LOCAL.r=0
+IF (<LOCAL.a> && <LOCAL.b> > 3)
+	LOCAL.r=1
+ENDIF
+SERV.LOG TEST|if_and_inner|<dLOCAL.r>|1
+LOCAL.r=0
+IF (<LOCAL.a>)&&(<LOCAL.b> > 3)
+	LOCAL.r=1
+ENDIF
+SERV.LOG TEST|if_and_glued_parses|<dLOCAL.r>|1
+LOCAL.r=0
+IF <LOCAL.a> && <LOCAL.b> > 3
+	LOCAL.r=1
+ENDIF
+SERV.LOG TEST|if_and_bare_parses|<dLOCAL.r>|1
+LOCAL.r=0
+IF (<LOCAL.a>) && (<LOCAL.b> > 9)
+	LOCAL.r=1
+ENDIF
+SERV.LOG TEST|if_and_false|<dLOCAL.r>|0
+LOCAL.r=0
+IF (<LOCAL.b> > 9) || (<LOCAL.a> == 1)
+	LOCAL.r=1
+ENDIF
+SERV.LOG TEST|if_or|<dLOCAL.r>|1
+LOCAL.r=0
+IF !(<LOCAL.b> > 9)
+	LOCAL.r=1
+ENDIF
+SERV.LOG TEST|if_not|<dLOCAL.r>|1
+LOCAL.r=0
+IF (<LOCAL.a> == 1) && !(<LOCAL.b> == 9)
+	LOCAL.r=1
+ENDIF
+SERV.LOG TEST|if_and_not|<dLOCAL.r>|1
+LOCAL.r=0
+IF (<LOCAL.b> == 1)
+	LOCAL.r=1
+ELIF (<LOCAL.b> == 5)
+	LOCAL.r=2
+ELSE
+	LOCAL.r=3
+ENDIF
+SERV.LOG TEST|if_elif_else|<dLOCAL.r>|2
+LOCAL.r=0
+IF (<LOCAL.a> < 3)
+	LOCAL.r=1
+ENDIF
+SERV.LOG TEST|if_lessthan|<dLOCAL.r>|1
+LOCAL.r=0
+IF (<LOCAL.a> <= 1)
+	LOCAL.r=1
+ENDIF
+SERV.LOG TEST|if_lessequal|<dLOCAL.r>|1
+LOCAL.r=0
+IF (<LOCAL.b> >= 5)
+	LOCAL.r=1
+ENDIF
+SERV.LOG TEST|if_greaterequal|<dLOCAL.r>|1
+LOCAL.r=0
+IF (<LOCAL.a> != 2)
+	LOCAL.r=1
+ENDIF
+SERV.LOG TEST|if_notequal|<dLOCAL.r>|1
+LOCAL.r=0
+IF (<LOCAL.a> == 1)
+	IF (<LOCAL.b> == 5)
+		LOCAL.r=1
+	ENDIF
+ENDIF
+SERV.LOG TEST|if_nested|<dLOCAL.r>|1
+LOCAL.r=0
+IF (<LOCAL.b> & 4)
+	LOCAL.r=1
+ENDIF
+SERV.LOG TEST|if_bit_and|<dLOCAL.r>|1
+LOCAL.r=0
+IF (<LOCAL.zz_none>)
+	LOCAL.r=1
+ENDIF
+SERV.LOG TEST|if_unset_local_false|<dLOCAL.r>|0
+
+// ---- Tembel değerlendirme: ilk parça sonucu belirlerse ikincisi hiç çalışmaz ----
+VAR.zz_side=0
+IF (0) && (<f_zz_side>)
+	LOCAL.r=0
+ENDIF
+IF (1) || (<f_zz_side>)
+	LOCAL.r=0
+ENDIF
+SERV.LOG TEST|short_circuit_skips|<dVAR.zz_side>|0
+IF (1) && (<f_zz_side>)
+	LOCAL.r=0
+ENDIF
+SERV.LOG TEST|short_circuit_runs|<dVAR.zz_side>|1
+
+// ---- Metin: STRCMP ailesi intrinsic'tir, köşeli parantezsiz yazılır ----
+LOCAL.s=Hello
+LOCAL.r=0
+IF (STRCMP(<LOCAL.s>,Hello) == 0)
+	LOCAL.r=1
+ENDIF
+SERV.LOG TEST|strcmp_eq|<dLOCAL.r>|1
+LOCAL.r=0
+IF !STRCMP(<LOCAL.s>,Hello)
+	LOCAL.r=1
+ENDIF
+SERV.LOG TEST|strcmp_not|<dLOCAL.r>|1
+LOCAL.r=0
+IF (STRCMP(<LOCAL.s>,World) == 0)
+	LOCAL.r=1
+ENDIF
+SERV.LOG TEST|strcmp_diff|<dLOCAL.r>|0
+LOCAL.r=0
+IF (STRCMPI(<LOCAL.s>,hello) == 0)
+	LOCAL.r=1
+ENDIF
+SERV.LOG TEST|strcmpi|<dLOCAL.r>|1
+LOCAL.r=0
+IF (STRMATCH(Hel*,<LOCAL.s>))
+	LOCAL.r=1
+ENDIF
+SERV.LOG TEST|strmatch_star|<dLOCAL.r>|1
+LOCAL.r=0
+IF (STRMATCH(H?llo,<LOCAL.s>))
+	LOCAL.r=1
+ENDIF
+SERV.LOG TEST|strmatch_question|<dLOCAL.r>|1
+LOCAL.r=0
+IF (STRLEN(<LOCAL.s>) == 5)
+	LOCAL.r=1
+ENDIF
+SERV.LOG TEST|strlen|<dLOCAL.r>|1
+LOCAL.r=0
+IF (STRCMP(<LOCAL.s>,Hello) == 0) && (<LOCAL.b> == 5)
+	LOCAL.r=1
+ENDIF
+SERV.LOG TEST|strcmp_and|<dLOCAL.r>|1
+SERV.NEWNPC c_man
+REF1=<NEW.UID>
+REF1.P=5400,1100,0,0
+REF1.NAME=Zz Syntax Man
+VAR.zz_self=<REF1.UID>
+LOCAL.r=0
+IF (STRCMP(<REF1.NAME>,Zz Syntax Man) == 0)
+	LOCAL.r=1
+ENDIF
+SERV.LOG TEST|strcmp_spaces|<dLOCAL.r>|1
+// Yanlış biçim: <STRCMP ...>, <STRLEN ...> hata verir, 0 döner
+LOCAL.r=<STRCMP <LOCAL.s>,Hello>
+SERV.LOG TEST|wrong_strcmp_angle|<dLOCAL.r>|0
+LOCAL.r=<STRLEN <LOCAL.s>>
+SERV.LOG TEST|wrong_strlen_angle|<dLOCAL.r>|0
+// == ile metin karşılaştırmak yanlış: iki taraf da ad sanılır, tanımsız ad 0 olur, 0 == 0 doğru çıkar
+LOCAL.r=0
+IF (<LOCAL.s> == World)
+	LOCAL.r=1
+ENDIF
+SERV.LOG TEST|wrong_string_equals|<dLOCAL.r>|1
+LOCAL.r=0
+LOCAL.s2=xyz
+IF (<LOCAL.s2>)
+	LOCAL.r=1
+ENDIF
+SERV.LOG TEST|wrong_if_text_truthy|<dLOCAL.r>|0
+// Defname karşılaştırması == ile çalışır: iki taraf da aynı sayıya çözülür
+LOCAL.r=0
+IF (<REF1.BASEID> == c_man)
+	LOCAL.r=1
+ENDIF
+SERV.LOG TEST|defname_equals|<dLOCAL.r>|1
+// <>'li yardımcılar (CScriptObj tablosu): ISEMPTY, ISBLANK, STR* ...
+SERV.LOG TEST|isempty_unset_local_is_zero|<ISEMPTY <LOCAL.none>>|0
+SERV.LOG TEST|isempty_unset_tag|<ISEMPTY <REF1.TAG.zz_none>>|1
+SERV.LOG TEST|isempty_zero|<ISEMPTY 0>|0
+SERV.LOG TEST|isblank_zero|<ISBLANK 0>|1
+SERV.LOG TEST|isblank_unset_local|<ISBLANK <LOCAL.none>>|1
+SERV.LOG TEST|isblank_text|<ISBLANK abc>|0
+SERV.LOG TEST|strtolower|<STRTOLOWER <LOCAL.s>>|hello
+SERV.LOG TEST|strtitle|<STRTITLE hello world>|Hello World
+SERV.LOG TEST|strcontains_search_then_text|<STRCONTAINS World,Hello World>|1
+SERV.LOG TEST|strreplace|<STRREPLACE l,L,<LOCAL.s>>|HeLLo
+SERV.LOG TEST|strlength|<STRLENGTH <LOCAL.s>>|5
+
+// ---- Sayılar ve ifadeler ----
+SERV.LOG TEST|expr_right_to_left|<EVAL 2*3+1>|8
+SERV.LOG TEST|expr_sub_chain|<EVAL 10-2-3>|5
+SERV.LOG TEST|expr_paren|<EVAL (2*3)+1>|7
+SERV.LOG TEST|expr_int_div|<EVAL 7/2>|3
+SERV.LOG TEST|expr_mod|<EVAL 7%3>|1
+SERV.LOG TEST|hex_literal|<EVAL 0ff>|255
+SERV.LOG TEST|leading_zero_is_hex|<EVAL 010>|16
+SERV.LOG TEST|dec_literal|<EVAL 10>|10
+SERV.LOG TEST|wrong_bare_word_is_symbol|<EVAL abc>|0
+SERV.LOG TEST|hval|<HVAL 255>|0ff
+LOCAL.n=255
+SERV.LOG TEST|local_num_prints_hex|<LOCAL.n>|0ff
+SERV.LOG TEST|local_num_d_prefix|<dLOCAL.n>|255
+LOCAL.n=010
+SERV.LOG TEST|local_leading_zero_hex|<dLOCAL.n>|16
+SERV.NEWITEM i_gold
+REF2=<NEW.UID>
+REF2.P=5401,1100,0,0
+REF2.AMOUNT=255
+SERV.LOG TEST|amount_prints_dec|<REF2.AMOUNT>|255
+SERV.LOG TEST|amount_d_prefix|<dREF2.AMOUNT>|255
+LOCAL.r=0
+IF (<REF2.AMOUNT> == 0ff)
+	LOCAL.r=1
+ENDIF
+SERV.LOG TEST|compare_dec_hex|<dLOCAL.r>|1
+LOCAL.c=0
+LOCAL.c += 1
+LOCAL.c += 1
+SERV.LOG TEST|local_plus_equals|<dLOCAL.c>|2
+LOCAL.c -= 1
+SERV.LOG TEST|local_minus_equals|<dLOCAL.c>|1
+LOCAL.c=<EVAL <LOCAL.c>+1>
+SERV.LOG TEST|local_eval_add|<dLOCAL.c>|2
+SERV.LOG TEST|rand_fixed|<R5,5>|5
+SERV.LOG TEST|range_two_is_random_between|<EVAL {7 7}>|7
+SERV.LOG TEST|range_weighted|<EVAL {7 1 7 1}>|7
+// QVAL: ":"'dan önceki boşluk ilk dalın sonuna kalır ("yes "); dallar boşluksuz yazılır: ? a:b
+SERV.LOG TEST|qval_spaced_keeps_trailing_space|[<QVAL <LOCAL.b> == 5 ? yes : no>]|[yes ]
+SERV.LOG TEST|qval_tight|[<QVAL <LOCAL.b> == 5 ? yes:no>]|[yes]
+SERV.LOG TEST|qval_gt_inside_angle|[<QVAL <LOCAL.b> > 3 ? big:small>]|[big]
+SERV.LOG TEST|qval_gt_paren|[<QVAL (<LOCAL.b> > 3) ? big:small>]|[big]
+SERV.LOG TEST|qval_false|[<QVAL <LOCAL.b> == 9 ? big:small>]|[small]
+SERV.LOG TEST|floatval|<FLOATVAL 7.0/2.0>|3.500000
+SERV.LOG TEST|fval_tenths|<FVAL 35>|3.5
+
+// ---- DEFNAME ----
+SERV.LOG TEST|def_num_prints_hex|<DEF.zz_val>|02a
+SERV.LOG TEST|def_num_eval|<EVAL <DEF.zz_val>>|42
+SERV.LOG TEST|def_hex_eval|<EVAL <DEF.zz_hex>>|255
+SERV.LOG TEST|def_text|<DEF.zz_txt>|merhaba
+SERV.LOG TEST|def0_unset|<DEF0.zz_none>|0
+SERV.LOG TEST|def_unset_empty|[<DEF.zz_none>]|[]
+SERV.LOG TEST|def_list_raw|<DEF.zz_list>|{1 1 2 1}
+SERV.LOG TEST|defname_in_expr|<EVAL zz_val+1>|43
+SERV.LOG TEST|def_itemdef_empty|[<DEF.i_gold>]|[]
+SERV.LOG TEST|resdef_itemdef|<RESDEF.i_gold>|081300eed
+SERV.LOG TEST|isblank_def_unset|<ISBLANK <DEF.zz_none>>|1
+
+// ---- Değişkenler: LOCAL, VAR, TAG, TAG0 ----
+LOCAL.s=Hello World
+SERV.LOG TEST|local_text_spaces|<LOCAL.s>|Hello World
+SERV.LOG TEST|local_unset_reads_zero|[<LOCAL.zz_none>]|[0]
+LOCAL.e=
+SERV.LOG TEST|local_set_empty_reads_zero|[<LOCAL.e>]|[0]
+// Sayı gibi görünen metin sayı olarak saklanır ve onaltılık yazılır: rakam birleştirme tuzağı
+LOCAL.e=12
+LOCAL.e=<LOCAL.e>34
+SERV.LOG TEST|local_digits_concat_is_number|<LOCAL.e>|0c34
+VAR.zz_test=abc
+SERV.LOG TEST|var_text|<VAR.zz_test>|abc
+SERV.LOG TEST|var0_unset|<VAR0.zz_none>|0
+REF1.TAG.zz_num=10
+REF1.TAG.zz_txt=merhaba dunya
+SERV.LOG TEST|tag_num_prints_hex|<REF1.TAG.zz_num>|0a
+SERV.LOG TEST|tag_num_d|<dREF1.TAG.zz_num>|10
+SERV.LOG TEST|tag_text|<REF1.TAG.zz_txt>|merhaba dunya
+SERV.LOG TEST|tag_unset_empty|[<REF1.TAG.zz_none>]|[]
+SERV.LOG TEST|tag0_unset_zero|<REF1.TAG0.zz_none>|0
+REF1.TAG.zz_num=
+SERV.LOG TEST|tag_cleared|[<REF1.TAG.zz_num>]|[]
+SERV.LOG TEST|tagcount_after_clear|<REF1.TAGCOUNT>|1
+LOCAL.u=http://example.com/x
+SERV.LOG TEST|url_not_comment|<LOCAL.u>|http://example.com/x
+LOCAL.v=abc//yorum
+SERV.LOG TEST|double_slash_cuts|<LOCAL.v>|abc
+
+// ---- Fonksiyon çağrısı, RETURN, ARGS/ARGV/ARGN ----
+SERV.LOG TEST|function_return|<f_zz_ret>|42
+SERV.LOG TEST|function_return_serv|<SERV.f_zz_ret>|42
+f_zz_args a,b,c
+f_zz_argn 255,7
+
+// ---- TRIGGER ve EVENTS ----
+REF1.EVENTS +e_zz_test
+SERV.LOG TEST|events_added|<REF1.EVENTS>|e_zz_test
+REF1.TRIGGER @zz_hello,1,7
+SERV.LOG TEST|trigger_argn|<dREF1.TAG.zz_got>|7
+REF1.TRIGGER @zz_hello,2,x y z
+SERV.LOG TEST|trigger_args|<REF1.TAG.zz_args>|x y z
+
+// ---- ITEMDEF: ID= ile kalıtım, @Create, BASEID ----
+SERV.NEWITEM i_zz_coin
+REF3=<NEW.UID>
+REF3.P=5402,1100,0,0
+SERV.LOG TEST|itemdef_name|<REF3.NAME>|Zz Coin
+SERV.LOG TEST|itemdef_create_trigger|<REF3.COLOR>|0481
+SERV.LOG TEST|itemdef_baseid|<REF3.BASEID>|i_zz_coin
+SERV.LOG TEST|itemdef_dispid|<REF3.DISPID>|i_gold
+SERV.LOG TEST|itemdef_child_name_inherited|<SERV.ITEMDEF.i_zz_coin2.NAME>|Zz Coin
+SERV.LOG TEST|itemdef_child_value_not_inherited|<SERV.ITEMDEF.i_zz_coin2.VALUE>|0
+SERV.LOG TEST|itemdef_parent_value|<SERV.ITEMDEF.i_zz_coin.VALUE>|5
+SERV.LOG TEST|itemdef_type|<SERV.ITEMDEF.i_zz_coin.TYPE>|t_normal
+
+// ---- Döngüler ----
+LOCAL.c=0
+FOR 1 5
+	LOCAL.c += 1
+ENDFOR
+SERV.LOG TEST|for_1_5_count|<dLOCAL.c>|5
+LOCAL.c=0
+FOR 3
+	LOCAL.c += 1
+ENDFOR
+SERV.LOG TEST|for_single_arg_count|<dLOCAL.c>|3
+LOCAL.c=0
+FOR 0 2
+	LOCAL.c += 1
+ENDFOR
+SERV.LOG TEST|for_0_2_count|<dLOCAL.c>|3
+LOCAL.c=x
+FOR 2 4
+	LOCAL.c=<LOCAL.c><dLOCAL._FOR>
+ENDFOR
+SERV.LOG TEST|for_loop_var|<LOCAL.c>|x234
+LOCAL.c=x
+FOR 0 2
+	LOCAL.c=<LOCAL.c>[<dLOCAL._FOR>]
+ENDFOR
+SERV.LOG TEST|for_0_2_var|<LOCAL.c>|x[0][1][2]
+LOCAL.c=0
+WHILE (<LOCAL.c> < 4)
+	LOCAL.c += 1
+ENDWHILE
+SERV.LOG TEST|while_lessthan|<dLOCAL.c>|4
+LOCAL.c=0
+FOR 1 10
+	IF (<LOCAL._FOR> == 4)
+		BREAK
+	ENDIF
+	LOCAL.c += 1
+ENDFOR
+SERV.LOG TEST|for_break|<dLOCAL.c>|3
+LOCAL.c=0
+FOR 1 5
+	IF (<LOCAL._FOR> == 2)
+		CONTINUE
+	ENDIF
+	LOCAL.c += 1
+ENDFOR
+SERV.LOG TEST|for_continue|<dLOCAL.c>|4
+LOCAL.c=0
+DOSWITCH 1
+	LOCAL.c=10
+	LOCAL.c=20
+	LOCAL.c=30
+ENDDO
+SERV.LOG TEST|doswitch_zero_based|<dLOCAL.c>|20
+LOCAL.c=0
+DOSWITCH 0
+	LOCAL.c=10
+	LOCAL.c=20
+ENDDO
+SERV.LOG TEST|doswitch_0|<dLOCAL.c>|10
+LOCAL.d=
+DORAND 2
+	LOCAL.d=a
+	LOCAL.d=b
+ENDDO
+SERV.LOG TEST|dorand_picks_one|<LOCAL.d>|*
+// Nesne döngüleri: nesnenin üstünde çalışan fonksiyon (REF1.f_zz_loops)
+SERV.NEWNPC c_man
+REF4=<NEW.UID>
+REF4.P=5401,1101,0,0
+REF4.NAME=Zz Syntax Man 2
+SERV.NEWITEM i_gold
+NEW.P=5400,1100,0,0
+SERV.NEWITEM i_gold
+NEW.P=5401,1100,0,0
+SERV.NEWITEM i_gold
+NEW.CONT=<REF1.UID>
+SERV.NEWITEM i_gold
+NEW.CONT=<REF1.UID>
+SERV.NEWITEM i_bandage
+NEW.CONT=<REF1.UID>
+SERV.LOG TEST|cont_char_puts_in_pack|<ISEMPTY <REF1.FINDLAYER.21.UID>>|0
+REF1.f_zz_loops
+REF1.TIMERF 1,f_zz_syntax_phase2
+
+[FUNCTION f_zz_loops]
+// Nesne REF1 (NPC, 5400,1100). FORITEMS 2: 2 kare içindeki yerdeki eşyalar; FORCHARS 2: karakterler (kendisi dahil).
+LOCAL.c=0
+FORITEMS 2
+	IF (<BASEID> == i_gold)
+		LOCAL.c += 1
+	ENDIF
+ENDFOR
+SERV.LOG TEST|foritems_gold|<dLOCAL.c>|3
+LOCAL.c=0
+FORCHARS 2
+	LOCAL.c += 1
+ENDFOR
+SERV.LOG TEST|forchars_includes_self|<dLOCAL.c>|2
+LOCAL.c=0
+FORCHARS 2
+	IF (<UID> != <VAR.zz_self>)
+		LOCAL.c += 1
+	ENDIF
+ENDFOR
+SERV.LOG TEST|forchars_not_self|<dLOCAL.c>|1
+LOCAL.c=0
+FORCONT <FINDLAYER.21.UID> 1
+	LOCAL.c += 1
+ENDFOR
+// Çantaya konan iki altın tek yığına birleşti (yığılabilir eşya): 2 eşya, altın yığını AMOUNT 2.
+SERV.LOG TEST|forcont_count_stacked|<dLOCAL.c>|2
+LOCAL.c=0
+FORCONTID i_gold
+	LOCAL.c += 1
+ENDFOR
+SERV.LOG TEST|forcontid_gold_stacked|<dLOCAL.c>|1
+LOCAL.c=0
+FORCONTTYPE t_bandage
+	LOCAL.c += 1
+ENDFOR
+SERV.LOG TEST|forconttype_bandage|<dLOCAL.c>|1
+LOCAL.c=0
+FORCONTID i_gold
+	LOCAL.c=<EVAL <LOCAL.c>+<AMOUNT>>
+ENDFOR
+SERV.LOG TEST|forcontid_sum_amount|<dLOCAL.c>|2
+SERV.LOG TEST|loops_object_is_self|<UID>|<VAR.zz_self>
+
+[FUNCTION f_zz_syntax_phase2]
+SERV.LOG TEST|timerf_fired|1|1
+f_zz_done

@@ -1,0 +1,302 @@
+# Paketin düzeni
+<!-- Üretildi: SphereServer-56TX/utilities/scripting-skill.ps1. Elle değiştirilmez; motor değişince yeniden üretilir. -->
+
+Varsayılan paketin (`SphereServer-56TX-Scripts`) klasör kuralları ve yükleme sırası, paketin kendi `spheretables.scp`'sinden. Yeni dosya ana bölüm türünün klasörüne gider; klasör satırı alt klasörlere inmez, alt klasör ayrı satır ister; dosya adı paket genelinde tekil olmalı.
+
+## [COMMENT spheretables]
+
+```
+NOTE: This file is loaded 2nd after SPHERE.INI and the order is very important,
+so be aware that the resources section is processed top down... if a file near
+the top is dependant on a file near the bottom, you may try to slide the dependent
+file up the list... but sometimes unreconcilable dependencies can happen, in which
+case the problematic file may need to be split.
+
+As a general rule:
+- DEFNAMEs come first
+- TYPEDEF and EVENTS second
+- ITEMDEF and CHARDEF
+- REGION* comes before AREADEF and ROOMDEF
+- TEMPLATE last
+
+Folders: a file goes to the folder of its main section type.
+  defnames/      DEFNAME, DEFMESSAGE, TYPEDEFS
+  typedefs/      TYPEDEF (typedefs/events/: item events)
+  events/        EVENTS
+  functions/     FUNCTION
+  dialogs/       DIALOG
+  itemdefs/      ITEMDEF
+  multidefs/     MULTIDEF
+  chardefs/      CHARDEF
+  speechs/       SPEECH
+  spells/        SPELL
+  skillclasses/  SKILLCLASS
+  templates/     TEMPLATE
+  spawns/        SPAWN
+  regions/       REGIONRESOURCE, REGIONTYPE
+  areadefs/      AREADEF
+  roomdefs/      ROOMDEF
+  teleporters/   TELEPORTERS
+  moongates/     MOONGATES
+  core/          section types with a single file: NAMES, SKILL, NEWBIE, STARTS, BONUS, OBJSDBEXCLUDE, WORDFILTER
+  systems/       whole systems kept together (guilds, towns, houses, ships)
+A folder line below loads the .scp files of that folder only, not of its
+subfolders. File names must be unique in the whole pack: a second file with the
+same name in another folder is not loaded. Never start a line of a COMMENT with
+a square bracket: it opens a new section.
+
+```
+
+## [RESOURCES]: yükleme sırası
+
+Satırlar yukarıdan aşağı yüklenir; `//` ile başlayanlar kapalı.
+
+```
+// sphere.ini and spheretable.scp are automatic.
+////////////////////////
+// Defnames folder
+////////////////////////
+defnames/defs.scp
+defnames/defs_backwards.scp
+defnames/defs_buffs_debuffs.scp
+defnames/defs_component_props.scp
+defnames/defs_custom.scp
+defnames/defs_faction.scp
+defnames/defs_height.scp
+defnames/defs_html.scp
+defnames/defs_hues.scp
+defnames/defs_mounts.scp
+defnames/defs_msgs.scp
+defnames/defs_sounds.scp
+defnames/defs_sphere.scp
+defnames/defs_templates.scp
+defnames/defs_types_hardcoded.scp
+defnames/defs_types_name.scp
+defnames/defs_validation.scp
+
+
+////////////////////////
+// Core folder
+////////////////////////
+core/names.scp
+core/skills.scp // once skills yukle
+core/skillmenus.scp
+core/newbies.scp // sonra newbies yukle.
+core/starts.scp
+core/bonuses.scp // [BONUS]: ITEMDEF ve CHARDEF'lerin BONUSES='inden önce
+core/objsdbexclude.scp // [OBJSDBEXCLUDE]: nesne veritabanına (ObjsDatabase) yazılmayanlar
+core/wordfilter.scp // [WORDFILTER]: kelime filtresinin listeleri (WordFilter)
+
+// Server functions (f_on*)
+functions/functions_serv_triggers.scp
+functions/
+functions/issets/
+
+
+////////////////////////
+// Typedefs folder: item events (TEVENTS)
+////////////////////////
+typedefs/events/
+
+////////////////////////
+// Events folder
+////////////////////////
+events/chars/npcs/
+events/chars/npcs/vendors/
+events/chars/players/
+// events/chars/bonuses/
+// events/chars/classes/
+events/regions/
+
+////////////////////////
+// Skillclasses folder
+////////////////////////
+skillclasses/
+
+////////////////////////
+// Typedefs folder
+////////////////////////
+typedefs/
+
+
+////////////////////////
+// Dialogs folder
+////////////////////////
+dialogs/
+
+
+
+////////////////////////
+// Functions folder
+////////////////////////
+
+////////////////////////
+// Itemdefs folder
+////////////////////////
+itemdefs/
+itemdefs/artifacts/
+itemdefs/buildings/
+itemdefs/customs/
+itemdefs/decos/
+itemdefs/holidays/
+itemdefs/miscs/
+
+
+// Multidefs folder (before the deeds in itemdefs/provs/)
+multidefs/
+itemdefs/ships/ // ship parts
+
+itemdefs/profs/
+
+itemdefs/provs/
+itemdefs/provs/armors/
+itemdefs/provs/clothes/
+itemdefs/provs/weapons/defaults/
+// itemdefs/provs/weapons/customs/
+
+itemdefs/themes/
+itemdefs/magics/
+itemdefs/magics/weapons/
+itemdefs/treasures/
+// itemdefs/typedefs/
+
+////////////////////////
+// Speechs folder
+////////////////////////
+speechs/chars/
+speechs/chars/npcs/
+speechs/chars/npcs/vendors/
+// speechs/multis/
+
+////////////////////////
+// Spells folder
+////////////////////////
+spells/
+
+////////////////////////
+// Sql folder
+////////////////////////
+// sql/
+
+////////////////////////
+// Chardefs folder
+////////////////////////
+chardefs/
+chardefs/base/
+chardefs/base/npcs/
+chardefs/base/npcs/monsters/
+chardefs/base/npcs/vendors/
+// chardefs/npcs/mounts/
+chardefs/base/npcs/vendors/
+
+////////////////////////
+// Systems folder
+////////////////////////
+systems/
+systems/multis/
+systems/multis/ship/
+systems/multis/caravan/
+systems/multis/house/
+systems/stones/
+systems/stones/towns/
+systems/stones/guilds/
+
+////////////////////////
+// Templates folder
+////////////////////////
+
+templates/
+templates/loots/
+templates/magic/
+templates/vend/
+
+////////////////////////
+// Tests lder
+////////////////////////
+
+tests/
+
+////////////////////////
+// Spawns folder
+////////////////////////
+spawns/
+spawns/monsters/
+
+
+////////////////////////
+// Regions folder
+////////////////////////
+regions/regions_resources.scp
+regions/regions_types.scp
+
+////////////////////////
+// Maps: moongates, areadefs, roomdefs and teleporters folders
+////////////////////////
+
+// Map0
+moongates/map0_moongates.scp
+
+areadefs/map0/map0_areas.scp
+areadefs/map0/map0_areas_ml.scp
+areadefs/map0/map0_areas_sa.scp
+areadefs/map0/map0_areas_hs.scp
+roomdefs/map0_rooms.scp
+
+teleporters/map0/map0_teleports.scp
+teleporters/map0/map0_teleports_ml.scp
+teleporters/map0/map0_teleports_hs.scp
+
+// Map1
+moongates/map1_moongates.scp
+areadefs/map1/map1_areas.scp
+//areadefsmap1//map1_areas_aos_old_haven.scp
+areadefs/map1/map1_areas_ml_new_haven.scp
+areadefs/map1/map1_areas_ml.scp
+areadefs/map1/map1_areas_sa.scp
+areadefs/map1/map1_areas_hs.scp
+// areadefs/map1/map1_areas_tol.scp
+roomdefs/map1_rooms.scp
+teleporters/map1/map1_teleports.scp
+teleporters/map1/map1_teleports_ml.scp
+teleporters/map1/map1_teleports_ml_new_haven.scp
+teleporters/map1/map1_teleports_hs.scp
+teleporters/map1/map1_teleports_tol.scp
+
+// Map2
+areadefs/map2/map2_areas.scp
+areadefs/map2/map2_areas_ml.scp
+teleporters/map2/map2_teleports.scp
+teleporters/map2/map2_teleports_ml.scp
+moongates/map2_moongates.scp
+
+// Map3
+areadefs/map3/map3_areas.scp
+areadefs/map3/map3_areas_ml.scp
+areadefs/map3/map3_areas_se.scp
+teleporters/map3/map3_teleports.scp
+teleporters/map3/map3_teleports_ml.scp
+teleporters/map3/map3_teleports_se.scp
+moongates/map3_moongates.scp
+
+// Map4
+areadefs/map4/map4_areas.scp
+teleporters/map4/map4_teleports.scp
+moongates/map4_moongates.scp
+
+// Map5
+areadefs/map5/map5_areas.scp
+areadefs/map5/map5_areas_tol.scp
+
+teleporters/map5/map5_teleports.scp
+teleporters/map5/map5_teleports_tol.scp
+moongates/map5_moongates.scp
+// moongates/map5_moongates_tol.scp
+
+
+// Yeni karakterin adında geçemeyen kelimeler: emulatörün [BLOCKNAME] bölümü (0.56TX; sphere.ini: CharNameReject).
+// Her satır bir kelime: adın içinde geçerse (büyük-küçük harf farksız) karaktere rastgele ad verilir ya da
+//  CharNameReject=1'de ad reddedilir. * ve ? joker: "adm?n", "gm*". Bölüm boşsa [OBSCENE] kullanılır, o da boşsa
+//  kelime denetlenmez. Sadece yeni karakterin adı içindir; [OBSCENE] eşya, pet, hesap ve sohbet adlarında ve
+//  script'in ISOBSCENE'inde de kullanılır.
+```
+

@@ -1,0 +1,1419 @@
+# Sunucu olay fonksiyonları (f_on*)
+<!-- Üretildi: SphereServer-56TX/utilities/scripting-skill.ps1. Elle değiştirilmez; motor değişince yeniden üretilir. -->
+
+Motorun belirli olaylarda çağırdığı, pakette `[FUNCTION f_on...]` olarak tanımlanan fonksiyonlar ve paketin başlarındaki açıklamaları (`functions/functions_serv_triggers.scp`; 56TX'in eklediklerinin kaynağı emulatörün `docs/sphere_serv_triggers_56TX.scp`'si). Tanımlı olmayan fonksiyon hiçbir şeyi değiştirmez; tanımlıysa gövdesi olayda çalışır. 56T'nin eski adları da tanınır (CLAUDE.md Bölüm 4, Sunucu fonksiyonları).
+
+## İçindekiler
+
+- f_onaccount_connect
+- f_onaccount_login
+- f_onaccount_login_fail
+- f_onaccount_logout
+- f_onaccount_create
+- f_onaccount_delete
+- f_onaccount_pwchange
+- f_onaccount_pinchange
+- f_onaccount_block
+- f_onaccount_unblock
+- f_onaccount_emailsent
+- f_onaccount_emailfail
+- f_onaccount_emailcheck
+- f_onchar_create_init
+- f_onchar_create
+- f_onchar_setup_player
+- f_onchar_delete
+- f_onchar_login_client
+- f_onchar_logout_client
+- f_onchar_disconnect_client
+- f_onchar_create_npc
+- f_onobj_delete
+- f_onitem_create
+- f_onmulti_create
+- f_onmulti_delete
+- f_axis_preload
+- f_onclient_exceed_network_quota
+- f_onclient_ping_flood
+- f_onclient_version
+- f_onclient_program
+- f_onclient_webidentity
+- f_onclient_badpacket
+- f_onserver_start
+- f_onserver_exit
+- f_onserver_exit_later
+- f_onserver_mode
+- f_onserver_shutdown
+- f_onserver_restart
+- f_onserver_timer
+- f_onserver_broadcast
+- f_onserver_restock
+- f_onserver_tick_slow
+- f_onserver_gc
+- f_onserver_ldbbackup
+- f_onserver_gmpage
+- f_onserver_ticket
+- f_onserver_report
+- f_onserver_console_cmd
+- f_onserver_http_request
+- f_onserver_script_error
+- f_onserver_save_before
+- f_onserver_save
+- f_onserver_save_try
+- f_onserver_save_stage
+- f_onserver_save_force
+- f_onserver_save_ok
+- f_onserver_save_fail
+- f_onserver_save_finished
+- f_onserver_lowdisk
+- f_onserver_resync_start
+- f_onserver_resync_restart
+- f_onserver_resync_success
+- f_onserver_resync_failed
+- f_onserver_blockip
+- f_onserver_unblockip
+- f_onserver_connectreq_ex
+- f_onserver_connection_acquired
+- f_onserver_window_minimize
+- f_onserver_window_restore
+- f_onserver_onclose_query
+- f_onserver_db_connect
+- f_onserver_db_close
+- f_onserver_db_query
+- f_onserver_db_execute
+- f_onserver_db_tick
+
+## f_onaccount_connect
+
+```
+EN: Called when a client logs in with an account name and password, before the password is checked.
+    Variables:
+      LOCAL.Account  --> account name given
+      LOCAL.Password --> password given
+    Return:
+      0 --> check the password as usual (default)
+      1 --> disconnect the client as if the password were wrong
+      6 --> skip the password check (the script checks it itself)
+TR: Client hesap adı ve şifreyle giriş yapınca, şifre denetlenmeden önce çağrılır.
+    Değişkenler:
+      LOCAL.Account  --> yazılan hesap adı
+      LOCAL.Password --> yazılan şifre
+    Dönüş:
+      0 --> şifre her zamanki gibi denetlenir (varsayılan)
+      1 --> şifre yanlışmış gibi bağlantı kesilir
+      6 --> şifre denetlenmez (script kendisi denetler)
+```
+
+## f_onaccount_login
+
+```
+EN: Called after the client entered the correct password, before the account logs in.
+    Variables:
+      ARGS            --> account name
+      ARGO            --> client
+      ARGN1           --> connection type (3 login server, 4 game server, 5 HTTP, 6 telnet, 7 UOG, 8 Axis)
+      ARGN2           --> number of other IP addresses with an open session on this account (MaxConnectionsPerAccount)
+      LOCAL.OtherIPs  --> those IP addresses, separated by commas
+    Return:
+      0 --> allow the login (default)
+      1 --> deny the login
+TR: Client doğru şifreyi yazınca, hesap girmeden önce çağrılır.
+    Değişkenler:
+      ARGS            --> hesap adı
+      ARGO            --> client
+      ARGN1           --> bağlantı türü (3 giriş sunucusu, 4 oyun sunucusu, 5 HTTP, 6 telnet, 7 UOG, 8 Axis)
+      ARGN2           --> hesapta açık oturumu olan öteki IP adresi sayısı (MaxConnectionsPerAccount)
+      LOCAL.OtherIPs  --> o IP adresleri, virgülle
+    Dönüş:
+      0 --> giriş kabul edilir (varsayılan)
+      1 --> giriş reddedilir
+```
+
+## f_onaccount_login_fail
+
+```
+EN: 56TX. Called when a login with an account name and password was refused (login and game server, telnet, Axis).
+    Variables:
+      ARGS          --> account name given
+      ARGO          --> client
+      ARGN1         --> connection type (as in f_onaccount_login)
+      ARGN2         --> error code (PacketLoginError)
+      LOCAL.Reason  --> NoAccount, BadPassword, Blocked, Email, Script, InUse, ServerFull, MaxGuests, MaxTries, BadFormat, Other
+      LOCAL.Message --> text sent to the client
+      LOCAL.IP      --> IP address of the client
+      LOCAL.Tries   --> tries of this IP in the ClientLoginMaxTries window (local IPs are not counted)
+    The return value is not used.
+TR: 56TX. Hesap adı ve şifreyle giriş reddedilince çağrılır (giriş ve oyun sunucusu, telnet, Axis).
+    Değişkenler:
+      ARGS          --> yazılan hesap adı
+      ARGO          --> client
+      ARGN1         --> bağlantı türü (f_onaccount_login'deki gibi)
+      ARGN2         --> hata kodu (PacketLoginError)
+      LOCAL.Reason  --> NoAccount, BadPassword, Blocked, Email, Script, InUse, ServerFull, MaxGuests, MaxTries, BadFormat, Other
+      LOCAL.Message --> client'a giden metin
+      LOCAL.IP      --> client'ın IP adresi
+      LOCAL.Tries   --> bu IP'nin ClientLoginMaxTries penceresindeki denemesi (yerel IP'ler sayılmaz)
+    Dönüş değeri kullanılmaz.
+```
+
+## f_onaccount_logout
+
+```
+EN: 56TX. Called when a game connection of the account (character selection or in game) closes. The login server
+    connection is not counted.
+    Variables:
+      ARGS           --> account name
+      ARGO           --> character played by this connection (empty if none; it may still be in the world, lingering)
+      ARGN1          --> other game connections still open on the account (0: the account left the game)
+      LOCAL.Duration --> length of the connection (seconds)
+      LOCAL.IP       --> IP address of the client
+TR: 56TX. Hesabın bir oyun bağlantısı (karakter seçim ekranı ya da oyun) kapanınca çağrılır. Giriş sunucusu bağlantısı
+    sayılmaz.
+    Değişkenler:
+      ARGS           --> hesap adı
+      ARGO           --> bu bağlantının oynadığı karakter (yoksa boş; linger'da hâlâ dünyada olabilir)
+      ARGN1          --> hesapta açık kalan öteki oyun bağlantıları (0: hesap oyundan çıktı)
+      LOCAL.Duration --> bağlantının süresi (saniye)
+      LOCAL.IP       --> client'ın IP adresi
+```
+
+## f_onaccount_create
+
+```
+EN: Called when an account is created while the server runs (not for the accounts loaded at startup).
+    Variables:
+      ARGS --> account name
+    Return:
+      0 --> allow (default)
+      1 --> deny: the account is deleted
+TR: Sunucu çalışırken bir hesap yaratılınca çağrılır (açılışta yüklenen hesaplar için değil).
+    Değişkenler:
+      ARGS --> hesap adı
+    Dönüş:
+      0 --> kabul (varsayılan)
+      1 --> ret: hesap silinir
+```
+
+## f_onaccount_delete
+
+```
+EN: Called before an account is deleted.
+    Variables:
+      ARGS --> account name
+    Return:
+      0 --> allow (default)
+      1 --> deny: the account is not deleted
+TR: Bir hesap silinmeden önce çağrılır.
+    Değişkenler:
+      ARGS --> hesap adı
+    Dönüş:
+      0 --> kabul (varsayılan)
+      1 --> ret: hesap silinmez
+```
+
+## f_onaccount_pwchange
+
+```
+EN: Called when the password of an account changes (not for the accounts loaded at startup).
+    Variables:
+      ARGS              --> account name
+      LOCAL.Password    --> new password
+      LOCAL.OldPassword --> old password (empty if the account had none)
+    Return:
+      0 --> allow (default)
+      1 --> deny: the password does not change
+TR: Bir hesabın şifresi değişince çağrılır (açılışta yüklenen hesaplar için değil).
+    Değişkenler:
+      ARGS              --> hesap adı
+      LOCAL.Password    --> yeni şifre
+      LOCAL.OldPassword --> eski şifre (hesabın şifresi yoksa boş)
+    Dönüş:
+      0 --> kabul (varsayılan)
+      1 --> ret: şifre değişmez
+```
+
+## f_onaccount_pinchange
+
+```
+EN: Called when the PIN of an account changes (not for the accounts loaded at startup).
+    Variables:
+      ARGS         --> account name
+      LOCAL.Pin    --> new PIN
+      LOCAL.OldPin --> old PIN (empty if the account had none)
+    Return:
+      0 --> allow (default)
+      1 --> deny: the PIN does not change
+TR: Bir hesabın PIN'i değişince çağrılır (açılışta yüklenen hesaplar için değil).
+    Değişkenler:
+      ARGS         --> hesap adı
+      LOCAL.Pin    --> yeni PIN
+      LOCAL.OldPin --> eski PIN (hesabın PIN'i yoksa boş)
+    Dönüş:
+      0 --> kabul (varsayılan)
+      1 --> ret: PIN değişmez
+```
+
+## f_onaccount_block
+
+```
+EN: Called before an account is blocked (not for the accounts loaded at startup).
+    Variables:
+      ARGS --> account name
+    Return:
+      0 --> allow (default)
+      1 --> deny: the account is not blocked
+TR: Bir hesap engellenmeden önce çağrılır (açılışta yüklenen hesaplar için değil).
+    Değişkenler:
+      ARGS --> hesap adı
+    Dönüş:
+      0 --> kabul (varsayılan)
+      1 --> ret: hesap engellenmez
+```
+
+## f_onaccount_unblock
+
+```
+EN: Called before the block of an account is lifted (not for the accounts loaded at startup).
+    Variables:
+      ARGS --> account name
+    Return:
+      0 --> allow (default)
+      1 --> deny: the account stays blocked
+TR: Bir hesabın engeli kalkmadan önce çağrılır (açılışta yüklenen hesaplar için değil).
+    Değişkenler:
+      ARGS --> hesap adı
+    Dönüş:
+      0 --> kabul (varsayılan)
+      1 --> ret: hesap engelli kalır
+```
+
+## f_onaccount_emailsent
+
+```
+EN: 56TX. Called when a mail of the account (ACCOUNT name EMAILMSG <message>) was sent.
+    Variables:
+      ARGS          --> account name
+      LOCAL.Message --> name of the [EMAILMSG] section
+      LOCAL.Email   --> address the mail was sent to
+TR: 56TX. Hesabın bir maili (ACCOUNT ad EMAILMSG <mesaj>) gönderilince çağrılır.
+    Değişkenler:
+      ARGS          --> hesap adı
+      LOCAL.Message --> [EMAILMSG] bölümünün adı
+      LOCAL.Email   --> mailin gittiği adres
+```
+
+## f_onaccount_emailfail
+
+```
+EN: 56TX. Called when a mail of the account could not be sent. It is tried again later; after 5 failures mails to the
+    account stop until EMAILFAIL is set to 0 or the address changes.
+    Variables:
+      ARGS           --> account name
+      LOCAL.Message  --> name of the [EMAILMSG] section
+      LOCAL.Email    --> address
+      LOCAL.Error    --> error text
+      LOCAL.Failures --> failures in a row (EMAILFAIL)
+TR: 56TX. Hesabın bir maili gönderilemeyince çağrılır. Sonra yeniden denenir; 5 başarısızlıktan sonra hesaba mail
+    gönderimi EMAILFAIL 0 yapılana ya da adres değişene kadar durur.
+    Değişkenler:
+      ARGS           --> hesap adı
+      LOCAL.Message  --> [EMAILMSG] bölümünün adı
+      LOCAL.Email    --> adres
+      LOCAL.Error    --> hata metni
+      LOCAL.Failures --> art arda başarısızlık sayısı (EMAILFAIL)
+```
+
+## f_onaccount_emailcheck
+
+```
+EN: 56TX. Result of EMAILCHECK (always later, at the earliest in the next tick). The check does not write the address
+    to the account: the script sets EMAIL= if the result is good.
+    Variables:
+      SRC          --> character that started the check (the server if it is gone)
+      ARGS         --> account name
+      LOCAL.Email  --> address checked
+      LOCAL.Result --> 1 usable, 0 rejected
+      LOCAL.Reason --> ok, allowed, empty, format, toolong, blocked, limit, busy, nodomain, mx, ip, web, dns (DNS did not answer)
+      LOCAL.Detail --> detail (English)
+TR: 56TX. EMAILCHECK'in sonucu (her zaman sonradan, en erken bir sonraki turda). Denetim adresi hesaba yazmaz: sonuç
+    iyiyse script EMAIL= yapar.
+    Değişkenler:
+      SRC          --> denetimi başlatan karakter (artık yoksa sunucu)
+      ARGS         --> hesap adı
+      LOCAL.Email  --> denetlenen adres
+      LOCAL.Result --> 1 kullanılabilir, 0 reddedildi
+      LOCAL.Reason --> ok, allowed, empty, format, toolong, blocked, limit, busy, nodomain, mx, ip, web, dns (DNS cevap vermedi)
+      LOCAL.Detail --> ayrıntı (İngilizce)
+****************************************************************************
+Char / Karakter
+****************************************************************************
+```
+
+## f_onchar_create_init
+
+```
+EN: Called on the client when it sends the new character, before it is created. The 0.56T name
+    f_onchar_create_player_init also works (do not define both).
+    Variables:
+      ARGN1                --> feature flags sent by the client (writable, not used)
+      ARGN2                --> profession (writable; 0 advanced, 1 warrior, 2 mage, 3 blacksmith, 4 necromancer, 5 paladin,
+                               6 samurai, 7 ninja)
+      ARGN3                --> race (writable; 1 human, 2 elf, 3 gargoyle)
+      ARGS                 --> account name
+      ARGO                 --> client
+      LOCAL.EXTRASKILL.KEY --> fourth skill chosen by the client
+      LOCAL.EXTRASKILL.VAL --> its value in tenths (500 = 50.0)
+    Return:
+      0 --> allow (default)
+      1 --> deny the creation
+TR: Client yeni karakteri gönderince, karakter yaratılmadan önce client'ın üzerinde çağrılır. 0.56T'nin adı
+    f_onchar_create_player_init de çalışır (ikisini birden tanımlamayın).
+    Değişkenler:
+      ARGN1                --> client'ın gönderdiği özellik bayrakları (yazılabilir, kullanılmaz)
+      ARGN2                --> meslek (yazılabilir; 0 advanced, 1 warrior, 2 mage, 3 blacksmith, 4 necromancer, 5 paladin,
+                               6 samurai, 7 ninja)
+      ARGN3                --> ırk (yazılabilir; 1 insan, 2 elf, 3 gargoyle)
+      ARGS                 --> hesap adı
+      ARGO                 --> client
+      LOCAL.EXTRASKILL.KEY --> client'ın seçtiği dördüncü skill
+      LOCAL.EXTRASKILL.VAL --> değeri, onda bir (500 = 50.0)
+    Dönüş:
+      0 --> kabul (varsayılan)
+      1 --> yaratma reddedilir
+EN: Every new character is human (56b/T); delete the line to keep the race chosen in the client.
+TR: Her yeni karakter insan olur (56b/T); client'ta seçilen ırk kalsın diye satırı silin.
+```
+
+## f_onchar_create
+
+```
+EN: Called on the client after the new character was created; SRC the character. The 0.56T name
+    f_onchar_create_player also works (do not define both).
+    Variables (read only):
+      SRC                  --> new character
+      ARGN1, ARGN2, ARGN3  --> feature flags, profession and race (as in f_onchar_create_init)
+      ARGS                 --> account name
+      ARGO                 --> client
+      LOCAL.EXTRASKILL.KEY --> fourth skill chosen by the client
+      LOCAL.EXTRASKILL.VAL --> its value in tenths (500 = 50.0)
+    Return:
+      0 --> allow (default)
+      1 --> deny: the character is deleted
+TR: Yeni karakter yaratıldıktan sonra client'ın üzerinde çağrılır; SRC karakter. 0.56T'nin adı f_onchar_create_player
+    de çalışır (ikisini birden tanımlamayın).
+    Değişkenler (salt okunur):
+      SRC                  --> yeni karakter
+      ARGN1, ARGN2, ARGN3  --> özellik bayrakları, meslek ve ırk (f_onchar_create_init'teki gibi)
+      ARGS                 --> hesap adı
+      ARGO                 --> client
+      LOCAL.EXTRASKILL.KEY --> client'ın seçtiği dördüncü skill
+      LOCAL.EXTRASKILL.VAL --> değeri, onda bir (500 = 50.0)
+    Dönüş:
+      0 --> kabul (varsayılan)
+      1 --> ret: karakter silinir
+EN: Creation data of the character: profession and race.
+TR: Karakterin yaratılma bilgisi: meslek ve ırk.
+```
+
+## f_onchar_setup_player
+
+```
+EN: Called on the new character (SRC the character) after it entered the game for the first time; not called if
+    @Login returned 1.
+TR: Yeni karakter oyuna ilk girdikten sonra karakterin üzerinde (SRC karakter) çağrılır; @Login 1 döndüyse çağrılmaz.
+```
+
+## f_onchar_delete
+
+```
+EN: Called on the character (SRC the character) before a player character is deleted. The 0.56T name
+    f_onchar_delete_player also works (do not define both). With ScriptDialect 56b, 56c or 56T it is called only when
+    the character is deleted from the client's character selection screen; with 56d or X for every player character
+    that is deleted (by a GM or a script too).
+    Variables:
+      ARGO --> client deleting it (only from the character selection screen)
+    Return:
+      0 --> allow (default)
+      1 --> deny: the character is not deleted (a forced delete, REMOVE 1, cannot be denied)
+TR: Bir oyuncu karakteri silinmeden önce karakterin üzerinde (SRC karakter) çağrılır. 0.56T'nin adı
+    f_onchar_delete_player de çalışır (ikisini birden tanımlamayın). ScriptDialect 56b, 56c ya da 56T'de sadece karakter
+    client'ın karakter seçim ekranından silinirken; 56d ya da X'te silinen her oyuncu karakteri için (GM'in ve script'in
+    sildiği de) çağrılır.
+    Değişkenler:
+      ARGO --> silen client (sadece karakter seçim ekranından)
+    Dönüş:
+      0 --> kabul (varsayılan)
+      1 --> ret: karakter silinmez (zorla silme, REMOVE 1, reddedilemez)
+```
+
+## f_onchar_login_client
+
+```
+EN: Called when a player character enters the game (SRC the character). The values are not read back.
+    Variables:
+      ARGN1 --> 1: the client took back its character still in the world (lingering)
+      ARGN2 --> 1: login without messages
+TR: Bir oyuncu karakteri oyuna girince çağrılır (SRC karakter). Değerler geri okunmaz.
+    Değişkenler:
+      ARGN1 --> 1: client hâlâ dünyada olan (linger'daki) karakterini geri aldı
+      ARGN2 --> 1: mesajsız giriş
+```
+
+## f_onchar_logout_client
+
+```
+EN: Called when the client of a player character logs out, before @LogOut (SRC the character). The values are not read
+    back.
+    Variables:
+      ARGN1 --> time the character stays in the world (seconds)
+      ARGN2 --> 1: the character can leave at once
+TR: Bir oyuncu karakterinin client'ı çıkış yapınca, @LogOut'tan önce çağrılır (SRC karakter). Değerler geri okunmaz.
+    Değişkenler:
+      ARGN1 --> karakterin dünyada kalacağı süre (saniye)
+      ARGN2 --> 1: karakter hemen çıkabilir
+```
+
+## f_onchar_disconnect_client
+
+```
+EN: Called when a player character leaves the world (instant logout, end of the linger time, DISCONNECT; SRC the
+    character).
+TR: Bir oyuncu karakteri dünyadan çıkınca çağrılır (anında çıkış, linger süresinin sonu, DISCONNECT; SRC karakter).
+```
+
+## f_onchar_create_npc
+
+```
+EN: Called when an NPC is created from its script, before @Create. Called often (spawns, summons).
+    Variables:
+      ARGO --> the NPC
+TR: Bir NPC script'inden yaratılırken, @Create'ten önce çağrılır. Sık çağrılır (spawn, summon).
+    Değişkenler:
+      ARGO --> NPC
+****************************************************************************
+Object, item, multi / Nesne, eşya, multi
+****************************************************************************
+```
+
+## f_onobj_delete
+
+```
+EN: Called once when an item or a character is deleted; the object is still in the world. Called often.
+    Variables:
+      ARGN1 --> UID of the object
+      ARGO  --> the object
+TR: Bir eşya ya da karakter silinirken bir kez çağrılır; nesne henüz dünyada. Sık çağrılır.
+    Değişkenler:
+      ARGN1 --> nesnenin UID'si
+      ARGO  --> nesne
+```
+
+## f_onitem_create
+
+```
+EN: Called when an item is created from its script, before @Create. Called very often (loot, spawns, crafting).
+    Variables:
+      ARGO --> the item
+TR: Bir eşya script'inden yaratılırken, @Create'ten önce çağrılır. Çok sık çağrılır (loot, spawn, üretim).
+    Değişkenler:
+      ARGO --> eşya
+```
+
+## f_onmulti_create
+
+```
+EN: Called on the multi (house, ship) after it was placed; SRC the character placing it.
+TR: Multi (ev, gemi) yerleştirildikten sonra multi'nin üzerinde çağrılır; SRC yerleştiren karakter.
+```
+
+## f_onmulti_delete
+
+```
+EN: Called once on the multi when it is deleted; its components are still in place.
+TR: Multi silinirken multi'nin üzerinde bir kez çağrılır; parçaları henüz yerinde.
+****************************************************************************
+Client
+****************************************************************************
+```
+
+## f_axis_preload
+
+```
+EN: Called on the client every time someone connects with Axis to read the server's data.
+    Variables:
+      LOCAL.Account --> account name
+      LOCAL.IP      --> IP address
+    Return:
+      0 --> deny without a message
+      1 --> deny with a message
+      2 --> allow (default)
+TR: Biri Axis ile sunucunun verilerini okumak için her bağlandığında client'ın üzerinde çağrılır.
+    Değişkenler:
+      LOCAL.Account --> hesap adı
+      LOCAL.IP      --> IP adresi
+    Dönüş:
+      0 --> mesajsız ret
+      1 --> mesajla ret
+      2 --> kabul (varsayılan)
+EN: To turn Axis off completely use UseAxis=0 in sphere.ini.
+TR: Axis'i tamamen kapatmak için sphere.ini'de UseAxis=0.
+```
+
+## f_onclient_exceed_network_quota
+
+```
+EN: Called when a client exceeded its incoming or outgoing network traffic quota.
+    Variables:
+      SRC           --> client
+      ARGN1         --> 1 outgoing quota, 2 incoming quota
+      ARGN2         --> bytes sent or received
+      ARGN3         --> bytes allowed (quota)
+      LOCAL.Account --> account name ("NA" if none)
+      LOCAL.IP      --> IP address
+    Return:
+      0 --> do nothing, but write the log line
+      1 --> do nothing and write no log line
+      2 --> disconnect the client and write the log line (default)
+TR: Bir client gelen ya da giden ağ trafiği kotasını aşınca çağrılır.
+    Değişkenler:
+      SRC           --> client
+      ARGN1         --> 1 giden kota, 2 gelen kota
+      ARGN2         --> gönderilen ya da alınan byte
+      ARGN3         --> izin verilen byte (kota)
+      LOCAL.Account --> hesap adı (yoksa "NA")
+      LOCAL.IP      --> IP adresi
+    Dönüş:
+      0 --> bir şey yapılmaz, log satırı yazılır
+      1 --> bir şey yapılmaz, log satırı da yazılmaz
+      2 --> bağlantı kesilir, log satırı yazılır (varsayılan)
+```
+
+## f_onclient_ping_flood
+
+```
+EN: Called when a client sent more pings than PingFloodMax in the PingFloodWindow.
+    Variables:
+      SRC           --> client
+      ARGN1         --> pings sent
+      ARGN2         --> window (seconds)
+      ARGN3         --> PingFloodMax
+      LOCAL.Account --> account name
+      LOCAL.IP      --> IP address
+    Return:
+      0 --> only write the log line
+      1 --> do nothing
+      2 --> PingFloodAction (disconnect if it is not 0) (default)
+TR: Bir client PingFloodWindow içinde PingFloodMax'tan çok ping gönderince çağrılır.
+    Değişkenler:
+      SRC           --> client
+      ARGN1         --> gönderilen ping
+      ARGN2         --> pencere (saniye)
+      ARGN3         --> PingFloodMax
+      LOCAL.Account --> hesap adı
+      LOCAL.IP      --> IP adresi
+    Dönüş:
+      0 --> sadece log satırı yazılır
+      1 --> bir şey yapılmaz
+      2 --> PingFloodAction (0 değilse bağlantı kesilir) (varsayılan)
+```
+
+## f_onclient_version
+
+```
+EN: 56TX. Called once per login server connection, after the login, when the version the client reports is known.
+    Variables:
+      SRC, ARGO     --> client
+      ARGS          --> version ("7.0.102.3")
+      ARGN1         --> version number (old format, 7010203)
+      ARGN2         --> client type (0 2D, 1 3D, 2 KR, 3 EC)
+      LOCAL.Type    --> 2D, 3D, KR, EC
+      LOCAL.Account --> account name
+      LOCAL.IP      --> IP address
+    Return:
+      0 --> continue (default)
+      1 --> login error (version) and disconnect
+TR: 56TX. Giriş sunucusu bağlantısı başına bir kez, girişten sonra client'ın bildirdiği sürüm belli olunca çağrılır.
+    Değişkenler:
+      SRC, ARGO     --> client
+      ARGS          --> sürüm ("7.0.102.3")
+      ARGN1         --> sürüm numarası (eski biçim, 7010203)
+      ARGN2         --> client türü (0 2D, 1 3D, 2 KR, 3 EC)
+      LOCAL.Type    --> 2D, 3D, KR, EC
+      LOCAL.Account --> hesap adı
+      LOCAL.IP      --> IP adresi
+    Dönüş:
+      0 --> devam (varsayılan)
+      1 --> giriş hatası (sürüm), bağlantı kesilir
+```
+
+## f_onclient_program
+
+```
+EN: 56TX. Called once the server knows which client program the player uses (detected from the client's behaviour).
+    Variables:
+      SRC           --> client
+      ARGS          --> program name
+      ARGN1         --> program (0 unknown, 1 OSI, 2 ClassicUO, 3 Orion)
+      ARGN2         --> confidence (0-3)
+      ARGN3         --> variant (0 none, 1 UOSoft, 2 Web)
+      LOCAL.Variant --> variant name
+      LOCAL.Hints   --> signs that were seen
+      LOCAL.Account --> account name
+      LOCAL.IP      --> IP address
+    The return value is not used.
+TR: 56TX. Sunucu oyuncunun hangi client programını kullandığını anlayınca (client'ın davranışından) bir kez çağrılır.
+    Değişkenler:
+      SRC           --> client
+      ARGS          --> programın adı
+      ARGN1         --> program (0 bilinmiyor, 1 OSI, 2 ClassicUO, 3 Orion)
+      ARGN2         --> güven (0-3)
+      ARGN3         --> varyant (0 yok, 1 UOSoft, 2 Web)
+      LOCAL.Variant --> varyantın adı
+      LOCAL.Hints   --> görülen işaretler
+      LOCAL.Account --> hesap adı
+      LOCAL.IP      --> IP adresi
+    Dönüş değeri kullanılmaz.
+```
+
+## f_onclient_webidentity
+
+```
+EN: 56TX. Called when a ClassicUO Web client sends its identity through the Web Game Proxy.
+    Variables:
+      SRC                --> client
+      ARGN1              --> 0 login server connection (account known), 1 game server connection (account not known yet)
+      LOCAL.UserId       --> user id on the web site
+      LOCAL.ConnectingIp --> the player's real IP address
+      LOCAL.AuthProvider --> login provider
+      LOCAL.AuthUsername --> user name at the provider
+      LOCAL.AuthId       --> id at the provider
+      LOCAL.Role         --> role on the web site
+      LOCAL.IP           --> IP address of the connection
+      LOCAL.ProxyIP      --> IP address of the proxy
+      LOCAL.Account      --> account name (empty if not known yet)
+    Return:
+      0 --> continue (default)
+      1 --> refuse the connection
+TR: 56TX. ClassicUO Web client'ı kimliğini Web Game Proxy üzerinden gönderince çağrılır.
+    Değişkenler:
+      SRC                --> client
+      ARGN1              --> 0 giriş sunucusu bağlantısı (hesap belli), 1 oyun sunucusu bağlantısı (hesap henüz belli değil)
+      LOCAL.UserId       --> sitedeki kullanıcı kimliği
+      LOCAL.ConnectingIp --> oyuncunun gerçek IP adresi
+      LOCAL.AuthProvider --> giriş sağlayıcısı
+      LOCAL.AuthUsername --> sağlayıcıdaki kullanıcı adı
+      LOCAL.AuthId       --> sağlayıcıdaki kimlik
+      LOCAL.Role         --> sitedeki rol
+      LOCAL.IP           --> bağlantının IP adresi
+      LOCAL.ProxyIP      --> proxy'nin IP adresi
+      LOCAL.Account      --> hesap adı (henüz belli değilse boş)
+    Dönüş:
+      0 --> devam (varsayılan)
+      1 --> bağlantı reddedilir
+```
+
+## f_onclient_badpacket
+
+```
+EN: 56TX. Called when an unknown packet or a packet with an invalid length arrives on a game connection.
+    Variables:
+      SRC, ARGO     --> client
+      ARGN1         --> packet id
+      ARGN2         --> length (data dropped)
+      ARGN3         --> disconnect (writable): 1 for an invalid length, 0 for an unknown packet. With 0 the data is
+                        dropped and the connection stays.
+      LOCAL.Reason  --> Length, Unknown
+      LOCAL.IP      --> IP address
+      LOCAL.Account --> account name (empty if none)
+TR: 56TX. Oyun bağlantısında bilinmeyen ya da uzunluğu geçersiz paket gelince çağrılır.
+    Değişkenler:
+      SRC, ARGO     --> client
+      ARGN1         --> paket kodu
+      ARGN2         --> uzunluk (atılan veri)
+      ARGN3         --> bağlantı kesilecek mi (yazılabilir): uzunluğu geçersiz pakette 1, bilinmeyen pakette 0. 0'da
+                        veri atılır, bağlantı kalır.
+      LOCAL.Reason  --> Length, Unknown
+      LOCAL.IP      --> IP adresi
+      LOCAL.Account --> hesap adı (yoksa boş)
+****************************************************************************
+Server / Sunucu
+****************************************************************************
+```
+
+## f_onserver_start
+
+```
+EN: Called once when the server has started ("Startup complete").
+TR: Sunucu açılınca ("Startup complete") bir kez çağrılır.
+EN: Behind a router: write the server's public IP address here (not a domain name).
+TR: Router arkasındaysa: sunucunun dış IP adresini buraya yazın (alan adı değil).
+SERV.SERVIP=xxx.xxx.xxx.xxx
+```
+
+## f_onserver_exit
+
+```
+EN: Called when the server shuts down, before the world is closed.
+TR: Sunucu kapanırken, dünya kapatılmadan önce çağrılır.
+```
+
+## f_onserver_exit_later
+
+```
+EN: Called at shutdown after the world was closed: no objects are left, only for logging and notices. DB.QUERY and
+    DB.EXECUTE still work.
+    Variables:
+      LOCAL.Reason --> reason (English)
+      LOCAL.Flag   --> exit code
+TR: Kapanışta dünya kapatıldıktan sonra çağrılır: dünyada nesne kalmadı, sadece kayıt ve bildirim için. DB.QUERY ve
+    DB.EXECUTE hâlâ çalışır.
+    Değişkenler:
+      LOCAL.Reason --> neden (İngilizce)
+      LOCAL.Flag   --> çıkış kodu
+```
+
+## f_onserver_mode
+
+```
+EN: Called when the server mode changes (not while starting and not during resync).
+    Variables:
+      ARGS  --> mode name (RestockAll, GarbageCollection, Saving, Run, Exiting)
+      ARGN1 --> 0.56T mode number (0 RestockAll, 1 Saving, 2 Run, 6 Exiting; -1 GarbageCollection)
+      ARGN2 --> this server's mode number
+TR: Sunucunun modu değişince çağrılır (açılışta ve resync'te değil).
+    Değişkenler:
+      ARGS  --> modun adı (RestockAll, GarbageCollection, Saving, Run, Exiting)
+      ARGN1 --> 0.56T'nin mod numarası (0 RestockAll, 1 Saving, 2 Run, 6 Exiting; -1 GarbageCollection)
+      ARGN2 --> bu sunucunun mod numarası
+```
+
+## f_onserver_shutdown
+
+```
+EN: 56TX. Called when a SHUTDOWN countdown starts or is cancelled.
+    Variables:
+      ARGN1 --> minutes (0: cancelled)
+    Return:
+      0 --> the server announces it to everyone (default)
+      1 --> no announcement (the shutdown is still scheduled; the script announces it)
+TR: 56TX. SHUTDOWN geri sayımı başlayınca ya da iptal edilince çağrılır.
+    Değişkenler:
+      ARGN1 --> dakika (0: iptal)
+    Dönüş:
+      0 --> sunucu herkese duyurur (varsayılan)
+      1 --> duyurulmaz (kapanış yine zamanlanır; script kendisi duyurur)
+```
+
+## f_onserver_restart
+
+```
+EN: 56TX. Called on each announcement of a RESTART countdown: when it starts, when
+    5 minutes, 1 minute, 30, 10, 5, 4, 3, 2 and 1 seconds are left, when it is
+    cancelled and when the server saves the world and restarts.
+    Variables:
+      ARGN1 --> seconds left (0 when cancelled and when restarting now)
+      ARGN2 --> 0 started, 1 reminder, 2 cancelled, 3 restarting now
+    Return:
+      0 --> the server announces it to everyone (default)
+      1 --> no announcement (the countdown goes on; the script announces it)
+TR: 56TX. RESTART geri sayımının her duyurusunda çağrılır: başlayınca, 5 dakika,
+    1 dakika, 30, 10, 5, 4, 3, 2 ve 1 saniye kalınca, iptal edilince ve sunucu
+    world'ü kaydedip yeniden başlarken.
+    Değişkenler:
+      ARGN1 --> kalan saniye (iptalde ve yeniden başlama anında 0)
+      ARGN2 --> 0 başladı, 1 hatırlatma, 2 iptal, 3 şimdi yeniden başlıyor
+    Dönüş:
+      0 --> sunucu herkese duyurur (varsayılan)
+      1 --> duyurulmaz (geri sayım sürer; script kendisi duyurur)
+```
+
+## f_onserver_timer
+
+```
+EN: Called every TimerCall (sphere.ini; minutes, or seconds with TimerCallUnit=1). TimerCall=0 turns it off.
+    Variables:
+      ARGN1 --> interval (in TimerCall's unit)
+TR: Her TimerCall'da çağrılır (sphere.ini; dakika, TimerCallUnit=1'de saniye). TimerCall=0 kapatır.
+    Değişkenler:
+      ARGN1 --> aralık (TimerCall'ın biriminde)
+```
+
+## f_onserver_broadcast
+
+```
+EN: Called before a system broadcast (SERV.B, save and shutdown messages...).
+    Variables:
+      ARGS --> message (writable: the new text is broadcast)
+    Return:
+      0 --> broadcast (default)
+      1 --> do not broadcast
+TR: Bir sistem duyurusundan (SERV.B, save ve kapanış mesajları...) önce çağrılır.
+    Değişkenler:
+      ARGS --> mesaj (yazılabilir: yeni metin duyurulur)
+    Dönüş:
+      0 --> duyurulur (varsayılan)
+      1 --> duyurulmaz
+```
+
+## f_onserver_restock
+
+```
+EN: Called when a world restock (RESTOCK) has finished.
+    Variables:
+      LOCAL.Sector --> 1: the sectors were restocked
+      LOCAL.Item   --> 1: the item definitions were restocked
+TR: Dünya restock'u (RESTOCK) bitince çağrılır.
+    Değişkenler:
+      LOCAL.Sector --> 1: sektörler yenilendi
+      LOCAL.Item   --> 1: eşya tanımları yenilendi
+```
+
+## f_onserver_tick_slow
+
+```
+EN: 56TX. Called when a game tick took longer than SlowTickLog (ms); at most once a second, in the next tick.
+    Variables:
+      ARGS  --> detail of the tick (as on the "Slow tick" log line: stages, slowest timer)
+      ARGN1 --> length (ms)
+      ARGN2 --> SlowTickLog (ms)
+      ARGN3 --> slow ticks skipped since the previous call
+TR: 56TX. Bir oyun turu SlowTickLog'dan (ms) uzun sürünce çağrılır; en çok saniyede bir, sonraki turda.
+    Değişkenler:
+      ARGS  --> turun ayrıntısı (log'daki "Slow tick" satırınınki: aşamalar, en yavaş timer)
+      ARGN1 --> süre (ms)
+      ARGN2 --> SlowTickLog (ms)
+      ARGN3 --> bir önceki çağrıdan beri atlanan yavaş tur
+```
+
+## f_onserver_gc
+
+```
+EN: 56TX. Called when a garbage collection finished (GARBAGE, SaveGarbageCollect; not the one at startup).
+    Variables:
+      ARGN1 --> objects deleted
+      ARGN2 --> length (ms)
+      ARGN3 --> objects left
+TR: 56TX. Garbage collection bitince çağrılır (GARBAGE, SaveGarbageCollect; açılıştaki değil).
+    Değişkenler:
+      ARGN1 --> silinen nesne
+      ARGN2 --> süre (ms)
+      ARGN3 --> kalan nesne
+```
+
+## f_onserver_ldbbackup
+
+```
+EN: 56TX. Called when a backup of the SQLite files is done (LDBBackupFrequency or LDBBACKUP; not for a backup
+    cancelled at shutdown).
+    Variables:
+      ARGS         --> folder of the backup (empty if none was written)
+      ARGN1        --> 1: every file was written
+      ARGN2        --> files written
+      ARGN3        --> length (ms)
+      LOCAL.Failed --> files with errors
+      LOCAL.Size   --> bytes written to disk
+      LOCAL.Manual --> 1: started by LDBBACKUP
+TR: 56TX. SQLite dosyalarının yedeği bitince çağrılır (LDBBackupFrequency ya da LDBBACKUP; kapanışta bırakılan
+    yedekte çağrılmaz).
+    Değişkenler:
+      ARGS         --> yedeğin klasörü (yazılmadıysa boş)
+      ARGN1        --> 1: bütün dosyalar yazıldı
+      ARGN2        --> yazılan dosya
+      ARGN3        --> süre (ms)
+      LOCAL.Failed --> hatalı dosya
+      LOCAL.Size   --> diske yazılan byte
+      LOCAL.Manual --> 1: LDBBACKUP komutuyla başladı
+```
+
+## f_onserver_gmpage
+
+```
+EN: 56TX. Called when a GM page is opened, updated or closed (GMPAGE.n.DELETE). A page deleted by the garbage
+    collection is not reported.
+    Variables:
+      ARGS          --> reason
+      ARGN1         --> 0 closed, 1 opened, 2 updated (the account's open page)
+      ARGN2         --> pages waiting (when closing, without the closed one)
+      ARGO          --> the page (<ARGO.REASON>, <ARGO.P>, <ARGO.TIME>, <ARGO.ACCOUNT>)
+      LOCAL.Account --> account that opened the page
+      LOCAL.Char    --> character that opened the page (UID)
+TR: 56TX. GM page açılınca, güncellenince ya da kapanınca (GMPAGE.n.DELETE) çağrılır. GC'nin sildiği page bildirilmez.
+    Değişkenler:
+      ARGS          --> neden
+      ARGN1         --> 0 kapandı, 1 açıldı, 2 güncellendi (hesabın açık page'i)
+      ARGN2         --> bekleyen page sayısı (kapanışta kapanan hariç)
+      ARGO          --> page (<ARGO.REASON>, <ARGO.P>, <ARGO.TIME>, <ARGO.ACCOUNT>)
+      LOCAL.Account --> page'i açan hesap
+      LOCAL.Char    --> page'i açan karakter (UID)
+```
+
+## f_onserver_ticket
+
+```
+EN: 56TX. Called when a ticket is opened, a message or a note is written to it, its status changes (closing and
+    reopening included) or it is about to be deleted. Called after the action; when deleting, before the ticket
+    leaves the list (its values can be read, commands are refused). Tickets: dialogs/dialogs_ticket.scp.
+    Variables:
+      SRC           --> who did it: a player, staff or the server
+      ARGS          --> text of the message (opened, message, note)
+      ARGN1         --> 0 deleting, 1 opened, 2 message, 3 note, 4 status (ticket_event_*)
+      ARGN2         --> status: the old status (ticket_status_*); opened, message, note: index of the message
+      ARGN3         --> 1 if staff did it
+      ARGO          --> the ticket (<ARGO.ID>, <ARGO.STATUS>, <ARGO.MESSAGE.n.TEXT>, ARGO.REPLY ...)
+      LOCAL.Account --> the ticket's account
+      LOCAL.Char    --> character that opened the ticket (UID)
+TR: 56TX. Ticket açılınca, ona mesaj ya da not yazılınca, durumu değişince (kapatma ve yeniden açma dahil) ya da
+    silinecekken çağrılır. İşten sonra; silmede ticket listeden çıkmadan önce (değerleri okunur, komut verilemez).
+    Ticket'lar: dialogs/dialogs_ticket.scp.
+    Değişkenler:
+      SRC           --> işi yapan: oyuncu, staff ya da sunucu
+      ARGS          --> mesajın metni (açılış, mesaj, not)
+      ARGN1         --> 0 silinecek, 1 açıldı, 2 mesaj, 3 not, 4 durum (ticket_event_*)
+      ARGN2         --> durum: eski durum (ticket_status_*); açılış, mesaj, not: mesajın sırası
+      ARGN3         --> işi staff yaptıysa 1
+      ARGO          --> ticket (<ARGO.ID>, <ARGO.STATUS>, <ARGO.MESSAGE.n.TEXT>, ARGO.REPLY ...)
+      LOCAL.Account --> ticket'ın hesabı
+      LOCAL.Char    --> ticket'ı açan karakter (UID)
+```
+
+## f_onserver_report
+
+```
+EN: 56TX. Called when a report is opened (by a player or automatically by the word filter), its status changes, a
+    note, an assignment or a sanction is written to it, or the target of an automatic report does it again. Called
+    after the action. Reports: dialogs/dialogs_report.scp.
+    Variables:
+      SRC            --> who did it: a player, staff or the server (the server for an automatic report)
+      ARGS           --> the text (report, note, sanction or decision; the assigned account; the new line)
+      ARGN1          --> 1 opened, 2 status, 3 note, 4 assigned, 5 sanction, 6 repeated (report_event_*)
+      ARGN2          --> status: the old status (report_status_*); note, assigned, sanction, repeated: ENTRY.n
+      ARGN3          --> 1 if staff did it
+      ARGO           --> the report (<ARGO.ID>, <ARGO.STATUS>, <ARGO.CATEGORY>, <ARGO.TARGETNAME> ...)
+      LOCAL.Account  --> the reporter's account (empty for an automatic report)
+      LOCAL.Target   --> UID of the target (0 for a place)
+      LOCAL.Category --> the report's category
+TR: 56TX. İhbar açılınca (oyuncunun ya da kelime filtresinin otomatik ihbarı), durumu değişince, not, atama ya da
+    ceza yazılınca, otomatik ihbarın hedefi aynı şeyi yeniden yapınca çağrılır. İşten sonra. İhbarlar:
+    dialogs/dialogs_report.scp.
+    Değişkenler:
+      SRC            --> işi yapan: oyuncu, staff ya da sunucu (otomatik ihbarda sunucu)
+      ARGS           --> metin (açıklama, not, ceza ya da karar; atanan hesap; yeni satır)
+      ARGN1          --> 1 açıldı, 2 durum, 3 not, 4 atama, 5 ceza, 6 tekrar (report_event_*)
+      ARGN2          --> durum: eski durum (report_status_*); not, atama, ceza, tekrar: ENTRY.n
+      ARGN3          --> işi staff yaptıysa 1
+      ARGO           --> ihbar (<ARGO.ID>, <ARGO.STATUS>, <ARGO.CATEGORY>, <ARGO.TARGETNAME> ...)
+      LOCAL.Account  --> ihbar edenin hesabı (otomatik ihbarda boş)
+      LOCAL.Target   --> hedefin UID'si (yer ihbarında 0)
+      LOCAL.Category --> ihbarın türü
+```
+
+## f_onserver_console_cmd
+
+```
+EN: 56TX. Called when a command is typed on the console (Windows window, Linux terminal, telnet); not for SERV.CONSOLE
+    and not during resync pause.
+    Variables:
+      SRC           --> who typed it: the server or the telnet client
+      ARGS          --> command (APPKEY's argument is hidden: "APPKEY ...")
+      LOCAL.Source  --> window, terminal, telnet
+      LOCAL.IP      --> IP address of the telnet client (empty if none)
+      LOCAL.Account --> account logged in on telnet (empty if none)
+    Return:
+      0 --> run the command (default)
+      1 --> do not run the command
+TR: 56TX. Konsoldan (Windows penceresi, Linux terminali, telnet) komut girilince çağrılır; SERV.CONSOLE için ve resync
+    duraklamasında çağrılmaz.
+    Değişkenler:
+      SRC           --> komutu giren: sunucu ya da telnet client'ı
+      ARGS          --> komut (APPKEY'in argümanı gizlenir: "APPKEY ...")
+      LOCAL.Source  --> window, terminal, telnet
+      LOCAL.IP      --> telnet client'ının IP adresi (yoksa boş)
+      LOCAL.Account --> telnet'te giriş yapan hesap (yoksa boş)
+    Dönüş:
+      0 --> komut çalışır (varsayılan)
+      1 --> komut çalışmaz
+```
+
+## f_onserver_http_request
+
+```
+EN: 56TX. Called when a web page request arrives (UseHTTP=2).
+    Variables:
+      ARGS         --> path ("/status.htm")
+      ARGO         --> connection
+      LOCAL.Method --> GET, POST
+      LOCAL.IP     --> IP address of the request
+    Return:
+      0 --> handle the request (default)
+      1 --> send no answer and close the connection
+TR: 56TX. Web sayfası isteği gelince çağrılır (UseHTTP=2).
+    Değişkenler:
+      ARGS         --> yol ("/status.htm")
+      ARGO         --> bağlantı
+      LOCAL.Method --> GET, POST
+      LOCAL.IP     --> isteğin IP adresi
+    Dönüş:
+      0 --> istek işlenir (varsayılan)
+      1 --> cevap gönderilmez, bağlantı kapanır
+```
+
+## f_onserver_script_error
+
+```
+EN: 56TX. Called when an error line is written to the log (ERROR:, CRITICAL:; script errors, engine errors, caught
+    exceptions). Lines come from every thread and the function runs in the next tick of the main thread; at most 32 lines
+    wait, the rest are counted. Errors of this function itself do not call it again.
+    Variables:
+      ARGS          --> text of the line
+      ARGN1         --> level (2 critical, 3 error); LOCAL.Level too
+      LOCAL.File    --> script file (if a script was running)
+      LOCAL.Line    --> line
+      LOCAL.Dropped --> lines that did not fit since the previous call
+TR: 56TX. Log'a hata satırı yazılınca çağrılır (ERROR:, CRITICAL:; script hatası, motorun hatası, yakalanan exception).
+    Satırlar her thread'den gelir, fonksiyon ana thread'in sonraki turunda çalışır; en çok 32 satır bekler, fazlası
+    sayılır. Bu fonksiyonun kendi hataları onu yeniden çağırmaz.
+    Değişkenler:
+      ARGS          --> satırın metni
+      ARGN1         --> seviye (2 kritik, 3 hata); LOCAL.Level de
+      LOCAL.File    --> script dosyası (script çalışıyorduysa)
+      LOCAL.Line    --> satır
+      LOCAL.Dropped --> bir önceki çağrıdan beri sığmayan satır sayısı
+****************************************************************************
+Save
+****************************************************************************
+```
+
+## f_onserver_save_before
+
+```
+EN: Called on every save request, before f_onserver_save and before the disk space check.
+TR: Her save isteğinde, f_onserver_save'den ve disk alanı denetiminden önce çağrılır.
+```
+
+## f_onserver_save
+
+```
+EN: Called before a world save starts.
+    Variables:
+      ARGN1 --> 1: save at once, not in the background (writable)
+      ARGN2 --> save stage
+    Return:
+      0 --> save (default)
+      1 --> do not save
+TR: Dünya save'i başlamadan önce çağrılır.
+    Değişkenler:
+      ARGN1 --> 1: arka planda değil, hemen kaydedilir (yazılabilir)
+      ARGN2 --> save aşaması
+    Dönüş:
+      0 --> kaydedilir (varsayılan)
+      1 --> kaydedilmez
+EN: Uncomment while building the world, so static items are saved with every save too; comment it again on a live
+    server to keep saves fast (then save static items with .SERV.SAVESTATICS).
+TR: Dünyayı kurarken açın, statik eşyalar da her save'de kaydedilsin; canlı sunucuda save'ler hızlı kalsın diye yeniden
+    kapatın (o zaman statik eşyaları .SERV.SAVESTATICS ile kaydedin).
+SERV.SAVESTATICS
+```
+
+## f_onserver_save_try
+
+```
+EN: Called when a new save begins writing its files.
+    Variables:
+      ARGN1 --> 1: save at once
+      ARGN2 --> save stage
+TR: Yeni bir save dosyalarını yazmaya başlarken çağrılır.
+    Değişkenler:
+      ARGN1 --> 1: hemen kaydediliyor
+      ARGN2 --> save aşaması
+```
+
+## f_onserver_save_stage
+
+```
+EN: Called when a save stage failed; the save is then cancelled and the previous save stays.
+    Variables:
+      ARGN1 --> next stage
+TR: Bir save aşaması hata verince çağrılır; ardından save iptal edilir, önceki save kalır.
+    Değişkenler:
+      ARGN1 --> sıradaki aşama
+```
+
+## f_onserver_save_force
+
+```
+EN: Called when a save was done in one go (not in the background).
+    Variables:
+      ARGN1 --> 1: succeeded, 0: failed or cancelled
+      ARGN2 --> last stage
+TR: Save bir seferde (arka planda değil) bitirilince çağrılır.
+    Değişkenler:
+      ARGN1 --> 1: başarılı, 0: başarısız ya da iptal
+      ARGN2 --> son aşama
+```
+
+## f_onserver_save_ok
+
+```
+EN: Called after a save request succeeded.
+    Variables:
+      ARGN1 --> 1: saved at once
+      ARGN2 --> save stage
+TR: Bir save isteği başarılı olunca çağrılır.
+    Değişkenler:
+      ARGN1 --> 1: hemen kaydedildi
+      ARGN2 --> save aşaması
+```
+
+## f_onserver_save_fail
+
+```
+EN: Called after a save request failed; the previous save stays.
+    Variables:
+      ARGN1 --> 1: it was a save at once
+      ARGN2 --> save stage
+TR: Bir save isteği başarısız olunca çağrılır; önceki save kalır.
+    Değişkenler:
+      ARGN1 --> 1: hemen kaydetmeydi
+      ARGN2 --> save aşaması
+```
+
+## f_onserver_save_finished
+
+```
+EN: Called when the world save has completely finished (also at the end of a background save).
+    Variables:
+      ARGS --> time it took (seconds, 4 decimals)
+TR: Dünya save'i tamamen bitince çağrılır (arka plan save'inin sonunda da).
+    Değişkenler:
+      ARGS --> sürdüğü zaman (saniye, 4 ondalık)
+EN: Time of the last save and how long it took, for dialogs and the staff.
+TR: Son save'in saati ve ne kadar sürdüğü, dialog'lar ve staff için.
+```
+
+## f_onserver_lowdisk
+
+```
+EN: 56TX. Called when a save was cancelled because the disk has not enough free space.
+    Variables:
+      ARGN1 --> free space (KB)
+      ARGN2 --> space needed (KB)
+      ARGN3 --> 1: statics save
+    Return:
+      0 --> the server announces it to everyone (default)
+      1 --> no announcement
+TR: 56TX. Diskte yer yetmediği için save iptal edilince çağrılır.
+    Değişkenler:
+      ARGN1 --> boş alan (KB)
+      ARGN2 --> gereken (KB)
+      ARGN3 --> 1: statics save'i
+    Dönüş:
+      0 --> sunucu herkese duyurur (varsayılan)
+      1 --> duyurulmaz
+****************************************************************************
+Resync
+****************************************************************************
+```
+
+## f_onserver_resync_start
+
+```
+EN: Called when a resync starts, before the scripts are released.
+    Variables:
+      ARGN1 --> 1
+TR: Resync başlarken, script'ler bırakılmadan önce çağrılır.
+    Değişkenler:
+      ARGN1 --> 1
+```
+
+## f_onserver_resync_restart
+
+```
+EN: Called after the scripts were loaded again; then f_onserver_resync_success or f_onserver_resync_failed.
+TR: Script'ler yeniden yüklendikten sonra çağrılır; ardından f_onserver_resync_success ya da f_onserver_resync_failed.
+```
+
+## f_onserver_resync_success
+
+```
+EN: Called when the resync succeeded.
+    Variables:
+      ARGN1 --> 1: the result is broadcast to everyone
+TR: Resync başarılı olunca çağrılır.
+    Değişkenler:
+      ARGN1 --> 1: sonuç herkese duyurulur
+```
+
+## f_onserver_resync_failed
+
+```
+EN: Called when the resync failed.
+TR: Resync başarısız olunca çağrılır.
+****************************************************************************
+IP and connections / IP ve bağlantılar
+****************************************************************************
+```
+
+## f_onserver_blockip
+
+```
+EN: Called when an IP address is blocked.
+    Variables:
+      ARGS  --> IP address
+      ARGN1 --> block time in seconds (writable; negative: permanent)
+TR: Bir IP adresi engellenince çağrılır.
+    Değişkenler:
+      ARGS  --> IP adresi
+      ARGN1 --> engel süresi, saniye (yazılabilir; eksi: kalıcı)
+```
+
+## f_onserver_unblockip
+
+```
+EN: Called when the block of an IP address is lifted (only for a blocked IP).
+    Variables:
+      ARGS --> IP address
+TR: Bir IP adresinin engeli kalkınca çağrılır (sadece engelli IP için).
+    Değişkenler:
+      ARGS --> IP adresi
+```
+
+## f_onserver_connectreq_ex
+
+```
+EN: Called when a new connection is rejected: blocked IP, ConnectingMaxIP, ClientMaxIP, MaxPings or
+    MaxConnectRequestsPerIP reached.
+    Variables:
+      ARGS                         --> IP address
+      LOCAL.TIME_CUR_CONNECTED_MS  --> time of this connection attempt (ms)
+      LOCAL.TIME_LAST_CONNECTED_MS --> time of the previous connection (ms)
+      LOCAL.PINGS                  --> pings of this IP
+      LOCAL.CONNECTION_REQUESTS    --> connection attempts of this IP
+      LOCAL.ALIVE_CONNECTIONS      --> open connections of this IP
+      LOCAL.PENDING_CONNECTING     --> connections of this IP still connecting
+      LOCAL.BAN_TIMEOUT            --> block time in seconds (writable; default 5 minutes, negative: permanent)
+    Return:
+     -1 --> only reject the connection, write that the warnings are ignored
+      1 --> only reject the connection
+      2 --> reject and block the IP for LOCAL.BAN_TIMEOUT seconds (default)
+TR: Yeni bir bağlantı reddedilince çağrılır: engelli IP, ConnectingMaxIP, ClientMaxIP, MaxPings ya da
+    MaxConnectRequestsPerIP doldu.
+    Değişkenler:
+      ARGS                         --> IP adresi
+      LOCAL.TIME_CUR_CONNECTED_MS  --> bu bağlantı denemesinin zamanı (ms)
+      LOCAL.TIME_LAST_CONNECTED_MS --> bir önceki bağlantının zamanı (ms)
+      LOCAL.PINGS                  --> bu IP'nin ping'leri
+      LOCAL.CONNECTION_REQUESTS    --> bu IP'nin bağlantı denemeleri
+      LOCAL.ALIVE_CONNECTIONS      --> bu IP'nin açık bağlantıları
+      LOCAL.PENDING_CONNECTING     --> bu IP'nin hâlâ bağlanmakta olan bağlantıları
+      LOCAL.BAN_TIMEOUT            --> engel süresi, saniye (yazılabilir; varsayılan 5 dakika, eksi: kalıcı)
+    Dönüş:
+     -1 --> sadece bağlantı reddedilir, uyarıların yok sayıldığı yazılır
+      1 --> sadece bağlantı reddedilir
+      2 --> bağlantı reddedilir ve IP LOCAL.BAN_TIMEOUT saniye engellenir (varsayılan)
+```
+
+## f_onserver_connection_acquired
+
+```
+EN: Called when a new connection passed the security checks and is accepted.
+    Variables:
+      ARGS  --> IP address
+      ARGN1 --> time of the previous connection of this IP (ms)
+      ARGN2 --> time of this connection (ms)
+    The return value is not used.
+TR: Yeni bir bağlantı güvenlik denetimlerini geçip kabul edilince çağrılır.
+    Değişkenler:
+      ARGS  --> IP adresi
+      ARGN1 --> bu IP'nin bir önceki bağlantısının zamanı (ms)
+      ARGN2 --> bu bağlantının zamanı (ms)
+    Dönüş değeri kullanılmaz.
+****************************************************************************
+Console window (Windows) / Konsol penceresi (Windows)
+****************************************************************************
+```
+
+## f_onserver_window_minimize
+
+```
+EN: Called when the console window is minimized (hidden to the tray). It runs in the next tick of the main thread.
+TR: Konsol penceresi küçültülünce (bildirim alanına gizlenince) çağrılır. Ana thread'in sonraki turunda çalışır.
+```
+
+## f_onserver_window_restore
+
+```
+EN: Called when the console window is restored. It runs in the next tick of the main thread.
+TR: Konsol penceresi geri açılınca çağrılır. Ana thread'in sonraki turunda çalışır.
+```
+
+## f_onserver_onclose_query
+
+```
+EN: Called when the console window is closed and the "Are you sure?" question is asked. It runs in the next tick of the
+    main thread and cannot stop the shutdown.
+TR: Konsol penceresi kapatılırken "Emin misiniz?" sorusu açılınca çağrılır. Ana thread'in sonraki turunda çalışır,
+    kapanışı durduramaz.
+****************************************************************************
+Database / Veritabanı
+****************************************************************************
+```
+
+## f_onserver_db_connect
+
+```
+EN: Called when a database connection is opened (every named connection).
+    Variables:
+      LOCAL.Connection --> name of the connection ("default" for the one in [SPHERE])
+TR: Bir veritabanı bağlantısı açılınca çağrılır (her isimli bağlantı).
+    Değişkenler:
+      LOCAL.Connection --> bağlantının adı ([SPHERE]'dekininki "default")
+```
+
+## f_onserver_db_close
+
+```
+EN: Called before an open database connection is closed (not at shutdown).
+    Variables:
+      LOCAL.Connection --> name of the connection
+TR: Açık bir veritabanı bağlantısı kapanmadan önce çağrılır (kapanışta değil).
+    Değişkenler:
+      LOCAL.Connection --> bağlantının adı
+```
+
+## f_onserver_db_query
+
+```
+EN: Called for every DB.QUERY before it runs (for an asynchronous query later, in the main thread). Called often.
+    Variables:
+      ARGS             --> the query
+      LOCAL.Connection --> name of the connection
+TR: Her DB.QUERY için, sorgu çalışmadan önce çağrılır (asenkron sorguda sonradan, ana thread'de). Sık çağrılır.
+    Değişkenler:
+      ARGS             --> sorgu
+      LOCAL.Connection --> bağlantının adı
+```
+
+## f_onserver_db_execute
+
+```
+EN: Called for every DB.EXECUTE before it runs (for an asynchronous one later, in the main thread). Called often.
+    Variables:
+      ARGS             --> the query
+      LOCAL.Connection --> name of the connection
+TR: Her DB.EXECUTE için, sorgu çalışmadan önce çağrılır (asenkronda sonradan, ana thread'de). Sık çağrılır.
+    Değişkenler:
+      ARGS             --> sorgu
+      LOCAL.Connection --> bağlantının adı
+```
+
+## f_onserver_db_tick
+
+```
+EN: Called before the default database connection is checked, every KeepAlive seconds.
+    Variables:
+      ARGN1 --> 0
+      ARGN2 --> KeepAlive in seconds (writable: the new interval)
+TR: Default veritabanı bağlantısı yoklanmadan önce, KeepAlive saniyede bir çağrılır.
+    Değişkenler:
+      ARGN1 --> 0
+      ARGN2 --> KeepAlive, saniye (yazılabilir: yeni aralık)
+```
+
