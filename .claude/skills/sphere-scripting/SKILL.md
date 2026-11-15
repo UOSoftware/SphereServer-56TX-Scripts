@@ -152,7 +152,11 @@ nesnenin konumuna bakar: `f_onserver_start` gibi nesnesiz yerden `REF1.f_ad` ile
 - Yaratma ve yerleştirme: `SERV.NEWITEM i_gold` + `NEW.AMOUNT=100` + `NEW.P=5400,1100,0,0` (x,y,z,harita) ya da
   `NEW.CONT=<UID>` (karakter UID'si verilirse çantasına; container UID'si verilirse içine). `SERV.NEWNPC c_man` +
   `NEW.P=...`. Yere konmayan nesne bir sonraki save'de silinir. Silme `REMOVE`; `NEW.TIMERF 2,f_ad` 2 saniye sonra
-  o nesnenin üstünde `f_ad`'ı çalıştırır (zamanlanmış iş).
+  o nesnenin üstünde `f_ad`'ı çalıştırır (zamanlanmış iş, save'e girer, sunucu kapanıp açılsa da işler).
+  `<ISTIMERF.f_ad>` (nokta şart) bekleyen TIMERF'in **kalan süresini ms** verir, yoksa 0; 1/0 değildir.
+- Komutu başka bir SRC ile çalıştırmak: `TRYSRC <uid> <komut>` (`REF2.TRYSRC <REF1.UID> TRIGGER @DClick`: eşyanın
+  @DClick'i SRC o karakter olarak). `TRY` ve `TRYP` geçersiz nesnede hata vermez. Bayraklar `FLAGADD statf_dead` /
+  `FLAGREMOVE statf_dead` (motorun defname'leri `references/engine-defnames.md`).
 - Fonksiyon çağrısı: `f_ad a,b,c` (çalışan nesnenin üstünde), `REF1.f_ad` (o nesnenin üstünde; `SRC` aynı kalır),
   `SERV.f_ad`. Değeri `<f_ad a,b>` ya da `<SERV.f_ad>` ile okunur (`RETURN 42` → `42`).
 - `+=`, `-=` çalışır (`LOCAL.c += 1`, `TAG.kills += 1`).
@@ -186,8 +190,10 @@ RETURN 1
   `DAM`/`ARMOR`, `HEIGHT`, `TDATA1-4`, `SOUND` ve bileşen özellikleri gelir; `VALUE`, `RESOURCES`, `SKILLMAKE`,
   `TEVENTS`, `CATEGORY`/`SUBSECTION`/`DESCRIPTION` ve `TAG`'ler gelmez (tanımda yazılan her zaman kazanır). CHARDEF'te
   ek olarak `ICON`, `BLOODCOLOR`, `MAXFOOD`, `FOODTYPE`, `DESIRES`, `ANIM`, `RESOURCES` gelir; `STR`/`DEX`/`INT` ve
-  `AVERSIONS` gelmez. `ID=` satırını tetikleyicilerden önce yaz: önceki satırları ezer. Numarayla başlıklı tanım
-  (`[ITEMDEF 04542]`) bir art'ın kendisidir; özel eşyaya defname başlığı ver.
+  `AVERSIONS` gelmez. `ID=` satırını tetikleyicilerden önce yaz: önceki satırları ezer. Giyilebilir bir tabandan
+  (`ID=i_talisman`) türetilen eşya onun `LAYER`'ını da alır; giyilmesin istenirse `LAYER=0`. Numarayla başlıklı
+  tanım (`[ITEMDEF 04542]`) bir art'ın kendisidir; özel eşyaya defname başlığı ver. Taban ararken paketin
+  defname'lerine bak (`Grep "^\[ITEMDEF i_" itemdefs/`): her art'ın defname'i yoktur (`i_gem` yok, `i_talisman` var).
 - `DEFNAME=` eş ad, 56TX'te `DEFNAMES=ad1,ad2` birden çok. `DUPELIST=`, `DUPEITEM=` benzer art'lar.
 - `TYPE=t_x` davranış ailesi (`t_potion`, `t_weapon_sword`, `t_container`, `t_food`, `t_light_lit`...; paketin
   `defnames/defs_types_hardcoded.scp`'si ve `typedefs/`); `[TYPEDEF t_x]` o türün ortak tetikleyicileri.
@@ -239,8 +245,9 @@ RETURN 1
   `SERV.CLILOCADD pack,<İngilizce metin>|<Türkçe metin>` (3.300.000-3.499.999 aralığı; emulatörünki `emulator`);
   dönen numara script'e yazılır, metin Cliloc.enu ve Cliloc.trk'ye işlenmiş olur. Mevcut metni bulmak `<SERV.CLILOCFIND
   metin>`, okumak `<CLILOCTEXT.tr.3300042>`. Argümanı olan mesajı iki dilde aynı sayıda argümanla yaz.
-- **Gömülü yardımcılar** (`[FUNCTION]` yazmadan): `<ISBLANK>`, `STR*` ailesi, `<NUMBERFORMAT sayı>`, tarih
-  (`<DATEFORMAT>`, `<DATEDIFFFORHUMANS>`, `<DURATIONFORHUMANS>`), `<VALIDATE kurallar,değer>`, dizi (`<ARRAYCOUNT>`...),
+- **Gömülü yardımcılar** (`[FUNCTION]` yazmadan): `<ISBLANK>`, `STR*` ailesi, `<NUMBERFORMAT sayı>`, tarih ve süre
+  (`<DATEFORMAT>`, `<DATEDIFFFORHUMANS>`, `<DURATIONFORHUMANS saniye>` "10 minutes"/"10 dakika", çalışan kodun
+  dilinde; seçenekleri kaynakta `DateTimeHelpers`), `<VALIDATE kurallar,değer>`, dizi (`<ARRAYCOUNT>`...),
   `MAX`/`MIN`/`PERCENT`; karakterde `HITSADD/HITSREMOVE`, `MANAADD`, `STAMADD`, `STATSADD`, `FLAGADD/FLAGREMOVE`,
   `NOMOVE`, `UNEQUIPALL`, `PACKDELETE`, `WARMODEADD`, `STAFFSETUP`; eşyada `ISINPACK`, `PACKCOUNT`, `COOLDOWN`.
   Paketin aynı adlı eski `[FUNCTION]`'ı varsa motor uyarır ve script kazanır; yeni script motorunkini kullanır.
@@ -268,8 +275,13 @@ Yazdığın script'i exe'yle yüklemeden iş bitmez. İki seviye:
 2. **Mantık:** `[FUNCTION f_onserver_start]` içinden senaryoyu kur ve sonuçları `SERV.LOG TEST|ad|alınan|beklenen`
    satırlarıyla yaz; sonda `SERV.LOG TEST_done`. `references/syntax-verified.scp` bunun örneğidir: NPC ve eşya
    yaratır (`SERV.NEWNPC`, `P=5400,1100,0,0` Green Acres), nesnenin üstünde fonksiyon çalıştırır (`REF1.f_x`),
-   zamanlayıcıyı `TIMERF` ile sınar. Client gerektiren şeyler (dialog, hedefleme, mesajın görünmesi) bu yolla
-   denenmez; onları yüklenme kontrolünden geçirip kullanıcıya oyunda denemesini söyle.
+   zamanlayıcıyı `TIMERF` ile sınar. Oyuncunun yerine bir NPC kullan: `REF2.TRYSRC <REF1.UID> TRIGGER @DClick`
+   eşyanın @DClick'ini SRC o NPC olarak çalıştırır; ölü senaryo `REF1.FLAGADD statf_dead`; uzun süreleri bir
+   `DEF` ya da eşyanın `TAG`'inden okut ki test kısaltabilsin; bekleyen zamanlayıcı `<ISTIMERF.f_ad>` (kalan ms).
+   NPC'ye giden `SYSMESSAGELOC`/`MESSAGELOC` sessizce yutulur: mesajın görünmesi, dialog ve hedefleme client ister;
+   onları yüklenme kontrolünden geçirip kullanıcıya oyunda denemesini söyle. Yeni cliloc numarası alamadığın yerde
+   geçici numara kullanma eğilimine dikkat: 3300000'den sonraki numaralar dolu olabilir, gerçek numarayı
+   `SERV.CLILOCADD` verir; raporunda eklenecek metinleri listele.
 
 Emulatör checkout'u yanındaysa en kolayı onun koşucusu; yalıtılmış klasörde paketin git'teki hâlini ve test ini'sini
 kurar, sunucuyu açar, `TEST|` satırlarını karşılaştırır, çökmeyi yakalar (test dosyan paketin dışında bir klasörde,

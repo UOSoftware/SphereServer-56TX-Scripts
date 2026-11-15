@@ -26,6 +26,13 @@ ON=@zz_hello
 TAG.zz_got=<ARGN1>
 TAG.zz_args=<ARGS>
 
+ON=@zz_src
+TAG.zz_srcuid=<SRC.UID>
+
+[FUNCTION f_zz_never]
+// TIMERF testi için: çalışması beklenmez
+RETURN
+
 [FUNCTION f_zz_side]
 VAR.zz_side += 1
 RETURN 1
@@ -434,6 +441,26 @@ NEW.CONT=<REF1.UID>
 SERV.NEWITEM i_bandage
 NEW.CONT=<REF1.UID>
 SERV.LOG TEST|cont_char_puts_in_pack|<ISEMPTY <REF1.FINDLAYER.21.UID>>|0
+// TRYSRC <uid> <komut>: komutu SRC o karakter olarak çalıştırır (client'sız testte oyuncunun yerine NPC)
+REF1.TRYSRC <REF4.UID> TRIGGER @zz_src
+SERV.LOG TEST|trysrc_sets_src|<REF1.TAG.zz_srcuid>|<REF4.UID>
+// ISTIMERF.f_ad: bekleyen TIMERF'in kalan süresi (ms), yoksa 0
+REF4.TIMERF 30,f_zz_never
+LOCAL.r=0
+IF (<REF4.ISTIMERF.f_zz_never> > 0) && (<REF4.ISTIMERF.f_zz_never> <= 30000)
+	LOCAL.r=1
+ENDIF
+SERV.LOG TEST|istimerf_remaining_ms|<dLOCAL.r>|1
+SERV.LOG TEST|istimerf_none|<REF1.ISTIMERF.f_zz_never>|0
+// Bayraklar: FLAGADD/FLAGREMOVE (ölü oyuncu senaryosu)
+REF4.FLAGADD statf_dead
+LOCAL.r=0
+IF (<REF4.FLAGS> & statf_dead)
+	LOCAL.r=1
+ENDIF
+SERV.LOG TEST|flagadd_dead|<dLOCAL.r>|1
+REF4.FLAGREMOVE statf_dead
+SERV.LOG TEST|flagremove_dead|<EVAL <REF4.FLAGS> & statf_dead>|0
 REF1.f_zz_loops
 REF1.TIMERF 1,f_zz_syntax_phase2
 
