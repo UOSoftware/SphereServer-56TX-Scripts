@@ -455,26 +455,9 @@ EVENTS -e_notice
 
 
 
-[FUNCTION LOGOUT]
-IF (<ISPLAYER>) && (<ISONLINE>)
-
-	// SENDPACKET 026 00 00 00 00 00 // Disconnect (Tüm istemciler için)
-
-	// Eger quit butonuna basmissa calisiyor.
-	SENDPACKET 0D1 B01 // Logout Client
-	
-	// Eger bir scene varsa calisiyor.
-	SENDPACKET 082 B04 // ReceiveLoginRejection
-	SENDPACKET 085 B01 // ReceiveLoginRejection
-	SENDPACKET 053 B04 // ReceiveLoginRejection
-	
-	AUDIT char.logout_force
-	
-	DISCONNECT
-	
-ENDIF 
-
-
+// LOGOUT artık motorun komutu (16-11-2026): oyuncuyu giriş ekranına gönderir (0xD1 ve 0x26 kapanırken de giden
+//  öncelikle, char.logout_force olayı, DISCONNECT'in yetki denetimi ve log'u). Buradaki fonksiyonun SENDPACKET'leri
+//  kapanan bağlantıdan hiç çıkmıyordu (sadece PRI_HIGHEST paketler gider).
 
 [FUNCTION FUNC_HEALTHBAR_CLOSE_PACKET]
 REF1=<ARGS> // CHAR
