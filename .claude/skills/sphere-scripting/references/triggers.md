@@ -177,6 +177,7 @@ Eşya tetikleyicilerinin `@Item...` biçimi (ör. `@ItemDClick`, `@ItemEquip`) k
 - `@SeeCrime`: I saw a crime
 - `@SeeHidden`: Can I see hidden chars?
 - `@SeeSnoop`
+- `@SeeSteal`: 0.56TX: birinin hırsızlığını fark ettim (SRC hırsız, ARGO kurban, ARGN2 eşya; RETURN 1 görmemiş sayılırım)
 - `@SendPaperdoll`: Server send paperdollpacket
 - `@SkillAbort`
 - `@SkillChange`
