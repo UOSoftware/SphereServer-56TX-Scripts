@@ -69,6 +69,7 @@ Pakette tanımlı olmasa da motorun tanımladığı adlar (`src/scripts/defs_eng
 - discord_defs (8)
 - report_defs (34)
 - travel_flags (28)
+- hitzones (9)
 
 ## HARDCODED
 
@@ -1547,5 +1548,19 @@ travel_stage_caststart 0
 travel_stage_castdone 1
 travel_stage_gateenter 2
 travel_stage_script 3
+```
+
+## hitzones
+
+```
+hitzone_none 0
+hitzone_head 1
+hitzone_neck 2
+hitzone_back 3
+hitzone_chest 4
+hitzone_arms 5
+hitzone_hands 6
+hitzone_legs 7
+hitzone_feet 8
 ```
 

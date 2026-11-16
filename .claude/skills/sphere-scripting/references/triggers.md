@@ -22,6 +22,7 @@ Eşya tetikleyicilerinin `@Item...` biçimi (ör. `@ItemDClick`, `@ItemEquip`) k
 - `@AfkMode`: Changing afk mode by using .AFK command.
 - `@AfterClick`
 - `@AfterEat`: 0.56TX: @Eat'ten sonra, stat'lar değişince.
+- `@ArmorCalc`: 0.56TX: gösterilen AR hesaplandı.
 - `@ArrowQuest_Add`
 - `@ArrowQuest_Close`
 - `@Attack`: I am attacking someone (SRC)
@@ -76,6 +77,7 @@ Eşya tetikleyicilerinin `@Item...` biçimi (ör. `@ItemDClick`, `@ItemEquip`) k
 - `@HitRate`: Hit rate damage trigger
 - `@HitReactive`: Reactive damage trigger
 - `@HitTry`: I am trying to hit someone. starting swing.
+- `@HitZone`: 0.56TX: vuruş bölgesi seçildi (CombatHitLocation=0)
 - `@HouseDesignBegin`: Starting to customize.
 - `@HouseDesignCommit`: I committed a new house design.
 - `@HouseDesignCommitItem`: I committed an item to the house design.
@@ -235,6 +237,7 @@ Eşya tetikleyicilerinin `@Item...` biçimi (ör. `@ItemDClick`, `@ItemEquip`) k
 - `@AddRedCandle`
 - `@AddWhiteCandle`
 - `@AfterClick`
+- `@ArmorHit`: 0.56TX: örttüğüm bölgeye vuruş geldi (CombatHitLocation=0).
 - `@Buy`
 - `@CarveCorpse`: I am a corpse and i am going to be carved.
 - `@Click`
