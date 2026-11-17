@@ -16,6 +16,11 @@ Hesap deposu: arayüz. Depo emulatöre gömülüdür (0.56TX, AccountStore): kay
    MAXENTRIES/MAXAMOUNT/MAXWEIGHT, STORE.LISTCOUNT kategori,arama, STORE.LIST baş,adet,kategori,sıra,arama,
    STORE.FIND baseid,renk, STORE.GROUP.n.BASEID/COLOR/NAME/DISPID/AMOUNT/PLAIN/ENTRIES/ENTRY.m, STORE.ENTRY.id.NAME/
    AMOUNT/KIND; kategoriler SERV.STORECATEGORIES ve SERV.STORECATEGORY.n.DEFNAME/NAME.
+ - Loadout (karakterin adlı şablonları; d_store_loadout, bu dosya): LOADOUTADD <ad>, LOADOUTDELETE <id>,
+   LOADOUTRENAME <id>,<ad>, LOADOUTSAVE <id> (çantadan), LOADOUTLINEADD <id>,<baseid>,<renk>,<adet>,
+   LOADOUTLINEREMOVE <id>,<baseid>,<renk>, LOADOUTFILL <id> (Tamamla); okunanlar LOADOUTS, LOADOUT.n.ID/NAME/LINES/
+   COMPLETE/MISSING, LOADOUT.n.LINE.m.BASEID/COLOR/AMOUNT/NAME/DISPID/HAVE/STORED, LOADOUT.ID.<id>.* aynısı.
+   Sınırlar sphere.ini'de (StoreLoadoutMax, StoreLoadoutLines).
  Dialog'un nesnesi açan char. Durum client'ta: CTAG.StoreCat (kategori), CTAG.StoreSort (sıra), CTAG.StoreSearch (arama),
  CTAG0.StorePage, seçili grup CTAG.StoreSelId ve CTAG0.StoreSelHue, CTAG0.StoreRecPage, CTAG0.StoreConfirm (onay bekleyen
  toplu ekleme: 1 çanta, 2 banka, 3 ikisi), CTAG0.StoreNested. Satırların grupları CTAG.StoreRowId.n ve
@@ -146,6 +151,18 @@ FOR 0 <EVAL <LOCAL.E>-1>
 ENDFOR
 RETURN 0
 
+// Seçili loadout'un numarası: CTAG0.LoadSel hâlâ bu karakterinse o, değilse ilk loadout; hiç yoksa 0.
+[FUNCTION f_store_loadout_sel]
+IF (<CTAG0.LoadSel>)
+	IF !(<ISEMPTY <LOADOUT.ID.<dCTAG0.LoadSel>.NAME>>)
+		RETURN <dCTAG0.LoadSel>
+	ENDIF
+ENDIF
+IF (<LOADOUTS> > 0)
+	RETURN <LOADOUT.0.ID>
+ENDIF
+RETURN 0
+
 
 // Depo. Solda kategoriler, ortada arama, sıra ve eşya grupları (BASEID ve renk), sağda seçili grubun ayrıntısı.
 [DIALOG d_store]
@@ -196,6 +213,10 @@ DTEXT +450 +0 <f_store_full_hue <STORE.WEIGHT>,<STORE.MAXWEIGHT>> Ağırlık: <N
 IF (<STOREOTHER>)
 	BUTTON +690 +0 4014 4016 1 0 19
 	DTEXT +725 +0 0 Kendi depom
+ELIF (<SERV.STORELOADOUTMAX> > 0)
+	// Loadout sekmesi (kendi deposunda): d_store_loadout
+	BUTTON +690 +0 4005 4007 1 0 90
+	DTEXT +725 +0 044 Loadout (<LOADOUTS>)
 ENDIF
 // Erişim yoksa (banker'dan uzaklaşıldı, ölüm...) uyarı: liste görünür, ekleme ve alma emulatörün mesajıyla reddedilir.
 LOCAL.ACC=<STOREACCESS>
@@ -326,6 +347,7 @@ ELSE
 	DTEXT +660 +112 044 <STRLIMIT 20,<STORE.GROUP.<dLOCAL.S>.NAME>>
 	DTEXT +660 +132 0 Toplam: <NUMBERFORMAT <STORE.GROUP.<dLOCAL.S>.AMOUNT>>
 	DTEXT +660 +152 0 Özelliksiz: <NUMBERFORMAT <dLOCAL.PLAIN>>
+	DTEXT +590 +172 0389 Önce özelliksizler, sonra en eski kayıt.
 	IF (<LOCAL.EDIT>)
 		LOCAL.AMT=<dLOCAL.PLAIN>
 		IF (<LOCAL.AMT> == 0)
@@ -333,18 +355,23 @@ ELSE
 		ELIF (<SERV.STOREMAXTAKEAMOUNT> > 0) && (<LOCAL.AMT> > <SERV.STOREMAXTAKEAMOUNT>)
 			LOCAL.AMT=<SERV.STOREMAXTAKEAMOUNT>
 		ENDIF
-		DTEXT +590 +185 0 Miktar:
-		RESIZEPIC +650 +181 3000 100 26
-		DTEXTENTRYLIMITED +655 +184 90 20 0 2 10 <dLOCAL.AMT>
-		BUTTON +590 +215 4005 4007 1 0 14
-		DTEXT +625 +215 044 Çantaya al
-		BUTTON +715 +215 4005 4007 1 0 15
-		DTEXT +750 +215 044 Bankaya al
+		DTEXT +590 +196 0 Miktar:
+		RESIZEPIC +650 +192 3000 100 26
+		DTEXTENTRYLIMITED +655 +195 90 20 0 2 10 <dLOCAL.AMT>
+		BUTTON +590 +222 4005 4007 1 0 14
+		DTEXT +625 +222 044 Çantaya al
+		BUTTON +715 +222 4005 4007 1 0 15
+		DTEXT +750 +222 044 Bankaya al
 		IF (<LOCAL.STAFFEDIT>) && (<LOCAL.PLAIN> > 0)
-			BUTTON +590 +240 4017 4018 1 0 16
-			DTEXT +625 +240 <DEF.tcolor_red> Özelliksizden sil
+			BUTTON +590 +245 4017 4018 1 0 16
+			DTEXT +625 +245 <DEF.tcolor_red> Özelliksizden sil
 		ENDIF
-		DTEXT +590 +262 0389 Önce özelliksizler, sonra en eski kayıt.
+		// Seçili loadout'a bu eşyadan, kutudaki adetle bir satır (kendi deposunda).
+		IF !(<STOREOTHER>) && (<LOADOUTS> > 0)
+			LOCAL.LO=<f_store_loadout_sel>
+			BUTTON +590 +267 4005 4007 1 0 91
+			DTEXT +625 +267 0 Loadout'a ekle: <STRLIMIT 14,<LOADOUT.ID.<dLOCAL.LO>.NAME>>
+		ENDIF
 	ENDIF
 	IF (<LOCAL.K>)
 		LOCAL.RPAGES=<EVAL ((<LOCAL.K>-1)/<LOCAL.RECLEN>)+1>
@@ -352,9 +379,9 @@ ELSE
 			CTAG.StoreRecPage=<EVAL <LOCAL.RPAGES>-1>
 		ENDIF
 		LOCAL.RFIRST=<EVAL <DCTAG0.StoreRecPage>*<LOCAL.RECLEN>>
-		DHTMLGUMP +590 +285 240 22 1 0 <DEF.CENTER>ÖZELLİKLİ KAYITLAR (<dLOCAL.K>)<DEF.CENTERE>
+		DHTMLGUMP +590 +292 240 22 1 0 <DEF.CENTER>ÖZELLİKLİ KAYITLAR (<dLOCAL.K>)<DEF.CENTERE>
 		LOCAL.R=0
-		LOCAL.Y=312
+		LOCAL.Y=318
 		LOCAL.E=<STORE.GROUP.<dLOCAL.S>.ENTRIES>
 		FOR 0 <EVAL <LOCAL.E>-1>
 			LOCAL.ID=<STORE.GROUP.<dLOCAL.S>.ENTRY.<dLOCAL._FOR>>
@@ -503,6 +530,23 @@ ON=18
 CTAG.StoreRecPage=<EVAL <DCTAG0.StoreRecPage>+1>
 f_store_reopen
 
+// Seçili eşyadan seçili loadout'a satır (kutudaki adetle; eşya varsa adedi değişir)
+ON=91
+LOCAL.LO=<f_store_loadout_sel>
+IF (<LOCAL.LO>) && !(<ISEMPTY <CTAG.StoreSelId>>)
+	SRC.LOADOUTLINEADD <dLOCAL.LO>,<CTAG.StoreSelId>,<CTAG0.StoreSelHue>,<ARGTXT[2]>
+	IF (<SRC.STORERESULT> == 0)
+		LOCAL.S=<f_store_sel>
+		SRC.SYSMESSAGELOC <def.tcolor_green>,3301207,<LOADOUT.ID.<dLOCAL.LO>.NAME>,<STRTRIM <ARGTXT[2]>>,<STORE.GROUP.<dLOCAL.S>.NAME>
+	ENDIF
+ENDIF
+f_store_reopen
+
+// Loadout sekmesi
+ON=90
+DIALOGCLOSE d_store
+DIALOG d_store_loadout
+
 // Staff: kendi deposuna dön (STOREVIEW dialog'u kendisi açar)
 ON=19
 CTAG.StoreSelId=
@@ -548,5 +592,274 @@ IF (<LOCAL.ID>)
 	SRC.STOREDELETE <dLOCAL.ID>,1
 ENDIF
 f_store_reopen
+
+
+// Loadout'lar: karakterin adlı şablonları (eşya, renk, hedef adet). "Tamamla" çantadaki eksikleri (alt çantalar dahil)
+//  depodan alır, fazlaya dokunmaz. Seçili şablon CTAG0.LoadSel, satır sayfası CTAG0.LoadPage, onay bekleyen işlem
+//  CTAG0.LoadConfirm (1 çantadan yeniden kaydet, 2 sil); satırların eşyaları CTAG.LoadRowId.n ve CTAG0.LoadRowHue.n'de,
+//  şablonlarınki CTAG0.LoadRow.n'de.
+[DIALOG d_store_loadout]
+<DEF.DlgStartPos>
+LOCAL.PAGELEN=8
+LOCAL.LO=<f_store_loadout_sel>
+CTAG.LoadSel=<dLOCAL.LO>
+RESIZE 0,0,880,620,Depo: Loadout
+DORIGIN 25 50
+
+BUTTON +0 +0 4014 4016 1 0 90
+DTEXT +35 +0 0 Depo
+DTEXT +110 +0 044 Loadout
+DTEXT +200 +0 0389 Şablon: eşya ve hedef adet. Tamamla, çantanızdaki eksikleri deponuzdan alır.
+LOCAL.ACC=<STOREACCESS>
+IF (<LOCAL.ACC>)
+	DTEXT +0 +22 <DEF.tcolor_red> <f_store_access_text <dLOCAL.ACC>>
+ENDIF
+
+// Şablonlar
+DHTMLGUMP +0 +50 170 22 1 0 <DEF.CENTER>ŞABLONLAR (<LOADOUTS>/<EVAL <SERV.STORELOADOUTMAX>>)<DEF.CENTERE>
+LOCAL.Y=78
+FOR 0 9
+	CTAG.LoadRow.<dLOCAL._FOR>=
+	IF (<LOCAL._FOR> < <LOADOUTS>)
+		CTAG.LoadRow.<dLOCAL._FOR>=<LOADOUT.<dLOCAL._FOR>.ID>
+		LOCAL.HUE=0
+		IF (<LOADOUT.<dLOCAL._FOR>.ID> == <LOCAL.LO>)
+			LOCAL.HUE=044
+		ENDIF
+		BUTTON +0 +<dLOCAL.Y> 4005 4007 1 0 <EVAL 100+<LOCAL._FOR>>
+		DTEXT +35 +<dLOCAL.Y> <LOCAL.HUE> <STRLIMIT 15,<LOADOUT.<dLOCAL._FOR>.NAME>>
+		LOCAL.Y=<EVAL <LOCAL.Y>+26>
+	ENDIF
+ENDFOR
+IF !(<LOADOUTS>)
+	DHTMLGUMP +0 +80 170 60 0 0 Henüz şablonunuz yok. Aşağıdan bir ad yazıp oluşturun.
+ENDIF
+IF (<LOADOUTS> < <SERV.STORELOADOUTMAX>)
+	DTEXT +0 +360 0 Yeni şablon:
+	RESIZEPIC +0 +382 3000 170 26
+	DTEXTENTRYLIMITED +5 +385 160 20 0 1 24
+	BUTTON +0 +414 4005 4007 1 0 2
+	DTEXT +35 +414 0 Boş
+	BUTTON +0 +438 4005 4007 1 0 3
+	DTEXT +35 +438 044 Çantamdan
+ENDIF
+
+// Seçili şablonun satırları
+IF !(<LOCAL.LO>)
+	DHTMLGUMP +190 +80 400 60 0 0 Soldan bir şablon seçin ya da yeni bir şablon oluşturun.
+ELSE
+	LOCAL.LINES=<LOADOUT.ID.<dLOCAL.LO>.LINES>
+	LOCAL.PAGES=<EVAL ((<LOCAL.LINES>-1)/<LOCAL.PAGELEN>)+1>
+	IF (<LOCAL.PAGES> < 1)
+		LOCAL.PAGES=1
+	ENDIF
+	IF (<DCTAG0.LoadPage> >= <LOCAL.PAGES>)
+		CTAG.LoadPage=<EVAL <LOCAL.PAGES>-1>
+	ENDIF
+	LOCAL.FIRST=<EVAL <DCTAG0.LoadPage>*<LOCAL.PAGELEN>>
+	DHTMLGUMP +190 +50 200 22 1 0 <DEF.CENTER><LOADOUT.ID.<dLOCAL.LO>.NAME><DEF.CENTERE>
+	DHTMLGUMP +395 +50 65 22 1 0 <DEF.CENTER>HEDEF<DEF.CENTERE>
+	DHTMLGUMP +465 +50 60 22 1 0 <DEF.CENTER>ÇANTADA<DEF.CENTERE>
+	DHTMLGUMP +530 +50 60 22 1 0 <DEF.CENTER>DEPODA<DEF.CENTERE>
+	LOCAL.Y=78
+	FOR 0 <EVAL <LOCAL.PAGELEN>-1>
+		CTAG.LoadRowId.<dLOCAL._FOR>=
+		CTAG.LoadRowHue.<dLOCAL._FOR>=
+		LOCAL.I=<EVAL <LOCAL.FIRST>+<LOCAL._FOR>>
+		IF (<LOCAL.I> < <LOCAL.LINES>)
+			CTAG.LoadRowId.<dLOCAL._FOR>=<LOADOUT.ID.<dLOCAL.LO>.LINE.<dLOCAL.I>.BASEID>
+			CTAG.LoadRowHue.<dLOCAL._FOR>=<LOADOUT.ID.<dLOCAL.LO>.LINE.<dLOCAL.I>.COLOR>
+			LOCAL.AMT=<LOADOUT.ID.<dLOCAL.LO>.LINE.<dLOCAL.I>.AMOUNT>
+			LOCAL.HAVE=<LOADOUT.ID.<dLOCAL.LO>.LINE.<dLOCAL.I>.HAVE>
+			LOCAL.HUE=<DEF.tcolor_green>
+			IF (<LOCAL.HAVE> < <LOCAL.AMT>)
+				LOCAL.HUE=<DEF.tcolor_red>
+			ENDIF
+			RESIZEPIC +190 +<dLOCAL.Y> 3000 400 40
+			TILEPICHUE +195 +<EVAL <LOCAL.Y>+2> <EVAL <LOADOUT.ID.<dLOCAL.LO>.LINE.<dLOCAL.I>.DISPID>> <EVAL <LOADOUT.ID.<dLOCAL.LO>.LINE.<dLOCAL.I>.COLOR>>
+			DTEXT +245 +<EVAL <LOCAL.Y>+10> 0 <STRLIMIT 18,<LOADOUT.ID.<dLOCAL.LO>.LINE.<dLOCAL.I>.NAME>>
+			RESIZEPIC +395 +<EVAL <LOCAL.Y>+7> 3000 65 26
+			DTEXTENTRYLIMITED +400 +<EVAL <LOCAL.Y>+10> 55 20 0 <EVAL 1000+<LOCAL._FOR>> 10 <dLOCAL.AMT>
+			DTEXT +470 +<EVAL <LOCAL.Y>+10> <LOCAL.HUE> <NUMBERFORMAT <dLOCAL.HAVE>>
+			DTEXT +535 +<EVAL <LOCAL.Y>+10> 0 <NUMBERFORMAT <LOADOUT.ID.<dLOCAL.LO>.LINE.<dLOCAL.I>.STORED>>
+			BUTTON +595 +<EVAL <LOCAL.Y>+10> 4017 4018 1 0 <EVAL 300+<LOCAL._FOR>>
+		ENDIF
+		LOCAL.Y=<EVAL <LOCAL.Y>+44>
+	ENDFOR
+	IF !(<LOCAL.LINES>)
+		DHTMLGUMP +190 +80 400 60 0 0 Bu şablon boş. Depoda bir eşya seçip "Loadout'a ekle" ile ya da sağdan "Çantamdan kaydet" ile satır ekleyin.
+	ELSE
+		LOCAL.Y=<EVAL 82+(<LOCAL.PAGELEN>*44)>
+		BUTTON +190 +<dLOCAL.Y> 4023 4024 1 0 10
+		DTEXT +225 +<dLOCAL.Y> 044 Adetleri kaydet
+		DTEXT +340 +<dLOCAL.Y> 0389 (0 satırı siler)
+		IF (<LOCAL.PAGES> > 1)
+			IF (<DCTAG0.LoadPage> > 0)
+				BUTTON +470 +<dLOCAL.Y> 5603 5607 1 0 6
+			ENDIF
+			DTEXT +495 +<dLOCAL.Y> 0 <EVAL <DCTAG0.LoadPage>+1> / <dLOCAL.PAGES>
+			IF (<EVAL <DCTAG0.LoadPage>+1> < <LOCAL.PAGES>)
+				BUTTON +545 +<dLOCAL.Y> 5601 5605 1 0 7
+			ENDIF
+		ENDIF
+	ENDIF
+
+	// İşlemler
+	DHTMLGUMP +640 +50 190 22 1 0 <DEF.CENTER>İŞLEMLER<DEF.CENTERE>
+	LOCAL.MISSING=<LOADOUT.ID.<dLOCAL.LO>.MISSING>
+	IF (<LOCAL.LINES>)
+		IF (<LOCAL.MISSING>)
+			DTEXT +640 +80 <DEF.tcolor_red> Çantada eksik: <NUMBERFORMAT <dLOCAL.MISSING>> adet
+		ELSE
+			DTEXT +640 +80 <DEF.tcolor_green> Çantanız tamam.
+		ENDIF
+		BUTTON +640 +105 4023 4024 1 0 11
+		DTEXT +675 +105 044 Tamamla
+	ENDIF
+	BUTTON +640 +145 4005 4007 1 0 12
+	DTEXT +675 +145 0 Çantamdan kaydet
+	DTEXT +640 +180 0 Yeni ad:
+	RESIZEPIC +640 +200 3000 190 26
+	DTEXTENTRYLIMITED +645 +203 180 20 0 5 24 <LOADOUT.ID.<dLOCAL.LO>.NAME>
+	BUTTON +640 +232 4005 4007 1 0 15
+	DTEXT +675 +232 0 Adını değiştir
+	BUTTON +640 +272 4017 4018 1 0 16
+	DTEXT +675 +272 <DEF.tcolor_red> Şablonu sil
+	IF (<DCTAG0.LoadConfirm> == 1)
+		DHTMLGUMP +640 +310 190 60 0 0 Şablonun satırları çantanızın şu anki eşyalarıyla değişecek. Emin misiniz?
+	ELIF (<DCTAG0.LoadConfirm> == 2)
+		DHTMLGUMP +640 +310 190 60 0 0 Şablon silinecek (depodaki eşyalara dokunulmaz). Emin misiniz?
+	ENDIF
+	IF (<DCTAG0.LoadConfirm>)
+		BUTTON +640 +375 4023 4024 1 0 13
+		DTEXT +675 +375 044 Evet
+		BUTTON +740 +375 4017 4018 1 0 14
+		DTEXT +775 +375 038 Vazgeç
+	ENDIF
+ENDIF
+
+[DIALOG d_store_loadout BUTTON]
+ON=0
+CTAG.LoadConfirm=
+
+// Yeni şablon: 2 boş, 3 çantadan (ad emulatörde denetlenir: 1-24 harf, rakam, boşluk)
+ON=2 3
+CTAG.LoadConfirm=
+SRC.LOADOUTADD <ARGTXT[1]>
+IF (<SRC.STORERESULT> == 0)
+	CTAG.LoadSel=<SRC.STORELASTID>
+	CTAG.LoadPage=
+	IF (<ARGN> == 3)
+		SRC.LOADOUTSAVE <dCTAG0.LoadSel>
+	ENDIF
+ENDIF
+f_store_loadout_reopen
+
+// Satır sayfaları
+ON=6
+IF (<DCTAG0.LoadPage> > 0)
+	CTAG.LoadPage=<EVAL <DCTAG0.LoadPage>-1>
+ENDIF
+f_store_loadout_reopen
+
+ON=7
+CTAG.LoadPage=<EVAL <DCTAG0.LoadPage>+1>
+f_store_loadout_reopen
+
+// Adetleri kaydet: her satırın kutusu; boş kutu değişiklik değil, 0 satırı siler, geçersiz adedi emulatör reddeder.
+//  Kutunun metni LOCAL'e kopyalanmaz (boş metin LOCAL'de 0 okunur ve satırı silerdi).
+ON=10
+LOCAL.LO=<f_store_loadout_sel>
+LOCAL.OK=1
+IF (<LOCAL.LO>)
+	FOR 0 7
+		IF !(<ISEMPTY <CTAG.LoadRowId.<dLOCAL._FOR>>>) && !(<ISEMPTY <STRTRIM <ARGTXT[<EVAL 1000+<LOCAL._FOR>>]>>>)
+			IF (STRCMP(<STRTRIM <ARGTXT[<EVAL 1000+<LOCAL._FOR>>]>>,0) == 0)
+				SRC.LOADOUTLINEREMOVE <dLOCAL.LO>,<CTAG.LoadRowId.<dLOCAL._FOR>>,<CTAG0.LoadRowHue.<dLOCAL._FOR>>
+			ELSE
+				SRC.LOADOUTLINEADD <dLOCAL.LO>,<CTAG.LoadRowId.<dLOCAL._FOR>>,<CTAG0.LoadRowHue.<dLOCAL._FOR>>,<ARGTXT[<EVAL 1000+<LOCAL._FOR>>]>
+			ENDIF
+			IF (<SRC.STORERESULT> != 0)
+				LOCAL.OK=0
+			ENDIF
+		ENDIF
+	ENDFOR
+	IF (<LOCAL.OK>)
+		SRC.SYSMESSAGELOC <def.tcolor_green>,3301208,<LOADOUT.ID.<dLOCAL.LO>.NAME>
+	ENDIF
+ENDIF
+f_store_loadout_reopen
+
+// Tamamla (sonuçları emulatör söyler)
+ON=11
+LOCAL.LO=<f_store_loadout_sel>
+IF (<LOCAL.LO>)
+	SRC.LOADOUTFILL <dLOCAL.LO>
+ENDIF
+f_store_loadout_reopen
+
+// Onay isteyenler: 12 çantadan yeniden kaydet, 16 sil
+ON=12
+CTAG.LoadConfirm=1
+f_store_loadout_reopen
+
+ON=16
+CTAG.LoadConfirm=2
+f_store_loadout_reopen
+
+ON=13
+LOCAL.LO=<f_store_loadout_sel>
+IF (<LOCAL.LO>)
+	IF (<DCTAG0.LoadConfirm> == 1)
+		SRC.LOADOUTSAVE <dLOCAL.LO>
+	ELIF (<DCTAG0.LoadConfirm> == 2)
+		SRC.LOADOUTDELETE <dLOCAL.LO>
+		CTAG.LoadSel=
+		CTAG.LoadPage=
+	ENDIF
+ENDIF
+CTAG.LoadConfirm=
+f_store_loadout_reopen
+
+ON=14
+CTAG.LoadConfirm=
+f_store_loadout_reopen
+
+// Adını değiştir
+ON=15
+LOCAL.LO=<f_store_loadout_sel>
+IF (<LOCAL.LO>)
+	SRC.LOADOUTRENAME <dLOCAL.LO>,<ARGTXT[5]>
+ENDIF
+f_store_loadout_reopen
+
+// Depo sekmesi
+ON=90
+CTAG.LoadConfirm=
+DIALOGCLOSE d_store_loadout
+DIALOG d_store
+
+// Şablon seçimi
+ON=100 149
+LOCAL.ID=<CTAG0.LoadRow.<EVAL <ARGN>-100>>
+IF (<LOCAL.ID>)
+	CTAG.LoadSel=<dLOCAL.ID>
+	CTAG.LoadPage=
+	CTAG.LoadConfirm=
+ENDIF
+f_store_loadout_reopen
+
+// Satırı sil
+ON=300 349
+LOCAL.LO=<f_store_loadout_sel>
+LOCAL.R=<EVAL <ARGN>-300>
+IF (<LOCAL.LO>) && !(<ISEMPTY <CTAG.LoadRowId.<dLOCAL.R>>>)
+	SRC.LOADOUTLINEREMOVE <dLOCAL.LO>,<CTAG.LoadRowId.<dLOCAL.R>>,<CTAG0.LoadRowHue.<dLOCAL.R>>
+ENDIF
+f_store_loadout_reopen
+
+[FUNCTION f_store_loadout_reopen]
+DIALOGCLOSE d_store_loadout
+DIALOG d_store_loadout
 
 [EOF]

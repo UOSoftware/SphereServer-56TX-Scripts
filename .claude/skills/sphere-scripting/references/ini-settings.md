@@ -245,6 +245,8 @@ Emulatörün tanıdığı her ayar: ad, gömülü değer (ayar ini'de yoksa kull
 | `StoreRequirePin` | 1 | Hesabın pin'i varsa hesap deposu pin girilmeden kullanılamaz (.pin, PINVERIFY). 0 = pin istenmez. |
 | `StoreViewPlevel` | 4 | Başkasının hesap deposunu görebilen (STOREVIEW) en düşük PLEVEL (2-7). Bu PLEVEL ve üstü kendi deposunda da erişim kurallarına (StoreAccess, StoreRequirePin, ölü, takas) bakmaz. |
 | `StoreEditPlevel` | 7 | Başkasının hesap deposuna eşya ekleyip çıkarabilen ve kayıt silebilen (STOREDELETE) en düşük PLEVEL (2-7). Eşyalar staff'ın kendi çantasından ve bankasından girer, oraya çıkar. Bu PLEVEL'in altındaki staff başka depoyu sadece görür. |
+| `StoreLoadoutMax` | 5 | Bir karakterin hesap deposundaki en çok loadout'u (0-50): adlı şablonlar (eşya, renk, adet), "Tamamla" çantadaki eksikleri depodan alır. Her karakter sadece kendi loadout'larını görür. 0 = loadout kapalı. |
+| `StoreLoadoutLines` | 30 | Bir loadout'ta en çok kaç satır (eşya ve renk) olur (1-100). |
 | `PayFromPackOnly` | 0 | 1 ise satıcılar parayı sadece sırt çantasından alır |
 | `NoWeather` | 1 | Hava durumu efektleri kapatılsın mı? |
 | `AllowNewbTransfer` | 0 | Eşyalar bir NPC'ye verildiğinde attr_newbie bayraklarını korusun diye 1 yapın. |
