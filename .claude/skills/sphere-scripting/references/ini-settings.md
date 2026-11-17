@@ -238,6 +238,8 @@ Emulatörün tanıdığı her ayar: ad, gömülü değer (ayar ini'de yoksa kull
 | `StoreMaxAmount` | 1000000 | Hesap deposundaki bütün eşyaların toplam adedi en çok. Hesabın ve karakterin STOREEXTRAAMOUNT'u eklenir. 0 = sınırsız. |
 | `StoreMaxWeight` | 50000 | Hesap deposundaki eşyaların toplam ağırlığı en çok, stone. Hesabın ve karakterin STOREEXTRAWEIGHT'i eklenir. 0 = sınırsız. |
 | `StoreMaxPerItem` | 100000 | Hesap deposunda bir eşya türünden (BASEID, bütün renkleri) en çok kaç adet olur. Eşyanın ITEMDEF'indeki STOREMAX ya da depo kategorisinin ([STORECATEGORY]) MAXAMOUNT'u bunu ezer. 0 = sınırsız. |
+| `StoreMaxTakeAmount` | 60000 | Hesap deposundan bir çekmede en çok kaç adet eşya alınır (STORETAKE, STORETAKEGROUP). Fazlası istenirse hiçbir şey çıkmaz. 0 = sınırsız (StoreMaxTakeItems yine sınırlar). |
+| `StoreMaxTakeItems` | 100 | Hesap deposundan bir çekmede dünyaya en çok kaç eşya girer (1-1000): yığın eşya 65535'lik parçalar hâlinde, yığın olmayan her eşya tek tek. Fazlası istenirse hiçbir şey çıkmaz. |
 | `PayFromPackOnly` | 0 | 1 ise satıcılar parayı sadece sırt çantasından alır |
 | `NoWeather` | 1 | Hava durumu efektleri kapatılsın mı? |
 | `AllowNewbTransfer` | 0 | Eşyalar bir NPC'ye verildiğinde attr_newbie bayraklarını korusun diye 1 yapın. |

@@ -206,6 +206,8 @@ Eşya tetikleyicilerinin `@Item...` biçimi (ör. `@ItemDClick`, `@ItemEquip`) k
 - `@SpellTargetCancel`: cancelled spell target
 - `@StatChange`
 - `@StepStealth`: Made a step in stealth mode
+- `@StoreAdd`: 0.56TX: hesap deposuna eşya ekliyorum (ARGO eşya, ARGN1 adet; RETURN 1 eklemez). Tablo sıralı aranır.
+- `@StoreTake`: 0.56TX: hesap deposundan eşya çıkarıyorum (ARGN1 kayıt, ARGN2 adet, ARGN3 yer; RETURN 1 çıkarmaz)
 - `@Targon_Cancel`: closing target from TARGETF*
 - `@ToggleFlying`: Flying On/Off
 - `@ToolTip`: someone did tool tips on me.
