@@ -217,6 +217,7 @@ Eşya tetikleyicilerinin `@Item...` biçimi (ör. `@ItemDClick`, `@ItemEquip`) k
 - `@TravelCheck`: 0.56TX: yolculuk büyüsünün kontrolü (TravelCheck)
 - `@UserBugReport`
 - `@UserChatButton`
+- `@UserClientGump`: 0.56TX: UOSoft client'ının kendi penceresi açıldı/kapandı (0x12 tür 0xDD)
 - `@UserExtCmd`
 - `@UserExWalkLimit`
 - `@UserGuildButton`
