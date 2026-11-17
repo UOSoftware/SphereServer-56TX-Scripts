@@ -16,12 +16,12 @@ ON=*check*
 DIALOGCLOSE D_BANKER_CHECK
 DIALOG D_BANKER_CHECK
 
-// Hesap deposu (emulatörün STORE'u: d_store, erişim kuralları sphere.ini'de Store*).
+// Hesap deposu (emulatörün STOREOPEN'ı, STORE'un aynısı; paketin [FUNCTION STORE]'u onu ezemez: d_store, erişim kuralları sphere.ini'de Store*).
 ON=*depo*
-SRC.STORE
+SRC.STOREOPEN
 
 ON=*store*
-SRC.STORE
+SRC.STOREOPEN
 
 
 

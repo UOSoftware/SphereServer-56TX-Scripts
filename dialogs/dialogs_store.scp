@@ -5,8 +5,9 @@ Hesap deposu: arayüz. Depo emulatöre gömülüdür (0.56TX, AccountStore): kay
  kurallar, sınırlar, erişim (sphere.ini'de Store*), yetki ve mesajlar emulatörün. Hesabın bütün karakterleri aynı depoyu
  kullanır. Emulatörün anahtarları (karakterde; açık depo karakterin kendi hesabınınki ya da staff'ın STOREVIEW ile
  açtığı hesabınki):
- - .store (STORE) d_store'u açar, erişim yoksa emulatör söyler; .depo aynısı ve banker'a "depo" ya da "store" demek
-   (speech_npc_vendor_bankers.scp).
+ - .store (STORE) d_store'u açar, erişim yoksa emulatör söyler; .depo ve banker'a "depo" ya da "store" demek STOREOPEN'la
+   aynısı (STORE'u paketin kendi [FUNCTION STORE]'u, ör. bir market, ezebilir; STOREOPEN hep emulatörün). UOSoft client'ının
+   banka kutusundaki "Depo" düğmesi de aynısı (0x12 tür 0xDC). Banker'ın konuşması speech_npc_vendor_bankers.scp'de.
  - STOREADD <uid>, STOREADDALL <yer>,<iç içe> (0 çanta, 1 bankalar, 2 ikisi), STORETAKE <id>,<miktar>,<yer>,
    STORETAKEGROUP <baseid>,<renk>,<miktar>,<yer> (yer 0 çanta, 1 banka); sonuç STORERESULT, mesajı emulatör verir.
    Miktarı emulatör katı okur (sadece 1 ve büyük onluk sayı): dialog oyuncunun yazdığını olduğu gibi verir.
@@ -33,9 +34,9 @@ depo
 [PLEVEL 4]
 xdepo
 
-// .depo: .store'un Türkçesi.
+// .depo: .store'un Türkçesi. STOREOPEN: paketin [FUNCTION STORE]'u (market) varsa da emulatörün deposu.
 [FUNCTION depo]
-STORE
+STOREOPEN
 
 // .xdepo [hesap]: staff başka bir hesabın deposunu açar; argümansız bir oyuncu hedefletir.
 [FUNCTION xdepo]
