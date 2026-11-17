@@ -1,0 +1,552 @@
+VERSION=TX
+
+[COMMENT]
+Hesap deposu: arayüz. Depo emulatöre gömülüdür (0.56TX, AccountStore): kayıt (world save'de, oyuncularla aynı dosyada),
+ kurallar, sınırlar, erişim (sphere.ini'de Store*), yetki ve mesajlar emulatörün. Hesabın bütün karakterleri aynı depoyu
+ kullanır. Emulatörün anahtarları (karakterde; açık depo karakterin kendi hesabınınki ya da staff'ın STOREVIEW ile
+ açtığı hesabınki):
+ - .store (STORE) d_store'u açar, erişim yoksa emulatör söyler; .depo aynısı ve banker'a "depo" ya da "store" demek
+   (speech_npc_vendor_bankers.scp).
+ - STOREADD <uid>, STOREADDALL <yer>,<iç içe> (0 çanta, 1 bankalar, 2 ikisi), STORETAKE <id>,<miktar>,<yer>,
+   STORETAKEGROUP <baseid>,<renk>,<miktar>,<yer> (yer 0 çanta, 1 banka); sonuç STORERESULT, mesajı emulatör verir.
+   Miktarı emulatör katı okur (sadece 1 ve büyük onluk sayı): dialog oyuncunun yazdığını olduğu gibi verir.
+ - Staff: STOREVIEW [hesap|uid] (sphere.ini StoreViewPlevel görür, StoreEditPlevel değiştirir), STOREDELETE <id>,<miktar>;
+   .xdepo (bu dosya) hedeflenen oyuncunun ya da adı yazılan hesabın deposunu açar.
+ - Okunanlar: STOREACCESS (0 kullanılabilir), STOREACCOUNT, STORECANEDIT, STOREOTHER, STORE.COUNT/TOTAL/WEIGHT/
+   MAXENTRIES/MAXAMOUNT/MAXWEIGHT, STORE.LISTCOUNT kategori,arama, STORE.LIST baş,adet,kategori,sıra,arama,
+   STORE.FIND baseid,renk, STORE.GROUP.n.BASEID/COLOR/NAME/DISPID/AMOUNT/PLAIN/ENTRIES/ENTRY.m, STORE.ENTRY.id.NAME/
+   AMOUNT/KIND; kategoriler SERV.STORECATEGORIES ve SERV.STORECATEGORY.n.DEFNAME/NAME.
+ Dialog'un nesnesi açan char. Durum client'ta: CTAG.StoreCat (kategori), CTAG.StoreSort (sıra), CTAG.StoreSearch (arama),
+ CTAG0.StorePage, seçili grup CTAG.StoreSelId ve CTAG0.StoreSelHue, CTAG0.StoreRecPage, CTAG0.StoreConfirm (onay bekleyen
+ toplu ekleme: 1 çanta, 2 banka, 3 ikisi), CTAG0.StoreNested. Satırların grupları CTAG.StoreRowId.n ve
+ CTAG0.StoreRowHue.n'de, kayıtlarınki CTAG0.StoreRec.n'de: butonlar client'ın gönderdiği numaraya değil o an
+ gösterilene bakar (grupların sırası depo değiştikçe kayar, aynı hesabın başka karakteri de değiştirebilir).
+
+[PLEVEL 1]
+depo
+
+[PLEVEL 4]
+xdepo
+
+// .depo: .store'un Türkçesi.
+[FUNCTION depo]
+STORE
+
+// .xdepo [hesap]: staff başka bir hesabın deposunu açar; argümansız bir oyuncu hedefletir.
+[FUNCTION xdepo]
+IF !(<ISEMPTY <ARGS>>)
+	STOREVIEW <ARGS>
+	RETURN 1
+ENDIF
+TARGETF f_store_xtarget
+
+[FUNCTION f_store_xtarget]
+IF !(<ARGO>) || !(<ARGO.ISPLAYER>)
+	SYSMESSAGELOC <def.tcolor_red>,3300111
+	RETURN 1
+ENDIF
+STOREVIEW <ARGO.UID>
+
+// Dialog'u yeniden çizer (durum CTAG'lerde).
+[FUNCTION f_store_reopen]
+DIALOGCLOSE d_store
+DIALOG d_store
+
+// "Eşya seç": hedeflenen eşya depoya; başarıda sıradaki eşya için yeniden hedefletir (iptal edene kadar).
+[FUNCTION f_store_target]
+IF !(<ARGO>) || !(<ARGO.ISITEM>)
+	SYSMESSAGELOC <def.tcolor_red>,3300371
+	RETURN 1
+ENDIF
+STOREADD <ARGO.UID>
+IF (<STORERESULT> == 0)
+	TARGETF f_store_target
+ENDIF
+f_store_reopen
+
+// Sıra: ARGS 0 ad, 1 adet, 2 tarih. Aynı başlığa ikinci tık sırayı çevirir; adet ve tarih önce çoktan aza, yeniden eskiye.
+[FUNCTION f_store_sort]
+IF (<ARGS> == 0)
+	IF (STRCMP(<CTAG.StoreSort>,name) == 0)
+		CTAG.StoreSort=-name
+	ELSE
+		CTAG.StoreSort=name
+	ENDIF
+ELIF (<ARGS> == 1)
+	IF (STRCMP(<CTAG.StoreSort>,-amount) == 0)
+		CTAG.StoreSort=amount
+	ELSE
+		CTAG.StoreSort=-amount
+	ENDIF
+ELSE
+	IF (STRCMP(<CTAG.StoreSort>,-added) == 0)
+		CTAG.StoreSort=added
+	ELSE
+		CTAG.StoreSort=-added
+	ENDIF
+ENDIF
+CTAG.StorePage=
+
+// Sınır: ARGS sınır; 0 sınırsız.
+[FUNCTION f_store_max]
+IF (<ARGS> == 0)
+	RETURN sınırsız
+ENDIF
+RETURN <NUMBERFORMAT <ARGS>>
+
+// Doluluğun rengi: ARGS dolu,sınır; %90'dan sonra kırmızı.
+[FUNCTION f_store_full_hue]
+IF (<ARGV[1]> == 0)
+	RETURN 0
+ELIF (<EVAL <ARGV[0]>*10> >= <EVAL <ARGV[1]>*9>)
+	RETURN 038
+ENDIF
+RETURN 0
+
+// STOREACCESS'in metni (emulatörün mesajı, oyuncunun dilinde): ARGS sonuç.
+[FUNCTION f_store_access_text]
+IF (<ARGS> == 22)
+	RETURN <DEFMSG.store_no_access_dead>
+ELIF (<ARGS> == 23)
+	RETURN <DEFMSG.store_no_access_trade>
+ELIF (<ARGS> == 25)
+	RETURN <DEFMSG.store_no_access_pin>
+ELIF (<ARGS> == 27)
+	RETURN <DEFMSG.store_view_no_account>
+ENDIF
+LOCAL.A=<EVAL <SERV.STOREACCESS> & 03>
+IF (<LOCAL.A> == 1)
+	RETURN <DEFMSG.store_no_access_banker>
+ELIF (<LOCAL.A> == 2)
+	RETURN <DEFMSG.store_no_access_house>
+ELIF (<LOCAL.A> == 3)
+	RETURN <DEFMSG.store_no_access_place>
+ENDIF
+RETURN <DEFMSG.store_no_access_closed>
+
+// Seçili grubun sırası (GROUP.n), yoksa -1.
+[FUNCTION f_store_sel]
+IF (<ISEMPTY <CTAG.StoreSelId>>)
+	RETURN -1
+ENDIF
+RETURN <STORE.FIND <CTAG.StoreSelId>,<CTAG0.StoreSelHue>>
+
+// Seçili grubun özelliksiz kaydının numarası, yoksa 0.
+[FUNCTION f_store_plain_id]
+LOCAL.S=<f_store_sel>
+IF (<dLOCAL.S> < 0)
+	RETURN 0
+ENDIF
+LOCAL.E=<STORE.GROUP.<dLOCAL.S>.ENTRIES>
+FOR 0 <EVAL <LOCAL.E>-1>
+	LOCAL.ID=<STORE.GROUP.<dLOCAL.S>.ENTRY.<dLOCAL._FOR>>
+	IF !(<STORE.ENTRY.<dLOCAL.ID>.KIND>)
+		RETURN <dLOCAL.ID>
+	ENDIF
+ENDFOR
+RETURN 0
+
+
+// Depo. Solda kategoriler, ortada arama, sıra ve eşya grupları (BASEID ve renk), sağda seçili grubun ayrıntısı.
+[DIALOG d_store]
+<DEF.DlgStartPos>
+IF (<ISEMPTY <STOREACCOUNT>>)
+	// STOREVIEW ile açılan hesap silinmiş.
+	RESIZE 0,0,440,140,Depo
+	DTEXT 25 55 <DEF.tcolor_red> <DEFMSG.store_view_no_account>
+	BUTTON 25 85 4005 4007 1 0 19
+	DTEXT 60 85 044 Kendi depom
+	RETURN 0
+ENDIF
+LOCAL.PAGELEN=7
+LOCAL.RECLEN=4
+LOCAL.EDIT=<STORECANEDIT>
+LOCAL.STAFFEDIT=0
+IF (<ACCOUNT.PLEVEL> >= <SERV.STOREEDITPLEVEL>)
+	LOCAL.STAFFEDIT=1
+ENDIF
+IF (<ISEMPTY <CTAG.StoreSort>>)
+	CTAG.StoreSort=name
+ENDIF
+LOCAL.COUNT=<STORE.LISTCOUNT <CTAG.StoreCat>,<CTAG.StoreSearch>>
+LOCAL.PAGES=<EVAL ((<LOCAL.COUNT>-1)/<LOCAL.PAGELEN>)+1>
+IF (<LOCAL.PAGES> < 1)
+	LOCAL.PAGES=1
+ENDIF
+IF (<DCTAG0.StorePage> >= <LOCAL.PAGES>)
+	CTAG.StorePage=<EVAL <LOCAL.PAGES>-1>
+ENDIF
+LOCAL.FIRST=<EVAL <DCTAG0.StorePage>*<LOCAL.PAGELEN>>
+
+IF (<STOREOTHER>)
+	IF (<LOCAL.EDIT>)
+		RESIZE 0,0,880,620,Depo: <STOREACCOUNT>
+	ELSE
+		RESIZE 0,0,880,620,Depo: <STOREACCOUNT> (sadece görüntüleme)
+	ENDIF
+ELSE
+	RESIZE 0,0,880,620,Depo
+ENDIF
+DORIGIN 25 50
+
+// Doluluk; sınıra yaklaşan kırmızı.
+DTEXT +0 +0 <f_store_full_hue <STORE.COUNT>,<STORE.MAXENTRIES>> Kayıt: <NUMBERFORMAT <STORE.COUNT>> / <f_store_max <STORE.MAXENTRIES>>
+DTEXT +210 +0 <f_store_full_hue <STORE.TOTAL>,<STORE.MAXAMOUNT>> Adet: <NUMBERFORMAT <STORE.TOTAL>> / <f_store_max <STORE.MAXAMOUNT>>
+DTEXT +450 +0 <f_store_full_hue <STORE.WEIGHT>,<STORE.MAXWEIGHT>> Ağırlık: <NUMBERFORMAT <STORE.WEIGHT>> / <f_store_max <STORE.MAXWEIGHT>> taş
+IF (<STOREOTHER>)
+	BUTTON +690 +0 4014 4016 1 0 19
+	DTEXT +725 +0 0 Kendi depom
+ENDIF
+// Erişim yoksa (banker'dan uzaklaşıldı, ölüm...) uyarı: liste görünür, ekleme ve alma emulatörün mesajıyla reddedilir.
+LOCAL.ACC=<STOREACCESS>
+IF (<LOCAL.ACC>)
+	DTEXT +0 +22 <DEF.tcolor_red> <f_store_access_text <dLOCAL.ACC>>
+ENDIF
+
+// Arama ve sıra
+DTEXT +170 +52 0 Ara:
+RESIZEPIC +210 +48 3000 200 26
+DTEXTENTRYLIMITED +215 +51 190 20 0 1 30 <CTAG.StoreSearch>
+BUTTON +415 +51 4005 4007 1 0 1
+IF !(<ISEMPTY <CTAG.StoreSearch>>)
+	BUTTON +450 +51 4017 4018 1 0 2
+ENDIF
+LOCAL.H0=0
+LOCAL.H1=0
+LOCAL.H2=0
+LOCAL.T0=A-Z
+LOCAL.T1=çok
+LOCAL.T2=yeni
+IF (STRMATCH(*name,<CTAG.StoreSort>))
+	LOCAL.H0=044
+	IF (STRCMP(<CTAG.StoreSort>,-name) == 0)
+		LOCAL.T0=Z-A
+	ENDIF
+ELIF (STRMATCH(*amount,<CTAG.StoreSort>))
+	LOCAL.H1=044
+	IF (STRCMP(<CTAG.StoreSort>,amount) == 0)
+		LOCAL.T1=az
+	ENDIF
+ELIF (STRMATCH(*added,<CTAG.StoreSort>))
+	LOCAL.H2=044
+	IF (STRCMP(<CTAG.StoreSort>,added) == 0)
+		LOCAL.T2=eski
+	ENDIF
+ENDIF
+DTEXT +500 +52 0 Sırala:
+BUTTON +560 +51 4005 4007 1 0 3
+DTEXT +592 +52 <LOCAL.H0> Ad (<LOCAL.T0>)
+BUTTON +665 +51 4005 4007 1 0 4
+DTEXT +697 +52 <LOCAL.H1> Adet (<LOCAL.T1>)
+BUTTON +665 +23 4005 4007 1 0 5
+DTEXT +697 +24 <LOCAL.H2> Tarih (<LOCAL.T2>)
+
+// Kategoriler
+DHTMLGUMP +0 +85 155 22 1 0 <DEF.CENTER>KATEGORİ<DEF.CENTERE>
+LOCAL.Y=112
+BUTTON +0 +<dLOCAL.Y> 4005 4007 1 0 20
+DTEXT +35 +<dLOCAL.Y> <QVAL <ISEMPTY <CTAG.StoreCat>> ? 044:0> Tümü (<STORE.GROUPS>)
+IF (<SERV.STORECATEGORIES> > 0)
+	FOR 0 <EVAL <SERV.STORECATEGORIES>-1>
+		IF (<LOCAL._FOR> < 12)
+			LOCAL.Y=<EVAL <LOCAL.Y>+26>
+			LOCAL.N=<STORE.LISTCOUNT <SERV.STORECATEGORY.<dLOCAL._FOR>.DEFNAME>,>
+			LOCAL.HUE=0
+			IF (STRCMPI(<SERV.STORECATEGORY.<dLOCAL._FOR>.DEFNAME>,<CTAG.StoreCat>) == 0)
+				LOCAL.HUE=044
+			ELIF !(<LOCAL.N>)
+				LOCAL.HUE=0389
+			ENDIF
+			BUTTON +0 +<dLOCAL.Y> 4005 4007 1 0 <EVAL 21+<LOCAL._FOR>>
+			DTEXT +35 +<dLOCAL.Y> <LOCAL.HUE> <STRLIMIT 13,<SERV.STORECATEGORY.<dLOCAL._FOR>.NAME>> (<dLOCAL.N>)
+		ENDIF
+	ENDFOR
+ENDIF
+
+// Eşya grupları
+DHTMLGUMP +170 +85 400 22 1 0 <DEF.CENTER>EŞYA<DEF.CENTERE>
+LOCAL.LIST=<STORE.LIST <dLOCAL.FIRST>,<dLOCAL.PAGELEN>,<CTAG.StoreCat>,<CTAG.StoreSort>,<CTAG.StoreSearch>>
+LOCAL.ROWS=<EVAL <LOCAL.COUNT>-<LOCAL.FIRST>>
+LOCAL.Y=112
+FOR 0 <EVAL <LOCAL.PAGELEN>-1>
+	CTAG.StoreRowId.<dLOCAL._FOR>=
+	CTAG.StoreRowHue.<dLOCAL._FOR>=
+	IF (<LOCAL._FOR> < <LOCAL.ROWS>)
+		LOCAL.G=<ARRAYGET <dLOCAL._FOR>,<LOCAL.LIST>>
+		CTAG.StoreRowId.<dLOCAL._FOR>=<STORE.GROUP.<LOCAL.G>.BASEID>
+		CTAG.StoreRowHue.<dLOCAL._FOR>=<STORE.GROUP.<LOCAL.G>.COLOR>
+		LOCAL.HUE=0
+		IF (STRCMPI(<CTAG.StoreRowId.<dLOCAL._FOR>>,<CTAG.StoreSelId>) == 0) && (<CTAG0.StoreRowHue.<dLOCAL._FOR>> == <CTAG0.StoreSelHue>)
+			LOCAL.HUE=044
+		ENDIF
+		LOCAL.K=<EVAL <STORE.GROUP.<LOCAL.G>.ENTRIES>-<QVAL (<STORE.GROUP.<LOCAL.G>.PLAIN> > 0) ? 1:0>>
+		RESIZEPIC +170 +<dLOCAL.Y> 3000 400 44
+		TILEPICHUE +178 +<EVAL <LOCAL.Y>+2> <EVAL <STORE.GROUP.<LOCAL.G>.DISPID>> <EVAL <STORE.GROUP.<LOCAL.G>.COLOR>>
+		DTEXT +240 +<EVAL <LOCAL.Y>+4> <LOCAL.HUE> <STRLIMIT 34,<STORE.GROUP.<LOCAL.G>.NAME>>
+		IF (<LOCAL.K>)
+			DTEXT +240 +<EVAL <LOCAL.Y>+22> 0389 <NUMBERFORMAT <STORE.GROUP.<LOCAL.G>.AMOUNT>> adet, <dLOCAL.K> özellikli kayıt
+		ELSE
+			DTEXT +240 +<EVAL <LOCAL.Y>+22> 0389 <NUMBERFORMAT <STORE.GROUP.<LOCAL.G>.AMOUNT>> adet
+		ENDIF
+		BUTTON +535 +<EVAL <LOCAL.Y>+11> 4005 4007 1 0 <EVAL 100+<LOCAL._FOR>>
+	ENDIF
+	LOCAL.Y=<EVAL <LOCAL.Y>+46>
+ENDFOR
+IF !(<LOCAL.COUNT>)
+	IF !(<ISEMPTY <CTAG.StoreSearch>>) || !(<ISEMPTY <CTAG.StoreCat>>)
+		DTEXT +180 +120 0389 Aramaya ya da kategoriye uyan eşya yok.
+	ELSE
+		DTEXT +180 +120 0389 Depo boş. Aşağıdan eşya ekleyebilirsiniz.
+	ENDIF
+ENDIF
+LOCAL.Y=<EVAL 115+(<LOCAL.PAGELEN>*46)>
+IF (<LOCAL.PAGES> > 1)
+	IF (<DCTAG0.StorePage> > 0)
+		BUTTON +300 +<dLOCAL.Y> 5603 5607 1 0 6
+	ENDIF
+	DTEXT +325 +<dLOCAL.Y> 0 Sayfa <EVAL <DCTAG0.StorePage>+1> / <dLOCAL.PAGES>
+	IF (<EVAL <DCTAG0.StorePage>+1> < <LOCAL.PAGES>)
+		BUTTON +425 +<dLOCAL.Y> 5601 5605 1 0 7
+	ENDIF
+ENDIF
+
+// Seçili grubun ayrıntısı
+DHTMLGUMP +590 +85 240 22 1 0 <DEF.CENTER>AYRINTI<DEF.CENTERE>
+LOCAL.S=<f_store_sel>
+FOR 0 <EVAL <LOCAL.RECLEN>-1>
+	CTAG.StoreRec.<dLOCAL._FOR>=
+ENDFOR
+IF (<dLOCAL.S> < 0)
+	DHTMLGUMP +590 +115 240 60 0 0 Ayrıntısını görmek ve almak için listeden bir eşyanın okuna tıklayın.
+ELSE
+	LOCAL.PLAIN=<STORE.GROUP.<dLOCAL.S>.PLAIN>
+	LOCAL.K=<EVAL <STORE.GROUP.<dLOCAL.S>.ENTRIES>-<QVAL (<LOCAL.PLAIN> > 0) ? 1:0>>
+	RESIZEPIC +590 +112 2620 60 60
+	TILEPICHUE +598 +120 <EVAL <STORE.GROUP.<dLOCAL.S>.DISPID>> <EVAL <STORE.GROUP.<dLOCAL.S>.COLOR>>
+	DTEXT +660 +112 044 <STRLIMIT 20,<STORE.GROUP.<dLOCAL.S>.NAME>>
+	DTEXT +660 +132 0 Toplam: <NUMBERFORMAT <STORE.GROUP.<dLOCAL.S>.AMOUNT>>
+	DTEXT +660 +152 0 Özelliksiz: <NUMBERFORMAT <dLOCAL.PLAIN>>
+	IF (<LOCAL.EDIT>)
+		LOCAL.AMT=<dLOCAL.PLAIN>
+		IF (<LOCAL.AMT> == 0)
+			LOCAL.AMT=1
+		ELIF (<SERV.STOREMAXTAKEAMOUNT> > 0) && (<LOCAL.AMT> > <SERV.STOREMAXTAKEAMOUNT>)
+			LOCAL.AMT=<SERV.STOREMAXTAKEAMOUNT>
+		ENDIF
+		DTEXT +590 +185 0 Miktar:
+		RESIZEPIC +650 +181 3000 100 26
+		DTEXTENTRYLIMITED +655 +184 90 20 0 2 10 <dLOCAL.AMT>
+		BUTTON +590 +215 4005 4007 1 0 14
+		DTEXT +625 +215 044 Çantaya al
+		BUTTON +715 +215 4005 4007 1 0 15
+		DTEXT +750 +215 044 Bankaya al
+		IF (<LOCAL.STAFFEDIT>) && (<LOCAL.PLAIN> > 0)
+			BUTTON +590 +240 4017 4018 1 0 16
+			DTEXT +625 +240 <DEF.tcolor_red> Özelliksizden sil
+		ENDIF
+		DTEXT +590 +262 0389 Önce özelliksizler, sonra en eski kayıt.
+	ENDIF
+	IF (<LOCAL.K>)
+		LOCAL.RPAGES=<EVAL ((<LOCAL.K>-1)/<LOCAL.RECLEN>)+1>
+		IF (<DCTAG0.StoreRecPage> >= <LOCAL.RPAGES>)
+			CTAG.StoreRecPage=<EVAL <LOCAL.RPAGES>-1>
+		ENDIF
+		LOCAL.RFIRST=<EVAL <DCTAG0.StoreRecPage>*<LOCAL.RECLEN>>
+		DHTMLGUMP +590 +285 240 22 1 0 <DEF.CENTER>ÖZELLİKLİ KAYITLAR (<dLOCAL.K>)<DEF.CENTERE>
+		LOCAL.R=0
+		LOCAL.Y=312
+		LOCAL.E=<STORE.GROUP.<dLOCAL.S>.ENTRIES>
+		FOR 0 <EVAL <LOCAL.E>-1>
+			LOCAL.ID=<STORE.GROUP.<dLOCAL.S>.ENTRY.<dLOCAL._FOR>>
+			IF (<STORE.ENTRY.<dLOCAL.ID>.KIND>)
+				IF (<LOCAL.R> >= <LOCAL.RFIRST>) && (<LOCAL.R> < <EVAL <LOCAL.RFIRST>+<LOCAL.RECLEN>>)
+					LOCAL.I=<EVAL <LOCAL.R>-<LOCAL.RFIRST>>
+					CTAG.StoreRec.<dLOCAL.I>=<dLOCAL.ID>
+					DTEXT +590 +<dLOCAL.Y> 0 <STRLIMIT 22,<STORE.ENTRY.<dLOCAL.ID>.NAME>>
+					DTEXT +590 +<EVAL <LOCAL.Y>+17> 0389 #<dLOCAL.ID>, <NUMBERFORMAT <STORE.ENTRY.<dLOCAL.ID>.AMOUNT>> adet
+					IF (<LOCAL.EDIT>)
+						BUTTON +765 +<EVAL <LOCAL.Y>+6> 4005 4007 1 0 <EVAL 200+<LOCAL.I>>
+					ENDIF
+					IF (<LOCAL.EDIT>) && (<LOCAL.STAFFEDIT>)
+						BUTTON +797 +<EVAL <LOCAL.Y>+6> 4017 4018 1 0 <EVAL 300+<LOCAL.I>>
+					ENDIF
+					LOCAL.Y=<EVAL <LOCAL.Y>+38>
+				ENDIF
+				LOCAL.R=<EVAL <LOCAL.R>+1>
+			ENDIF
+		ENDFOR
+		IF (<LOCAL.RPAGES> > 1)
+			IF (<DCTAG0.StoreRecPage> > 0)
+				BUTTON +620 +470 5603 5607 1 0 17
+			ENDIF
+			DTEXT +645 +470 0 <EVAL <DCTAG0.StoreRecPage>+1> / <dLOCAL.RPAGES>
+			IF (<EVAL <DCTAG0.StoreRecPage>+1> < <LOCAL.RPAGES>)
+				BUTTON +700 +470 5601 5605 1 0 18
+			ENDIF
+		ENDIF
+	ENDIF
+ENDIF
+
+// Ekleme (sadece değiştirilebilen depoda)
+IF (<LOCAL.EDIT>)
+	DTEXT +0 +505 0 Ekle:
+	BUTTON +45 +505 4005 4007 1 0 8
+	DTEXT +80 +505 044 Eşya seç
+	BUTTON +175 +505 4005 4007 1 0 9
+	DTEXT +210 +505 0 Çantadakiler
+	BUTTON +320 +505 4005 4007 1 0 10
+	DTEXT +355 +505 0 Bankadakiler
+	BUTTON +465 +505 4005 4007 1 0 11
+	DTEXT +500 +505 0 Çanta ve banka
+	CHECKBOX +630 +505 210 211 <dCTAG0.StoreNested> 50
+	DTEXT +655 +505 0 Alt çantalar dahil
+	IF (<DCTAG0.StoreConfirm>)
+		IF (<DCTAG0.StoreConfirm> == 1)
+			LOCAL.W=Çantanızdaki
+		ELIF (<DCTAG0.StoreConfirm> == 2)
+			LOCAL.W=Bankanızdaki
+		ELSE
+			LOCAL.W=Çantanızdaki ve bankanızdaki
+		ENDIF
+		DTEXT +0 +535 <DEF.tcolor_red> <LOCAL.W> depolanabilir bütün eşyalar depoya girecek. Emin misiniz?
+		BUTTON +560 +535 4023 4024 1 0 12
+		DTEXT +595 +535 044 Evet
+		BUTTON +655 +535 4017 4018 1 0 13
+		DTEXT +690 +535 038 Vazgeç
+	ENDIF
+ENDIF
+
+[DIALOG d_store BUTTON]
+ON=0
+CTAG.StoreConfirm=
+
+// Ara (sadece harf, rakam ve boşluk), aramayı temizle
+ON=1
+IF (<HASSPECIAL <ARGTXT[1]>>)
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3301205
+ELSE
+	CTAG.StoreSearch=<STRTRIM <ARGTXT[1]>>
+	CTAG.StorePage=
+ENDIF
+f_store_reopen
+
+ON=2
+CTAG.StoreSearch=
+CTAG.StorePage=
+f_store_reopen
+
+// Sıra
+ON=3 5
+f_store_sort <EVAL <ARGN>-3>
+f_store_reopen
+
+// Sayfalar
+ON=6
+IF (<DCTAG0.StorePage> > 0)
+	CTAG.StorePage=<EVAL <DCTAG0.StorePage>-1>
+ENDIF
+f_store_reopen
+
+ON=7
+CTAG.StorePage=<EVAL <DCTAG0.StorePage>+1>
+f_store_reopen
+
+// Eşya seç (hedefle, iptal edene kadar)
+ON=8
+CTAG.StoreConfirm=
+SRC.SYSMESSAGELOC <def.tcolor_green>,3301206
+SRC.TARGETF f_store_target
+f_store_reopen
+
+// Toplu ekleme: önce onay
+ON=9 11
+CTAG.StoreNested=<ARGCHK[50]>
+CTAG.StoreConfirm=<EVAL <ARGN>-8>
+f_store_reopen
+
+ON=12
+LOCAL.W=<EVAL <DCTAG0.StoreConfirm>-1>
+CTAG.StoreNested=<ARGCHK[50]>
+CTAG.StoreConfirm=
+IF (<LOCAL.W> >= 0) && (<LOCAL.W> <= 2)
+	SRC.STOREADDALL <dLOCAL.W>,<EVAL <DCTAG0.StoreNested> != 0>
+ENDIF
+f_store_reopen
+
+ON=13
+CTAG.StoreConfirm=
+f_store_reopen
+
+// Seçili gruptan al: 14 çantaya, 15 bankaya (sığmazsa emulatör öteki yere koyar)
+ON=14 15
+IF !(<ISEMPTY <CTAG.StoreSelId>>)
+	SRC.STORETAKEGROUP <CTAG.StoreSelId>,<CTAG0.StoreSelHue>,<ARGTXT[2]>,<EVAL <ARGN>-14>
+ENDIF
+f_store_reopen
+
+// Staff: seçili grubun özelliksiz kaydından sil
+ON=16
+LOCAL.ID=<f_store_plain_id>
+IF (<LOCAL.ID>)
+	SRC.STOREDELETE <dLOCAL.ID>,<ARGTXT[2]>
+ENDIF
+f_store_reopen
+
+// Özellikli kayıtların sayfaları
+ON=17
+IF (<DCTAG0.StoreRecPage> > 0)
+	CTAG.StoreRecPage=<EVAL <DCTAG0.StoreRecPage>-1>
+ENDIF
+f_store_reopen
+
+ON=18
+CTAG.StoreRecPage=<EVAL <DCTAG0.StoreRecPage>+1>
+f_store_reopen
+
+// Staff: kendi deposuna dön (STOREVIEW dialog'u kendisi açar)
+ON=19
+CTAG.StoreSelId=
+CTAG.StorePage=
+SRC.STOREVIEW
+
+// Kategoriler: 20 hepsi, 21... SERV.STORECATEGORY.<n>
+ON=20
+CTAG.StoreCat=
+CTAG.StorePage=
+f_store_reopen
+
+ON=21 79
+LOCAL.C=<EVAL <ARGN>-21>
+IF (<LOCAL.C> < <SERV.STORECATEGORIES>)
+	CTAG.StoreCat=<SERV.STORECATEGORY.<dLOCAL.C>.DEFNAME>
+	CTAG.StorePage=
+ENDIF
+f_store_reopen
+
+// Satır seçimi
+ON=100 199
+LOCAL.R=<EVAL <ARGN>-100>
+IF !(<ISEMPTY <CTAG.StoreRowId.<dLOCAL.R>>>)
+	CTAG.StoreSelId=<CTAG.StoreRowId.<dLOCAL.R>>
+	CTAG.StoreSelHue=<CTAG0.StoreRowHue.<dLOCAL.R>>
+	CTAG.StoreRecPage=
+ENDIF
+f_store_reopen
+
+// Özellikli kaydı çantaya al (bir adet)
+ON=200 299
+LOCAL.ID=<CTAG0.StoreRec.<EVAL <ARGN>-200>>
+IF (<LOCAL.ID>)
+	SRC.STORETAKE <dLOCAL.ID>,1,0
+ENDIF
+f_store_reopen
+
+// Staff: özellikli kaydı sil (bir adet)
+ON=300 399
+LOCAL.ID=<CTAG0.StoreRec.<EVAL <ARGN>-300>>
+IF (<LOCAL.ID>)
+	SRC.STOREDELETE <dLOCAL.ID>,1
+ENDIF
+f_store_reopen
+
+[EOF]

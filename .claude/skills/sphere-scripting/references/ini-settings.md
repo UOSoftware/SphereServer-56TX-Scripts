@@ -240,6 +240,11 @@ Emulatörün tanıdığı her ayar: ad, gömülü değer (ayar ini'de yoksa kull
 | `StoreMaxPerItem` | 100000 | Hesap deposunda bir eşya türünden (BASEID, bütün renkleri) en çok kaç adet olur. Eşyanın ITEMDEF'indeki STOREMAX ya da depo kategorisinin ([STORECATEGORY]) MAXAMOUNT'u bunu ezer. 0 = sınırsız. |
 | `StoreMaxTakeAmount` | 60000 | Hesap deposundan bir çekmede en çok kaç adet eşya alınır (STORETAKE, STORETAKEGROUP). Fazlası istenirse hiçbir şey çıkmaz. 0 = sınırsız (StoreMaxTakeItems yine sınırlar). |
 | `StoreMaxTakeItems` | 100 | Hesap deposundan bir çekmede dünyaya en çok kaç eşya girer (1-1000): yığın eşya 65535'lik parçalar hâlinde, yığın olmayan her eşya tek tek. Fazlası istenirse hiçbir şey çıkmaz. |
+| `StoreAccess` | 03 | Hesap deposu nerede kullanılır (açma, ekleme, çıkarma); bayraklar toplanır. Ölüyken ve takas penceresi açıkken hiç kullanılmaz. StoreViewPlevel ve üstündeki staff bu kurallara bakmaz. 01 // Banker'ın yanında (StoreBankerDistance) 02 // Sahibi ya da ortak sahibi olduğu evin içinde 04 // Her yerde |
+| `StoreBankerDistance` | 6 | Hesap deposu için banker'ın en çok uzaklığı, kare (1-18). |
+| `StoreRequirePin` | 1 | Hesabın pin'i varsa hesap deposu pin girilmeden kullanılamaz (.pin, PINVERIFY). 0 = pin istenmez. |
+| `StoreViewPlevel` | 4 | Başkasının hesap deposunu görebilen (STOREVIEW) en düşük PLEVEL (2-7). Bu PLEVEL ve üstü kendi deposunda da erişim kurallarına (StoreAccess, StoreRequirePin, ölü, takas) bakmaz. |
+| `StoreEditPlevel` | 7 | Başkasının hesap deposuna eşya ekleyip çıkarabilen ve kayıt silebilen (STOREDELETE) en düşük PLEVEL (2-7). Eşyalar staff'ın kendi çantasından ve bankasından girer, oraya çıkar. Bu PLEVEL'in altındaki staff başka depoyu sadece görür. |
 | `PayFromPackOnly` | 0 | 1 ise satıcılar parayı sadece sırt çantasından alır |
 | `NoWeather` | 1 | Hava durumu efektleri kapatılsın mı? |
 | `AllowNewbTransfer` | 0 | Eşyalar bir NPC'ye verildiğinde attr_newbie bayraklarını korusun diye 1 yapın. |
