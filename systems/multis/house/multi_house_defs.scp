@@ -90,6 +90,8 @@ placement_near            "t_tree 1"    // ağaca 1 kare (çevredeki ağaç göv
 //placement_water_dist      5     // suya uzaklık (çevredeki su block_dist'te de engel)
 //placement_terrain_deny    "t_lava, t_swamp"   // alanda yasak zemin türleri
 //placement_maps            "0,1"   // kurulabilen haritalar (boş = hepsi)
+placement_spawn_dist      5     // spawn noktasına 5 kare
+placement_teleport_dist   5     // telepad, moongate ve zindan girişi gibi teleporter'lara 5 kare
 placement_chars_player    1     // alandaki başka oyuncu kurmayı engeller
 placement_chars_npc       2     // NPC ev kurulunca dışarı itilir
 placement_chars_pet       2     // pet de itilir
@@ -99,10 +101,12 @@ placement_eject_to        0     // evin dışındaki en yakın boş kare (1: tab
 placement_gm              1     // GM denetlenmez
 // placement_classes        kucuk 64, orta 196, buyuk   // PLACEMENT= yazılmamış evin alanına göre set
 // Gemi ("ship" seti; yazılmayan kural yukarıdakinden): suda 1 karelik çevre, alandaki NPC (deniz canavarı) ve pet
-// kurmayı engeller (itilecek kara yok); yol ve ağaç aranmaz.
+// kurmayı engeller (itilecek kara yok); yol, ağaç, spawn ve teleporter aranmaz (gemi yerinde kalmaz).
 placement_ship_margin       1
 placement_ship_road         -1
 placement_ship_near         ""
+placement_ship_spawn_dist   -1
+placement_ship_teleport_dist -1
 placement_ship_chars_npc    1
 placement_ship_chars_pet    1
 
