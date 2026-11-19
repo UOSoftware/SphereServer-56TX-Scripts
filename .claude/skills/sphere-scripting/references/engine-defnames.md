@@ -70,7 +70,7 @@ Pakette tanımlı olmasa da motorun tanımladığı adlar (`src/scripts/defs_eng
 - report_defs (34)
 - travel_flags (28)
 - hitzones (9)
-- placement (19)
+- placement (26)
 
 ## HARDCODED
 
@@ -1577,6 +1577,13 @@ placement_multi_dist 0
 placement_multi_measure 1
 placement_region_flags region_flag_nobuilding|region_flag_guarded|region_flag_safe|region_flag_underground
 placement_region_dist 0
+placement_road -1
+placement_road_types t_road
+placement_near ""
+placement_water_dist -1
+placement_terrain_deny ""
+placement_terrain_allow ""
+placement_maps ""
 placement_chars_player 1
 placement_chars_npc 1
 placement_chars_pet 1
