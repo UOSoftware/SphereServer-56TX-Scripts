@@ -70,6 +70,7 @@ Pakette tanımlı olmasa da motorun tanımladığı adlar (`src/scripts/defs_eng
 - report_defs (34)
 - travel_flags (28)
 - hitzones (9)
+- placement (19)
 
 ## HARDCODED
 
@@ -1562,5 +1563,29 @@ hitzone_arms 5
 hitzone_hands 6
 hitzone_legs 7
 hitzone_feet 8
+```
+
+## placement
+
+```
+placement_margin 0
+placement_bump 4
+placement_bump_mode 0
+placement_bump_dist 0
+placement_block_dist margin
+placement_multi_dist 0
+placement_multi_measure 1
+placement_region_flags region_flag_nobuilding|region_flag_guarded|region_flag_safe|region_flag_underground
+placement_region_dist 0
+placement_chars_player 1
+placement_chars_npc 1
+placement_chars_pet 1
+placement_chars_staff 2
+placement_chars_self 0
+placement_chars_dist 0
+placement_eject_to 0
+placement_gm 0
+placement_ship_multi_dist -1
+placement_ship_region_flags 0
 ```
 

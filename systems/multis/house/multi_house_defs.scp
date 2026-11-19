@@ -13,10 +13,7 @@ hs_allow_sign_type 			1			// Allow player to change the type of their house sign
 hs_allow_sign_color 		1		// Allow player to change the color of their house signs.
 hs_hs_secure_locks_limit 	1		// Lockdowns & Secures Zero to turn off limitations
 hs_secure_locks_limit		0		// Overwrite hardcoded placement check. (Doesnt work right now)
-hs_placement_check_roads    1
 hs_can_decay				30 	// set to number of days for a house to decay, or set to 0 to disable
-hs_PlaceMinDistFront		5	// Minimum front distance allowed between placed houses. Default = 5
-hs_PlaceMinDistArea			1	// Minimum area distance allowed between placed houses. Default = 1
 hs_default_player_event e_house_events_player // eve giren tüm playerlara verilen event
 hs_default_player_speech spk_house_cmds_player // eve giren tüm playerlara verilen speech
 
@@ -73,6 +70,33 @@ sign_color_28 02e9
 sign_color_29 04a8
 sign_color_30 0490
 
+
+// Ev ve gemi kurulumunun kuralları (motorun HousePlacement'ı). Motor her kurulumda okur; yazılmayan kural motorun
+// gömülü değerini (0.56b/T) alır. Uzaklıklar evin dış duvarlarından (bütün parçalarını içine alan dikdörtgen) sayılır:
+// duvarın hemen dışındaki kare 1. Değer tek sayı ya da batı,kuzey,doğu,güney (evin önü güney); "margin" çevrenin değeri;
+// -1 denetlenmez, 0 sadece evin alanı. Kurallar ve setler (MULTIDEF'te PLACEMENT=<set>: placement_<set>_<kural>;
+// placement_classes ile evin alanına göre) motorun açıklamasında: <DEF.placement_*> ve skill'in engine-defnames.md'si.
+// f_multi_onplacement_check LOCAL.<kural>'ı oyuncuya göre değiştirebilir.
+[DEFNAME placement]
+placement_margin          3     // evin dış duvarlarından 3 kare dışarısı denetlenir
+placement_bump            4     // alanın en çok 4 z engebesi
+placement_bump_dist       0     // engebe sadece evin alanında
+placement_block_dist      margin    // çevrede geçişi kapatan bir şey (duvar, ağaç, kaya, su) olmaz
+placement_multi_dist      3,5,3,5   // başka bir eve: yanlarda 3, önde ve arkada 5 kare
+placement_multi_measure   0     // öteki evin parçalarına (duvar, basamak, bileşenler) göre
+placement_chars_player    1     // alandaki başka oyuncu kurmayı engeller
+placement_chars_npc       2     // NPC ev kurulunca dışarı itilir
+placement_chars_pet       2     // pet de itilir
+placement_chars_staff     2     // görünmeyen staff itilir
+placement_chars_self      2     // kuran alanda duruyorsa itilir
+placement_eject_to        0     // evin dışındaki en yakın boş kare (1: tabelanın altı)
+placement_gm              1     // GM denetlenmez
+// placement_classes        kucuk 64, orta 196, buyuk   // PLACEMENT= yazılmamış evin alanına göre set
+// Gemi ("ship" seti; yazılmayan kural yukarıdakinden): suda 1 karelik çevre, alandaki NPC (deniz canavarı) ve pet
+// kurmayı engeller (itilecek kara yok).
+placement_ship_margin       1
+placement_ship_chars_npc    1
+placement_ship_chars_pet    1
 
 [DEFNAME signs]
 sign_1 9
