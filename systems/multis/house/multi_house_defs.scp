@@ -97,16 +97,20 @@ placement_chars_npc       2     // NPC ev kurulunca dışarı itilir
 placement_chars_pet       2     // pet de itilir
 placement_chars_staff     2     // görünmeyen staff itilir
 placement_chars_self      2     // kuran alanda duruyorsa itilir
+placement_items           2     // alandaki taşınabilir eşya ve ceset ev kurulunca dışarı taşınır (ev başkasının
+                                // eşyasının üstüne kurulup içindekiler alınamaz; yere eşya atıp kurmayı engelleyemezsin)
 placement_eject_to        0     // evin dışındaki en yakın boş kare (1: tabelanın altı)
 placement_gm              1     // GM denetlenmez
 // placement_classes        kucuk 64, orta 196, buyuk   // PLACEMENT= yazılmamış evin alanına göre set
 // Gemi ("ship" seti; yazılmayan kural yukarıdakinden): suda 1 karelik çevre, alandaki NPC (deniz canavarı) ve pet
-// kurmayı engeller (itilecek kara yok); yol, ağaç, spawn ve teleporter aranmaz (gemi yerinde kalmaz).
+// kurmayı engeller (itilecek kara yok); yol, ağaç, spawn ve teleporter aranmaz (gemi yerinde kalmaz), yerdeki eşya
+// taşınmaz.
 placement_ship_margin       1
 placement_ship_road         -1
 placement_ship_near         ""
 placement_ship_spawn_dist   -1
 placement_ship_teleport_dist -1
+placement_ship_items        0
 placement_ship_chars_npc    1
 placement_ship_chars_pet    1
 
