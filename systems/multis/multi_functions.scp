@@ -22,6 +22,14 @@ ELSEIF (<SERV.MULTIDEF.<LOCAL.ID>.TYPE> == T_SHIP)
 ENDIF
 
 
+// Ev ve gemi kurulumunda tutmayan kural (motorun HousePlacement'ı; kuranın üstünde, bulgu başına): LOCAL.RULE kural
+// (block, multi, region, road, near, spawn, teleport, chars, items...), LOCAL.P kare, LOCAL.UID engelleyen nesne (statik,
+// zemin ve bölgede 0), LOCAL.NAME adı, LOCAL.NEED kuralın değeri, LOCAL.DIST bulunan uzaklık (0 evin alanında; engebede
+// z farkı), LOCAL.ID multidef, LOCAL.SET kural seti, LOCAL.CHECKONLY 1 PLACEMENTCHECK'te. RETURN 1 bu bulgu yok sayılır
+// (kuralın sonraki bulgusu denenir); LOCAL.NOMESSAGE=1 motorun mesajı gitmez, LOCAL.SHOW_POINT efekti değiştirir (0 yok).
+[FUNCTION f_multi_onplacement_fail]
+
+
 
 
 [eof]

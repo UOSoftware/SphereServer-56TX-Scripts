@@ -102,6 +102,7 @@ placement_items           2     // alandaki taşınabilir eşya ve ceset ev kuru
                                 // eşyasının üstüne kurulup içindekiler alınamaz; yere eşya atıp kurmayı engelleyemezsin)
 placement_eject_to        0     // evin dışındaki en yakın boş kare (1: tabelanın altı)
 placement_gm              1     // GM denetlenmez
+placement_show_point      1     // tutmayan kare kurana alev sütunuyla gösterilir (sadece ona)
 // placement_classes        kucuk 64, orta 196, buyuk   // PLACEMENT= yazılmamış evin alanına göre set
 // Gemi ("ship" seti; yazılmayan kural yukarıdakinden): kıyıya ve denizdeki engele 1 kare, alandaki NPC (deniz canavarı)
 // ve pet kurmayı engeller (itilecek kara yok); yol, ağaç, spawn ve teleporter aranmaz (gemi yerinde kalmaz), yerdeki

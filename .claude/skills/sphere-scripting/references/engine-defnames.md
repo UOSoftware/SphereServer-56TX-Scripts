@@ -70,7 +70,7 @@ Pakette tanımlı olmasa da motorun tanımladığı adlar (`src/scripts/defs_eng
 - report_defs (34)
 - travel_flags (28)
 - hitzones (9)
-- placement (31)
+- placement (32)
 
 ## HARDCODED
 
@@ -1597,6 +1597,7 @@ placement_items 0
 placement_items_dist 0
 placement_eject_to 0
 placement_gm 0
+placement_show_point 0
 placement_ship_multi_dist -1
 placement_ship_region_flags 0
 ```
