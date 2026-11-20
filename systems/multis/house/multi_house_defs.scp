@@ -74,7 +74,8 @@ sign_color_30 0490
 // Ev ve gemi kurulumunun kuralları (motorun HousePlacement'ı). Motor her kurulumda okur; yazılmayan kural motorun
 // gömülü değerini (0.56b/T) alır. Uzaklıklar evin dış duvarlarından (bütün parçalarını içine alan dikdörtgen) sayılır:
 // duvarın hemen dışındaki kare 1. Değer tek sayı ya da batı,kuzey,doğu,güney (evin önü güney); "margin" çevrenin değeri;
-// -1 denetlenmez, 0 sadece evin alanı. Kurallar ve setler (MULTIDEF'te PLACEMENT=<set>: placement_<set>_<kural>;
+// -1 denetlenmez, 0 sadece evin alanı; liste kurallarında (near, terrain_deny, maps...) -1 boş liste ("" yazılan kural
+// silinir, yukarıdaki genel değeri alır). Kurallar ve setler (MULTIDEF'te PLACEMENT=<set>: placement_<set>_<kural>;
 // placement_classes ile evin alanına göre) motorun açıklamasında: <DEF.placement_*> ve skill'in engine-defnames.md'si.
 // f_multi_onplacement_check LOCAL.<kural>'ı oyuncuya göre değiştirebilir.
 [DEFNAME placement]
@@ -109,7 +110,7 @@ placement_ship_margin       1
 placement_ship_land_dist    margin    // alan ve 1 karelik çevresi deniz: karaya (kıyıya) 1 kare
 placement_ship_block_dist   margin    // denizdeki engele (kaya, iskele, direk; suyun hemen üstündekiler de) 1 kare
 placement_ship_road         -1
-placement_ship_near         ""
+placement_ship_near         -1
 placement_ship_spawn_dist   -1
 placement_ship_teleport_dist -1
 placement_ship_items        0

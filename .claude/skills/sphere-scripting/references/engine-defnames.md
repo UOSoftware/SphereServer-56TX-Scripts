@@ -1579,12 +1579,12 @@ placement_region_flags region_flag_nobuilding|region_flag_guarded|region_flag_sa
 placement_region_dist 0
 placement_road -1
 placement_road_types t_road
-placement_near ""
+placement_near -1
 placement_water_dist -1
 placement_land_dist margin
-placement_terrain_deny ""
-placement_terrain_allow ""
-placement_maps ""
+placement_terrain_deny -1
+placement_terrain_allow -1
+placement_maps -1
 placement_spawn_dist -1
 placement_teleport_dist -1
 placement_chars_player 1
