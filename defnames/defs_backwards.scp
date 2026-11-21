@@ -906,7 +906,7 @@ if (!<isempty <args>> && <serv.chardef.<dargs>>)
 	add <args>
 	return 1
 endif
-sysmessageloc <def.tcolor_text>,3300090,<defmsg.cmd_invalid>
+sysmessageloc <def.tcolor_text>,3200061
 
 
 [FUNCTION tweak]
@@ -941,7 +941,7 @@ if (<serv.itemdef.<dargs>>)
 	sysmessageloc <def.tcolor_text>,3300091,<defmsg.where_to_place>,<serv.itemdef.<args>.name>
 	return 1
 endif
-sysmessageloc <def.tcolor_text>,3300090,<defmsg.cmd_invalid>
+sysmessageloc <def.tcolor_text>,3200061
 
 
 

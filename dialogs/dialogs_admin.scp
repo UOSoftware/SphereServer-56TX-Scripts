@@ -461,7 +461,7 @@ DIALOG d_admin_player_tweak
 // Block
 ON=8
 IF (<SRC.ACCOUNT.PLEVEL> <= <ACCOUNT.PLEVEL>)
-	SRC.SYSMESSAGELOC <def.tcolor_grey>,3300090,<DEFMSG.msg_acc_priv>
+	SRC.SYSMESSAGELOC <def.tcolor_grey>,3200359
 ELSE
 	ACCOUNT.BLOCK <QVAL (<ACCOUNT.BLOCK>)? 0:1>
 	ARGS="A'<ACCOUNT>' was <QVAL (<ACCOUNT.BLOCK>)? banned:unbanned> by '<SRC.NAME>'"
@@ -554,7 +554,7 @@ DIALOG d_admin_player_tweak
 ON=1
 IF (<ACCOUNT.TAG0.NumNotes> < <DEF0.Admin.MaxAccountNotes>)
 	IF (<SRC.ACCOUNT.PLEVEL> < <ACCOUNT.PLEVEL>)
-		SRC.SYSMESSAGELOC <def.tcolor_red>,3300090,<DEFMSG.msg_acc_priv>
+		SRC.SYSMESSAGELOC <def.tcolor_red>,3200359
 	ELIF !(<isempty <ARGTXT[0]>>)
 		ACCOUNT.TAG0.NumNotes ++
 		ACCOUNT.TAG.Note_<dACCOUNT.TAG0.NumNotes>="<ARGTXT[0]>"
@@ -569,7 +569,7 @@ DIALOG d_admin_player_notes <eval 1+((<ACCOUNT.TAG0.NumNotes>-1)/4)>
 
 ON=10 65535
 IF (<SRC.ACCOUNT.PLEVEL> < <ACCOUNT.PLEVEL>)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,3300090,<DEFMSG.msg_acc_priv>
+	SRC.SYSMESSAGELOC <def.tcolor_red>,3200359
 ELSE
 	LOCAL.Note=<eval <ARGN>-9>
 	ACCOUNT.TAG.Note_<dLOCAL.Note>=

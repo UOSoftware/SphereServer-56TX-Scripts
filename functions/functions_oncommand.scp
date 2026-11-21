@@ -43,7 +43,7 @@ IF (<ARGN>)
 			RETURN 1	
 			
 		ELSEIF (STRMATCH('mtele','<ARGS>'))
-			SRC.SYSMESSAGELOC <def.tcolor_grey>,3300090,<defmsg.select_magic_target>
+			SRC.SYSMESSAGELOC <def.tcolor_grey>,3200991
 			SRC.TARGETFG FUNC_TARGETFG_MTELE
 			RETURN 1		
 		ENDIF
@@ -108,7 +108,7 @@ RETURN 1
 //  Custom Tele Function
 [FUNCTION FUNC_TARGETFG_MTELE]
 TARGETFG FUNC_TELE
-SYSMESSAGELOC <def.tcolor_grey>,3300090,<defmsg.select_magic_target>
+SYSMESSAGELOC <def.tcolor_grey>,3200991
 
 [FUNCTION FUNC_TELE]
 SRC.FACE <SRC.TARGP>

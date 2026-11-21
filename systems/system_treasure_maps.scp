@@ -150,7 +150,7 @@ ENDIF
 [TYPEDEF t_map_treasure]
 ON=@DClick
 IF (<TOPOBJ> != <SRC>)
- SRC.SYSMESSAGELOC <def.tcolor_text>,3300090,<DEFMSG.reach_fail>
+ SRC.SYSMESSAGELOC <def.tcolor_text>,3200304
  return 1
 ELIF !(<MORE1>)
  TreasureMap_Decode

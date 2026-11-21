@@ -479,7 +479,7 @@ return 1
 [TYPEDEF t_archery_butte]
 ON=@DCLICK
 IF (<SRC.CTAG0.ArcheryButte.Delay> > <SERV.TIME>)
-	SRC.SYSMESSAGELOC <def.tcolor_grey>,3300090,<defmsg.skillwait_3>
+	SRC.SYSMESSAGELOC <def.tcolor_grey>,3200751
 	RETURN 1
 ENDIF
 SRC.CTAG0.ArcheryButte.Delay = <serv.time> + <R8,12>

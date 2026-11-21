@@ -54,17 +54,17 @@ RETURN 1
 // Hesabın bar'ını kapatır ya da açar.
 [FUNCTION f_bugtrack_toggle]
 IF !(<DEF.bugtrack_enabled>) || (<ACCOUNT.PLEVEL> < <DEF.bugtrack_bar_plevel>)
-	SYSMESSAGELOC <def.tcolor_red>,3300090,Bugtrack kapalı.
+	SYSMESSAGELOC <def.tcolor_red>,3301209
 	RETURN 0
 ENDIF
 IF (<ACCOUNT.TAG0.BugTrack.Off>)
 	ACCOUNT.TAG.BugTrack.Off=
 	f_bugtrack_bar
-	SYSMESSAGELOC <def.tcolor_green>,3300090,Bugtrack açıldı. Kapatmak için .bugtrack
+	SYSMESSAGELOC <def.tcolor_green>,3301210
 ELSE
 	ACCOUNT.TAG.BugTrack.Off=1
 	DIALOGCLOSE d_bugtrack_bar
-	SYSMESSAGELOC <def.tcolor_yellow>,3300090,Bugtrack kapandı. Açmak için .bugtrack
+	SYSMESSAGELOC <def.tcolor_yellow>,3301211
 ENDIF
 RETURN 1
 
@@ -108,7 +108,7 @@ RETURN <dLOCAL.Id>
 // Yeni kaydın bildirimi (SERV.ALLCLIENTS her çevrimiçi char'da çağırır). ARGS: #id ad: metnin başı.
 [FUNCTION f_bugtrack_notify]
 IF (<ACCOUNT.PLEVEL> >= <DEF.bugtrack_notify_plevel>)
-	SYSMESSAGELOC <def.tcolor_yellow>,3300090,Bugtrack <ARGS>
+	SYSMESSAGELOC <def.tcolor_yellow>,3301212,<ARGS>
 ENDIF
 
 
