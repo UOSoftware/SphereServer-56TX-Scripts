@@ -258,6 +258,11 @@ RETURN 1
   (`FAMILYCREATE`, `<FAMILY>`), ticket ve ihbar (`TICKETNEW`, `REPORTNEW`), kelime filtresi (`[WORDFILTER]`), hesap
   pin'i (`.pin`), kervan (`t_multi_movable`), `.STAT`, `.MAKELAST`, `.MTELE`, Discord (`SERV.DISCORD.*`). Bunların
   paketteki karşılığı çoğunlukla sadece dialog ve konuşma komutudur; kuralı yeniden yazma, motorunkini çağır.
+- **Puanlar:** oyuncuda ve guild/town taşında adlı türler, TAG yerine: `POINTADD guild,10`, `POINTREMOVE guild,10`
+  (0'da durur), `POINT.guild += 10`, `<POINT.guild>` (yoksa 0), `<POINT>` toplam, `<POINTCOUNT>`,
+  `<POINTAT.n.KEY/VAL>`; char'dan taşa `GUILD.POINTADD guild,10`, üyelerin toplamı `<GUILD.POINTMEMBERS.guild>`.
+  Her değişiklik `@PointGain`/`@PointLoss`'tan geçer (ARGS tür, ARGN1 miktar, RETURN 1 iptal): puan harcayan
+  script önce düşürür, sonra `<POINT.x>`'in gerçekten azaldığına bakıp verir. Puanı motor kendiliğinden vermez.
 - **Ayara bağlı davranış:** 56b/T ile X'in ayrıldığı her kural bir ini ayarıdır (`0` = 56b/T, `1` = X):
   `CombatSwingTiming`, `DistanceTouch`, `RecallRuneWear`, `StealthStepMode`... Script bir ayara göre dallanacaksa
   `<SERV.Ayar>` okur; anlamları `references/ini-settings.md`.

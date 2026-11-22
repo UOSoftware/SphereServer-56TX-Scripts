@@ -10,9 +10,9 @@ REF1=<GUILD>
 IF (<REF1.ISVALID>)
 	IF !(<FLAGS>&statf_polymorph)
 		IF (<ISEMPTY <guild.memberfromuid.<UID>.GUILDTITLE>>)
-			MESSAGE @944,,1 [<REF1.NAME><QVAL (<DTAG0.GuildPoints> > 0 )? , <DTAG0.GuildPoints>:>]
+			MESSAGE @944,,1 [<REF1.NAME><QVAL (<POINT.guild> > 0 )? , <POINT.guild>:>]
 		ELSE
-			MESSAGE @944,,1 [<GUILD.MEMBERFROMUID.<UID>.GUILDTITLE>, <REF1.ABBREV><QVAL (<DTAG0.GuildPoints> > 0 )? , <DTAG0.GuildPoints>:>]
+			MESSAGE @944,,1 [<GUILD.MEMBERFROMUID.<UID>.GUILDTITLE>, <REF1.ABBREV><QVAL (<POINT.guild> > 0 )? , <POINT.guild>:>]
 		ENDIF
 	ENDIF
 ELSE

@@ -8,17 +8,15 @@ move s <dlocal.x>
 endfor
 
 
+// Karakterin guild puanı motorda (POINT.guild; POINTADD/POINTREMOVE, @PointGain/@PointLoss), 0'ın altına inmez.
 [FUNCTION f_guildsys_point_gain]
-TAG0.POINTS.GUILD +=1
+POINTADD guild,1
 SYSMESSAGELOC <def.tcolor_green>,3300849
 
 [FUNCTION f_guildsys_point_lost]
-IF (<TAG0.POINTS.GUILD> > 0)
-	TAG0.POINTS.GUILD -=1
+IF (<POINT.guild> > 0)
+	POINTREMOVE guild,1
 	SYSMESSAGELOC <def.tcolor_red>,3300850
-ENDIF
-IF (<TAG0.POINTS.GUILD> <= 0)
-	TAG0.POINTS.GUILD=0
 ENDIF
 
 
@@ -72,15 +70,10 @@ DIALOG D_GUILD_CREATE
 
 
 
+// Guild'in üyelerinin (üye ve master; adaylar hariç) guild puanlarının toplamı; taşın kendi puanı (POINT.guild) girmez.
 [FUNCTION f_guildsys_points_all]
 IF (<ISITEM>) && (<TYPE> == t_stone_guild)
-	FOR 0 <EVAL <MEMBER.COUNT>-1>
-		REF1=<MEMBER.<DLOCAL._FOR>.UID>
-		IF (<REF1>)
-			LOCAL._POINT +=<REF1.TAG0.GuildPoints>
-		ENDIF
-	ENDFOR
-RETURN <DLOCAL._POINT>
+	RETURN <POINTMEMBERS.guild>
 ENDIF
 RETURN 0
 

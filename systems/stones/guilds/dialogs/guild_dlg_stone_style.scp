@@ -14,7 +14,7 @@ PAGE 0
 RESIZE 0,0,470,260,Guild Stone Style
 
 DORIGIN 20 50
-DCROPPEDTEXT +0 +0 250 25 <def.tcolor_text> Guild puanınız: <NumberFormat <SRC.dTAG0.POINTS.GUILD>>
+DCROPPEDTEXT +0 +0 250 25 <def.tcolor_text> Guild puanınız: <NumberFormat <SRC.POINT.guild>>
 
 LOCAL.Stones 0 0ED4, 50 00EDB, 50 00EDD, 50 01183
 
@@ -64,13 +64,16 @@ LOCAL.ID <STREAT <ARRAY <LOCAL.Stones>,<argn>>>
 LOCAL.Point <STRARG <ARRAY <LOCAL.Stones>,<argn>>>
 
 IF (<DLOCAL.POINT>)
-	IF (<SRC.dTAG0.POINTS.GUILD> < <dLOCAL.Point>)
+	IF (<SRC.POINT.guild> < <dLOCAL.Point>)
 		SRC.SYSMESSAGELOC <def.tcolor_red>,3300948,<DLOCAL.POINT>
 		RETURN 1
 	ENDIF
-ENDIF
-IF (<DLOCAL.POINT>)
-	SRC.TAG0.POINTS.GUILD -=<DLOCAL.POINT>
+	// Puan stilden önce düşer: @PointLoss iptal ederse stil değişmez.
+	LOCAL.BEFORE=<SRC.POINT.guild>
+	SRC.POINTREMOVE guild,<DLOCAL.POINT>
+	IF (<SRC.POINT.guild> == <DLOCAL.BEFORE>)
+		RETURN 1
+	ENDIF
 ENDIF
 
 DISPID = <LOCAL.ID>

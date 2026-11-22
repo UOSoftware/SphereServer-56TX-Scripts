@@ -164,6 +164,8 @@ Eşya tetikleyicilerinin `@Item...` biçimi (ör. `@ItemDClick`, `@ItemEquip`) k
 - `@PersonalSpace`: +i just got stepped on by other char.
 - `@PetDesert`: I just went wild again
 - `@PetRelease`: I just been released by my master
+- `@PointGain`: 0.56TX: bir puanım artıyor (Points)
+- `@PointLoss`: 0.56TX: bir puanım azalıyor (Points)
 - `@Profile`: someone hit the profile button for me.
 - `@ReceiveItem`: I was just handed an item (Not yet checked if i want it)
 - `@RegenStat`: Regenerating any stat
@@ -273,6 +275,8 @@ Eşya tetikleyicilerinin `@Item...` biçimi (ör. `@ItemDClick`, `@ItemEquip`) k
 - `@PICKUP_PACK`: picked up from inside some container.
 - `@PICKUP_SELF`: picked up from here
 - `@PICKUP_STACK`: was picked up from a stack
+- `@PointGain`: 0.56TX: taşın bir puanı artıyor (Points)
+- `@PointLoss`: 0.56TX: taşın bir puanı azalıyor (Points)
 - `@PreSpawn`
 - `@Redeed`
 - `@RegionEnter`
