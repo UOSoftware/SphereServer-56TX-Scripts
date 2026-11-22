@@ -23,24 +23,18 @@ ELSE
 	SRC.EVENTS -E_PIN
 ENDIF
 
-SRC.ACCOUNT.MAXHOUSES=<SERV.MaxHousesAccount>
-SRC.MAXHOUSES=<SERV.MaxHousesPlayer>
-
-SRC.ACCOUNT.MAXSHIPS=<SERV.MaxShipsAccount>
-SRC.MAXSHIPS=<SERV.MaxShipsPlayer>
+// Ev ve gemi sınırı (MAXHOUSES, MAXSHIPS) motorda: değeri verilmemiş karakter ve hesap sphere.ini'nin MaxHouses* ve
+//     MaxShips* ayarlarını kendiliğinden izler. Chat adı da motorda: sphere.ini ChatNameMode (1 = o anki karakterin adı).
 
 SRC.MODMAXWEIGHT 35 // 55R DE maks ağırlik kapasitesi 390 deil 425 olduğu için ekliyoruz.
 // SRC.DETAIL=1
 SRC.SCROLL scroll_motd
-SRC.ACCOUNT.CHATNAME=<SRC.NAME>
 
 SERV.ALLCLIENTS F_STAFFPANEL_REFRESH
 
 
 
 ON=@LOGOUT
-SRC.ACCOUNT.CHATNAME=<SRC.NAME>
-
 SERV.ALLCLIENTS F_STAFFPANEL_REFRESH
 IF (<SRC.ACCOUNT.PLEVEL> == 1)
 	SRC.SKILLCLASS Class_Player
@@ -321,9 +315,6 @@ ENDIF
 RETURN 1
 
 
-
-ON=@UserChatButton
-SRC.ACCOUNT.CHATNAME=<SRC.NAME> 
 
 ON=@Userextcmd
 // ARGV0 = ON/OFF
