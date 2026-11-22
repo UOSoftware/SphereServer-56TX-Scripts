@@ -208,7 +208,9 @@ RETURN 1
   `MOVERATE`, `SHELTER`, `HEIGHT`, `BLOODCOLOR`, skill'ler (`SWORDSMANSHIP=50.0`), `CATEGORY/SUBSECTION/DESCRIPTION`;
   tetikleyiciler (`@NPCSeeNewPlayer`, `@Hit`, `@Death`, `@Speech`...).
 - `[EVENTS e_x]` tetikleyici kümesi: karaktere `EVENTS=` ya da `EVENTS +e_x`, eşyaya `TEVENTS` (TYPEDEF gibi); bölgeye
-  `EVENTS=`. Ini'nin `EventsChar`, `EventsNpc`, `EventsItem`, `EventsRegion` listeleri herkese verir.
+  `EVENTS=`. Ini'nin `EventsChar`, `EventsNpc`, `EventsItem`, `EventsRegion` listeleri herkese verir. Ini'nin
+  listeleri nesneye yazılmaz, `<EVENTS>` ve `<TEVENTS>`'te görünmez: nesneye şu an uyanlar `<INIEVENTS>`,
+  `<ISINIEVENT.e_x>` (karakter, eşya, bölge).
 - `[FUNCTION f_x]`: gövde; `.f_x` komutu oyuncu yazabilir (plevel `[PLEVEL n]` listelerinde), `SERV.f_x` sunucudan.
   **Motorun anahtar kelimesiyle aynı adlı fonksiyon yazma:** yüklemede WARNING alır ve motorunkini gölgeler
   (`FunctionOverride=1`); `references/keywords.md`'de olan bir adı seçme.
@@ -219,7 +221,8 @@ RETURN 1
   metin kutuları `<ARGTXT[id]>`, işaretler `<ARGCHK[id]>`. `[DIALOG d_x TEXT]` eski biçim metin listesi. Oyuncuya
   `SRC.DIALOG d_x` (ya da `DIALOG d_x` karakterde), kapatmak `DIALOGCLOSE d_x`.
 - `[SPEECH spk_x]`: `ON=*kelime*` kalıpları (`ON=*hello*`), gövdede `SRC` konuşan, `<ARGS>` cümle; NPC'ye `TSPEECH` ya da
-  `SPEECH +spk_x`. Ini `SpeechNpc` herkese verir. `[TEMPLATE t_x]`: `ITEM=i_x`, `ITEM={i_a 2 i_b 1}`,
+  `SPEECH +spk_x`. Ini `SpeechNpc` herkese verir; karaktere uyan ini listeleri `<INISPEECH>`, `<ISINISPEECH.spk_x>`,
+  kendi ve CHARDEF'inin konuşmaları `<ISSPEECH.spk_x>`, `<ISTSPEECH.spk_x>`. `[TEMPLATE t_x]`: `ITEM=i_x`, `ITEM={i_a 2 i_b 1}`,
   `ITEM=i_x,R3` (3'te 1), `CONTAINER=i_bag`; loot ve vendor envanteri. `[SPAWN spawn_x]`: `ID=c_x` listesi.
   `[AREADEF a_x]`: `GROUP`, `RECT=x1,y1,x2,y2,harita`, `P`, `FLAGS=region_flag_guarded|...`, `EVENTS`, `TAG`.
 

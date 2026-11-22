@@ -1,33 +1,7 @@
 
+// *buy* ve *sell* bütün satıcılarda: spk_generic_npc_vendors (speech_npc_vendors.scp, sphere.ini SpeechNpcVendor).
+//  Bu blok boş kaldı: CHARDEF'lerin TSPEECH satırı hata vermesin diye.
 [SPEECH spk_generic_npc_vendor_shopkeepers]
-ON=*sell*
-IF (<SRC.FLAGS>&STATF_DEAD) 
-	SRC.SYSMESSAGELOC <def.tcolor_red>,600027 // "Ölü durumdayken bu islemi yapamazsiniz."
-	RETURN 1
-ELSEIF (<SRC.ISOUTOFREACH 2,<UID>>)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,600018,<JOB> <NAME>
-	RETURN 1
-ELSEIF (<SRC.ACTION> != -1 && <SERV.SKILL.<SRC.ACTION>.FLAGS>&SKF_CRAFT)
-	SRC.SYSMESSAGELOC <def.tcolor_grey>,3300535
-	RETURN 1
-ENDIF
-// SELL
-FACE <SRC>
-SRC.TARGETF Func_Generic_Npc_Vendor_Shopkeeper_Sell <UID>
-SRC.SYSMESSAGELOC 0,3300536
-RETURN 1
-
-
-
-ON=*buy*
-IF (<SRC.FLAGS>&STATF_DEAD) 
-	SRC.SYSMESSAGELOC <def.tcolor_red>,600027 // "Ölü durumdayken bu islemi yapamazsiniz."
-	RETURN 1
-ELSEIF (<SRC.ISOUTOFREACH 2,<UID>>)
-	SRC.SYSMESSAGELOC <def.tcolor_red>,600018,<JOB> <NAME>
-	RETURN 1
-ENDIF
-BUY
 
 
 

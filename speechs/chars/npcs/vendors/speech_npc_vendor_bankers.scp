@@ -2,7 +2,8 @@
 // sphere.ini SpeechNpcBanker: sadece brain_banker NPC'lere verilir.
 [SPEECH spk_generic_npc_bankers]
 ON=*bank*
-SRC.OPENBANK
+// Motorun BANK'i: ölü, donmuş ve taş olan açamaz (sphere.ini BankOpenCheck), ağırlık ve eşya bilgisi BankOpenInfo.
+SRC.BANK
 
 ON=*balance*
 IF (<SERV.FeatureTOL>&02)

@@ -683,7 +683,7 @@ IF (<DEF.hs_can_bank>)
 		SRC.SYSMESSAGELOC <def.tcolor_red>,3300610
 		RETURN 1
 	ENDIF
-	SRC.OPENBANK
+	SRC.BANK
 ENDIF
 	
 

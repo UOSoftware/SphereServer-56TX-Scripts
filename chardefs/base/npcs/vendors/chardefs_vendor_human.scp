@@ -11,7 +11,7 @@ NAME=#NAMES_HUMANMALE the Teacher
 CATEGORY=Civilized
 SUBSECTION=Teacher
 DESCRIPTION=Teacher (human male)
-// TSPEECH=spk_generic_npc_vendor_teachers
+// TSPEECH=spk_generic_npc_teachers
 // TSPEECH=spk_generic_npc_vendors
 // TEVENTS=e_generic_npcs
 // TEVENTS=e_generic_npc_vendors
@@ -22,7 +22,7 @@ BLOODCOLOR=-1
 ON=@Create
 COLOR=colors_skin
 
-NPC=Brain_NONE
+NPC=brain_teacher
 
 NEED=i_gold
 STR={85 95}
@@ -56,7 +56,7 @@ NAME=#NAMES_HUMANFEMALE the Teacher
 CATEGORY=Teacher
 SUBSECTION=Teacher
 DESCRIPTION=Teacher (human female)
-// TSPEECH=spk_generic_npc_vendor_teachers
+// TSPEECH=spk_generic_npc_teachers
 // TEVENTS=e_generic_npcs
 // TEVENTS=e_generic_npc_vendors
 // TEVENTS=e_generic_npc_vendor_teachers
@@ -66,7 +66,7 @@ BLOODCOLOR=-1
 ON=@Create
 COLOR=colors_skin
 
-NPC=Brain_NONE
+NPC=brain_teacher
 
 NEED=i_gold
 STR={85 95}
@@ -2604,7 +2604,7 @@ SUBSECTION=Tradesmen
 DESCRIPTION=High Mage (human male)
 TSPEECH=spk_generic_npc_vendors
 TSPEECH=spk_generic_npc_vendor_shopkeepers
-TSPEECH=spk_generic_npc_vendor_teachers
+TSPEECH=spk_generic_npc_teachers
 
 TEVENTS=e_generic_npcs
 TEVENTS=e_generic_npc_vendors
@@ -2655,7 +2655,7 @@ SUBSECTION=Tradesmen
 DESCRIPTION=High Mage (human female)
 TSPEECH=spk_generic_npc_vendors
 TSPEECH=spk_generic_npc_vendor_shopkeepers
-TSPEECH=spk_generic_npc_vendor_teachers
+TSPEECH=spk_generic_npc_teachers
 
 TEVENTS=e_generic_npcs
 TEVENTS=e_generic_npc_vendors

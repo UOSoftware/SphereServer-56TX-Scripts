@@ -39,6 +39,7 @@ brain_animal_trainer   7
 brain_monster          8
 brain_berserk          9
 brain_dragon           10
+brain_teacher          15   // 56TX: öğretir, human gibi davranır (sphere.ini SpeechNpcTeacher, EventsNpcTeacher, TeacherDClickTeach)
 
 [DEFNAME region_flags]
 region_antimagic_all			0000001   // all magic banned here.

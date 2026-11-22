@@ -6,19 +6,7 @@
 // MESSAGE @058 <NAME>
 // RETURN 1
 
-ON=@DCLICK
-IF !(<SRC.ISGM>)
-	IF (<SRC.FLAGS>&STATF_DEAD) 
-		SRC.SYSMESSAGELOC <def.tcolor_red>,600027 // Ölü durumdayken bu islemi yapamazsiniz.
-		RETURN 1
-	ELSEIF (<SRC.ISOUTOFREACH 2,<UID>>)
-		SRC.SYSMESSAGELOC <def.tcolor_red>,600018,<JOB> <NAME>
-		RETURN 1
-	ENDIF
-ENDIF
-FACE <SRC>
-DIALOGCLOSE D_TEACH_INFO
-DIALOG D_TEACH_INFO
-RETURN 1
+// Çift tık: motor öğretmene "teach" duyurur (sphere.ini TeacherDClickTeach), *teach* konuşması
+//  (spk_generic_npc_teachers) denetimleriyle çalışır. Burada @DCLICK gerekmez.
 
 [eof]
