@@ -2669,7 +2669,7 @@ RECT=2867,3388,2931,3524,0
 RECT=2931,3485,3028,3542,0
 RECT=2891,3524,2916,3534,0
 
-[AREADEF a_Ocllo_7]
+[AREADEF a_townOcllo]
 EVENTS=r_default,r_default_rock,r_default_water,r_default_tree,r_default_grass
 NAME=Ocllo
 GROUP=Ocllo

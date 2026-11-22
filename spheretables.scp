@@ -253,7 +253,7 @@ teleporters/map1/map1_teleports.scp
 teleporters/map1/map1_teleports_ml.scp
 teleporters/map1/map1_teleports_ml_new_haven.scp
 teleporters/map1/map1_teleports_hs.scp
-teleporters/map1/map1_teleports_tol.scp
+// teleporters/map1/map1_teleports_tol.scp
 
 // Map2
 areadefs/map2/map2_areas.scp
@@ -278,10 +278,10 @@ moongates/map4_moongates.scp
 
 // Map5
 areadefs/map5/map5_areas.scp
-areadefs/map5/map5_areas_tol.scp
+// areadefs/map5/map5_areas_tol.scp
 
 teleporters/map5/map5_teleports.scp
-teleporters/map5/map5_teleports_tol.scp
+// teleporters/map5/map5_teleports_tol.scp
 moongates/map5_moongates.scp
 // moongates/map5_moongates_tol.scp
 
