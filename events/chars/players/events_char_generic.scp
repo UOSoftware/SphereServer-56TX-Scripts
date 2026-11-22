@@ -146,9 +146,7 @@ ON=@GETHIT
 	// SKILLGAIN 26
 // ENDIF
 
-IF (<FINDTYPE.T_EQ_TRADE_WINDOW>)
-	FINDTYPE.T_EQ_TRADE_WINDOW.REMOVE
-ENDIF
+// Hasar alınca takasın kapanması motorda: sphere.ini TradeCancelOnDamage (varsayılan 1; bütün takaslar, can düşünce).
 IF (<ARGN2>&<DEF.dam_physical>|<DEF.dam_pierce>|<DEF.dam_slash>)
 	IF  (<SRC.WEAPON>)
 		REF1=<SRC.WEAPON>
