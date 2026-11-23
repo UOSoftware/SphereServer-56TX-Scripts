@@ -133,6 +133,11 @@ f_onserver_db_query
 f_onserver_db_execute
 f_onserver_db_tick
 
+// WorldMap service / WorldMap servisi (UOSoft ClassicUO)
+f_onworldmap_room
+f_onvoice
+f_onprofileshare
+
 
 
 //****************************************************************************
@@ -1368,6 +1373,90 @@ VAR0.SAVE_TIME_TOOK=<ARGS>
 //     Değişkenler:
 //       ARGN1 --> 0
 //       ARGN2 --> KeepAlive, saniye (yazılabilir: yeni aralık)
+
+
+
+//****************************************************************************
+// WorldMap service / WorldMap servisi (UOSoft ClassicUO)
+//****************************************************************************
+
+[FUNCTION f_onworldmap_room]
+// EN: 56TX. WorldMap room (WorldMap=1): a room is about to be created or joined (request: the service's own checks
+//     passed; RETURN 1 refuses, the client gets NotAllowed), was created, joined, left, removed. The service runs in its
+//     own thread: it waits for a request's answer at most 2 seconds (then allows it, e.g. during a save); the other
+//     events come after the fact, in order. <SERV.WORLDMAP.ROOM.n.x> and <SRC.WORLDMAPROOM> already show the change.
+//     Variables:
+//       SRC            --> the player (the server when a room is removed)
+//       ARGS           --> name of the room
+//       ARGN1          --> 0 create, 1 join (requests), 2 created, 3 joined, 4 left, 5 removed (worldmap_event_*)
+//       ARGN2          --> left: 0 self, 1 disconnected, 2 room closed, 3 kicked (worldmap_left_*);
+//                          removed: 0 empty, 1 closed (worldmap_closed_*)
+//       ARGN3          --> members (join request: now, other events: after)
+//       LOCAL.Room     --> id of the room (empty in the create request)
+//       LOCAL.Owner    --> owner of the room (UID; the new owner when the owner left)
+//       LOCAL.Password --> 1 if the room has a password
+//       LOCAL.Account  --> the player's account
+// TR: 56TX. WorldMap odası (WorldMap=1): oda açılacak ya da odaya girilecek (istek: servisin kendi denetimleri geçti;
+//     RETURN 1 reddeder, client NotAllowed alır), açıldı, girildi, çıkıldı, silindi. Servis kendi thread'inde çalışır:
+//     isteğin cevabını en çok 2 saniye bekler (sonra izin verir, ör. save sırasında); öteki olaylar olduktan sonra,
+//     sırasıyla gelir. <SERV.WORLDMAP.ROOM.n.x> ve <SRC.WORLDMAPROOM> değişikliği zaten gösterir.
+//     Değişkenler:
+//       SRC            --> oyuncu (oda silinince sunucu)
+//       ARGS           --> odanın adı
+//       ARGN1          --> 0 açılacak, 1 girilecek (istekler), 2 açıldı, 3 girildi, 4 çıkıldı, 5 silindi (worldmap_event_*)
+//       ARGN2          --> çıkış: 0 kendisi, 1 bağlantı kapandı, 2 oda kapatıldı, 3 çıkarıldı (worldmap_left_*);
+//                          silinme: 0 boşaldı, 1 kapatıldı (worldmap_closed_*)
+//       ARGN3          --> üye sayısı (girme isteğinde şimdiki, öteki olaylarda sonraki)
+//       LOCAL.Room     --> odanın kimliği (açma isteğinde boş)
+//       LOCAL.Owner    --> odanın sahibi (UID; sahip çıkınca yeni sahip)
+//       LOCAL.Password --> şifreli oda 1
+//       LOCAL.Account  --> oyuncunun hesabı
+
+
+[FUNCTION f_onvoice]
+// EN: 56TX. Voice chat (Voice=1): voice is about to be turned on (request; RETURN 1 refuses, the client gets
+//     VoiceDisabled), was turned on, off, or penalised for sustained violations. <SRC.VOICECHAT> shows the change.
+//     Variables:
+//       SRC           --> the player
+//       ARGN1         --> 0 enable (request), 1 enabled, 2 disabled, 3 penalty (voice_event_*)
+//       ARGN2         --> disabled: 0 self, 1 disconnected, 2 server (Voice=0, SERV.VOICE.DISABLE), 3 penalty
+//                         (voice_off_*); penalty: seconds
+//       LOCAL.Account --> the player's account
+// TR: 56TX. Sesli sohbet (Voice=1): ses açılacak (istek; RETURN 1 reddeder, client VoiceDisabled alır), açıldı,
+//     kapandı ya da sürekli ihlal yüzünden ceza aldı. <SRC.VOICECHAT> değişikliği gösterir.
+//     Değişkenler:
+//       SRC           --> oyuncu
+//       ARGN1         --> 0 açılacak (istek), 1 açıldı, 2 kapandı, 3 ceza (voice_event_*)
+//       ARGN2         --> kapanış: 0 kendisi, 1 bağlantı kapandı, 2 sunucu (Voice=0, SERV.VOICE.DISABLE), 3 ceza
+//                         (voice_off_*); ceza: saniye
+//       LOCAL.Account --> oyuncunun hesabı
+
+
+[FUNCTION f_onprofileshare]
+// EN: 56TX. Profile share (ProfileShare=1): a profile is about to be offered (request: the face to face rule passed;
+//     RETURN 1 refuses, the sender gets ShareDisabled), was offered, the transfer ended.
+//     Variables:
+//       SRC           --> the sender
+//       ARGO          --> the recipient
+//       ARGN1         --> 0 offer (request), 1 offered, 2 finished (profileshare_event_*)
+//       ARGN2         --> size of the package in bytes; finished: bytes transferred
+//       ARGN3         --> finished: 0 delivered, 1 declined, 2 cancelled, 3 timed out, 4 a side left, 5 the
+//                         recipient's client could not take it, 6 bad chunk (profileshare_*)
+//       LOCAL.Target  --> UID of the recipient
+//       LOCAL.Share   --> number of the transfer (0 in the request)
+//       LOCAL.Account --> the sender's account
+// TR: 56TX. Profil paylaşımı (ProfileShare=1): profil teklif edilecek (istek: yüz yüze şartı geçti; RETURN 1 reddeder,
+//     gönderen ShareDisabled alır), teklif edildi, aktarım bitti.
+//     Değişkenler:
+//       SRC           --> gönderen
+//       ARGO          --> alıcı
+//       ARGN1         --> 0 teklif edilecek (istek), 1 teklif edildi, 2 bitti (profileshare_event_*)
+//       ARGN2         --> paketin boyu (byte); bitişte aktarılan
+//       ARGN3         --> bitiş: 0 teslim edildi, 1 reddedildi, 2 iptal, 3 süre doldu, 4 taraflardan biri ayrıldı,
+//                         5 alıcının client'ı kabul edemedi, 6 bozuk parça (profileshare_*)
+//       LOCAL.Target  --> alıcının UID'si
+//       LOCAL.Share   --> aktarımın numarası (istekte 0)
+//       LOCAL.Account --> gönderenin hesabı
 
 
 

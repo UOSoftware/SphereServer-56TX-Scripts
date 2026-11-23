@@ -71,6 +71,7 @@ Pakette tanımlı olmasa da motorun tanımladığı adlar (`src/scripts/defs_eng
 - travel_flags (28)
 - hitzones (9)
 - placement (32)
+- services_defs (34)
 
 ## HARDCODED
 
@@ -1600,5 +1601,44 @@ placement_gm 0
 placement_show_point 0
 placement_ship_multi_dist -1
 placement_ship_region_flags 0
+```
+
+## services_defs
+
+```
+worldmap_event_create 0
+worldmap_event_join 1
+worldmap_event_created 2
+worldmap_event_joined 3
+worldmap_event_left 4
+worldmap_event_closed 5
+worldmap_left_self 0
+worldmap_left_disconnected 1
+worldmap_left_closed 2
+worldmap_left_kicked 3
+worldmap_closed_empty 0
+worldmap_closed_staff 1
+voice_event_enable 0
+voice_event_enabled 1
+voice_event_disabled 2
+voice_event_penalty 3
+voice_off_self 0
+voice_off_disconnected 1
+voice_off_server 2
+voice_off_penalty 3
+profileshare_event_offer 0
+profileshare_event_offered 1
+profileshare_event_finished 2
+profileshare_delivered 0
+profileshare_declined 1
+profileshare_cancelled 2
+profileshare_timeout 3
+profileshare_peer_left 4
+profileshare_unavailable 5
+profileshare_error 6
+voiceblock_party 01
+voiceblock_room 02
+voiceblock_proximity 04
+voiceblock_all 07
 ```
 
