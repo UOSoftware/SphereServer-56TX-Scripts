@@ -173,7 +173,20 @@ Emulatörün tanıdığı her ayar: ad, gömülü değer (ayar ini'de yoksa kull
 | `ServicesPort` | 3978 | WorldMap servisinin TCP portu. Açılışta okunur; güvenlik duvarında açık olmalı. Oyun portundan (ServPort) farklı olmalı. |
 | `ServicesMaxHandshakesPerIP` | 30 | WorldMap servisine bir IP'den dakikada en çok el sıkışma (1-10000). Aşan bağlantı reddedilir. Oyunda bileti olmayan IP'ye servis hiç cevap vermez. |
 | `ServicesMessagesPerSec` | 20 | WorldMap servisinde bir bağlantının saniyede en çok mesajı (5-1000); iki saniyelik birikime izin verilir. Aşan bağlantı kesilir. |
-| `ServicesPresenceInterval` | 250 | Oyuncuların konumunun WorldMap servisine aktarılma aralığı (milisaniye, 50-5000). Konum dünyadan, oyun thread'inde bu aralıkla toplanır; sadece değişenler, sadece bir odada üye varken. Client'a da bildirilir. |
+| `ServicesPresenceInterval` | 250 | Oyuncuların konumunun WorldMap ve ses servisine aktarılma aralığı (milisaniye, 50-5000). Konum, party ve ses susturması dünyadan, oyun thread'inde bu aralıkla toplanır; sadece değişenler, sadece bir odada üye ya da sesi açık biri varken. Client'a da bildirilir (seste en çok 500). |
+| `Voice` | 0 | UOSoft ClassicUO client'ının sesli sohbeti: party, WorldMap odası ve yakınlık kanalları (docs/WorldMapVoice.md). UOSoftHub'ın sesinin aynısı, oyundan ayrı thread'de (T_Voice) ve kendi UDP portunda (VoicePort). Ses Opus 48 kHz, 20 ms kareler; sunucu sesi çözmez ve kaydetmez, her dinleyiciye o dinleyicinin anahtarıyla iletir. Kimin kimi duyacağı sunucunun: party CPartyDef'ten, yakınlık dünyadaki gerçek yerden, oda WorldMap'ten; client'ın söylediğine güvenilmez. Hesabın VOICEMUTE'u konuşmayı kapatır (dinler), yazılı sohbetin MUTE'u sese dokunmaz. Açılışta okunur; WorldMap ya da Voice açıksa servis başlar. 0 = Off // Kapalı 1 = On // Açık Konsol: SERVICES sesin durumunu da (bağlantılar, açık, konuşan, trafik, düşen paketler) gösterir. |
+| `VoicePort` | 0 | Sesin UDP portu. 0 ise ServicesPort'un numarası (UDP). Açılışta okunur; güvenlik duvarında UDP olarak açık olmalı. |
+| `VoiceParty` | 1 | Party kanalı: aynı party'deki oyuncular birbirini her yerden duyar. 0 = Kapalı 1 = Açık |
+| `VoiceRoom` | 1 | Oda kanalı: aynı WorldMap odasındaki oyuncular birbirini her yerden duyar (WorldMap=1 ister). 0 = Kapalı 1 = Açık |
+| `VoiceProximity` | 0 | Yakınlık kanalı: aynı haritada VoiceProximityRange kare içindekiler birbirini duyar; dinleyene uzaklığın kuşağı gider (yakın, orta, uzak, sınır), yer gitmez. 0 = Kapalı (UOSoftHub'ın varsayılanı) 1 = Açık |
+| `VoiceProximityRange` | 18 | Yakınlık kanalının menzili, kare (1-40). Menzilden çıkan dinleyici 2 kare daha duymaya devam eder. |
+| `VoiceProximityHidden` | 0 | Gizli oyuncu (hide, stealth, invisibility büyüsü, staff görünmezliği) yakınlıkta konuşabilir mi. Dinlemesi her zaman açık; party ve oda kanallarına etkisi yok. 0 = Konuşamaz 1 = Konuşur |
+| `VoiceBitrate` | 32 | Client'ın kodlayıcısının bit hızı, kbps (16-64). Client'a VoiceConfig ile gider. |
+| `VoiceMaxBitrate` | 48 | Kodlayıcının en yüksek bit hızı, kbps (VoiceBitrate + 8 - 96). Konuşanın opus verisi bunun %25 fazlasını aşarsa kareler düşer. |
+| `VoiceMaxSpeakers` | 8 | Bir dinleyicinin aynı anda duyabileceği en çok konuşan (1-16). |
+| `VoiceMaxRecipients` | 64 | Bir konuşanın sesinin gittiği en çok dinleyici, bütün kanallarda (1-255). |
+| `VoiceMaxProximityListeners` | 50 | Yakınlık kanalında bir konuşanın en çok dinleyicisi (1-255); kalabalıkta en yakınlar. |
+| `VoiceMaxEgress` | 50 | Sunucunun ses çıkışının tavanı, Mbps (1-10000). Aşılınca önce yakınlık, sonra oda sesi kesilir; party en son. |
 | `ClientMax` | 1023 | Sunucuya toplam en çok açık bağlantı (IP başına değil). NetworkEngine=0'da (select) en çok 1023, NetworkEngine=1'de 65535; büyüğü açılışta uyarıyla düşürülür. Bağlantı yuvaları açılışta oluşturulur. |
 | `ClientMaxIP` | 16 | IP başına sunucuya en çok açık bağlantı |
 | `ConnectingMax` | 32 | Sunucuya toplam en çok bağlantı (oyunda olmayan, IP başına değil) |
