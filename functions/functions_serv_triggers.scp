@@ -1303,13 +1303,13 @@ VAR0.SAVE_TIME_TOOK=<ARGS>
 //****************************************************************************
 
 [FUNCTION f_onserver_window_minimize]
-// EN: Called when the console window is minimized (hidden to the tray). It runs in the next tick of the main thread.
-// TR: Konsol penceresi küçültülünce (bildirim alanına gizlenince) çağrılır. Ana thread'in sonraki turunda çalışır.
+// EN: Called when the console window is minimized (to the taskbar or hidden to the tray, sphere.ini WindowMinimize). It runs in the next tick of the main thread.
+// TR: Konsol penceresi küçültülünce (sphere.ini'nin WindowMinimize'ına göre görev çubuğuna ya da bildirim alanına) çağrılır. Ana thread'in sonraki turunda çalışır.
 
 
 [FUNCTION f_onserver_window_restore]
-// EN: Called when the console window is restored. It runs in the next tick of the main thread.
-// TR: Konsol penceresi geri açılınca çağrılır. Ana thread'in sonraki turunda çalışır.
+// EN: Called when the minimized console window is restored (not when a maximized window returns to its size). It runs in the next tick of the main thread.
+// TR: Küçültülmüş konsol penceresi geri açılınca çağrılır (büyütülmüş pencerenin eski boyutuna dönmesi değil). Ana thread'in sonraki turunda çalışır.
 
 
 [FUNCTION f_onserver_onclose_query]
