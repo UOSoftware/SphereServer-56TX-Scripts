@@ -9,13 +9,9 @@
 
 
 
-// ASGARDDA BANKERE CIFT TIKLAYARAK CHECK YAZMA MENUSU ACILIYORMUS 
-// AYNI ZAMANDA BANKERIN YANINDA check yazinca da bu menu aciliyor.
-
-ON=@DCLICK
-DIALOGCLOSE D_BANKER_CHECK
-DIALOG D_BANKER_CHECK
-// RETURN 1
+// Bankere çift tık emulatörde: sphere.ini BankerDClickBank=1 (varsayılan) bankere "bank" duyurur, *bank* konuşması
+//  (spk_generic_npc_bankers) çalışır. Check yazma menüsü (D_BANKER_CHECK) bankerin yanında "check" yazınca açılır.
+//  Çift tıkta başka bir şey isteniyorsa buraya @DCLICK yazılır, RETURN 1 emulatörünkini kapatır.
 
 
 [eof]
